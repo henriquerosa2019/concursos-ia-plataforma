@@ -2155,6 +2155,12 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             if auto_full_text:
                 msg += " Transcrição do YouTube extraída e cronometrada!"
                 
+            if supabase_client and supabase_client.is_supabase_configured():
+                try:
+                    supabase_client.sync_all_local_to_supabase()
+                except Exception as e_supa_sync:
+                    print(f"Aviso: Erro ao auto-sincronizar aula com Supabase: {e_supa_sync}")
+
             self.send_response(200)
             self.send_header("Content-type", "application/json; charset=utf-8")
             self.end_headers()
@@ -2193,6 +2199,7 @@ class ConcursosHandler(BaseHTTPRequestHandler):
 
         elif path == "/api/supabase/config":
             url = payload.get("url", "").strip()
+            url = re.sub(r'/rest/v1/?$', '', url).rstrip("/")
             key = payload.get("key", "").strip()
             cfg = load_config()
             if url:
@@ -2326,6 +2333,13 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                     yt_url="",
                     banca=banca
                 )
+
+                # Sincronizar automaticamente com o Supabase se configurado
+                if supabase_client and supabase_client.is_supabase_configured():
+                    try:
+                        supabase_client.sync_all_local_to_supabase()
+                    except Exception as e_supa_sync:
+                        print(f"Aviso: Erro ao auto-sincronizar PDF com Supabase: {e_supa_sync}")
 
                 self.send_response(200)
                 self.send_header("Content-type", "application/json; charset=utf-8")

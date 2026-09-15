@@ -30,7 +30,8 @@ def get_supabase_config():
         except Exception:
             pass
     
-    url = os.environ.get("SUPABASE_URL", cfg.get("supabase_url", "")).strip().rstrip("/")
+    url = os.environ.get("SUPABASE_URL", cfg.get("supabase_url", "")).strip()
+    url = re.sub(r'/rest/v1/?$', '', url).rstrip("/")
     key = os.environ.get("SUPABASE_KEY", os.environ.get("SUPABASE_ANON_KEY", cfg.get("supabase_key", ""))).strip()
     return url, key
 
@@ -53,7 +54,7 @@ def supabase_request(endpoint, method="GET", data=None, params=None):
         "apikey": key,
         "Authorization": f"Bearer {key}",
         "Content-Type": "application/json",
-        "Prefer": "return=representation"
+        "Prefer": "return=representation,resolution=merge-duplicates"
     }
 
     req_data = json.dumps(data).encode("utf-8") if data is not None else None

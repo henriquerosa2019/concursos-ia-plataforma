@@ -1857,6 +1857,9 @@
   </div>
 
   <div class="topbar-actions">
+    <a href="/landing" class="btn" style="border-color: rgba(245, 197, 66, 0.4); color: #f5c542; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px;" title="Ver Landing Page Oficial do Projeto Aprovação">
+      🌐 Landing Page
+    </a>
     <button class="btn" id="globalThemeBtn" onclick="toggleAppTheme()" title="Alternar entre Fundo Branco (Claro) e Fundo Escuro em todo o Aplicativo" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600; padding: 6px 12px;">
       <span id="globalThemeIcon">☀️</span> <span id="globalThemeText">Modo Claro</span>
     </button>
@@ -3965,7 +3968,6 @@
         })
       });
       await loadProgress();
-    checkStoredAuth();
     } catch(e) {}
 
     if (quality === 1) {
@@ -7002,7 +7004,6 @@
   // Init
   window.addEventListener('DOMContentLoaded', async () => {
     await loadProgress();
-    checkStoredAuth();
     loadStructureAndSidebar();
     fetchAiConfig();
     checkSupabaseStatus();

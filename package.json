@@ -1,5 +1,5 @@
 {
-  "name": "projeto-aprovacao",
+  "name": "aprovacao-concursos",
   "version": "1.0.0",
   "description": "Plataforma Definitiva de Estudos para Concursos Públicos com IA, Supabase e Metodologia dos 4 Pilares",
   "main": "servidor.py",

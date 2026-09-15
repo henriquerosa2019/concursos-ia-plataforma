@@ -1,12 +1,15 @@
 {
   "version": 2,
   "rewrites": [
+    { "source": "/", "destination": "/landing.html" },
+    { "source": "/landing", "destination": "/landing.html" },
+    { "source": "/app", "destination": "/index.html" },
+    { "source": "/plataforma", "destination": "/index.html" },
     { "source": "/api/generate-moments", "destination": "/api/ai.js" },
     { "source": "/api/generate-ai-raiox", "destination": "/api/ai.js" },
     { "source": "/api/generate-ai-flashcards", "destination": "/api/ai.js" },
     { "source": "/api/generate-ai-quiz", "destination": "/api/ai.js" },
-    { "source": "/api/(.*)", "destination": "/api/ai.js" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/api/(.*)", "destination": "/api/ai.js" }
   ],
   "headers": [
     {

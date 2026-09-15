@@ -30,6 +30,11 @@ def run_tests():
         page.goto(BASE_URL, wait_until="domcontentloaded", timeout=15000)
         page.wait_for_timeout(1000)
 
+        # Se modal de login estiver visível, fechar para prosseguir com os testes de simulado
+        if page.locator("#modalAuthOverlay").is_visible():
+            page.evaluate("closeAuthModal()")
+            page.wait_for_timeout(500)
+
         # Selecionar Informática / Excel para ter massa de dados consistente
         page.wait_for_selector(".subarea-item", timeout=10000)
         excel_item = page.locator(".subarea-item:has-text('Excel')").first

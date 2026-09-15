@@ -1178,8 +1178,37 @@ class ConcursosHandler(BaseHTTPRequestHandler):
         path = parsed.path
         query = urllib.parse.parse_qs(parsed.query)
 
-        # 1. Página Inicial SPA
-        if path in ("/", "/index.html"):
+        # 0. Servir Imagens e Ativos Estáticos da Landing Page e Plataforma
+        if path.startswith("/assets/") or path.endswith((".jpg", ".png", ".webp", ".ico", ".svg")):
+            rel_path = path.lstrip("/").replace("/", os.sep)
+            local_file = os.path.join(BASE_DIR, rel_path)
+            if not os.path.exists(local_file):
+                local_file = os.path.join(BASE_DIR, os.path.basename(rel_path))
+            if os.path.exists(local_file) and os.path.isfile(local_file):
+                ext = os.path.splitext(local_file)[1].lower()
+                mime = "image/jpeg" if ext in (".jpg", ".jpeg") else ("image/png" if ext == ".png" else ("image/webp" if ext == ".webp" else "application/octet-stream"))
+                self.send_response(200)
+                self.send_header("Content-type", mime)
+                self.send_header("Cache-Control", "public, max-age=86400")
+                self.end_headers()
+                with open(local_file, "rb") as fi:
+                    self.wfile.write(fi.read())
+                return
+
+        # 0.1 Landing Page Oficial (Projeto Aprovação)
+        if path in ("/landing", "/landing.html"):
+            landing_file = os.path.join(BASE_DIR, "landing.html")
+            if os.path.exists(landing_file):
+                self.send_response(200)
+                self.send_header("Content-type", "text/html; charset=utf-8")
+                self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+                self.end_headers()
+                with open(landing_file, "rb") as f:
+                    self.wfile.write(f.read())
+                return
+
+        # 1. Página Inicial SPA / Plataforma de Estudos (/app ou /)
+        if path in ("/", "/index.html", "/app", "/plataforma"):
             if os.path.exists(HTML_FILE):
                 self.send_response(200)
                 self.send_header("Content-type", "text/html; charset=utf-8")

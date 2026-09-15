@@ -49,3 +49,12 @@ Para qualquer aula em vídeo (YouTube ou arquivo) fornecida pelo usuário para e
 - O painel possui botões para:
   - **"✨ Gerar Novos Flashcards com IA"**: Lê a transcrição da aula e gera cartões de alta retenção no Anki.
   - **"⚡ Gerar Novo Simulado com IA"**: Gera novas questões inéditas com filtro por banca (Cebraspe, FGV, etc.) e correção instantânea.
+
+---
+
+## 5. Nome Oficial do Projeto e Domínio de Publicação
+- **Nome Oficial do Projeto:** `aprovacao-concursos`
+- **Domínio Final na Vercel:** `aprovacao-concursos.vercel.app`
+- **Repositório GitHub:** `https://github.com/henriquerosa2019/concursos-ia-plataforma.git`
+- **Identidade da Plataforma:** Projeto Aprovação • Método 4 Pilares de Alta Retenção (Resumo, Raio-X, Flashcards Anki, Modo Prova Cebraspe & Caderno de Erros).
+

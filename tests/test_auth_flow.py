@@ -41,11 +41,13 @@ def run_auth_tests():
         # 2. Abrir Modal de Autenticação pelo Topbar
         print("\n[PASSO 2] Abrindo tela de Login / Criação de Contas...")
         try:
-            auth_badge = page.locator("#userAuthBadge")
-            auth_badge.click()
-            page.wait_for_timeout(500)
-
             auth_modal = page.locator("#modalAuthOverlay")
+            if not auth_modal.is_visible():
+                auth_badge = page.locator("#userAuthBadge")
+                auth_badge.click()
+                page.wait_for_timeout(500)
+
+            page.wait_for_selector("#modalAuthOverlay", state="visible", timeout=5000)
             assert auth_modal.is_visible(), "Modal de autenticação não abriu!"
             modal_title = auth_modal.locator("h2").inner_text()
             assert "Projeto Aprovação" in modal_title, f"Título do modal incorreto: {modal_title}"

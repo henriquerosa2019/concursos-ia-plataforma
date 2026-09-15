@@ -1,12 +1,11 @@
 {
-  "name": "concursos-ia-plataforma",
+  "name": "projeto-aprovacao",
   "version": "1.0.0",
   "description": "Plataforma Definitiva de Estudos para Concursos Públicos com IA, Supabase e Metodologia dos 4 Pilares",
   "main": "servidor.py",
   "scripts": {
     "start": "python servidor.py",
-    "dev": "python servidor.py",
-    "build": "echo 'Build concluído com sucesso para Vercel'"
+    "dev": "python servidor.py"
   },
   "keywords": [
     "concursos",

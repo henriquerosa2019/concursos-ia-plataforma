@@ -7834,8 +7834,13 @@
       if (saved) {
         currentUser = JSON.parse(saved);
         updateUserBadgeUI();
+      } else {
+        // Exibe a tela de login do Projeto Aprovação imediatamente ao entrar
+        openAuthModal('login');
       }
-    } catch(e) {}
+    } catch(e) {
+      openAuthModal('login');
+    }
   }
 
   // Attach to window object for full global accessibility

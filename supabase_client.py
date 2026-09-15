@@ -306,3 +306,56 @@ def sync_all_local_to_supabase():
                 synced_count += 1
 
     return (True, f"{synced_count} tópicos/aulas sincronizados com o Supabase com sucesso!") if not errors else (False, f"Sincronizados: {synced_count}. Erros: {'; '.join(errors[:3])}")
+
+def supabase_auth_signup(email, password, nome=""):
+    """
+    Registra novo usuário no Supabase Auth (/auth/v1/signup).
+    """
+    url_base, key = get_supabase_config()
+    if not url_base or not key:
+        return None, "Supabase não configurado."
+    signup_url = f"{url_base}/auth/v1/signup"
+    headers = {
+        "apikey": key,
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "email": email.strip().lower(),
+        "password": password,
+        "data": {"nome": nome.strip() if nome else email.split("@")[0]}
+    }
+    try:
+        req = urllib.request.Request(signup_url, data=json.dumps(payload).encode("utf-8"), headers=headers)
+        with urllib.request.urlopen(req, timeout=12) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            return data, None
+    except urllib.error.HTTPError as e:
+        return None, e.read().decode("utf-8")
+    except Exception as ex:
+        return None, str(ex)
+
+def supabase_auth_login(email, password):
+    """
+    Autentica usuário existente no Supabase Auth (/auth/v1/token?grant_type=password).
+    """
+    url_base, key = get_supabase_config()
+    if not url_base or not key:
+        return None, "Supabase não configurado."
+    login_url = f"{url_base}/auth/v1/token?grant_type=password"
+    headers = {
+        "apikey": key,
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "email": email.strip().lower(),
+        "password": password
+    }
+    try:
+        req = urllib.request.Request(login_url, data=json.dumps(payload).encode("utf-8"), headers=headers)
+        with urllib.request.urlopen(req, timeout=12) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            return data, None
+    except urllib.error.HTTPError as e:
+        return None, e.read().decode("utf-8")
+    except Exception as ex:
+        return None, str(ex)

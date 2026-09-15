@@ -122,3 +122,21 @@ INSERT INTO public.disciplinas (id, nome, icone, ordem) VALUES
 ('Raciocinio_Logico', 'Raciocínio Lógico', '🧠', 4),
 ('Portugues', 'Língua Portuguesa', '✍️', 5)
 ON CONFLICT (id) DO NOTHING;
+
+-- 5. TABELA DE USUÁRIOS E CONTAS - PROJETO APROVAÇÃO
+CREATE TABLE IF NOT EXISTS public.usuarios (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    nome TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    senha_hash TEXT NOT NULL,
+    avatar_url TEXT DEFAULT '',
+    ultimo_login TIMESTAMPTZ DEFAULT timezone('utc'::text, now()),
+    created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+ALTER TABLE public.usuarios ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Permitir leitura pública em usuarios" ON public.usuarios;
+CREATE POLICY "Permitir leitura pública em usuarios" ON public.usuarios FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Permitir escrita em usuarios" ON public.usuarios;
+CREATE POLICY "Permitir escrita em usuarios" ON public.usuarios FOR ALL USING (true) WITH CHECK (true);
+

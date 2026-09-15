@@ -219,6 +219,26 @@
       "a": "Traduz nomes de domínio humanamente legíveis (ex: www.google.com) em endereços IP numéricos (ex: 142.250.190.46). Opera na porta 53.",
       "discipline": "Informatica",
       "subarea": "Redes_de_Computadores"
+    },
+    "Quais são os cinco elementos do ato administrativo?": {
+      "repetitions": 1,
+      "interval_days": 1,
+      "ease_factor": 2.36,
+      "next_review": "2026-09-16",
+      "a": "Os cinco elementos do ato administrativo são: Competência, Finalidade, Forma, Motivo e Objeto.",
+      "discipline": "Direito_Administrativo",
+      "subarea": "ATOS_ADMINISTRATIVOS",
+      "last_review": "2026-09-15"
+    },
+    "No Excel, a quais categorias pertencem as funções PROCV e PROCH?": {
+      "repetitions": 0,
+      "interval_days": 1,
+      "ease_factor": 1.42,
+      "next_review": "2026-09-16",
+      "a": "Pertencem à categoria Pesquisa e Referência (localizada na guia Fórmulas).",
+      "discipline": "Informatica",
+      "subarea": "Excel",
+      "last_review": "2026-09-15"
     }
   },
   "quiz_history": [],
@@ -233,6 +253,39 @@
       "nota_liquida": 3,
       "total_questoes": 5,
       "tempo_segundos": 224
+    },
+    {
+      "date": "15/09/2026 17:04",
+      "discipline": "Informatica",
+      "subarea": "Excel",
+      "certas": 1,
+      "erradas": 1,
+      "em_branco": 6,
+      "nota_liquida": 0,
+      "total_questoes": 8,
+      "tempo_segundos": 2
+    },
+    {
+      "date": "15/09/2026 17:07",
+      "discipline": "Informatica",
+      "subarea": "Excel",
+      "certas": 1,
+      "erradas": 1,
+      "em_branco": 6,
+      "nota_liquida": 0,
+      "total_questoes": 8,
+      "tempo_segundos": 1
+    },
+    {
+      "date": "15/09/2026 17:38",
+      "discipline": "Informatica",
+      "subarea": "Excel",
+      "certas": 1,
+      "erradas": 1,
+      "em_branco": 6,
+      "nota_liquida": 0,
+      "total_questoes": 8,
+      "tempo_segundos": 2
     }
   ]
 }

@@ -25,6 +25,8 @@ import urllib.request
 import webbrowser
 import base64
 import io
+import hashlib
+import uuid
 try:
     import pypdf
 except ImportError:
@@ -177,6 +179,149 @@ def record_card_sm2(card_key, quality, card_a="", discipline="", subarea=""):
 # ==============================================================================
 # CHAMADAS DE IA (GEMINI / OPENAI) COM TRATAMENTO RESILIENTE
 # ==============================================================================
+
+
+# ==============================================================================
+# AUTENTICAÇÃO E GESTÃO DE USUÁRIOS - PROJETO APROVAÇÃO
+# ==============================================================================
+
+USERS_FILE = os.path.join(BASE_DIR, "usuarios.json")
+
+def load_users():
+    if not os.path.exists(USERS_FILE):
+        return {}
+    try:
+        with open(USERS_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+def save_users(users):
+    try:
+        with open(USERS_FILE, "w", encoding="utf-8") as f:
+            json.dump(users, f, indent=2, ensure_ascii=False)
+    except Exception as e:
+        print("Erro ao salvar usuarios.json:", e)
+
+def hash_password(password):
+    return hashlib.sha256(password.encode("utf-8")).hexdigest()
+
+def register_user(nome, email, password):
+    users = load_users()
+    email_clean = email.strip().lower()
+    
+    if not email_clean or ("@" not in email_clean and len(email_clean) < 3):
+        return {"success": False, "error": "Informe um endereço de e-mail ou usuário válido."}
+    if not password or len(password) < 6:
+        return {"success": False, "error": "A senha deve ter pelo menos 6 caracteres."}
+    if not nome or len(nome.strip()) < 2:
+        return {"success": False, "error": "Por favor, informe seu nome completo."}
+
+    if email_clean in users:
+        return {"success": False, "error": "Este usuário/e-mail já está cadastrado no Projeto Aprovação. Faça login."}
+
+    user_id = str(uuid.uuid4())
+    now_iso = datetime.datetime.now().isoformat()
+    pwd_hash = hash_password(password)
+
+    user_record = {
+        "id": user_id,
+        "nome": nome.strip(),
+        "email": email_clean,
+        "senha_hash": pwd_hash,
+        "created_at": now_iso,
+        "ultimo_login": now_iso
+    }
+
+    users[email_clean] = user_record
+    save_users(users)
+
+    # Registro paralelo no Supabase Auth
+    sb_synced = False
+    try:
+        if "@" in email_clean:
+            sb_res, sb_err = supabase_client.supabase_auth_signup(email_clean, password, nome=nome.strip())
+            if sb_res:
+                sb_synced = True
+    except Exception as e:
+        print("Supabase auth signup notice:", e)
+
+    return {
+        "success": True,
+        "user": {
+            "id": user_id,
+            "nome": nome.strip(),
+            "email": email_clean
+        },
+        "supabase_synced": sb_synced,
+        "message": f"Conta criada com sucesso no Projeto Aprovação! Seja bem-vindo, {nome.strip()}!"
+    }
+
+def login_user(email_or_user, password):
+    users = load_users()
+    key = email_or_user.strip().lower()
+    
+    if not key or not password:
+        return {"success": False, "error": "Informe seu usuário/e-mail e senha."}
+
+    matched_user = None
+    if key in users:
+        matched_user = users[key]
+    else:
+        for u in users.values():
+            if u.get("email", "").lower() == key or u.get("nome", "").lower() == key:
+                matched_user = u
+                break
+
+    pwd_hash = hash_password(password)
+
+    if matched_user:
+        if matched_user.get("senha_hash") != pwd_hash:
+            return {"success": False, "error": "Senha incorreta. Verifique suas credenciais."}
+        matched_user["ultimo_login"] = datetime.datetime.now().isoformat()
+        users[matched_user["email"]] = matched_user
+        save_users(users)
+        return {
+            "success": True,
+            "user": {
+                "id": matched_user["id"],
+                "nome": matched_user["nome"],
+                "email": matched_user["email"]
+            },
+            "message": f"Bem-vindo de volta ao Projeto Aprovação, {matched_user['nome']}!"
+        }
+
+    # Se não encontrado localmente e for e-mail, tenta via Supabase Auth
+    try:
+        if "@" in key:
+            sb_data, sb_err = supabase_client.supabase_auth_login(key, password)
+            if sb_data and "user" in sb_data:
+                sb_u = sb_data["user"]
+                u_name = sb_u.get("user_metadata", {}).get("nome") or key.split("@")[0]
+                new_u = {
+                    "id": sb_u.get("id", str(uuid.uuid4())),
+                    "nome": u_name,
+                    "email": key,
+                    "senha_hash": pwd_hash,
+                    "created_at": datetime.datetime.now().isoformat(),
+                    "ultimo_login": datetime.datetime.now().isoformat()
+                }
+                users[key] = new_u
+                save_users(users)
+                return {
+                    "success": True,
+                    "user": {
+                        "id": new_u["id"],
+                        "nome": new_u["nome"],
+                        "email": new_u["email"]
+                    },
+                    "message": f"Autenticado via Supabase! Bem-vindo ao Projeto Aprovação, {u_name}!"
+                }
+    except Exception:
+        pass
+
+    return {"success": False, "error": "Credenciais inválidas. Usuário não encontrado ou senha incorreta."}
+
 
 def call_gemini_api(system_prompt, user_prompt, json_mode=True, temperature=0.7):
     api_key = get_api_key("gemini")
@@ -1048,6 +1193,19 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 self.send_response(404)
                 self.end_headers()
 
+        # Autenticação Status
+        elif path == "/api/auth/me":
+            users = load_users()
+            self.send_response(200)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "success": True,
+                "project": "Projeto Aprovação",
+                "total_users": len(users)
+            }, ensure_ascii=False).encode("utf-8"))
+            return
+
         # 2. Árvore Completa e Métricas
         elif path == "/api/structure":
             data = scan_concursos_tree()
@@ -1734,6 +1892,37 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             payload = json.loads(body)
         except Exception:
             payload = {}
+
+        # 0. Autenticação - Projeto Aprovação
+        if path == "/api/auth/register":
+            nome = payload.get("nome", "").strip()
+            email = payload.get("email", "").strip()
+            password = payload.get("password", "")
+            res = register_user(nome, email, password)
+            status_code = 200 if res.get("success") else 400
+            self.send_response(status_code)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps(res, ensure_ascii=False).encode("utf-8"))
+            return
+
+        elif path == "/api/auth/login":
+            email_or_user = payload.get("email", payload.get("user", "")).strip()
+            password = payload.get("password", "")
+            res = login_user(email_or_user, password)
+            status_code = 200 if res.get("success") else 401
+            self.send_response(status_code)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps(res, ensure_ascii=False).encode("utf-8"))
+            return
+
+        elif path == "/api/auth/logout":
+            self.send_response(200)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": True, "message": "Logout realizado."}).encode("utf-8"))
+            return
 
         # 1. Salvar Configurações de IA
         if path == "/api/config":

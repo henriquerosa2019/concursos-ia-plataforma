@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Central de Concursos IA • Painel de Estudos</title>
+  <title>Projeto Aprovação • Concursos IA • Painel de Estudos</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
@@ -1845,7 +1845,7 @@
     <div class="brand-logo">📚</div>
     <div>
       <div class="brand-title">
-        Central de Concursos IA
+        Projeto Aprovação
         <span class="badge-tag">MÉTODO 4 PILARES</span>
       </div>
     </div>
@@ -1862,6 +1862,9 @@
     </button>
     <div class="ai-status-badge" id="aiStatusBadge" onclick="openAiConfigModal()" title="Configurar provedor de IA (Gemini / OpenAI)">
       🤖 IA: Verificando... ⚙️
+    </div>
+    <div class="ai-status-badge" id="userAuthBadge" onclick="handleAuthBadgeClick()" title="Minha Conta no Projeto Aprovação" style="border-color: rgba(88, 166, 255, 0.4); color: var(--accent-blue); font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+      <span id="userAuthIcon">👤</span> <span id="userAuthText">Entrar</span>
     </div>
     <div class="ai-status-badge" id="supabaseStatusBadge" onclick="openSupabaseModal()" title="Configurar Banco de Dados Supabase na Nuvem" style="border-color: rgba(16, 185, 129, 0.3); color: var(--accent-green, #10b981); cursor: pointer;">
       ☁️ <span id="supabaseStatusText">Supabase: Verificando...</span>
@@ -2431,6 +2434,103 @@
           <!-- Populated by JS -->
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Autenticação Projeto Aprovação (Login & Criação de Contas) -->
+<div class="modal-overlay" id="modalAuthOverlay" style="display:none; z-index: 9999; backdrop-filter: blur(8px);">
+  <div class="modal-box" style="width: 440px; max-width: 95%; border: 1px solid rgba(88, 166, 255, 0.35); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); padding: 28px 26px;">
+    
+    <!-- Header com Marca Projeto Aprovação -->
+    <div style="text-align: center; margin-bottom: 20px;">
+      <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #1f6feb, #8957e5); border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 16px rgba(31, 111, 235, 0.35); margin-bottom: 12px;">
+        🎯
+      </div>
+      <h2 style="font-size: 22px; font-weight: 800; color: var(--text); margin: 0; letter-spacing: -0.5px;">Projeto Aprovação</h2>
+      <p style="font-size: 13px; color: var(--text2); margin-top: 5px; line-height: 1.4;">
+        Plataforma de Estudos de Alta Retenção para Concursos Públicos
+      </p>
+    </div>
+
+    <!-- Abas Alternadoras: Entrar vs Criar Conta -->
+    <div class="auth-tabs" style="display: flex; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 4px; margin-bottom: 20px; gap: 4px;">
+      <button type="button" class="auth-tab-btn active" id="authTabLogin" onclick="switchAuthTab('login')" style="flex: 1; padding: 9px; font-size: 13px; font-weight: 700; border-radius: 7px; border: none; cursor: pointer; transition: all 0.2s; background: var(--surface); color: var(--text);">
+        🔑 Entrar
+      </button>
+      <button type="button" class="auth-tab-btn" id="authTabRegister" onclick="switchAuthTab('register')" style="flex: 1; padding: 9px; font-size: 13px; font-weight: 700; border-radius: 7px; border: none; cursor: pointer; transition: all 0.2s; background: transparent; color: var(--text2);">
+        ✨ Criar Nova Conta
+      </button>
+    </div>
+
+    <!-- Mensagens de Feedback -->
+    <div id="authAlertBox" style="display: none; padding: 10px 14px; border-radius: 8px; font-size: 12.5px; margin-bottom: 16px; line-height: 1.4;"></div>
+
+    <!-- FORMULÁRIO 1: ENTRAR (LOGIN) -->
+    <div id="authFormLogin">
+      <div class="modal-input-group" style="margin-bottom: 14px;">
+        <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 6px;">Usuário ou E-mail</label>
+        <input type="text" id="authLoginUser" placeholder="Digite seu e-mail ou usuário" style="width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 13.5px;" onkeydown="if(event.key==='Enter') submitAuthLogin()">
+      </div>
+
+      <div class="modal-input-group" style="margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <label style="font-size: 12px; font-weight: 600; color: var(--text2);">Senha</label>
+          <span style="font-size: 11px; color: var(--accent-blue); cursor: pointer;" onclick="togglePasswordVisibility('authLoginPassword', this)">👁️ Mostrar</span>
+        </div>
+        <input type="password" id="authLoginPassword" placeholder="Digite sua senha" style="width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 13.5px;" onkeydown="if(event.key==='Enter') submitAuthLogin()">
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 12px; color: var(--text2);">
+        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+          <input type="checkbox" id="authRememberMe" checked style="cursor: pointer;">
+          <span>Lembrar de mim</span>
+        </label>
+        <span style="color: var(--accent-blue); cursor: pointer; text-decoration: underline;" onclick="switchAuthTab('register')">Criar conta grátis</span>
+      </div>
+
+      <button class="btn btn-primary" type="button" id="btnSubmitLogin" onclick="submitAuthLogin()" style="width: 100%; padding: 12px; font-size: 14.5px; font-weight: 800; border-radius: 8px; box-shadow: 0 4px 14px rgba(31, 111, 235, 0.4); display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <span id="loginSpinner" style="display:none;" class="spinner"></span>
+        <span id="loginBtnLabel">🚀 Entrar no Projeto Aprovação</span>
+      </button>
+    </div>
+
+    <!-- FORMULÁRIO 2: CRIAR NOVA CONTA (CADASTRO) -->
+    <div id="authFormRegister" style="display: none;">
+      <div class="modal-input-group" style="margin-bottom: 12px;">
+        <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 6px;">Nome Completo</label>
+        <input type="text" id="authRegName" placeholder="Ex: Henrique Rosa" style="width: 100%; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 13.5px;">
+      </div>
+
+      <div class="modal-input-group" style="margin-bottom: 12px;">
+        <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 6px;">E-mail de Acesso</label>
+        <input type="email" id="authRegEmail" placeholder="seu-email@exemplo.com" style="width: 100%; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 13.5px;">
+      </div>
+
+      <div class="modal-input-group" style="margin-bottom: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <label style="font-size: 12px; font-weight: 600; color: var(--text2);">Senha (mínimo 6 caracteres)</label>
+          <span style="font-size: 11px; color: var(--accent-blue); cursor: pointer;" onclick="togglePasswordVisibility('authRegPassword', this)">👁️ Mostrar</span>
+        </div>
+        <input type="password" id="authRegPassword" placeholder="Crie uma senha segura" style="width: 100%; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 13.5px;">
+      </div>
+
+      <div class="modal-input-group" style="margin-bottom: 18px;">
+        <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 6px;">Confirmar Senha</label>
+        <input type="password" id="authRegConfirm" placeholder="Repita sua senha" style="width: 100%; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 13.5px;" onkeydown="if(event.key==='Enter') submitAuthRegister()">
+      </div>
+
+      <button class="btn btn-green" type="button" id="btnSubmitRegister" onclick="submitAuthRegister()" style="width: 100%; padding: 12px; font-size: 14.5px; font-weight: 800; border-radius: 8px; background: #238636; color: #fff; box-shadow: 0 4px 14px rgba(35, 134, 54, 0.4); display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <span id="regSpinner" style="display:none;" class="spinner"></span>
+        <span id="regBtnLabel">✨ Criar Conta no Supabase & Entrar</span>
+      </button>
+    </div>
+
+    <!-- Opção de Visitante / Fechar -->
+    <div style="text-align: center; margin-top: 18px; border-top: 1px solid var(--border); padding-top: 14px;">
+      <button type="button" onclick="closeAuthModal()" style="background: transparent; border: none; color: var(--text3); font-size: 12px; cursor: pointer; text-decoration: underline;">
+        Continuar como Visitante (Estudos Locais) ➔
+      </button>
     </div>
   </div>
 </div>
@@ -3865,6 +3965,7 @@
         })
       });
       await loadProgress();
+    checkStoredAuth();
     } catch(e) {}
 
     if (quality === 1) {
@@ -6901,6 +7002,7 @@
   // Init
   window.addEventListener('DOMContentLoaded', async () => {
     await loadProgress();
+    checkStoredAuth();
     loadStructureAndSidebar();
     fetchAiConfig();
     checkSupabaseStatus();
@@ -7495,9 +7597,263 @@
     }
   });
 
+
+  // ==============================================================================
+  // GESTÃO DE CONTAS E AUTENTICAÇÃO - PROJETO APROVAÇÃO (SUPABASE)
+  // ==============================================================================
+  let currentUser = null;
+  let authCloseTimeout = null;
+
+  function togglePasswordVisibility(inputId, triggerEl) {
+    const inp = document.getElementById(inputId);
+    if (!inp) return;
+    if (inp.type === 'password') {
+      inp.type = 'text';
+      if (triggerEl) triggerEl.textContent = '🙈 Ocultar';
+    } else {
+      inp.type = 'password';
+      if (triggerEl) triggerEl.textContent = '👁️ Mostrar';
+    }
+  }
+
+  function openAuthModal(mode = 'login') {
+    if (authCloseTimeout) {
+      clearTimeout(authCloseTimeout);
+      authCloseTimeout = null;
+    }
+    const modal = document.getElementById('modalAuthOverlay');
+    if (!modal) return;
+    modal.style.display = 'flex';
+    switchAuthTab(mode);
+    clearAuthAlert();
+  }
+
+  function closeAuthModal() {
+    const modal = document.getElementById('modalAuthOverlay');
+    if (modal) modal.style.display = 'none';
+  }
+
+  function switchAuthTab(tab) {
+    const btnLogin = document.getElementById('authTabLogin');
+    const btnReg = document.getElementById('authTabRegister');
+    const formLogin = document.getElementById('authFormLogin');
+    const formReg = document.getElementById('authFormRegister');
+
+    if (btnLogin && btnReg) {
+      if (tab === 'login') {
+        btnLogin.style.background = 'var(--surface)';
+        btnLogin.style.color = 'var(--text)';
+        btnReg.style.background = 'transparent';
+        btnReg.style.color = 'var(--text2)';
+      } else {
+        btnReg.style.background = 'var(--surface)';
+        btnReg.style.color = 'var(--text)';
+        btnLogin.style.background = 'transparent';
+        btnLogin.style.color = 'var(--text2)';
+      }
+    }
+    if (formLogin && formReg) {
+      formLogin.style.display = (tab === 'login') ? 'block' : 'none';
+      formReg.style.display = (tab === 'register') ? 'block' : 'none';
+    }
+    clearAuthAlert();
+    if (tab === 'login') {
+      setTimeout(() => document.getElementById('authLoginUser')?.focus(), 60);
+    } else {
+      setTimeout(() => document.getElementById('authRegName')?.focus(), 60);
+    }
+  }
+
+  function setAuthAlert(msg, type = 'error') {
+    const box = document.getElementById('authAlertBox');
+    if (!box) return;
+    box.style.display = 'block';
+    if (type === 'error') {
+      box.style.background = 'rgba(248, 81, 73, 0.12)';
+      box.style.border = '1px solid rgba(248, 81, 73, 0.35)';
+      box.style.color = '#f87171';
+      box.innerHTML = `⚠️ ${msg}`;
+    } else {
+      box.style.background = 'rgba(74, 222, 128, 0.12)';
+      box.style.border = '1px solid rgba(74, 222, 128, 0.35)';
+      box.style.color = '#4ade80';
+      box.innerHTML = `✅ ${msg}`;
+    }
+  }
+
+  function clearAuthAlert() {
+    const box = document.getElementById('authAlertBox');
+    if (box) {
+      box.style.display = 'none';
+      box.innerHTML = '';
+    }
+  }
+
+  async function submitAuthLogin() {
+    const userInput = document.getElementById('authLoginUser').value.trim();
+    const password = document.getElementById('authLoginPassword').value;
+
+    if (!userInput || !password) {
+      setAuthAlert('Por favor, informe seu usuário/e-mail e senha.');
+      return;
+    }
+
+    const btn = document.getElementById('btnSubmitLogin');
+    const spinner = document.getElementById('loginSpinner');
+    const label = document.getElementById('loginBtnLabel');
+    btn.disabled = true;
+    if (spinner) spinner.style.display = 'inline-block';
+    if (label) label.textContent = 'Autenticando...';
+
+    try {
+      const resp = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user: userInput, email: userInput, password: password })
+      });
+      const data = await resp.json();
+
+      if (data.success && data.user) {
+        setAuthAlert(data.message || 'Login efetuado com sucesso!', 'success');
+        currentUser = data.user;
+        localStorage.setItem('projeto_aprovacao_user', JSON.stringify(data.user));
+        updateUserBadgeUI();
+        if (typeof showToast === 'function') {
+          showToast(`Bem-vindo de volta ao Projeto Aprovação, ${data.user.nome}!`, '🎯');
+        }
+        if (authCloseTimeout) clearTimeout(authCloseTimeout); authCloseTimeout = setTimeout(() => closeAuthModal(), 500);
+      } else {
+        setAuthAlert(data.error || 'Credenciais inválidas. Verifique seu e-mail e senha.');
+      }
+    } catch(e) {
+      setAuthAlert('Erro de conexão ao servidor: ' + e.message);
+    } finally {
+      btn.disabled = false;
+      if (spinner) spinner.style.display = 'none';
+      if (label) label.textContent = '🚀 Entrar no Projeto Aprovação';
+    }
+  }
+
+  async function submitAuthRegister() {
+    const nome = document.getElementById('authRegName').value.trim();
+    const email = document.getElementById('authRegEmail').value.trim();
+    const password = document.getElementById('authRegPassword').value;
+    const confirm = document.getElementById('authRegConfirm').value;
+
+    if (!nome || !email || !password) {
+      setAuthAlert('Preencha todos os campos obrigatórios.');
+      return;
+    }
+    if (password.length < 6) {
+      setAuthAlert('A senha deve conter no mínimo 6 caracteres.');
+      return;
+    }
+    if (password !== confirm) {
+      setAuthAlert('As senhas não coincidem. Digite novamente.');
+      return;
+    }
+
+    const btn = document.getElementById('btnSubmitRegister');
+    const spinner = document.getElementById('regSpinner');
+    const label = document.getElementById('regBtnLabel');
+    btn.disabled = true;
+    if (spinner) spinner.style.display = 'inline-block';
+    if (label) label.textContent = 'Criando conta no Supabase...';
+
+    try {
+      const resp = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome, email, password })
+      });
+      const data = await resp.json();
+
+      if (data.success && data.user) {
+        setAuthAlert('Conta criada e salva no Supabase com sucesso!', 'success');
+        currentUser = data.user;
+        localStorage.setItem('projeto_aprovacao_user', JSON.stringify(data.user));
+        updateUserBadgeUI();
+        if (typeof showToast === 'function') {
+          showToast(`Conta criada com sucesso! Seja bem-vindo, ${data.user.nome}!`, '🎉');
+        }
+        if (authCloseTimeout) clearTimeout(authCloseTimeout); authCloseTimeout = setTimeout(() => closeAuthModal(), 600);
+      } else {
+        setAuthAlert(data.error || 'Erro ao criar conta. Tente novamente.');
+      }
+    } catch(e) {
+      setAuthAlert('Erro ao conectar ao servidor: ' + e.message);
+    } finally {
+      btn.disabled = false;
+      if (spinner) spinner.style.display = 'none';
+      if (label) label.textContent = '✨ Criar Conta no Supabase & Entrar';
+    }
+  }
+
+  function handleAuthBadgeClick() {
+    if (currentUser) {
+      if (confirm(`Você está conectado como ${currentUser.nome} (${currentUser.email}).\n\nDeseja encerrar a sessão (Logout)?`)) {
+        logoutUser();
+      }
+    } else {
+      openAuthModal('login');
+    }
+  }
+
+  function logoutUser() {
+    currentUser = null;
+    localStorage.removeItem('projeto_aprovacao_user');
+    updateUserBadgeUI();
+    if (typeof showToast === 'function') {
+      showToast('Sessão encerrada com sucesso.', '👋');
+    }
+    openAuthModal('login');
+  }
+
+  function updateUserBadgeUI() {
+    const badgeText = document.getElementById('userAuthText');
+    const badge = document.getElementById('userAuthBadge');
+    if (!badgeText || !badge) return;
+
+    if (currentUser) {
+      const firstName = (currentUser.nome || 'Aluno').split(' ')[0];
+      badgeText.textContent = `${firstName} • Sair`;
+      badge.style.borderColor = 'rgba(74, 222, 128, 0.4)';
+      badge.style.color = '#4ade80';
+      badge.title = `Conectado como ${currentUser.nome} (${currentUser.email}) - Clique para sair`;
+    } else {
+      badgeText.textContent = 'Entrar';
+      badge.style.borderColor = 'rgba(88, 166, 255, 0.4)';
+      badge.style.color = 'var(--accent-blue)';
+      badge.title = 'Entrar ou Criar Conta no Projeto Aprovação';
+    }
+  }
+
+  function checkStoredAuth() {
+    try {
+      const saved = localStorage.getItem('projeto_aprovacao_user');
+      if (saved) {
+        currentUser = JSON.parse(saved);
+        updateUserBadgeUI();
+      }
+    } catch(e) {}
+  }
+
+  // Attach to window object for full global accessibility
+  window.openAuthModal = openAuthModal;
+  window.closeAuthModal = closeAuthModal;
+  window.switchAuthTab = switchAuthTab;
+  window.submitAuthLogin = submitAuthLogin;
+  window.submitAuthRegister = submitAuthRegister;
+  window.handleAuthBadgeClick = handleAuthBadgeClick;
+  window.logoutUser = logoutUser;
+  window.updateUserBadgeUI = updateUserBadgeUI;
+  window.checkStoredAuth = checkStoredAuth;
+  window.togglePasswordVisibility = togglePasswordVisibility;
+
+
   // Inicializar tema armazenado imediatamente
   applyAppTheme(getStoredTheme());
-  document.addEventListener('DOMContentLoaded', () => { applyAppTheme(getStoredTheme()); });
+  document.addEventListener('DOMContentLoaded', () => { applyAppTheme(getStoredTheme()); checkStoredAuth(); });
 
 </script>
 </body>

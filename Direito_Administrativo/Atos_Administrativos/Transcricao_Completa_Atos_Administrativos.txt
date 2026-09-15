@@ -1,33 +1,821 @@
-Iniciamos o estudo da Teoria Geral dos Atos Administrativos, o pilar central do Direito Administrativo em bancas como Cebraspe e FGV.
+--- PÁGINA 1 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+1 
+ 
+ 
+ATOS ADMINISTRATIVOS 
+ 
+INTRODUÇÃO 
+Nem todo ato praticado no exercício da função administrativa pode ser considerado ato administrativo. Isso 
+ocorre porque muitos atos praticados pela Administração Pública não são regidos pelo direito público, ou sequer 
+expressam uma vontade. Desta forma, alguns autores utilizam, de forma mais genérica, o termo “atos da 
+administração” para designar os atos praticados pela Administração Pública no exercício da função administrativa. Seu 
+sentido é mais amplo que o de atos administrativos. 
+ Neste diapasão, percebe-se que o simples fato de ter sido praticado pela Administração Pública não induz à 
+conclusão de tratar -se de um ato administrativo. É necessário que haja incidência de regime de direito público, 
+constando as prerrogativas e restrições inerentes ao poder público. Há, naturalmente, um afastamento do direito 
+privado, limitando o âmbito de enquadramento do ato instituído. 
+ Para a conceituação do ato administrativo, nota-se a necessidade do conhecimento da noção de ato jurídico, 
+posto que, da mesma forma que este, aquele pode produzir efeitos no mundo jurídico. Há entre eles uma relação de 
+gênero e espécie. O ato administrativo é uma espécie do gênero ato jurídico. Contudo, nem todo jurídico é ato 
+administrativo, já que abrangem também outras disciplinas do Direito. 
+ 
+ 
+ATENÇÃO! 
+Nem todo ato praticado no exercício da função administrativa pode ser considerado ato administrativo. 
+  
+ 
+CONCEITO DE ATO ADMINISTRATIVO 
+O saudoso mestre Hely Lopes Meirelles fala em “ toda manifestação unilateral de vontade da Administração 
+Pública que, agindo nessa qualidade, tenha por fim imediato adquirir, resguardar, transferir, modificar, extinguir e 
+declarar direitos, ou impor obrigações aos administrados ou a si própria.1”. 
+ Maria Sylvia Zanella Di Pietro leciona que o ato administrativo corresponde a uma “ declaração do Estado ou 
+de quem a represente, que produz efeitos jurídicos imediatos, com observância da lei, sob regime jurídico de direito 
+público e sujeita a controle pelo Poder Judiciário2”. 
+ 
+ 
+FATO ADMINISTRATIVO 
+Fato administrativo, segundo Hely Lopes Meirelles, é “ toda realização material da Administração em 
+cumprimento de alguma decisão administrativa”. Consiste na materialização da vontade administrativa. Pode também 
+decorrer de um fato da natureza que venha a produzir consequências administrativas. 
+Ex: construção de uma ponte. A morte de um servidor (gera a vacância do cargo) 
+ 
+ 
+ATRIBUTOS DOS ATOS ADMINISTRATIVOS 
+Atributos representam as características dos atos administrativos. Tradicionalmente, os atributos citados pela 
+doutrina são os seguintes: 
+ 
+➢ Presunção de legitimidade e veracidade 
+➢ Autoexecutoriedade 
+➢ Imperatividade 
+ 
+ 
+1 MEIRELLES, Hely Lopes. Direito Administrativo Brasileiro. 39ª ed. São Paulo: Malheiros, 2013, p. 159. 
+2 DI PIETRO, Maria Sylvia Zanella. Direito Administrativo. 31ª ed. São Paulo: Forense, 2018, p. 230.
 
-Ato administrativo é toda manifestação unilateral de vontade da Administração Pública que tenha por fim imediato adquirir, resguardar, transferir, modificar ou extinguir direitos.
+--- PÁGINA 2 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+2 
+ 
+ 
+Presunção de legitimidade e veracidade / Autoexecutoriedade / Imperatividade 
+ 
+OBS: A professora Maria Sylvia Zanella Di Pietro cita ainda mais um atributo denominado TIPICIDADE. 
+ 
+Presunção de legitimidade e veracidade / Autoexecutoriedade / Tipicidade / Imperatividade 
+ 
+Presunção de legitimidade e veracidade 
+✓ Presunção de legitimidade: Presume-se, até prova em contrário, que os atos administrativos foram emitidos 
+em conformidade com a lei. 
+✓ Presunção de veracidade: Presumem-se verdadeiros os fatos alegados pela Administração. 
+✓ A presunção é relativa (juris tantum), ou seja, admite prova em contrário. 
+ 
+Autoexecutoriedade 
+✓ Consiste na possibilidade que certos administrativos ensejam de imediata e direta execução pela própria 
+Administração, independentemente de ordem judicial. 
+✓ Não está presente em todos os atos administrativos. 
+ 
+Imperatividade  
+✓ Imposição unilateral a terceiro, independentemente de sua concordância. 
+✓ Decorre do poder extroverso. 
+✓ Não está presente em todos os atos administrativos. 
+ 
+Tipicidade 
+✓ O ato administrativo deve corresponder a figuras previame nte definidas pela lei como aptas a produzir 
+determinados resultados. 
+✓ Decorrência direta do princípio da legalidade. 
+✓ Garantia para o administrado. 
+ 
+ 
+ 
+ELEMENTOS DO ATO ADMINISTRATIVO 
+Correspondem aos requisitos necessários que o ato administrativo deve possuir. Temos como elementos ou 
+requisitos do ato administrativo: competência, finalidade, forma, motivo e objeto. Ressalte -se que esta natureza 
+quíntupla possui influência direta da Lei 4.717, de 29 de junho de 1965, que regula a ação popular, em seu artigo 2º. 
+ 
+ 
+➢ Competência 
+➢ Finalidade 
+➢ Forma 
+➢ Motivo 
+➢ Objeto 
+ 
+ 
+Competência / Finalidade / Forma / Motivo / Objeto 
+ 
+ 
+OBSERVAÇÃO: Alguns doutrinadores, ao invés do termo “competência”, falam em “sujeito”. Sobre o objeto, 
+fala-se também no termo conteúdo.
 
-Vamos aos Requisitos ou Elementos de Validade do Ato Administrativo. Mnemônico clássico: CO-FI-FO-MO-OB.
+--- PÁGINA 3 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+3 
+ 
+ 
+ 
+COMPETÊNCIA 
+✓ Caracteriza-se pelo poder legal que o agente possui para que pratique o ato administrativo. É atribuída pela 
+lei, sendo irrenunciável, em função do princípio da indisponibilidade do interesse público. 
+✓ Art. 11, Lei 9.784/99  - “A competência é irrenunciável e se exerce pelos órgãos administrativos a que foi 
+atribuída como própria, salvo os casos de delegação e avocação legalmente admitidos.” 
+ 
+FINALIDADE 
+✓ É o resultado a ser alcançado pelo ato. Ligado ao interesse público. 
+✓ Sucede o ato praticado. 
+ 
+FORMA 
+✓ Refere-se ao modo como o ato administrativo é exteriorizado. É como a Administração Pública manifesta a 
+sua vontade. 
+ 
+MOTIVO 
+✓ Corresponde aos pressupostos que levam à prática do ato. A razão, o porquê. 
+✓ Funciona como um pressuposto de justificação, sendo certo que deve ser um pressuposto de fato (por 
+corresponder a uma circunstância ou acontecimento) ou de direito (por ter como alicerce um dispositivo legal). 
+✓ Antecede o ato. 
+✓ Não confundir MOTIVO com MOTIVAÇÃO. 
+✓ A motivação corresponde à exposição dos motivos, a indicação dos fatos e fundamentos jurídicos. Em regra, 
+os atos devem ser motivados. Quando os motivos são expostos, eles se atrelam ao ato, constituindo 
+pressuposto de validade. Se viciado, torna o ato nul o. É a chamada teoria dos motivos determinantes , 
+aplicável também nos casos em que a motivação não seja obrigatória. Uma vez alegados os motivos, estes 
+passam a constituir pressuposto de validade na prática do ato administrativo. Neste sentido, entendeu o STJ 
+que, pela Teoria dos Motivos Determinantes, “a validade do ato administrativo está vinculada à existência e à 
+veracidade dos motivos apontados como fundamentos para a sua adoção, a sujeitar o ente público aos seus 
+termos"3. 
+ 
+OBJETO 
+✓ É o efeito jurídico gerado pelo ato, o seu conteúdo. 
+✓ Pode consistir na “criação, modificação ou comprovação de situações jurídicas concernentes a pessoas, coisas 
+ou atividades sujeitas à ação do Poder Público4”. 
+ 
+ 
+VINCULAÇÃO E DISCRICIONARIEDADE 
+ATOS VINCULADOS – Não há faculdade de opção para o administrador. A lei determina todos os elementos necessários 
+à sua prática, sem que haja margem de liberdade para a Administração. 
+ 
+ATOS DISCRICIONÁRIOS – A Administração possui certa margem de liberdade, havendo liberdade de decisão no caso 
+concreto. Pauta-se na conveniência e oportunidade. 
+OBS: Cabe controle judicial sobre o ato administrativo discricionário. Entretanto, não cabe controle judicial sobre o 
+mérito do ato. O controle exercido pelo Poder Judiciário é de legalidade. 
+ 
+Mérito administrativo – Liberdade conferida ao agente, nos atos discricionários, para valorar motivo e objeto. 
+ 
+ 
+3 STJ - MS 19.374/DF, Rel. Ministro ARNALDO ESTEVES LIMA, PRIMEIRA SEÇÃO, julgado em 25/09/2013, DJe 02/10/2013 . 
+4 MEIRELLES, Hely Lopes. ob. cit., p. 164.
 
-CO de Competência: poder atribuído pela lei ao agente público para desempenhar suas funções. É irrenunciável e intransferível por acordo entre as partes.
+--- PÁGINA 4 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+4 
+ 
+ 
+ 
+  Ato  
+Vinculado 
+Ato 
+Discricionário 
+Competência V V 
+Finalidade V V 
+Forma V V 
+Motivo V D 
+Objeto V D 
+ 
+ 
+VÍCIOS NOS ELEMENTOS DO ATO ADMINISTRATIVO 
+ 
+Art. 2º, Lei 4.717/1965 - “São nulos os atos lesivos ao patrimônio das entidades mencionadas no artigo anterior, nos 
+casos de: 
+        a) incompetência; 
+        b) vício de forma; 
+        c) ilegalidade do objeto; 
+        d) inexistência dos motivos; 
+        e) desvio de finalidade.         
+ 
+Parágrafo único. Para a conceituação dos casos de nulidade observar-se-ão as seguintes normas: 
+        a) a incompetência fica caracterizada quando o ato não se incluir nas atribuições legais do agente que o praticou; 
+        b) o vício de forma consiste na omissão ou na observância incompleta ou irregular de formalidades indispensáveis 
+à existência ou seriedade do ato; 
+        c) a ilegalidade do objeto ocorre quando o resultado do ato importa em violação de lei, regulamento ou outro ato 
+normativo; 
+        d) a inexistência dos motivos se verifica quando a matéria de fato ou de direito, em que se fundamenta o ato, é 
+materialmente inexistente ou juridicamente inadequada ao resultado obtido; 
+        e) o desvio de finalidade se verifica quando o agente pratica o ato visando a fim diverso daquele previsto, explícita 
+ou implicitamente, na regra de competência.” 
+ 
+ 
+EXTINÇÃO DOS ATOS ADMINISTRATIVOS 
+ 
+ANULAÇÃO 
+✓ É a extinção do ato por motivo de ilegalidade. 
+✓ Pode ser realizada pela Administração Pública (princípio da autotutela) OU pelo Poder Judiciário pautado no 
+princípio da inafastabilidade da jurisdição (art. 5º, XXXV, CF). 
+✓ Art. 5º, XXXV, CF – a lei não excluirá da apreciação do Poder Judiciário lesão ou ameaça a direito. 
+✓ Tem efeito retroativo (ex tunc).  
+ 
+REVOGAÇÃO 
+✓ Extinção do ato por razões de conveniência e oportunidade. 
+✓ Tem efeitos ex nunc (não retroativo) 
+✓ O Poder Judiciário não pode revogar os atos administrativos praticados pela Administração Pública.
 
-FI de Finalidade: o objetivo de interesse público almejado pela lei. O desvio de finalidade acarreta nulidade absoluta do ato.
+--- PÁGINA 5 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+5 
+ 
+ 
+✓ Quando o Poder Judiciário atua no desempenho de função administrativa atípica, ele pode revogar os seus 
+próprios atos administrativos. 
+✓ Existem limites ao poder de revogar, ou seja, alguns atos não comportam revogação. Os principais exemplos 
+são os atos vinculados, consumados (exauriram os seus efeitos) e os que geram direitos adquiridos. 
+ 
+SÚMULA 473 STF 
+ “A administração pode anular seus próprios atos, quando eivados de vícios que os tornam ilegais, 
+porque deles não se originam direitos; ou revogá-los, por motivo de conveniência ou oportunidade, respeitados os 
+direitos adquiridos, e ressalvada, em todos os casos, a apreciação judicial.” 
+ 
+ 
+OUTRAS FORMAS DE EXTINÇÃO DOS ATOS ADMINISTRATIVOS 
+CASSAÇÃO – O beneficiário do ato administrativo deixa de cumprir os requisitos que deveriam ser observados. 
+CADUCIDADE – Ocorre quando uma nova lei derruba os efeitos do ato anteriormente editado. 
+CONTRAPOSIÇÃO – Edita-se um outro ato com efeitos opostos ao ato anterior. 
+  
+ 
+CONVALIDAÇÃO 
+✓ Não é forma de extinção. 
+✓ Ato administrativo pelo qual é suprido o vício que o ato ilegal possui, com efeitos ex tunc. 
+✓ Para acontecer a convalidação, o vício tem que ser sanável e não pode haver lesão ao interesse público, nem 
+prejuízo a terceiros. 
+✓ A convalidação é realizada pela Administração. Eventualmente, o administrado pode realizá -la, se a edição 
+daquele ato dependia da sua manifestação e não houve o cumprimento da formalidade. 
+✓ Regra geral, segundo a doutrina, apenas a competência (quando não for exclusiva) e forma (quando nã o 
+essencial à validade do ato) seriam convalidáveis. Finalidade, motivo e objeto não são elementos convalidáveis 
+(posição adotada pela professora Di Pietro). Alguns doutrinadores admitem a convalidação do objeto, quando 
+plúrimo, mediante conversão ou reforma. 
+✓ Lei nº 9.784/99, art. 55.  Em decisão na qual se evidencie não acarretarem lesão ao interesse público nem 
+prejuízo a terceiros, os atos que apresentarem defeitos sanáveis poderão ser convalidados pela própria 
+Administração. 
+ 
+ 
+ESPÉCIES DE ATOS ADMINISTRATIVOS 
+Ato normativo => Possuem um comando geral e abstrato, que visa garantir a fiel aplicação da lei. 
+ Ex: Decretos, Regulamentos, Resoluções, Regimentos. 
+ 
+Atos ordinatórios => Disciplinam o funcionamento da Administração e a conduta funcional dos agentes. 
+ Ex: Avisos, Portarias, Ordens de serviço, Circulares, Despachos. 
+ 
+Atos negociais => Declaração de vontade do Poder Público coincidente com a pretensão do particular. 
+ Ex: licença, autorização, permissão, admissão. 
+ 
+Atos enunciativos => Atestam, certificam, enunciam uma situação de fato e de direito. 
+ Ex: certidão, atestados, pareceres, apostilas. 
+ 
+Atos punitivos => Correspondem a sanções impostas a quem infringir as normas. 
+ Ex: Multa, interdição, apreensão, demissão de servidor.
 
-FO de Forma: a maneira pela qual o ato se exterioriza. No direito público, a regra é a forma escrita solene.
+--- PÁGINA 6 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+6 
+ 
+ 
+ 
+EXERCÍCIOS DE FIXAÇÃO 
+ 
+01) (PROCURADOR / CÂMARA MUNICIPAL DE BOA VISTA -RR / 2026 / CEBRASPE) Considerando a teoria sobre a 
+constituição dos atos administrativos, assinale a opção que apresenta o elemento que representa o resultado prático 
+do ato, o efeito jurídico imediato que ele produz. 
+A motivação 
+B finalidade 
+C motivo 
+D forma 
+E objeto 
+ 
+02) (PROCURADOR / CÂMARA MUNICIPAL DE BOA VISTA -RR / 2026 / CEBRASPE) A Câmara Municipal concedeu ao 
+servidor João a ocupação de um imóvel funcional, condicionando a validade da permanência no imóvel ao 
+cumprimento das normas sanitárias e à continuidade no exercício da função de confiança. Durante a fiscalização, 
+realizada um ano após o início da ocupação, constatou -se que João deixou de cumprir diversas exigências sanitárias 
+previstas no ato co ncessivo, apesar de regularmente notificado para se adequar. João deixou, ainda, de exercer a 
+função de confiança. Diante dos fatos, a Câmara determinou a extinção do ato e a devolução do imóvel. 
+Nessa situação hipotética, a referida extinção do ato administrativo caracteriza-se como 
+A caducidade. 
+B anulação. 
+C nulidade. 
+D revogação. 
+E cassação. 
+ 
+03) (PROCURADOR / CÂMARA MUNICIPAL DE BOA VISTA -RR / 2026 / CEBRASPE) O Diretor de Recursos Humanos da 
+Câmara Municipal, após o recebimento de requerimento de serv idor interessado, expediu em um ato formal a 
+declaração de tempo total de serviço prestado pelo requerente à administração pública, com base exclusivamente nos 
+registros funcionais constantes no Sistema interno, atestando fielmente as informações existentes nos assentamentos 
+funcionais. 
+Nessa situação hipotética, o ato praticado pelo director classifica-se como ato 
+A ordinatório. 
+B negocial. 
+C sancionador. 
+D normativo. 
+E enunciativo. 
+ 
+04) (AUDITOR / SEFAZ -RN / 2026 / CEBRASPE) A capacidade atribuída à admin istração pública para dispor sobre os 
+próprios atos discricionários, com poder de anulação ou revogação, refere-se ao princípio de 
+A autotutela. 
+B controle ou tutela. 
+C hierarquia. 
+D moralidade. 
+E razoabilidade. 
+ 
+05) (ANALISTA / SEMA-AM / 2026 / CEBRASPE) O atributo pelo qual o ato administrativo pode ser posto em execução 
+pela própria administração pública denomina-se 
+A tipicidade. 
+B presunção de legitimidade. 
+C imperatividade.
 
-MO de Motivo: a situação de fato e de direito que fundamenta a prática do ato administrativo.
+--- PÁGINA 7 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+7 
+ 
+ 
+D autoexecutoriedade. 
+E presunção de veracidade. 
+ 
+06) (ESPECIALISTA LEGISLATIVO / ALERJ / FGV / 2026) No exercício da autotutela, a autoridade competente verificou 
+as seguintes situações: 
+I. Vício de forma, que não é essencial ao ato administrativo; 
+II. Vício de competência em ato vinculado; 
+III. Ato editado sem qualquer vício, mas que não é mais conveniente e oportuno para o interesse público devidamente 
+justificado. 
+Considerando as situações descritas, assinale a afirmativa correta. 
+(A) Tanto na situação I quanto na II, o vício é sanável, de modo que os atos administrativos não devem ser invalidados. 
+(B) Considerando as peculiaridades de cada uma das situações, é pertinente a revogação de tais atos administrativos. 
+(C) O vício apresentado na situação II é considerado insanável, de modo que e le deve ser necessariamente anulado a 
+qualquer tempo. 
+(D) A ausência de conveniência e oportunidade na situação III deve ensejar a anulação do ato administrativo. 
+(E) Todas as situações descritas devem levar necessariamente à anulação dos respectivos atos administrativos. 
+ 
+07) (TÉCNICO JUDICIÁRIO / TJ -RJ / FGV / 2026) A sociedade empresária Alfa iniciou a construção irregular de 
+determinado prédio ao lado do fórum da Comarca de Rio das Ostras, no Estado do Rio de Janeiro, sem a observância 
+das formalidades legais. Registre -se que há risco iminente à segurança da coletividade, pois as normas técnicas 
+atinentes à construção não estão sendo observadas pela referida entidade privada, sendo certo que a Defesa Civil 
+municipal emitiu laudo concluindo que a estrutura construída pode entrar em colapso a qualquer momento e desabar 
+sobre as pessoas que trafegam pela calçada. 
+Nesse cenário, considerando o entendimento doutrinário dominante, é correto afirmar que o poder público municipal: 
+(A) poderá demolir a construção irregular independentemente de autorização judicial, em razão da presunção absoluta 
+de legitimidade dos atos administrativos; 
+(B) poderá demolir a construção irregular independentemente de autorização judicial, em razão da presunção absoluta 
+de veracidade dos atos administrativos; 
+(C) poderá demolir a construção irregular independentemente de autorização judicial, em razão da 
+autoexecutoriedade dos atos administrativos; 
+(D) não poderá demolir a construção irregular sem autorização da Câmara de Vereadores do  Município de Rio das 
+Ostras; 
+(E) não poderá demolir a construção irregular sem autorização judicial. 
+ 
+08) (ANALISTA / AL -RO / FGV / 2026) O Estado de Rondônia procedeu à extinção de dois atos administrativos, por 
+motivos distintos, quais sejam: i) no primeiro cenário, houve a extinção do ato administrativo posto que a situação 
+nele contemplada não era mais  tolerada por uma nova legislação. Tinha -se uma ilegalidade superveniente não 
+imputada à atuação do administrado; ii) no segundo cenário, ocorreu a extinção do ato administrativo por 
+descumprimento, por parte do administrado, das condições fixadas pela Administração. 
+Nesse cenário, considerando o entendimento doutrinário dominante, é correto afirmar que o instituto da 
+(A) cassação legitimou, no primeiro cenário, a extinção do ato administrativo. Por sua vez, no segundo cenário, ocorreu 
+a caducidade do ato administrativo. 
+(B) caducidade legitimou, no primeiro cenário, a extinção do ato administrativo. Por sua vez, no segundo cenário, 
+ocorreu a revogação do ato administrativo. 
+(C) caducidade legitimou, no primeiro cenário, a extinção do ato administrativo. Por  sua vez, no segundo cenário, 
+ocorreu a cassação do ato administrativo. 
+(D) caducidade legitimou a extinção do ato administrativo nos dois cenários. 
+(E) cassação legitimou a extinção do ato administrativo nos dois cenários.
 
-OB de Objeto: o efeito jurídico imediato produzido pelo ato, aquilo que ele cria, altera ou extingue.
+--- PÁGINA 8 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+8 
+ 
+ 
+09) (ASSISTENTE ADMINISTRATIVO / EMPARN / 2025 / IDECAN) A respeito dos atos administrativos, assinale a 
+alternativa que indica quais são seus elementos ou requisitos de validade. 
+(A) Competência, finalidade, forma, motivo e objeto. 
+(B) Legalidade, impessoalidade, moralidade, publicidade e eficiência. 
+(C) Conveniência, oportunidade, discricionariedade, vinculação e hierarquia. 
+(D) Competência, legalidade, tipicidade, autoexecutoriedade e imperatividade. 
+(E) Motivo, objeto, finalidade, legalidade e publicidade. 
+ 
+10) (AGENTE DE ADMINISTRAÇÃO / FME-NITERÓI / 2023 / COSEAC-UFF) Atos normativos são aqueles que contêm um 
+comando geral do Poder Executivo, visando à correta aplicação da lei, tais como 
+(A) ofícios. 
+(B) memorandos. 
+(C) despachos. 
+(D) decretos. 
+(E) telegramas. 
+ 
+11) (ASSISTENTE EM AD MINISTRAÇÃO / UFF / 2023 / COSEAC -UFF) São elementos do ato administrativo aqueles 
+aspectos do ato que, se ausentes, provocam a invalidação do ato. Assim, o círculo definido por lei, dentro do qual 
+podem os agentes públicos exercer legitimamente sua ativid ade, bem caracteriza o elemento do ato administrativo 
+conhecido como: 
+(A) competência. 
+(B) finalidade. 
+(C) motivo. 
+(D) objeto. 
+(E) forma. 
+ 
+12) (TÉCNICO ADMINISTRATIVO / CÂMARA MUNICIPAL DE BRILHANTE-MS / 2024 / SELECON) Os atos administrativos 
+são constituídos por elementos essenciais, cuja ausência importa a nulidade do ato. Nesse sentido, o ato nulificável 
+por ilegalidade do objeto ocorre quando: 
+A) o ato não se incluir nas atribuições legais do agente que o praticou 
+B) o resultado do ato importa em violação de lei, regulamento ou outro ato normativo 
+C) há a omissão ou observância incompleta ou irregular de formalidades indispensáveis à exis tência ou seriedade do 
+ato 
+D) a matéria de fato ou de direito, em que se fundamenta o ato, é materialmente inexistente ou juridicamente 
+inadequada ao resultado obtido 
+E) a falta de defesa por ato advogado em processo administrativo 
+ 
+13) (ASSISTENTE ADMINISTRATIVO / CRO-MT / 2024 / SELECON) Um ato administrativo pode deixar de produzir efeitos 
+quando a situação nele contemplada não é mais tolerada pela nova legislação. O ato administrativo, no caso, é editado 
+regularmente, mas torna-se ilegal em virtude da alteração legislativa. A modalidade de extinção do ato administrativo 
+que ocorre na situação descrita é denominada de: 
+A) cassação 
+B) anulação 
+C) revogação 
+D) caducidade 
+ 
+14) (RESIDÊNCIA JURÍDICA / TRF-1ª REGIÃO / 2025 / CONSULPLAN) A maior parte das declarações de vontade emitidas 
+pela Administração no exercício da função administrativa ocorre por meio da edição de atos administrativos. Nesse 
+contexto, em relação aos atos administrativos, assinale a afirmativa correta. 
+A) A revogação dos atos administrativos, por incidir sobre atos lícitos, gera efeitos ex nunc.
 
-Regra de Ouro: CO-FI-FO são SEMPRE elementos vinculados! Já MO e OB podem ser discricionários, formando o mérito administrativo.
+--- PÁGINA 9 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+9 
+ 
+ 
+B) Não cabe ao Poder Judiciário, quando provocado, realizar controle sobre os atos administrativos considerados 
+discricionários. 
+C) A invalidação dos atos administrativos é matéria restrita à reserva  de administração, somente cabendo à própria 
+Administração Pública que praticou o ato realizá-la. 
+D) Um dos atributos dos atos administrativos é a chamada imperatividade, que significa que deve haver um ato 
+específico para cada finalidade própria a ser alcançada pela Administração. 
+ 
+15) (PRESTADOR / SESDEC-RO / IBADE / 2023) “ato administrativo perfeito é aquele que preenche todos os requisitos 
+exigidos para tal”.  
+Fonte: José Cretella Júnior (1998, p. 195) 
+Para que o ato administrativo se aperfeiçoe, reuni ndo condições de eficácia para a produção de efeitos jurídicos 
+válidos, a sua estrutura deverá ser composta por certos requisitos, dentre eles: 
+(A) determinação. 
+(B) integridade. 
+(C) justiça. 
+(D) competência. 
+ 
+16) (TÉCNICO JUDICIÁRIO / TRT-7ª REGIÃO / FCC / 2024) A revogação do ato administrativo é modalidade de 
+A invalidação do ato administrativo que apresente vício de natureza insanável, podendo ser declarada pela própria 
+Administração ou pelo Poder Judiciário. 
+B invalidação por desconformidade com o ordenamento jurídico, operando, portanto, efeitos retroativos, desde a data 
+em que editado. 
+C Extinção discricionária do ato administrativo, por razões de conveniência e oportunidade, pois não se evidencia 
+ilegalidade ou irregularidade, produzindo efeitos a partir da invalidação. 
+D encampação do ato administrativo, ao se identificar a presença de vício de legalidade, para fins de retificação e 
+convalidação. 
+E extinção do ato administrativo, que, embora seja válido, demanda a eliminação dos efeitos produzidos desde a sua 
+edição. 
+ 
+17) (ANALISTA JUDICIÁRIO – ÁREA ADMINISTRATIVA / TRT-7ª REGIÃO / FCC / 2024) A Administração Pública, no regular 
+exercício de suas funções, pode editar atos administrativos de diversas natureza s e espécies, dentre eles os altos 
+discricionários e vinculados. São exemplos de atos administrativos discricionários ou vinculados, quando preenchidos 
+os requisitos para deferimento, 
+A a autorização para realização de evento em praça pública, como ato vinculado. 
+B a concessão de adicional de insalubridade como ato vinculado. 
+C a concessão de licença para o trato de assuntos particulares, como ato vinculado. 
+D o alvará de construção como ato discricionário. 
+E a licença para edificação como ato discricionário. 
+ 
+18) (ASSESSOR JURÍDICO / AL-AM / FGV / 2025) Ao aprofundar os seus estudos acerca dos atos administrativo, Suelena 
+verificou que nem todos os atos administrativos são dotados do atributo da imperatividade, vindo a concluir 
+corretamente que um exemplo de ato em tais circunstâncias é o seguinte: 
+(A) Certidão. 
+(B) Multa. 
+(C) Decreto. 
+(D) Portaria. 
+(E) Remoção de veículo. 
+ 
+19) (ANALISTA / PGM -RJ / FGV / 2025) Relacione os conceitos de atos administrativos a seguir com suas respectivas 
+definições ou características principais.
 
-Vamos aos Atributos do Ato Administrativo: Mnemônico P-A-T-I.
+--- PÁGINA 10 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+10 
+ 
+ 
+( ) Anulação 
+( ) Revogação 
+( ) Convalidação 
+( ) Presunção de legitimidade 
+1. Atributo do ato administrativo que assume sua validade até prova em contrário, permitindo execução imediata sem 
+contestação inicial. 
+2. Extinção do ato por motivo de vício de legalidade, com efeitos retroativos (ex tunc) à data de sua edição. 
+3. Extinção do ato válido por motivo de conveniência ou oportunidade da administração, com efeitos não retroativos 
+(ex nunc). 
+4. Sanação de vício sanável no ato, tornando-o válido retroativamente desde sua origem, quando não lesar interesse 
+público ou terceiros. 
+A relação correta, na ordem apresentada, é: 
+(A) 2 – 3 – 4 – 1. 
+(B) 2 – 4 – 1 – 3. 
+(C) 1 – 2 – 3 – 4. 
+(D) 4 – 1 – 2 – 3. 
+(E) 3 – 4 – 2 – 1. 
+ 
+20) (ANALISTA JUDICIÁRIO / TJ -MS / 2024 / FGV) Em decorrência de razões de interesse público, certa autoridade 
+administrativa, no regular exercício de suas atribuições, promoveu a remoção do servidor Aurélio, calcada em critérios 
+objetivos, válidos e idôneos à realização do ato, considerando, ainda, a premente necessidade de servidores na lotação 
+de destino, mas não formalizou, prontamente, a devida motivação de tal ato. Aurélio tem conhecimento de que não 
+houve favoritismos ou perseguições, pois, de acordo  com as regras estabelecidas, ele era, realmente, o servidor que 
+poderia ser removido na aludida situação, mas está inconformado com o mencionado ato, pois estava satisfeito no 
+local em que trabalhava, de modo que pretende suscitar que a ausência de justif icativa caracteriza defeito insanável 
+do ato administrativo. 
+Nesse contexto, a ausência de motivação na aludida remoção corresponde a vício no elemento: 
+(A) forma; 
+(B) motivo; 
+(C) objeto; 
+(D) competência; 
+(E) finalidade. 
+ 
+(ANALISTA / CAPES / 2024 / CEBRASPE) A respeito dos atos administrativos, julgue os itens que se seguem. 
+21 Entre os atributos dos atos administrativos está o da autoexecutoriedade, que consiste na obrigação de a 
+administração pública utilizar -se da supremacia do interesse público sobre o privado para criar, unilateralmente, 
+obrigações para si e para o particular, sem necessitar da anuência deste. 
+ 
+(AGENTE DE POLÍCIA / POLÍCIA FEDERAL / 2025 / CEBRASPE) Julgue os itens a seguir, relativos a noções de direito 
+administrativo. 
+22 A presunção de veracidade dos atos administrativos refere-se aos fatos, ou seja, presumem-se verdadeiros os fatos 
+alegados pela administração pública, ao passo que a autoexecutoriedade constitui atributo pelo qual os atos 
+administrativos se impõem a terceiros, independentemente de sua concordância. 
+ 
+(ESPECIALISTA / ANM / CEBRASPE / 2025) No que se refere aos atos administrativos e à decadência administrativa, 
+considerando, no que couber, a jurisprudência do STJ acerca dos temas, julgue os itens seguintes. 
+23 A imperativ idade é a característica do ato administrativo que autoriza a imediata execução do seu conteúdo, 
+independentemente de prévia submissão da matéria ao Poder Judiciário. 
+ 
+(ANALISTA / CAPES / 2024 / CEBRASPE) Julgue os itens a seguir, relativos a atos administrativos.
 
-Presunção de Legitimidade e Veracidade: presume-se que os atos foram praticados em conformidade com a lei e que os fatos são verdadeiros. Presunção relativa (juris tantum).
+--- PÁGINA 11 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+11 
+ 
+ 
+24 Os elementos do ato administrativo são o sujeito, o objeto, a forma, o motivo e a finalidade. 
+ 
+(TÉCNICO JUDICIÁRIO / TRF-6ª REGIÃO / 2025 / CEBRASPE) No tocante aos princípios e aos poderes da administração 
+pública, julgue os itens a seguir. 
+25 A omissão ou a observância incompleta ou irregular de formalidades indispensáveis à existência ou seriedade do 
+ato administrativo configura o desvio de finalidade. 
+ 
+(ESPECIALISTA / FNDE / CEBRASPE / 2023) Considerando os princípios do direito administrativo e os atos 
+administrativos, julgue os itens a seguir. 
+26 Suponha-se que determinado servidor público tenha sido exonerado ad nutum do cargo que ocupava e que, no ato 
+de exoneração, a administração tenha exposto seus motivos. Nessa situação hipotética, apesar de inicialmente ser 
+desnecessária a motivação, haverá a vinculação aos motivos indicados, em razão da teoria dos motivos determinantes. 
+ 
+(ANALISTA / TJ-ES / 2023 / CEBRASPE) No que diz respeito aos conceitos de administração pública, às fontes do direito 
+administrativo, aos atos administrativos e aos agentes públicos, julgue os seguintes itens. 
+27 Segundo a teoria dos motivos determinantes, a administração, ao ado tar determinados motivos para a prática de 
+ato administrativo, ainda que de natureza discricionária, fica a eles vinculada. 
+ 
+(ESPECIALISTA / ANM / CEBRASPE / 2025) No que se refere aos atos administrativos e à decadência administrativa, 
+considerando, no que couber, a jurisprudência do STJ acerca dos temas, julgue os itens seguintes. 
+28 Ainda que se trate de ato administrativo discricionário, a motivação deve guardar correspondência com a realidade 
+fática determinante da vontade administrativa, sob pena de nulidade. 
+ 
+(TÉCNICO DE CONTROLE EXTERNO / TCU / 2025 / CEBRASPE) No que se refere ao controle jurisdicional da 
+administração pública no direito brasileiro, julgue os seguintes itens. 
+29 A anulação de um ato administrativo pelo Poder Judiciário possui, em re gra, efeitos ex nunc, ou seja, a partir da 
+decisão judicial, sendo preservados os efeitos já produzidos pelo ato enquanto este esteve em vigor. 
+ 
+(ANALISTA JUDICIÁRIO / TRT -10ª REGIÃO / CEBRASPE / 2025) Julgue os seguintes itens, acerca de organização 
+administrativa, atos administrativos, poderes administrativos, agentes públicos e licitações. 
+30 Define-se como revogação a extinção, com efeitos ex nunc, de um ato administrativo legal que se tornou inoportuno 
+ou inconveniente. 
+ 
+(ESPECIALISTA / ANM / CEBRASPE / 2025) Considerando as espécies de extinção do ato administrativo bem como os 
+efeitos dela decorrentes, julgue o item a seguir. 
+31 Na cassação, a extinção do ato administrativo ocorre por motivo de descumprimento de condições que deveriam 
+continuar a ser atendidas pelo destinatário do ato. 
+ 
+(ANALISTA JUDICIÁRIO / TRT-10ª REGIÃO / CEBRASPE / 2025) Em relação aos agentes públicos, aos atos administrativos 
+e ao controle da administração pública, julgue os itens a seguir. 
+32 Os atos administrativos discricioná rios, em razão de sua natureza, não são passíveis de controle pelo Poder 
+Judiciário, na medida em que envolvem juízo de conveniência e oportunidade da administração pública. 
+ 
+(ANALISTA ADMINISTRATIVO / ANM / 2025 / CEBRASPE) Julgue os itens seguintes, a respeito da convalidação dos atos 
+administrativos, do processo administrativo disciplinar no âmbito da Lei n.º 8.112/1990 e do processo administrativo 
+conforme a Lei n.º 9.784/1999. 
+33 Os atos administrativos com defeitos sanáveis podem ser convalidados pela própria administração pública, mesmo 
+que tal medida acarrete prejuízo a terceiros.
 
-Autoexecutoriedade: a Administração pode executar suas decisões diretamente, inclusive com uso moderado da força, sem necessidade de autorização judicial prévia.
+--- PÁGINA 12 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+12 
+ 
+ 
+(ANALISTA DE PLANEJAMENTO E ORÇAMENTO / MPO / 2024 / CEBRASPE) Acerca dos atos administrativos, dos poderes 
+administrativos e do uso e abuso do poder, julgue os itens subsequentes. 
+34 O abuso de poder pode ser caracterizado pelo excesso de poder, situação em que o agente público atua fora dos 
+limites de sua competência. 
+ 
+(ANALISTA JUDICIÁRIO / TRT -10ª REGIÃO / 2025 / CEBRASPE) Julgue os seguintes itens, acerca de poderes 
+administrativos. 
+35 O excesso de poder e o desvio de poder são espécies de abuso de poder que se diferenciam porque, no primeiro, a 
+atuação do agente público é eivada de vício de competência, enquanto, no segundo, há vício de finalidade. 
+ 
+(ADMINISTRADOR / FUB / 2025 / CEBRASPE) Acerca dos atos administrativos, bem como do conceito, do objeto e das 
+fontes do direito administrativo, julgue os itens a seguir. 
+36 A anulação é a supressão de um ato administrativo legítimo e eficaz, realizada pel a administração pública por não 
+mais lhe convir sua existência. 
+ 
+37) (ANALISTA / AMAZUL / FGV / 2026) O ato administrativo que decorre do inadimplemento das condições fixadas 
+das cláusulas condicionantes à eficácia e permanência do procedimento administrat ivo por parte do beneficiário, 
+denomina-se 
+(A) anulação. 
+(B) cassação. 
+(C) revogação. 
+(D) caducidade. 
+(E) convalidação. 
+ 
+38) (ANALISTA ADMINISTRATIVO / TJ-SC / 2024 / FGV) Ao realizar um levantamento acerca dos processos judiciais que 
+têm por objeto a impu gnação de atos administrativos do Poder Executivo, Daiane verificou que diversos atos 
+discricionários são submetidos ao controle do Poder Judiciário, de modo que passou a aprofundar as peculiaridades 
+acerca do tema, vindo a concluir corretamente que o Poder Judiciário: 
+(A) não pode anular atos discricionários que apresentem vício de ilegalidade; 
+(B) pode substituir a Administração Pública no exercício da discricionariedade; 
+(C) não pode realizar controle sobre os atos administrativos discricionários, diante  da conveniência e oportunidade 
+que recaem sobre todos os seus elementos; 
+(D) pode invalidar ato discricionário com base na teoria dos motivos determinantes, bem como com fundamento em 
+desvio de finalidade; 
+(E) pode revogar atos discricionários do Poder Executivo, no típico exercício da atividade jurisdicional. 
+ 
+39) (TÉCNICO JUDICIÁRIO / TJ-RR / 2024 / FGV) Rafael, no exercício de suas atribuições como servidor público no cargo 
+de Técnico Judiciário do Tribunal de Justiça do Estado de Roraima, foi questiona do sobre quais elementos do ato 
+administrativo podem ser discricionários. Nesse contexto, ele indicou corretamente os seguintes elementos: 
+(A) competência e objeto. 
+(B) motivo e finalidade. 
+(C) forma e competência. 
+(D) motivo e objeto. 
+(E) finalidade e forma. 
+ 
+40) (ANALISTA ADMINISTRATIVO / TCE-RR / FGV / 2025) No âmbito dos atributos dos atos administrativos existe aquele 
+que costuma ser indicado como fundamento para a inversão do ônus da prova, no sentido de que caberá ao 
+administrado demonstrar a ilegalidade do ato administrativo. Nesse contexto, o mencionado atributo é a 
+(A) presunção de veracidade, em razão do qual se presumem verdadeiros os fatos alegados pela Administração.
 
-Tipicidade: o ato deve corresponder a figuras previamente definidas pela legislação.
+--- PÁGINA 13 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+13 
+ 
+ 
+(B) autoexecutoriedade, que é condizente com a noção de que há conformidade do  ato editado com os parâmetros 
+estabelecidos em lei. 
+(C) imperatividade, segundo o qual a Administração pode levar a efeito as suas determinações sem a intervenção do 
+Poder Judiciário. 
+(D) vinculação, considerando os parâmetros estabelecidos em lei para a definição do mérito administrativo. 
+(E) supremacia do interesse público, que, consoante explícito na Constituição, determina que a vontade da 
+Administração deve prevalecer sobre a do administrado. 
+ 
+41) (ANALISTA LEGISLATIVO / CÂMARA DOS DEPUTADOS / 2023 / FGV) A Administração Pública, em âmbito federal, 
+descobre, a partir de estudos técnicos, a potencial existência de um campo de exploração de petróleo em área de 
+preservação ambiental. Desta forma, o órgão público competente encomenda, junto à Advocacia Geral da União, a 
+confecção de um parecer sobre a viabilidade jurídica de se proceder à exploração de petróleo na localidade 
+supracitada. Nesse contexto, dois meses após o pedido, o parecer técnico é devidamente apresentado. Nesse cenário, 
+é correto afirmar que o parecer caracteriza um ato administrativo  
+(A) enunciativo. 
+(B) ordinatório. 
+(C) normativo. 
+(D) punitivo. 
+(E) negocial. 
+ 
+42) (ASSISTENTE ADMINISTRATIVO / EBSERH / FGV / 2025) Os at os administrativos devem obedecer a regras 
+específicas para garantir sua validade, caso contrário, podem apresentar vícios que os tornam passíveis de invalidação. 
+No entanto, dependendo do elemento afetado pelo vício, é possível sua correção. Nesse sentido , com base no 
+arcabouço legal, é possível sanar o vício 
+(A) de forma, desde que realizado por algum Chefe de Poder. 
+(B) de competência, desde que não seja exclusiva de uma autoridade. 
+(C) de motivo, desde que o ato não prejudique terceiros. 
+(D) de objeto, desde não seja vedado expressamente por lei. 
+(E) de finalidade, desde que não se trate de abuso de poder. 
+ 
+43) (AUDITOR PÚBLICO INTERNO / CGM -CUIABÁ / FGV / 2025) O ato administrativo refere -se a uma categoria 
+específica de atos praticados no exercício da função administrativa. Uma característica própria do ato administrativo 
+(A) é a de se tratar de uma manifestação implícita da vontade do Estado que não precisa ser exteriorizada. 
+(B) é a de produzir efeitos jurídicos imediatos e está sempre sujeito a controle judicial. 
+(C) é a de sujeitar-se apenas ao regime de direito privado, sem as prerrogativas do poder público. 
+(D) é a de poder ser praticado apenas pelo Poder Executivo, excluindo os demais Poderes. 
+(E) é a de não estar sujeito à lei, pois possui natureza autônoma. 
+ 
+44) (AUDITOR FEDERAL DE FINANÇAS / STN / 2024 / FGV) João, agente público do Estado Alfa, em fiscalização de rotina 
+por diversos estabelecimentos comerciais, verificou que a loja ABC não estava cumprindo uma série de normas legais, 
+o que já havia sido apurado em inspeção anterior. Dessa forma, o referido servidor público lavrou, em observância às 
+formalidades legais, auto de infração, com a aplicação de uma multa de mil reais em detrimento da entidade. Os sócios 
+do estabelecimento, contudo, se recusaram a efetuar o pagamento da multa, mesmo após os seus recursos não terem 
+sido providos, em decisão definitiva, na esfera administrativa. Nesse cenário, considerando o entendimento 
+doutrinário e jurisprudencial dominante, é correto afirmar que a Administração Pública 
+(A) não poderá, por conta própria, executar o valor da multa, pressupondo a atuação do Poder Judiciário, em um 
+cenário de exceção ao atributo da presunção relativa de veracidade e de legitimidade do ato administrativo. 
+(B) não poderá, po r conta própria, executar o valor da multa, pressupondo a atuação do Poder Judiciário, em um 
+cenário de exceção ao atributo da autoexecutoriedade do ato administrativo.
 
-Imperatividade: o ato se impõe a terceiros independentemente da sua concordância.
+--- PÁGINA 14 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+14 
+ 
+ 
+(C) não poderá, por conta própria, executar o valor da multa, pressupondo a atuação do Poder Judiciário, em um 
+cenário de exceção ao atributo da coercibilidade do ato administrativo. 
+(D) poderá, por conta própria, executar o valor da multa, independentemente da atuação do Poder Judiciário, em 
+razão do atributo da autoexecutoriedade do ato administrativo. 
+(E) poderá, por conta própria, executar o valor da multa, independentemente da atuação do Poder Judiciário, em razão 
+do atributo da coercibilidade do ato administrativo. 
+ 
+45) (ANALISTA JUDICIÁRIO - INSPETOR DE POLÍCIA JUDICIAL / TRF-1ª REGIÃO / FGV / 2024) Ao estudar as hipóteses de 
+extinção do ato administrativo, Júlia verificou que há uma modalidade em que isso ocorre em razão da 
+incompatibilidade do ato administrativo com outro posterior, tal como ocorre com a nomeação do servidor, que é 
+extinta com a sua exoneração. Tal modalidade de extinção corresponde a: 
+(A) recusa; 
+(B) renúncia; 
+(C) anulação; 
+(D) revogação; 
+(E) contraposição. 
+ 
+46) (TÉCNICO DE RH / CÂMARA MUNICIPAL DE BRILHANTE -MS / 2024 / SELECON) O ato administrativo é uma 
+declaração unilateral de vontade da Administração Pública, que visa realizar seus objetivos e exercer suas funções. O 
+elemento constitutivo do ato administrativo que define o poder do agente da administração para desempenhar suas 
+funções específicas é o/a: 
+A) forma 
+B) objeto 
+C) motivo 
+D) finalidade 
+E) competência 
+ 
+47) (FISCAL DE TRIBUTOS / PREFEITURA DE SAPEZAL-MT / 2024 / SELECON) A extinção de ato por descumprimento de 
+obrigações pelo destinatário e a retirada de ato por razões de conveniência e oportunidade ensejam, respectivamente, 
+nas modalidades de extinção classificadas como: 
+A) invalidação e contraposição 
+B) caducidade e anulação 
+C) cassação e revogação 
+D) anulação e cassação 
+ 
+48) (FISCAL DE OBRAS / PREFEITURA DE SAPEZAL-MT / 2024 / SELECON) Há diferentes espécies de atos administrativos, 
+que se diferenciam pelo conteúdo do ato emanado. Dessa forma, um exemplo de ato administrativo negocial é a: 
+A) portaria 
+B) licença 
+C) ordem de serviço 
+D) interdição de atividades 
+ 
+49) (AGENTE DE APOIO / MP-AM / 2024 / FCC) Os elementos do ato administrativo são: o sujeito, a forma, o objeto, o 
+motivo e a finalidade. O motivo relaciona-se 
+(A) ao efeito jurídico imediato decorrente do ato. 
+(B) à exteriorização do ato. 
+(C) ao pressuposto que autoriza a prática do ato. 
+(D) à legitimidade para praticar o ato. 
+(E) ao efeito jurídico imediato.
 
-Extinção dos Atos: Anulação versus Revogação. Anulação ocorre por motivo de Ilegalidade, tem efeitos retroativos (ex tunc), e pode ser feita pela Adm ou pelo Judiciário.
-
-Já a Revogação ocorre por Conveniência e Oportunidade sobre ato perfeitamente legal. Produz efeitos não retroativos (ex nunc) e SÓ pode ser feita pela própria Administração!
-
-Convalidação de Atos: permite sanar vícios sanáveis. Mnemônico FO-CO: vício de Forma não essencial e vício de Competência não exclusiva.
+--- PÁGINA 15 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+15 
+ 
+ 
+50) (ESTAGIÁRIO / AGU / 2024 / CEBRASPE) Considere -se que a pracinha Y do município W tenha sofrido variados 
+danos em decorrência de  uma forte tempestade, ensejando uma contratação urgente a ser realizada pelo prefeito. 
+Nesse caso, o elemento integrante do ato administrativo que corresponde às razões de fato e de direito que 
+precederam a emissão do referido ato de contratação urgente pelo poder público é o(a) 
+A motivo. 
+B finalidade. 
+C objeto. 
+D forma. 
+ 
+ 
+PARA REFLEXÃO 
+ 
+“É preciso estudar muito para saber um pouco”. 
+(Montesquieu) 
+ 
+INSTAGRAM: @profrodrigomotta 
+CANAL NO YOUTUBE: Professor Rodrigo Motta - Direito Administrativo

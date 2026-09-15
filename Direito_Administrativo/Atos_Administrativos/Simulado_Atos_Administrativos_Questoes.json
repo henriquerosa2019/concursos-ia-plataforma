@@ -1,55 +1,52 @@
 [
   {
-    "enunciado": "(CEBRASPE) A anulação de um ato administrativo produz efeitos ex tunc, retroagindo às suas origens, ao passo que a revogação produz efeitos ex nunc, respeitando os direitos adquiridos.",
-    "options": ["A) CERTO", "B) ERRADO"],
+    "enunciado": "A afirmação de que \"nem todo ato praticado no exercício da função administrativa pode ser considerado ato administrativo\" está correta, pois existem atos que não são regidos pelo direito público.",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
     "correct_index": 0,
-    "banca": "Cebraspe",
-    "comentario": "CERTO. A anulação fulmina ato eivado de vício de ilegalidade, retroagindo (ex tunc). A revogação decorre de juízo de conveniência e oportunidade sobre ato válido, operando efeitos apenas para a frente (ex nunc)."
+    "comentario": "A afirmação está correta, pois existem atos que, apesar de praticados pela Administração Pública, não se enquadram como atos administrativos.",
+    "banca": "Cebraspe"
   },
   {
-    "enunciado": "(CEBRASPE) Caso constate que determinado ato administrativo praticado pelo Poder Executivo seja inoportuno ou inconveniente ao interesse da coletividade, o Poder Judiciário poderá revogá-lo por decisão fundamentada.",
-    "options": ["A) CERTO", "B) ERRADO"],
-    "correct_index": 1,
-    "banca": "Cebraspe",
-    "comentario": "ERRADO. O Poder Judiciário não possui competência para revogar atos praticados pelo Poder Executivo com base em juízo de conveniência e oportunidade (mérito administrativo). A revogação é ato privativo da própria Administração."
-  },
-  {
-    "enunciado": "(FGV) No tocante aos elementos e atributos dos atos administrativos, assinale a afirmativa correta:",
+    "enunciado": "A presunção de veracidade dos atos administrativos é absoluta e não admite prova em contrário, segundo a doutrina.",
     "options": [
-      "A) A imperatividade está presente em todos os atos administrativos, inclusive nos atos enunciativos e negociais.",
-      "B) Competência, finalidade e forma são elementos que admitem juízo de discricionariedade por parte do administrador.",
-      "C) A autoexecutoriedade autoriza a Administração a executar diretamente a cobrança forçada de valores decorrentes de multas pecuniárias sem intervenção judicial.",
-      "D) Pela teoria dos motivos determinantes, a validade do ato vincula-se aos motivos nele indicados pela autoridade, acarretando nulidade caso tais motivos sejam comprovadamente falsos.",
-      "E) A revogação de um ato administrativo pode ser requerida pelo cidadão perante o Poder Judiciário a qualquer tempo."
-    ],
-    "correct_index": 3,
-    "banca": "FGV",
-    "comentario": "A alternativa D está perfeita. A teoria dos motivos determinantes preceitua que a validade do ato administrativo fica subordinada à veracidade dos fatos apontados como sua justificativa."
-  },
-  {
-    "enunciado": "(FCC) O atributo do ato administrativo que impõe a terceiros a obrigação de cumprir a determinação estatal, independentemente de sua prévia anuência, denomina-se:",
-    "options": [
-      "A) Presunção de veracidade",
-      "B) Imperatividade",
-      "C) Tipicidade",
-      "D) Exequibilidade indireta",
-      "E) Discricionariedade"
+      "A) CERTO",
+      "B) ERRADO"
     ],
     "correct_index": 1,
-    "banca": "FCC",
-    "comentario": "A imperatividade (poder extroverso) é o atributo pelo qual o ato se impõe coercitivamente a terceiros, criando obrigações sem a necessidade de prévia concordância do administrado."
+    "comentario": "A presunção de veracidade é relativa (juris tantum) e admite prova em contrário, portanto a afirmação é errada.",
+    "banca": "Cebraspe"
   },
   {
-    "enunciado": "(VUNESP) Em relação à convalidação dos atos administrativos, é correto afirmar que:",
+    "enunciado": "De acordo com o conceito de ato administrativo, ele deve ser uma manifestação unilateral de vontade que visa exclusivamente interesses privados.",
     "options": [
-      "A) É cabível mesmo quando verificada lesão insanável ao patrimônio público.",
-      "B) Somente atos que apresentem vícios sanáveis de competência (não exclusiva) ou de forma (não essencial) podem ser convalidados.",
-      "C) Gera efeitos ex nunc, mantendo nulos os efeitos pretéritos do ato.",
-      "D) Aplica-se a atos praticados com vício de desvio de finalidade.",
-      "E) É ato obrigatoriamente privativo do Poder Judiciário."
+      "A) CERTO",
+      "B) ERRADO"
     ],
     "correct_index": 1,
-    "banca": "Vunesp",
-    "comentario": "Vícios de competência (desde que não em razão da matéria ou exclusiva) e de forma (quando a lei não a exigir expressamente como solenidade essencial) são sanáveis, admitindo convalidação (art. 55 da Lei 9.784/99)."
+    "comentario": "O ato administrativo visa ao interesse público e não exclusivamente a interesses privados, portanto a afirmação é errada.",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "Os atos administrativos discricionários permitem que a Administração tenha liberdade de decisão, mas devem sempre respeitar os limites da legalidade.",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 0,
+    "comentario": "A afirmação está correta, pois atos discricionários possuem margem de liberdade, mas sempre dentro dos limites legais.",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "A convalidação de um ato administrativo é uma forma de extinção desse ato, com efeitos ex tunc, sanando vícios que podem prejudicar a Administração.",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 1,
+    "comentario": "A convalidação não é uma forma de extinção, mas sim um ato que visa suprir vícios, portanto a afirmação é errada.",
+    "banca": "Cebraspe"
   }
 ]

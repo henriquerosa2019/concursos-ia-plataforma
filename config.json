@@ -2,5 +2,7 @@
   "gemini_api_key": "",
   "openai_api_key": "",
   "preferred_provider": "gemini",
-  "port": 8095
+  "port": 8095,
+  "supabase_url": "https://pyydnicvltkioovtvzfk.supabase.co",
+  "supabase_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB5eWRuaWN2bHRraW9vdnR2emZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNTUwMzEsImV4cCI6MjA5MDYzMTAzMX0.-_d2zNCPnoNPJBaGnc2JUmq_uj2Xi7FUETQC-ViQ4Ew"
 }

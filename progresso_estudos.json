@@ -1,0 +1,238 @@
+{
+  "cards": {
+    "Quais são os 5 princípios fundamentais da segurança da informação?": {
+      "repetitions": 1,
+      "interval_days": 1,
+      "ease_factor": 2.36,
+      "next_review": "2026-09-15",
+      "last_review": "2026-09-14",
+      "a": "Mnemônico D-I-C-A-A: Disponibilidade, Integridade, Confidencialidade, Autenticidade e Não-repúdio (irretratabilidade).",
+      "discipline": "Informatica",
+      "subarea": "Seguranca_da_Informacao"
+    },
+    "O que é um Ransomware e qual é o seu objetivo principal?": {
+      "repetitions": 1,
+      "interval_days": 1,
+      "ease_factor": 2.36,
+      "next_review": "2026-09-15",
+      "last_review": "2026-09-14",
+      "a": "É um malware que criptografa os arquivos do usuário ou bloqueia o sistema, exigindo pagamento de resgate (geralmente em criptomoedas) para restaurar o acesso.",
+      "discipline": "Informatica",
+      "subarea": "Seguranca_da_Informacao"
+    },
+    "Qual a diferença fundamental entre a propagação de um VÍRUS e de um WORM?": {
+      "repetitions": 1,
+      "interval_days": 3,
+      "ease_factor": 2.6,
+      "next_review": "2026-09-17",
+      "last_review": "2026-09-14",
+      "a": "O Vírus necessita de um arquivo hospedeiro e da ação humana de execução para se espalhar; o Worm é independente, autorreplicante e propaga-se sozinho pela rede explorando falhas de segurança.",
+      "discipline": "Informatica",
+      "subarea": "Seguranca_da_Informacao"
+    },
+    "O que é um Trojan Horse (Cavalo de Troia) e qual sua tática de ataque?": {
+      "repetitions": 0,
+      "interval_days": 1,
+      "ease_factor": 1.96,
+      "next_review": "2026-09-15",
+      "last_review": "2026-09-14",
+      "a": "É um programa que se passa por um software legítimo ou útil (jogo, cartão virtual), mas que em segundo plano abre portas de comunicação (backdoors) para controle remoto pelo invasor.",
+      "discipline": "Informatica",
+      "subarea": "Seguranca_da_Informacao"
+    },
+    "O que é um Spyware do tipo Keylogger e do tipo Screenlogger?": {
+      "repetitions": 0,
+      "interval_days": 1,
+      "ease_factor": 1.96,
+      "next_review": "2026-09-15",
+      "last_review": "2026-09-14",
+      "a": "Keylogger grava todas as teclas digitadas no teclado físico; Screenlogger captura imagens da tela ao redor do cursor do mouse (usado para capturar cliques em teclados virtuais bancários).",
+      "discipline": "Informatica",
+      "subarea": "Seguranca_da_Informacao"
+    },
+    "Qual a diferença entre um golpe de Phishing e um golpe de Pharming?": {
+      "repetitions": 0,
+      "interval_days": 1,
+      "ease_factor": 1.96,
+      "next_review": "2026-09-15",
+      "last_review": "2026-09-14",
+      "a": "Phishing usa engenharia social (e-mails ou links falsos) induzindo o usuário ao erro; Pharming corrompe o serviço de DNS (envenenamento de cache), redirecionando o usuário mesmo quando ele digita o endereço correto.",
+      "discipline": "Informatica",
+      "subarea": "Seguranca_da_Informacao"
+    },
+    "Qual a diferença entre a Criptografia Simétrica e a Criptografia Assimétrica?": {
+      "repetitions": 0,
+      "interval_days": 1,
+      "ease_factor": 1.96,
+      "next_review": "2026-09-15",
+      "last_review": "2026-09-14",
+      "a": "Simétrica usa uma única chave secreta para cifrar e decifrar (mais rápida); Assimétrica usa um par de chaves complementares: chave pública (para cifrar) e chave privada (para decifrar).",
+      "discipline": "Informatica",
+      "subarea": "Seguranca_da_Informacao"
+    },
+    "Com qual chave é gerada a Assinatura Digital de um documento eletrônico?": {
+      "repetitions": 1,
+      "interval_days": 1,
+      "ease_factor": 2.36,
+      "next_review": "2026-09-15",
+      "last_review": "2026-09-14",
+      "a": "É gerada cifrando o hash (resumo) do documento com a CHAVE PRIVADA DO EMISSOR (autor). Qualquer pessoa pode verificar usando a chave pública do emissor.",
+      "discipline": "Informatica",
+      "subarea": "Seguranca_da_Informacao"
+    },
+    "Quais princípios da segurança da informação a Assinatura Digital garante por si só?": {
+      "repetitions": 0,
+      "interval_days": 1,
+      "ease_factor": 1.96,
+      "next_review": "2026-09-15",
+      "last_review": "2026-09-14",
+      "a": "Garante Autenticidade, Integridade e Não-repúdio. Ela NÃO garante Confidencialidade (sigilo), a menos que o documento seja também encriptado.",
+      "discipline": "Informatica",
+      "subarea": "Seguranca_da_Informacao"
+    },
+    "O Firewall tem capacidade técnica para detectar e remover vírus em arquivos baixados pelo usuário?": {
+      "repetitions": 1,
+      "interval_days": 1,
+      "ease_factor": 2.36,
+      "next_review": "2026-09-15",
+      "last_review": "2026-09-14",
+      "a": "NÃO! O firewall atua filtrando conexões e portas de rede (tráfego de entrada e saída). A detecção e desinfecção de vírus e malwares em arquivos é função exclusiva do Antivírus.",
+      "discipline": "Informatica",
+      "subarea": "Seguranca_da_Informacao"
+    },
+    "O que caracteriza uma rede do tipo PAN (Personal Area Network)?": {
+      "repetitions": 1,
+      "interval_days": 3,
+      "ease_factor": 2.6,
+      "next_review": "2026-09-17",
+      "last_review": "2026-09-14",
+      "a": "Rede de alcance pessoal e curta distância (poucos metros), tipicamente associada a tecnologias como Bluetooth e NFC (ex: fone de ouvido sem fio pareado ao smartphone).",
+      "discipline": "Informatica",
+      "subarea": "Redes_de_Computadores"
+    },
+    "Qual a diferença essencial entre uma LAN e uma MAN?": {
+      "repetitions": 1,
+      "interval_days": 3,
+      "ease_factor": 2.6,
+      "next_review": "2026-09-17",
+      "last_review": "2026-09-14",
+      "a": "LAN (Local Area Network) cobre área restrita como uma residência ou escritório; MAN (Metropolitan Area Network) abrange uma cidade inteira ou campus metropolitano interligando filiais.",
+      "discipline": "Informatica",
+      "subarea": "Redes_de_Computadores"
+    },
+    "O que é uma WAN (Wide Area Network) e qual seu maior exemplo?": {
+      "repetitions": 1,
+      "interval_days": 3,
+      "ease_factor": 2.6,
+      "next_review": "2026-09-17",
+      "last_review": "2026-09-14",
+      "a": "Rede de longa distância geograficamente ilimitada (países e continentes). A Internet é o maior e mais clássico exemplo de rede WAN.",
+      "discipline": "Informatica",
+      "subarea": "Redes_de_Computadores"
+    },
+    "Em topologia física em ESTRELA, o que acontece se o nó central (switch) falhar?": {
+      "repetitions": 1,
+      "interval_days": 3,
+      "ease_factor": 2.6,
+      "next_review": "2026-09-17",
+      "last_review": "2026-09-14",
+      "a": "Toda a comunicação da rede é interrompida. Porém, se falhar apenas um computador das pontas, os demais continuam funcionando normalmente.",
+      "discipline": "Informatica",
+      "subarea": "Redes_de_Computadores"
+    },
+    "Qual a principal desvantagem da topologia física em BARRAMENTO (Bus)?": {
+      "repetitions": 1,
+      "interval_days": 1,
+      "ease_factor": 2.36,
+      "next_review": "2026-09-15",
+      "last_review": "2026-09-14",
+      "a": "Utiliza um cabo central único (coaxial) compartilhado. Se houver rompimento em qualquer ponto do cabo central, toda a rede entra em colapso.",
+      "discipline": "Informatica",
+      "subarea": "Redes_de_Computadores"
+    },
+    "Qual a diferença entre HUB e SWITCH no encaminhamento de pacotes?": {
+      "repetitions": 1,
+      "interval_days": 1,
+      "ease_factor": 2.36,
+      "next_review": "2026-09-15",
+      "last_review": "2026-09-14",
+      "a": "O HUB opera na camada física e transmite os dados para todas as portas por broadcast (gera colisão); o SWITCH opera na camada de enlace e envia dados especificamente para o endereço MAC do destinatário.",
+      "discipline": "Informatica",
+      "subarea": "Redes_de_Computadores"
+    },
+    "Qual a função primária de um ROTEADOR e em qual camada TCP/IP ele opera?": {
+      "repetitions": 1,
+      "interval_days": 1,
+      "ease_factor": 2.36,
+      "next_review": "2026-09-15",
+      "last_review": "2026-09-14",
+      "a": "Opera na Camada de Rede (Internet), sendo responsável pelo encaminhamento de pacotes entre redes de endereçamentos lógicos distintos através do endereço IP.",
+      "discipline": "Informatica",
+      "subarea": "Redes_de_Computadores"
+    },
+    "Mnemônico de E-mail: Qual a função e diferença entre SMTP, POP3 e IMAP?": {
+      "repetitions": 1,
+      "interval_days": 1,
+      "ease_factor": 2.36,
+      "next_review": "2026-09-15",
+      "last_review": "2026-09-14",
+      "a": "SMTP = 'Sua Mensagem Tá Partindo' (envio/saída). POP3 = 'Puxa' e baixa localmente apagando do servidor. IMAP = Acesso sincronizado mantendo mensagens na nuvem.",
+      "discipline": "Informatica",
+      "subarea": "Redes_de_Computadores"
+    },
+    "Quais as portas padrão dos protocolos HTTP e HTTPS?": {
+      "repetitions": 1,
+      "interval_days": 1,
+      "ease_factor": 2.36,
+      "next_review": "2026-09-15",
+      "last_review": "2026-09-14",
+      "a": "HTTP opera na porta 80 (sem criptografia). HTTPS opera na porta 443 (utiliza criptografia SSL/TLS para sigilo e integridade).",
+      "discipline": "Informatica",
+      "subarea": "Redes_de_Computadores"
+    },
+    "Qual a diferença fundamental entre os protocolos de transporte TCP e UDP?": {
+      "repetitions": 1,
+      "interval_days": 1,
+      "ease_factor": 2.36,
+      "next_review": "2026-09-15",
+      "last_review": "2026-09-14",
+      "a": "TCP é orientado à conexão, confiável e garante a entrega em ordem (Three-Way Handshake SYN/SYN-ACK/ACK). UDP não é orientado à conexão, não garante entrega, priorizando velocidade (streaming e VoIP).",
+      "discipline": "Informatica",
+      "subarea": "Redes_de_Computadores"
+    },
+    "Quantos bits possuem os endereços IPv4 e IPv6 e como são representados?": {
+      "repetitions": 1,
+      "interval_days": 1,
+      "ease_factor": 2.36,
+      "next_review": "2026-09-15",
+      "last_review": "2026-09-14",
+      "a": "IPv4 possui 32 bits (4 octetos em decimal: 192.168.1.1). IPv6 possui 128 bits (8 blocos em hexadecimal separados por dois pontos: 2001:0db8::1).",
+      "discipline": "Informatica",
+      "subarea": "Redes_de_Computadores"
+    },
+    "Qual a função do protocolo DNS (Domain Name System) e sua porta padrão?": {
+      "repetitions": 1,
+      "interval_days": 1,
+      "ease_factor": 2.36,
+      "next_review": "2026-09-15",
+      "last_review": "2026-09-14",
+      "a": "Traduz nomes de domínio humanamente legíveis (ex: www.google.com) em endereços IP numéricos (ex: 142.250.190.46). Opera na porta 53.",
+      "discipline": "Informatica",
+      "subarea": "Redes_de_Computadores"
+    }
+  },
+  "quiz_history": [],
+  "cebraspe_simulados": [
+    {
+      "date": "14/09/2026 11:13",
+      "discipline": "Informatica",
+      "subarea": "Seguranca_da_Informacao",
+      "certas": 3,
+      "erradas": 0,
+      "em_branco": 2,
+      "nota_liquida": 3,
+      "total_questoes": 5,
+      "tempo_segundos": 224
+    }
+  ]
+}

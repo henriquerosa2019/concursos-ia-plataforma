@@ -1,0 +1,55 @@
+[
+  {
+    "enunciado": "(CEBRASPE) O worm é um programa autorreplicante que se propaga automaticamente por meio de redes de computadores, explorando vulnerabilidades de softwares ou de configurações de sistemas, sem a necessidade de hospedeiro ou de intervenção do usuário.",
+    "options": ["A) CERTO", "B) ERRADO"],
+    "correct_index": 0,
+    "banca": "Cebraspe",
+    "comentario": "CERTO. Essa é a distinção fundamental cobrada pelo Cebraspe: o Worm é autossuficiente e autorreplicante, não precisando de hospedeiro nem de ação do usuário, ao contrário dos vírus tradicionais."
+  },
+  {
+    "enunciado": "(CEBRASPE) A assinatura digital garante a autenticidade e a integridade de um documento eletrônico, bem como a confidencialidade das informações nele contidas contra acessos de terceiros.",
+    "options": ["A) CERTO", "B) ERRADO"],
+    "correct_index": 1,
+    "banca": "Cebraspe",
+    "comentario": "ERRADO. A assinatura digital garante Autenticidade, Integridade e Não-repúdio. Ela NÃO garante confidencialidade (sigilo). Qualquer pessoa pode ler o documento assinado digitalmente caso ele não tenha sido também criptografado."
+  },
+  {
+    "enunciado": "(FGV) O ataque cibernético que consiste no redirecionamento malicioso da navegação da vítima para sites falsos, por meio do comprometimento de servidores DNS ou da alteração do arquivo hosts da máquina local, denomina-se:",
+    "options": [
+      "A) Phishing",
+      "B) Pharming",
+      "C) Defacement",
+      "D) Ransomware",
+      "E) Denial of Service"
+    ],
+    "correct_index": 1,
+    "banca": "FGV",
+    "comentario": "O Pharming ocorre no nível de resolução de nomes (DNS). Mesmo que o usuário digite o endereço correto e legítimo na barra do navegador, ele é redirecionado para o IP de um servidor fraudulento clonado."
+  },
+  {
+    "enunciado": "(FCC) No âmbito da criptografia assimétrica, para que um remetente envie uma mensagem confidencial a um destinatário, garantindo que somente este possa decifrá-la, a mensagem deve ser encriptada com a:",
+    "options": [
+      "A) Chave pública do destinatário",
+      "B) Chave privada do remetente",
+      "C) Chave pública do remetente",
+      "D) Chave de sessão simétrica do firewall",
+      "E) Chave privada do destinatário"
+    ],
+    "correct_index": 0,
+    "banca": "FCC",
+    "comentario": "Na criptografia assimétrica voltada para confidencialidade, quem quer enviar mensagem cifra com a CHAVE PÚBLICA do destinatário. Somente o destinatário, possuidor da chave privada correspondente, conseguirá decifrá-la."
+  },
+  {
+    "enunciado": "(VUNESP) Assinale o malware cuja principal finalidade é ocultar outros programas maliciosos e invasores, garantindo a sua permanência e camuflagem no sistema operacional, frequentemente atuando em nível de kernel:",
+    "options": [
+      "A) Spyware",
+      "B) Rootkit",
+      "C) Ransomware",
+      "D) Adware",
+      "E) Keylogger"
+    ],
+    "correct_index": 1,
+    "banca": "Vunesp",
+    "comentario": "O Rootkit é o malware projetado especificamente para se esconder nas camadas profundas do sistema operacional (como o kernel), impedindo que ferramentas de monitoramento e antivírus detectem a presença de invasores."
+  }
+]

@@ -1,0 +1,10 @@
+Quais são os 5 elementos (requisitos) de validade de qualquer ato administrativo?	Mnemônico CO-FI-FO-MO-OB: Competência, Finalidade, Forma, Motivo e Objeto.
+Quais elementos do ato administrativo são SEMPRE vinculados, independentemente da lei?	Competência, Finalidade e Forma (CO-FI-FO). Jamais admitem discricionariedade quanto ao mérito.
+Quais elementos do ato administrativo compõem o chamado MÉRITO ADMINISTRATIVO?	O Motivo e o Objeto (MO-OB), nos quais a autoridade tem margem legal de escolha de conveniência e oportunidade.
+O que estabelece a Teoria dos Motivos Determinantes no Direito Administrativo?	A validade do ato fica vinculada aos motivos alegados pela autoridade para sua prática. Se o motivo for falso ou inexistente, o ato será NULO, mesmo que fosse discricionário.
+Quais são os 4 atributos do ato administrativo segundo a doutrina clássica?	Mnemônico P-A-T-I: Presunção de legitimidade/veracidade, Autoexecutoriedade, Tipicidade e Imperatividade.
+Qual atributo está presente em absolutamente TODOS os atos administrativos sem exceção?	A Presunção de Legitimidade e Veracidade. Ela inverte o ônus da prova para o particular (presunção relativa / juris tantum).
+Qual a diferença fundamental entre ANULAÇÃO e REVOGAÇÃO quanto ao motivo e efeitos temporais?	Anulação extingue ato ILEGAL com efeitos retroativos (Ex Tunc). Revogação extingue ato VÁLIDO porém inoportuno/inconveniente com efeitos para o futuro (Ex Nunc).
+O Poder Judiciário pode revogar um ato discricionário praticado pelo Poder Executivo?	NÃO! O Judiciário jamais revoga atos do Executivo por mérito. O Judiciário pode apenas ANULAR atos ilegais praticados pela Administração quando provocado.
+Quais elementos do ato administrativo admitem convalidação (sanamento de vícios)?	Apenas vícios sanáveis de Competência (desde que não seja exclusiva) e de Forma (desde que não seja essencial à validade do ato). Foco: FO-CO.
+A exigibilidade de pagamento de multa de trânsito possui o atributo da autoexecutoriedade?	NÃO. A aplicação da sanção é autoexecutória, mas a cobrança forçada do valor exige o ajuizamento de Ação de Execução Fiscal no Judiciário.

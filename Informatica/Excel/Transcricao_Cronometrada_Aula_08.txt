@@ -1,0 +1,986 @@
+[1.5s] [Música]
+[29.0s] h D
+[34.2s] [Música]
+[50.7s] [Música]
+[65.6s] [Música]
+[82.5s] [Música]
+[88.8s] k
+[91.7s] [Música]
+[100.8s] k
+[105.3s] [Música]
+[148.8s] per
+[151.7s] [Música]
+[171.9s] [Música]
+[178.8s] D
+[181.0s] p
+[184.8s] [Música]
+[218.0s] B
+[222.5s] [Música]
+[253.0s] p
+[255.2s] [Música]
+[271.7s] [Música]
+[280.2s] [Música]
+[285.0s] p
+[286.6s] [Música]
+[300.0s] du
+[303.5s] [Música]
+[329.9s] t
+[331.5s] [Música]
+[369.9s] t
+[372.7s] [Música]
+[391.0s] du
+[393.8s] [Música]
+[405.8s] [Música]
+[419.9s] p
+[421.5s] [Música]
+[473.6s] vamos embora vamos embora vamos embora
+[474.9s] vamos embora vamos embora chegamos
+[478.7s] [Música]
+[482.5s] Bora meus amores muito boa tarde
+[484.9s] chegamos para mais uma live momento
+[487.0s] especial falar do Excel que ninguém
+[489.3s] gosta mas todo mundo precisa e você que
+[492.2s] é forte está aqui parabéns parabéns
+[495.5s] porque você está enfrentando a Fera que
+[497.3s] é necessária e isso vai ter Claro suas
+[499.9s] Recompensas sejam muito bem-vindos meus
+[502.2s] amores chega deixando o seu like se
+[504.2s] inscreve no canal como sempre todos
+[506.5s] esses pedidos são válidos para fazer o
+[508.2s] canal crescer me a ajuda E agradecendo
+[511.2s] também a muitos que se tornaram membros
+[512.8s] do canal Hoje os membros têm acesso a
+[514.9s] aulas exclusivas Muito obrigado sejam
+[517.5s] muito bem-vindos agora a gente vai
+[519.7s] aprender de forma breve suscinta bem
+[522.6s] direta como é que se faz para resolver
+[525.8s] questões da função proc V proc h o que é
+[529.9s] isso Professor função proc proc é de
+[533.5s] Procura então quero procurar algo a
+[536.6s] gente vai verificar aqui vamos resolver
+[538.8s] algumas questões e depois eu vou criar
+[540.6s] uma uma tabela onde a gente vai poder
+[542.9s] testar isso daqui na prática também
+[544.6s] dentro do Excel até porque nós estamos
+[546.7s] na nossa série de Excel na prática
+[549.8s] Fechou então vamos entender primeiro o
+[552.4s] conteúdo quando a gente fala de Excel
+[555.8s] obviamente o objetivo é criação de
+[557.7s] fórmulas funções automações e entre elas
+[562.2s] a gente tem essa função zinha aqui ó
+[564.1s] função
+[565.4s] proc nesse caso a que mais cai em prova
+[568.3s] é proc V que é quem faz uma procura
+[572.5s] função de procura na
+[575.6s] vertical se fosse proc H seria na
+[580.0s] horizontal então nós temos duas funções
+[582.6s] proc V E Proc H fechou lembrando ó
+[587.1s] função proc V procura na vertical
+[592.6s] poderia aparecer em prova como v lockup
+[595.2s] v lockup e existe a função proc H que
+[601.0s] seria a procura na
+[603.5s] horizontal existe também a função proc x
+[608.2s] que procura no índice completo e nós
+[611.2s] temos funções de índice Mas vamos focar
+[614.5s] hoje Especialmente na função proc v e
+[618.0s] entender como isso aqui funciona na
+[619.5s] prática primeira coisa sempre quero
+[621.9s] entender Professor o assunto primeiro
+[624.2s] passo você
+[625.9s] precisa saber a
+[628.0s] sxe que sintaxe é a forma de escrita
+[632.6s] sintaxe é o que compõe a função como é
+[636.2s] que faz para eu criar essa função toda a
+[639.0s] função precisa de uma sintaxe uma forma
+[641.6s] de escrita no caso da função de procura
+[644.7s] funciona basicamente assim ó você vai
+[647.1s] colocar o nome da função proc e no nosso
+[650.4s] caso hoje especialmente Estamos
+[651.9s] estudando o proc V que é de
+[655.0s] vertical e aí vai ter um critério aqui
+[659.3s] aqui ponte vírgula outro critério aqui
+[663.4s] ponte vírgula outro critério aqui ponte
+[666.7s] vírgula outro critério aqui então
+[669.1s] podemos dizer que na função procv nós
+[671.9s] temos quatro critérios a serem
+[674.9s] mencionados O que é que faz cada um
+[677.2s] desses critérios eu vou deixar entela
+[678.8s] cheia aqui para você visualizar e se
+[681.2s] quiser anotar também ó pra função proc V
+[684.6s] funcionar primeiro tem que ter esse A7
+[688.8s] aqui ó que é o primeiro argumento O que
+[691.5s] é isso
+[692.5s] Professor aqui eu coloquei a sete mas
+[695.3s] poderia ser qualquer coisa tá o que tem
+[697.7s] aqui é o que a gente chama de valor que
+[701.8s] você está procurando ou seja valor
+[704.7s] procurado Então vamos escrever de novo
+[707.0s] aqui a função abaixo com esses termos tá
+[710.6s] ficaria assim ó como é que funciona a
+[712.6s] função de procura seria proc
+[715.8s] V primeiro você tem aqui um
+[721.3s] valor
+[725.3s] procurado valor procurado ponto e
+[729.4s] vírgula certo o objetivo da função é
+[732.6s] procurar esse valor depois do ponto e
+[735.8s] vírgula quer dizer que você vai agora
+[737.4s] para o segundo argumento e o segundo
+[740.6s] argumento aqui nesse caso seria esse
+[742.6s] aqui
+[743.4s] ó nas colunas de A até B que eu coloquei
+[747.2s] aqui ó de A até B
+[750.2s] e até a linha
+[751.6s] C aqui eu tô colocando para você a
+[754.5s] tabela que a gente pode chamar de Matriz
+[757.9s] então depois do valor procurado vem
+[761.2s] a tabela ou chamada também de Matriz se
+[765.8s] você tiver achando difícil anota por
+[768.5s] enquanto e as coisas vão começar se
+[770.4s] encaixando aos poucos tá só anota o que
+[773.9s] que seria cada um desses pontos o
+[776.5s] terceiro argumento você tá vendo aqui o
+[778.5s] número dois terceiro argumento é o que a
+[781.6s] gente chama de
+[784.5s] resposta ao
+[787.2s] encontrar ao encontrar este valor aqui
+[790.6s] dentro dê a resposta dele ao encontrar o
+[795.6s] valor nessa tabela de a resposta e nesse
+[802.2s] caso aqui
+[803.5s] ó ele vai
+[805.7s] exibir o valor correspondente na segunda
+[808.7s] coluna porque tem o número dois então o
+[812.5s] número representa em qual coluna está a
+[818.1s] resposta e por fim você tem lá o número
+[822.7s] zero que é o quarto argumento aqui ó
+[825.1s] número zero seria isso aquii o que que
+[828.0s] eu posso colocar ali o termo
+[830.3s] zero ou o termo falso a escrita falso
+[834.8s] isso faz com que exija uma busca exata
+[837.9s] se fosse o número um ou termo verdadeiro
+[841.0s] faria uma busca no valor aproximado
+[844.1s] Então essa última parte aqui significa
+[847.1s] valor
+[850.2s] exato ou valor
+[858.9s] aproximado tá aproximado pronto A
+[863.2s] princípio Você vai precisar anotar isso
+[864.6s] daqui a gente vai colocar na prática e
+[867.1s] você vai entender isso da aqui na
+[869.6s] prática Então calma aí calabres antes de
+[872.4s] ficar estressadinho porque não tá
+[874.0s] entendendo nada Tenha paciência que a
+[877.6s] gente vai aprender na prática tá anotou
+[880.9s] isso daqui o que eu tô te explicando é a
+[883.1s] sintaxe é o que é que tem que ter dentro
+[885.8s] desta função e eu coloquei para vocês do
+[890.4s] lado de cá eu coloquei para vocês ó uma
+[895.4s] tabela vamos entender essa tabela vamos
+[899.0s] Vamos tentar entender a tabela olha aqui
+[903.0s] ó
+[906.0s] Ops vamos entender a tabela ó olha pra
+[909.5s] tabela tá você tá vendo aqui que na
+[912.3s] tabela tem sigla na primeira coluna aí
+[915.2s] tem lá sigla RJ sigla SP sigla se sigla
+[918.9s] ce e na coluna B tem o estado estado do
+[923.9s] Rio de Janeiro Estado de São Paulo
+[925.7s] Estado do Sergipe Estado do Ceará a
+[929.1s] abaixo tem assim ó busca Eu quero fazer
+[931.7s] uma busca por
+[933.0s] SP mas pera aí SP é qual estado então eu
+[937.7s] vou procurar a sigla e ele vai me
+[940.3s] retornar o estado certo eu faço a
+[943.8s] procura e ele me retorna O Estado
+[948.0s] professor não tô entendendo ainda ainda
+[951.2s] não estou entendendo vamos direto para o
+[953.9s] Excel que eu vou lhe mostrar dentro do
+[957.2s] Excel Vamos criar aqui uma planilha
+[961.3s] nova e eu vou fazer essa ideia aqui para
+[965.1s] funcionar certo gente Primeira ideia
+[969.6s] para que essa função funcione a gente
+[972.1s] está utilizando a função proc V que que
+[975.0s] significa a função proc V que o conteúdo
+[978.4s] vai estar entre colunas então assim ó
+[980.2s] sigla tá na coluna A estado tá na coluna
+[984.2s] B então proc V é quando os valores estão
+[987.6s] em colunas que é o que a gente faz 99%
+[990.4s] das vezes para organizar as coisas e
+[993.8s] aqui eu coloco assim ó sigla São Paulo
+[997.8s] Sergipe Rio de Janeiro e Ceará pronto
+[1002.9s] para fazer algo mais próximo do que eu
+[1005.1s] coloquei lá para vocês verem e do lado
+[1007.4s] de cá eu vou colocar o nome tá ó São
+[1010.6s] Paulo
+[1012.2s] Sergipe Rio de Janeiro
+[1017.1s] Ops Ceará ponto mas é claro pense assim
+[1021.4s] que a gente vai colocar todos os estados
+[1023.8s] não vou colocar só esses estados vou
+[1025.8s] colocar todos os estados para organizar
+[1028.2s] todos eles para deixar bonitinho uma
+[1030.1s] tabela com o nome da representação de
+[1032.2s] todos os estados você você fala a
+[1035.4s] verdade você sabe qual é a sigla de
+[1037.8s] todos os
+[1039.0s] estados que nós temos no Brasil você
+[1041.7s] sabe todas as siglas sim ou não eu falar
+[1045.4s] a verdade eu acho que eu vou dar umas
+[1046.6s] ratada aí viu eu vou acertar a maioria
+[1049.4s] mas vou dar umas ratad gigante Aí em
+[1051.0s] algumas então eu posso criar uma tabela
+[1053.7s] e fazer exatamente assim ó eu posso
+[1055.9s] colocar em qualquer lugar eu vou colocar
+[1057.5s] aqui do
+[1058.9s] lado aqui do lado eu posso colocar
+[1061.8s] embaixo em cima Vou colocar aqui do lado
+[1063.8s] vou colocar assim
+[1065.5s] ó valor botar assim ó procuro tá procura
+[1073.5s] isso e a
+[1076.4s] resposta vai ser isso e vamos colocar as
+[1079.0s] respostas embaixo certo is assim ó o que
+[1081.3s] ele procura vai tá aqui ó ele procura
+[1087.9s] aqui e a resposta vai tá aqui do lado a
+[1092.7s] resposta eu quero que fique aí então
+[1095.3s] procure
+[1099.8s] isso procure aqui ó então se eu colocar
+[1102.6s] assim ó se eu colocar
+[1105.0s] RJ eu estou dizendo aqui procure Rio de
+[1108.2s] Janeiro procure RJ procure o estado RJ e
+[1112.3s] a a ideia da função proc é ele procurar
+[1116.1s] e ele me dizer a resposta Então nesse
+[1118.0s] caso vai ser assim ó Coloque aqui
+[1120.5s] Coloque aqui eu vou colocar outra cor só
+[1122.4s] para vocês
+[1123.4s] entenderem Coloque aqui a resposta Verde
+[1127.2s] ó
+[1128.5s] Verde automaticamente eu quero que você
+[1131.0s] dê a resposta do que é que seria RJ
+[1133.6s] então vou fazer assim ó é igual a Proc V
+[1139.9s] procure para procurar o quê é para
+[1142.9s] procurar RJ Ô tio poderia escrever o
+[1146.6s] termo RJ poderia
+[1149.2s] poderia poderia mas eu vou clicar ó
+[1151.9s] ponte e vírgula procure RJ lembra disso
+[1156.3s] que a primeira parte da da nossa fórmula
+[1159.0s] é o que você procura a segunda parte
+[1161.5s] você lembra aí você anotou o que
+[1164.3s] é procura e a segunda parte é o quê
+[1167.4s] depois do ponto e vírgula
+[1169.4s] Matriz tabela ou seja procure nessa
+[1172.7s] tabela inteira aí eu seleciono todo
+[1174.6s] mundo eu não quero saber quem é não tá
+[1177.2s] eu seleciono todo mundo procure aí botei
+[1180.7s] todo
+[1181.7s] mundo ponto e vírgula então até aqui
+[1185.1s] ficou assim ó procure nas colunas V de
+[1189.4s] colunas procure nas
+[1192.0s] colunas o valor D2 Quem é D2 Rio de
+[1195.5s] Janeiro aqui RJ RJ tá o RJ Proc RJ
+[1199.8s] procura onde de a2 até b7 ou seja onde
+[1203.2s] tá vermelhinho aqui ó rosinho aqui certo
+[1206.2s] procure ali mas a resposta vai tá em
+[1209.5s] qual coluna a resposta vai tá na coluna
+[1212.4s] A ou na coluna B porque eu tô procurando
+[1215.6s] pela sigla Mas eu quero a resposta do
+[1217.5s] estado onde é que vai tá a resposta na
+[1220.2s] coluna A ou na coluna B ah na coluna B
+[1224.0s] concorda coluna B só que eu não vou
+[1226.6s] colocar aqui coluna B não Não não eu vou
+[1229.5s] colocar o número da coluna tá na coluna
+[1232.7s] do não é na a é na b não é na coluna A é
+[1236.8s] na coluna B então 2 se fosse na coluna c
+[1240.0s] 3 entendeu tá na terceira
+[1243.1s] coluna procure RJ na tabela e dê a
+[1248.3s] resposta do que tá na segunda coluna
+[1250.6s] ponte e vírgula zero que é que significa
+[1254.0s] zero valor exato Depois eu te explico
+[1256.4s] isso daqui a pouco eu te explico isso eu
+[1258.7s] vou dar enter aqui e o que ele vai ter
+[1260.8s] que me dar como resposta é Rio de
+[1264.6s] Janeiro olha aí ó Rio de Janeiro ele
+[1267.8s] achou a resposta e se eu mudar a sigla
+[1270.0s] aqui ó procure agora
+[1271.9s] se resposta é Sergipe agora procure aí
+[1276.0s] sp agora é São Paulo agora procure ce é
+[1280.9s] Ceará agora procure ba Eita Poxa ND o
+[1287.3s] que é que significa ND nada disponível
+[1290.4s] porque não tem ba aqui você tá vendo BA
+[1292.2s] em algum lugar não não tem pô é por isso
+[1294.6s] que ele tá dizendo pô não tem nada
+[1295.8s] disponível não não achei não que é ba
+[1298.2s] mas se tivesse se
+[1300.8s] tivesse aí ó
+[1303.7s] P achei o que é ba
+[1307.7s] Bahia
+[1309.2s] entendeu ele vai encontrar agora ó ele
+[1313.3s] só vai encontrar o que ele realmente
+[1315.2s] percebe que existe se tiver alguma coisa
+[1318.8s] aqu ele não vai por exemplo ó a l pá
+[1321.4s] ND não tem a l não tem certo porque
+[1326.2s] aquele da ND porque eu coloquei o número
+[1328.7s] zero aqui ó quando eu coloco o número
+[1330.1s] zero eu digo eu digo a fórmula assim ó
+[1332.4s] Ou você me mostra exatamente o que eu tô
+[1335.4s] pedindo ou não me mostre nada aí Ele
+[1339.4s] olhou não tem a l o que é que ele disse
+[1341.5s] não tem
+[1342.6s] nada
+[1344.9s] nada
+[1346.6s] ok então seria ó zero valor exato valor
+[1351.0s] exato agora eu vou colocar o número um
+[1352.8s] em vez de zero eu vou colocar o número
+[1354.3s] um ou pode ser zero no final ou pode ser
+[1357.4s] um se for zero quer dizer valor exato
+[1360.7s] ele tá procurando exatamente aquilo se
+[1362.7s] ele não encontrar ele dá como resposta
+[1364.8s] ND nada disponível não encontrei se eu
+[1428.3s] voltamos
+[1433.2s] voltamos voltando da onde parou
+[1436.7s] tá era sem áudio para ver se vocês
+[1439.4s] estavam estavam acompanhando a Live
+[1441.3s] entendeu mentira eu que parei a Live
+[1444.3s] parei o áudio aqui estamos voltando
+[1447.2s] vamos vamos
+[1449.2s] embora
+[1450.8s] ó a gente tava aqui ó a gente parou aqui
+[1454.4s] nessa parte final tá o que é o zero
+[1458.0s] zero é fazer uma
+[1460.6s] busca de forma
+[1462.7s] exata e o que é o número um número
+[1467.4s] um é fazer uma busca de forma
+[1471.2s] aproximada ou seja ele procura algo
+[1473.6s] próximo a isso se ele achar bem se ele
+[1475.4s] não achar aí ele vai dar
+[1477.3s] erro tá vamos dar exemplo aqui ó se eu
+[1481.6s] colocasse assim ó
+[1487.4s] Ã Não sei colocar uma sigla que começa
+[1491.4s] aqui com bota assim ó
+[1493.5s] B BT imagina que existe lá BT e não
+[1498.6s] achou nada disponível e tá com valor um
+[1500.7s] ó por mais que tenha algo parecido Se eu
+[1503.8s] colocar assim ó
+[1505.4s] SS ele achou Qual foi a semelhança dele
+[1508.8s] sei lá qual foi a semelhança dele mas
+[1511.1s] deu valor
+[1512.2s] parecido Ou seja você vai querer usar o
+[1515.5s] valor aproximado em casos como siglas
+[1518.3s] como valores em texto não A ideia é
+[1522.0s] sempre usar o zero porque você vai fazer
+[1523.7s] uma busca de forma
+[1525.4s] exata ou me responde o que eu tô
+[1527.8s] procurando não respondo a nada entendeu
+[1530.8s] a ideia Olha como isso aqui é bom Ó
+[1533.2s] então eu poderia no trabalho ter lá sei
+[1535.4s] lá 200 30 500 1000 siglas e na hora que
+[1538.8s] alguém perguntasse Fulano Qual é a sigla
+[1540.5s] disso eu vinha aqui e colocava sigla de
+[1543.3s] trt20 O que é isso P enter aí ele ia lá
+[1547.0s] e ele encontrar se tivesse a sigla ó se
+[1550.6s] tivesse a sigla trt20
+[1554.2s] é Tribunal do Trabalho de Sergipe tá
+[1557.8s] aqui ó
+[1559.8s] apareceria
+[1561.4s] entendeu então é sobre isso que a gente
+[1564.0s] tá falando você coloca a sigla que você
+[1566.0s] quer aqui você coloca a sigla e ele dá a
+[1569.1s] resposta disso daqui Então essa é a
+[1571.4s] ideia da função proc V Procure aí
+[1573.8s] Procure aí procure
+[1577.7s] ver tudo
+[1581.9s] bem bom é isso por isso que quando a
+[1585.1s] gente quer algo exato coloca o número
+[1587.1s] zero ou
+[1590.7s] mesal
+[1592.4s] olal o fal é mesmaa que
+[1595.8s] oer zer E fals é mesmaa em n então É ISO
+[1601.4s] fun de
+[1603.4s] procura função de procura alguma até
+[1607.3s] aqui meus amores vocês
+[1609.5s] entendam eu poderia fazer várias e
+[1612.3s] várias e vários exemplos semelhantes a
+[1615.2s] esses por exemplo a gente poderia faz um
+[1618.2s] a ideia de um boletim com vários alunos
+[1621.9s] Colocar assim ó aluno um Imagina assim ó
+[1625.1s] aluno um aluno dois aluno trê aluno 4
+[1628.0s] aluno 5 Pensa aí na ideia tá vamos fazer
+[1630.7s] de aluno agora tenho vários alunos esses
+[1633.4s] alunos T uma média esse tirou S esse
+[1637.5s] tirou 3 esse 8 esse 9 esse qu esse 5
+[1643.0s] pronto ó e aqui eu poderia colocar uma
+[1646.0s] função que a gente até já aprendeu ó
+[1647.7s] função si se a nota desse aluno for
+[1651.0s] maior ou igual a 6 quer dizer que esse
+[1654.0s] aluno foi
+[1655.4s] aprovado
+[1657.3s] aprovado caso contrário ele foi para
+[1663.4s] rec operação lembra disso aqui a gente
+[1666.8s] já fez uma aula só sobre a função si e
+[1670.0s] várias questões da função si aí eu posso
+[1672.7s] colocar isso daqui tá com as aspas tem
+[1675.8s] que colocar as aspas deu certo né deu
+[1678.2s] ele colocou R sozinho pronto ó cada
+[1681.3s] aluno eu agora já tenho a posição desse
+[1683.6s] aluno será que esse aluno foi aprovado
+[1685.2s] ou não foi aprovado E aí eu poderia
+[1688.0s] fazer uma função de procura de novo ó
+[1693.6s] procure procure eu vou dizer assim ó
+[1697.1s] procure o aluno do e me
+[1701.2s] diga a me dê a resposta aí aí eu poderia
+[1705.3s] fazer assim ó é igual a
+[1708.8s] procure na
+[1710.9s] vertical procurar quem o aluno dois
+[1714.3s] ponto e vírgula onde aí eu seleciono
+[1717.0s] sempre tudo tá seleciona tudo não quero
+[1719.0s] nem olhar os números eu seleciono tudo
+[1721.0s] ponte e vírgula eu tô dizendo assim ó
+[1723.1s] procure esse aluno e eu quero saber se
+[1725.4s] ele foi aprovado ou não aí como é que eu
+[1727.4s] faço tá em qual
+[1729.4s] coluna a situação do aluno tá em qual
+[1733.8s] coluna na coluna um na coluna dois ou na
+[1736.7s] coluna três
+[1740.9s] na coluna três isso ponto e vírgula zer
+[1744.9s] quero dizer valor valor exato É o que eu
+[1747.0s] quero pronto aí o que é que ele vai dar
+[1749.2s] como
+[1750.0s] resposta aqui ó ele achou o aluno um e o
+[1753.1s] aluno um está ou aluno dois perdão está
+[1755.3s] de recuperação E aí Óbvio em vez de ter
+[1758.7s] aluno um aluno dois pode ser o nome dos
+[1760.3s] alunos José Maria João aí chegou um PIS
+[1763.3s] eu quero saber se meu aluno foi aprovado
+[1765.0s] ou não pera aí deixa eu ver como é o
+[1766.2s] nome do seu aluno Como é o nome do seu
+[1767.5s] aluno Ah o nome do meu filho é aluno C
+[1771.6s] nome do meu filho pera aí tome ó ele tá
+[1774.8s] na recuperação viu aí Chegou outro pai
+[1777.6s] disz não não o nome do meu filho é aluno
+[1780.2s] TR pô tá aqui ó aluno TR foi aprovado
+[1783.4s] Então não preciso ficar procurando os
+[1785.2s] boletins da escola pera aí deixa eu ver
+[1787.3s] eu não tô encontrando não Maria Você viu
+[1789.4s] o boletim de fulano ol quanta entendeu a
+[1792.9s] ideia como isso aqui ajudaria se tivesse
+[1795.2s] uma tabela com tudo com tudo Eu só
+[1798.6s] coloco o nome do fulano aqui que ele vai
+[1801.1s] saber a resposta se ele foi aprovado ou
+[1803.0s] não olha isso não é perfeito isso não é
+[1805.2s] lindo isso daqui Então procura e dar uma
+[1808.4s] resposta baseada nessa
+[1811.0s] procura na minha escola era assim é não
+[1813.6s] é a maioria das escolas ainda é assim
+[1815.5s] você chega quer saber se o aluno foi
+[1817.3s] aprovado ou não fica todo mundo gritando
+[1818.8s] pro outro não achei não Fulano Fulano
+[1820.6s] procura aí não tá a não na gaveta filho
+[1823.8s] de rapariga bote tudo no Excel filhos
+[1827.2s] colocao no Excel e eu consigo colocar
+[1831.0s] até para ele verificar de todas as
+[1833.5s] séries de uma vez só eu consigo colocar
+[1836.2s] as notas dos alunos do primeiro ano do
+[1837.8s] segundo ano terceiro ano Olhe todos aí
+[1840.0s] veja quem é o
+[1843.0s] nome é massa ou não é um negócio desse é
+[1845.5s] lindo ou não é um negócio desse é
+[1847.0s] utilizável ou não é um negócio desse e
+[1849.8s] quem sabe disso no trabalho é um
+[1852.1s] destaque que você consegue criar uma
+[1854.0s] besteirinha que quando seu patrão olha
+[1855.4s] Diga meu Deus V como é que você fez isso
+[1858.0s] massa Vel gostei rapidão né É por quê
+[1861.8s] Porque ele procura por mim não sou eu
+[1864.1s] que fico
+[1865.4s] procurando Então é assim que funciona a
+[1867.8s] função PR o que
+[1870.5s] V tem como fazer pode fazer pelo celular
+[1874.4s] tablet computador o que importa é que
+[1877.0s] você tenha o programa de planilhas tá o
+[1880.5s] Excel ou
+[1883.8s] cal é por
+[1885.9s] isso tudo bem agora vamos pras
+[1890.2s] questões já entendeu Como funciona agora
+[1893.5s] vamos PR as questões vamos ver se vocês
+[1895.5s] acertam a questão primeira questãozinha
+[1897.2s] na
+[1898.2s] tela não isso aqui não é questão olha aí
+[1903.0s] ó Bora lá o primeiro argumento utilizado
+[1906.8s] na na fórmula proc V é o número de
+[1911.4s] índice da
+[1912.9s] coluna que representa a localização do
+[1915.9s] intervalo do valor ser
+[1918.9s] procurado Ixe Professor aí pronto já
+[1923.3s] calma calabo olha o que ele tá
+[1924.8s] perguntando a gente não falou que a
+[1927.7s] função ela tem dentro dela um argumento
+[1931.8s] outro argumento outro argumento são
+[1934.0s] quatro argumentos Não foi isso que a
+[1935.4s] gente falou a pergunta é Qual é o
+[1939.6s] primeiro
+[1941.2s] argumento ou seja o que fica aqui é o
+[1944.4s] número de índice da coluna
+[1948.2s] de novo travando tem jeito a rede hoje
+[1952.9s] não quer
+[1956.0s] trabalhar Pergunta dele é essa ó o
+[1958.4s] primeiro argumento o primeiro argumento
+[1960.5s] fica aqui ó primeiro argumento segundo
+[1963.1s] argumento terceiro argumento quarto
+[1967.7s] argumento o primeiro argumento é o
+[1971.9s] número de índice da coluna A pergunta é
+[1974.0s] essa é o número de índice da coluna
+[1976.4s] vamos direto para o Excel de novo olha
+[1979.6s] para cá ó se eu coloco o nome da função
+[1982.4s] aqui ó vou botar até aqui ó é igual a
+[1984.8s] proc V abrir os
+[1987.8s] parênteses olha o que ele aparece aqui ó
+[1990.2s] vou deixar um pouquinho para ver se
+[1992.2s] melhora visualização Mas é pequenininho
+[1994.2s] mesmo tem assim ó valor procurado ponte
+[1997.6s] e
+[1998.2s] vírgula ó ponte e vírgula matriz da
+[2002.9s] tabela ponto e vírgula número de índice
+[2006.2s] da coluna número de índice da coluna não
+[2009.9s] é o primeiro argumento não
+[2013.2s] filho não é Não Longe de ser o que é que
+[2017.8s] tem aqui é o
+[2020.3s] valor
+[2023.1s] procurado valor
+[2026.8s] procurado não é número de índice da
+[2029.3s] coluna o número de índice da coluna é o
+[2032.1s] terceiro argumento terceiro argumento ó
+[2035.2s] número de índice da coluna é o terceiro
+[2038.5s] argumento o segundo é a Matriz ou a
+[2042.4s] tabela Você anotou ou não
+[2047.0s] anotou então
+[2049.2s] resposta dessa questão a banca colocou
+[2052.3s] aqui
+[2053.6s] E errou tá
+[2057.6s] errado gabarito dessa questão é
+[2061.7s] errado porque seria o primeiro argumento
+[2064.6s] valor procurado segundo argumento Matriz
+[2066.8s] terceiro argumento o número de
+[2072.0s] índice
+[2073.5s] tá Bora paraa próxima questão vamos
+[2077.9s] embora vamos mais
+[2080.6s] uma segunda questão aqui com relação a
+[2083.7s] função proc V do Excel vai funcionar no
+[2087.1s] cálculo também julgue o item a busca por
+[2091.7s] um
+[2092.5s] intervalo pode ser feita por uma
+[2095.5s] correspondência aproximada
+[2098.2s] ou uma correspondência
+[2100.2s] exata Tá certo ou errada essa
+[2104.8s] questão esse exercício de fixação
+[2107.3s] estaria certo ou
+[2108.7s] errado a busca por o intervalo pode ser
+[2112.5s] feita por
+[2114.4s] correspondência
+[2116.7s] aproximada que significa mesma coisa que
+[2119.7s] o número um que é a mesma coisa que
+[2122.1s] colocar o
+[2123.6s] nome verdadeiro
+[2128.4s] verdadeiro
+[2130.6s] ou de forma
+[2132.7s] exata de forma exata é a mesma coisa que
+[2136.1s] o zero lá no final ou em vez de zero
+[2139.0s] pode aparecer o nome falso então sim
+[2143.2s] existe a correspondência verdadeiro ou
+[2145.6s] falso ou um zero ou aproximada exata
+[2149.0s] Então esse caso aqui questão está
+[2152.7s] verdadeira perfeito acertou aqui a
+[2156.6s] questão lindo e
+[2159.0s] maravilhoso
+[2162.3s] fechado próxima questão no Excel 2010 a
+[2166.4s] função proc h e a função proc
+[2170.4s] V são usadas em planilhas que operam que
+[2174.8s] operam relacionamentos comparações entre
+[2178.1s] dados dispostos em diferentes células e
+[2181.4s] planilhas pergunta tá aqui ó assinal as
+[2185.4s] categorias
+[2188.5s] nas quais Essas funções são enquadradas
+[2190.9s] pelo aplicativo Excel e Cal a função
+[2194.0s] proc h e procv são funções de qu letra A
+[2197.3s] de Engenharia e suplemento ou de
+[2200.3s] estatística
+[2201.9s] e
+[2203.6s] estatística ou
+[2206.6s] financeiras ou de pesquisa e referência
+[2210.5s] da
+[2212.4s] planilha ou de texto texto
+[2217.6s] E
+[2220.5s] aí
+[2223.1s] proc não é de procurar se é de procurar
+[2227.2s] é uma função de pesquisa pesquise aí
+[2232.0s] nessa
+[2233.6s] pesquisa letra
+[2238.6s] D E porque é que ele tá mencionando isso
+[2242.0s] que ele tá querendo que você diga onde é
+[2243.8s] que fica aqui ó fórmulas vendo aqui ó
+[2245.8s] fórmulas lá em cima fórmulas
+[2248.2s] e tem aqui várias Ó tem função
+[2250.9s] financeira tem função de lógica tem
+[2253.8s] função de texto tem função de data e
+[2256.6s] hora e tem função de pesquisa e
+[2258.9s] referência vai tá aqui ó pesquisa e
+[2262.0s] referência olha aqui ó proc proc proc H
+[2266.1s] proc V proc
+[2268.9s] x e tem o índice também que é de procura
+[2272.8s] existem funções de matemática funções no
+[2276.8s] geral
+[2278.5s] tá E todas as funções aqui esse FX aqui
+[2281.0s] é Tod são todas as funções aí você
+[2283.4s] poderia encontrar
+[2285.7s] aí então seriam as categorias de
+[2288.5s] fórmulas que estão dentro do menu
+[2290.8s] fórmulas é isso próxima questão depois a
+[2295.0s] gente vai começar a calcular nas
+[2296.0s] próximas questões olha para cá a função
+[2298.2s] proc V permite localizar procurar e
+[2303.2s] localizar itens em qualquer posição de
+[2306.7s] uma tabela ou intervalo por
+[2310.4s] coluna
+[2315.2s] pesquisando a partir de determinado
+[2317.9s] valor para se obter o valor de
+[2321.4s] retorno a função procv permite localizar
+[2325.6s] itens em qualquer
+[2328.7s] posição gente qualquer posição não
+[2334.2s] não quando é V quer dizer que ele vai
+[2337.4s] vai procurar na vertical nas
+[2341.5s] colunas se fosse proc H ele iria
+[2345.1s] procurar na
+[2347.5s] horizontal se fosse em qualquer aí
+[2350.8s] poderia ser o proc x aí ele procuraria
+[2354.3s] em qualquer
+[2357.2s] posição Tudo bem então proc V procura na
+[2361.9s] vertical proc H procura na horizontal
+[2364.6s] proc x procura em qualquer posição
+[2369.0s] então gabarito dessa questão seria
+[2372.0s] errado
+[2374.5s] errado e aí entra a segundo tipo de
+[2377.9s] questão que poderia aparecer que é a
+[2379.8s] questão para você responder ele diz para
+[2383.3s] você aqui a função ó ele diz a função e
+[2386.8s] quer que você dê a resposta dessa função
+[2389.3s] vamos fazer isso agora utiliza ou
+[2392.0s] utilize a função pro V no Excel e
+[2394.1s] analise
+[2395.2s] resultado besterol besterol besterol D
+[2398.5s] função disso aqui para besterol besterol
+[2402.1s] é tudo idioti a única coisa que você
+[2403.8s] precisa se preocupar e analisar é o nome
+[2406.2s] da função Pô olha aqui ó a função é essa
+[2410.0s] e o que é que ele quer que você diga
+[2412.4s] qual o resultado dessa função você só
+[2415.1s] consegue achar a resposta se você
+[2416.8s] lembrar Qual é a sintaxe lembra qual é a
+[2419.0s] sintaxe a função proc V ela começa com o
+[2424.1s] valor
+[2425.4s] procurado depois a Matriz ou a tabela né
+[2428.9s] Depois o índice da resposta e por último
+[2432.5s] se é correspondência exata ou falso tá
+[2435.6s] correspondência se você não lembrar isso
+[2437.3s] daqui vai para lugar nenhum aqui tem ó
+[2439.6s] proc V E2 O que é E2 é o valor procurado
+[2443.6s] ele está procurando E2 vamos achar E2
+[2446.3s] quem é E2 ó e 1 2 2 é é 2 ó procure o
+[2452.7s] número do de A1 até C5 quem é A1 aqui ó
+[2459.8s] A1 quem é C5 C 5 aqui ó
+[2465.9s] C5 Procure em todos esses lugares aqui ó
+[2472.5s] procure o número do Procure aí achou
+[2476.4s] onde que tem o número do deixar você ver
+[2478.4s] onde que tá o número do achei olha aqui
+[2481.2s] o número achei bom parabén agora
+[2488.4s] na terceira
+[2491.8s] coluna A primeira
+[2497.2s] coluna A primeira
+[2501.8s] coluna seria a coluna A a segunda é a b
+[2504.8s] e a terceira é a c como ele queer a
+[2506.9s] terceira Olha aqui a terceira Ó quem é a
+[2509.7s] terceira a terceiro é o número 10 e ele
+[2513.1s] tá dizendo eu quero de forma exata
+[2515.2s] quando tem o nome falso ou tem número
+[2517.5s] zero quer dizer que ele quer de forma
+[2518.6s] exata então a resposta dessa questão é
+[2523.2s] 10
+[2525.8s] 10 é o gabarito da questão
+[2531.0s] 10 entendeu a
+[2533.9s] ideia eu vou refrisar aqui mais uma vez
+[2536.6s] tá ó procure esse valor que valor é esse
+[2542.1s] E2 procure esse valor onde de a
+[2549.3s] até
+[2550.8s] C 5 aqui dentro procure aqui dentro onde
+[2555.2s] que tem o número do
+[2558.2s] achei agora se você já achou essa linha
+[2562.8s] D O que está na terceira coluna dela 1 2
+[2568.8s] 3 terceira coluna é o valor número
+[2572.4s] 10 por isso que o gabarito é a letra c
+[2577.8s] excelente questão que tira 90% dos
+[2582.9s] candidatos 90 ainda é pouco 95% dos
+[2586.6s] candidatos se lasca aqui não sabe nem
+[2589.0s] para onde vai e tudo bem Depois que você
+[2593.0s] aprende a função aí você começa a se
+[2594.8s] encontrar você não vai se perder mais
+[2597.3s] você entendeu a ideia que aqui é o valor
+[2601.2s] procurado que aqui é a tabela ou a
+[2604.1s] matriz que aqui é o índice de
+[2608.3s] e que o final é que diz se vai ser exato
+[2612.0s] ou
+[2614.0s] aproximado lembra disso pois é se
+[2616.8s] lembrar vai acertar quer ver mais uma
+[2621.1s] ó essa aqui mais complexa porque ele
+[2624.2s] pede para você criar tabela pare vi
+[2626.2s] consid uma planilha onde as células A1
+[2629.2s] até
+[2630.8s] A5 a 1 2 3 4 5
+[2640.9s] de A1 até A5 contém respectivamente os
+[2644.4s] valores A1 é
+[2646.6s] 8
+[2648.5s] A2 é 5
+[2651.6s] A3 é
+[2655.6s] 7 depois é 3 e por último é 4 ele falou
+[2659.9s] respectivamente ó de A1 até A5 tem isso
+[2663.5s] então ele tá dizendo Exatamente isso
+[2665.0s] aqui que eu fiz
+[2666.0s] ó e as células B1 até
+[2669.3s] B5 contém
+[2671.6s] respectivamente os valores Pedro Pedro
+[2675.4s] tá aqui ó
+[2678.6s] Pedro depois
+[2682.2s] Maria e depois
+[2686.9s] João e depois
+[2690.9s] Tito e depois
+[2694.9s] Mariana Mariana
+[2698.2s] Ok então o que ele pediu aqui nesse caso
+[2701.2s] da questão ó logo de cara foi que você
+[2703.6s] criasse a tabela para facilitar seu
+[2707.0s] entendimento tem gente que não vai
+[2708.8s] querer criar tabela porque acha que é o
+[2710.5s] melhor do universo e já vai querer fazer
+[2712.3s] na louca e tudo bem Se você acertar
+[2715.5s] resposta tá ótimo mas é melhor na
+[2718.0s] humildade tá ele quer saber o seguinte ó
+[2720.3s] D fórmula e essa fórmula aqui foi a
+[2722.3s] fórmula que ele colocou ele quer saber
+[2724.2s] qual é a resposta dessa fórmula
+[2727.2s] vamos ver ficaria assim ó proc que é
+[2731.1s] procure na
+[2732.9s] vertical aí agora ele colocou assim ó
+[2736.0s] maior de A1 até A5 na posição 1 isso a
+[2740.8s] gente já estudou uma das primeiras aulas
+[2743.4s] da playlist aqui ele quer saber quem é o
+[2746.1s] maior valor de todos de A1 até A5 Quem é
+[2748.9s] o maior valor de todos de A1 até A5 aqui
+[2751.7s] maior de todos não é oito
+[2754.5s] concorda Quem é o maior
+[2758.0s] o primeiro maior valor de A1 até A5 é 8
+[2763.1s] ponto e vírgula de A1 até B5 ou seja
+[2768.7s] procure
+[2769.9s] 8 procure 8 do começo até o final da
+[2776.1s] tabela e a resposta quando você achar
+[2779.2s] vai estar na segunda coluna dois quer
+[2783.6s] dizer segunda coluna achou oito achei
+[2787.2s] Olha o oito aqui ó achei achei o oito
+[2791.1s] certo e a resposta está não na primeira
+[2795.3s] coluna está na segunda ou seja a
+[2798.1s] resposta é
+[2799.3s] quem a resposta
+[2801.9s] é Pedro e ele quer de forma exata né
+[2805.1s] falso forma exata Ou seja a resposta é
+[2809.1s] Pedro
+[2811.0s] gabarito letra d de dado d de Deus é a
+[2815.6s] resposta da da questão
+[2818.1s] tá aí ó tá é a função procuro o número
+[2822.0s] oito nessa tabela e a resposta vai tá na
+[2825.0s] segunda coluna quando você achar o oito
+[2828.1s] achei o oito então a resposta tá na
+[2830.5s] segunda coluna gabarito
+[2834.2s] Pedro Pedro Muito boa essa função pô
+[2838.1s] viia cair direto essa função
+[2844.6s] aqui conseguiu entender
+[2853.4s] Diz aí conseguiu entender sim ou não
+[2882.7s] sim sim sim massa bom bom vamos
+[2889.3s] embora vamos mais
+[2894.2s] uma bora mais
+[2898.0s] uma olha essa questão agora
+[2901.2s] tá questão boa também vou deixar entrar
+[2904.6s] ch que eu sei que vai ficar maior vai
+[2905.8s] ficar melhor de visualizar
+[2907.6s] nessa questão ele pede
+[2909.9s] dois argumentos tá Para que você dê a
+[2913.0s] resposta O primeiro é ser1 o segundo é C
+[2915.5s] 16 não precisa nem ver que Buu fazer
+[2918.7s] isso aqui quer saber bosta sabe o que
+[2922.4s] que ele quer é que você diga qual é a
+[2924.3s] resposta disso daqui e depois Qual é a
+[2927.5s] resposta disso daqui pronto que ele quer
+[2929.8s] isso diga a resposta de um e depois de
+[2933.7s] outro então vamos fazer o primeiro ó
+[2936.1s] olha o primeiro tá procure na vertical
+[2940.6s] A10 quem é A1
+[2942.9s] a 10 quem a 10 esse TR aqui ó vendo aí Ó
+[2948.1s] achou procure
+[2951.8s] 3 de a 8 até C12 quem é
+[2956.9s] A8 é aqui ó marca quem é C12 é o final
+[2962.3s] de tudo marca e se você tá perdidaço com
+[2965.1s] tudo que a gente tá aprendendo é porque
+[2966.4s] você não Não seguiu a playlist por
+[2968.2s] completa tá existe a nossa
+[2974.7s] playlist é isso Marina falso é zero ou
+[2977.9s] exato É a mesma coisa tudo
+[2980.9s] igual se você seguir a Playlist você vai
+[2983.6s] entender o resto tá de seleção e tudo
+[2985.4s] mais então ele disse assim ó procure dia
+[2989.7s] 8 até C12 procure lá dentro onde é que
+[2993.2s] se vê o número três achei achei tá aqui
+[2996.8s] o número
+[2997.8s] TR então dê a resposta do que está na
+[3002.8s] segunda coluna do que está na segunda
+[3007.2s] coluna achei o três Então responde o que
+[3010.5s] tá na segunda coluna A segunda coluna
+[3013.3s] seria quem essa aqui ó
+[3016.8s] 17 Então quer dizer que eu já achei a
+[3019.4s] resposta da
+[3020.5s] questão aqui ó o primeiro resultado vai
+[3024.0s] dar 17
+[3027.2s] primeiro resultado é
+[3030.4s] 17
+[3035.7s] entendeu é
+[3039.4s] isso de novo
+[3041.7s] ó ele quer procure na vertical a 10 Você
+[3048.4s] viu quem é A1 na tabela viu quem é a
+[3052.1s] 10 ó apaga tudo apaga tudo quem é a 10
+[3057.4s] na tabela a 10 é a coluna A com a linha
+[3062.9s] 10 olha aqui ó quem é a 10 é o número
+[3065.6s] três eu achei o número três até aí
+[3068.8s] dúvidas até aqui
+[3071.7s] dúvidas ponte e
+[3074.8s] vírgula ponte e vírgula
+[3078.9s] depois continuando aí ele disse e é para
+[3082.6s] procurar na em qual tabela de A8
+[3087.2s] tá aqui ó marca o marca o essa aqui ó
+[3091.4s] coluna a linha 8 começa aqui e vai até
+[3094.8s] onde até
+[3097.2s] C12 quem é C12 coluna C aqui ó coluna C
+[3101.4s] linha 12 linha 12 aqui ó até aqui então
+[3106.7s] seria isso ó C1 é isso aqui que ele quer
+[3110.2s] ó Procure em todo esse
+[3113.4s] lugar e a resposta na da coluna isso a
+[3117.3s] gente já explicou não já seria o valor
+[3120.0s] procurado depois a tabela e depois Em
+[3122.8s] qual coluna está a
+[3124.6s] resposta ache o valor procurado ache o
+[3128.1s] número TR onde é que tá o número TR
+[3130.7s] achei o número 3 certo se você já achou
+[3134.8s] o número TR vá pra segunda coluna dele
+[3138.5s] qual é a segunda coluna
+[3143.4s] 17 Ou seja já achou aqui a resposta
+[3147.0s] letra a e acabou a
+[3148.6s] questão e acabou a
+[3155.6s] questão
+[3165.1s] Ok professor Mas vamos fazer a outra
+[3167.7s] bora bora fazer a outra ó vamos fazer a
+[3170.2s] outra que é o proc H que a gente ainda
+[3172.3s] não
+[3173.3s] fez veja só a outra seria assim ó é
+[3177.6s] igual a
+[3180.2s] procure na horizontal agora é na linha
+[3184.0s] procure na horizontal quem é
+[3187.9s] C8 C8 quem é C8 olhe lá na tabela quem é
+[3192.4s] C8 coluna C linha 8 quem é C8 achei olha
+[3198.5s] aqui ó elétrica
+[3202.2s] e
+[3203.8s] elétrica
+[3205.4s] achei C8 elétrica certo é para procurar
+[3209.8s] onde de A8 até C12 igual de A8 até
+[3216.6s] C12 ou seja procure no mesmo lugar de
+[3219.4s] novo ó procure lá vai procura achou
+[3222.9s] elétrica
+[3224.5s] achei achei elétrica certo e agora agora
+[3230.0s] procure na quinta linha agora procure na
+[3234.7s] quinta linha vá pra quinta linha
+[3237.2s] professor não era coluna coluna era
+[3239.6s] quando era proc v v vertical coluna
+[3243.8s] agora é proc H é linha Então vai ser
+[3247.0s] assim ó linha 1 linha 2 linha 3 linha
+[3255.9s] 4 linha 5 Quem é que tá na linha c na
+[3261.9s] linha c tem o nome direito olha aqui ó
+[3265.1s] direito é a resposta da
+[3275.0s] questão
+[3276.8s] Tranquilo então é isso resposta letra a
+[3280.6s] e aí se você for treinando treinando
+[3282.8s] treinando treinando treinando Você vai
+[3285.2s] começando a pegar o jeito com as funções
+[3287.8s] proc V proc H proc V proc
+[3291.6s] H
+[3294.5s] pronto faz isso aqui é chato Vai dizer
+[3297.4s] que isso aqui é ruim
+[3300.0s] não
+[3301.2s] [Música]
+[3304.6s] não é o mesmo
+[3310.5s] isso tudo
+[3312.5s] bem então função de procura função de
+[3316.2s] condição da nossa playlist marcada aí
+[3318.8s] como check entendemos professor em Quais
+[3322.2s] provas ficar caindo isso daqui pode cair
+[3324.4s] em qualquer prova mas em ial vai ficar
+[3327.4s] caindo em Provas relacionadas a
+[3329.5s] tribunais é mais provável de aparecer é
+[3332.4s] mais provável de aparecer em provas de
+[3333.9s] carreiras bancárias é mais provável de
+[3336.8s] aparecer em PR de auditor e procurador
+[3340.6s] professor que não pode cair em prova de
+[3343.4s] de de nível Municipal ou um INSS um
+[3347.8s] correio um não pode pode pode cair em
+[3351.4s] qualquer prova em qualquer prova certo
+[3354.9s] mas existem provas que são mais cobrados
+[3357.3s] esses assuntos é basicamente isso que
+[3359.2s] você tem que entender
+[3361.2s] fechou outro dia a gente vai organizar
+[3365.3s] conteúdo de outras funções especiais
+[3368.0s] como proc x e índice que começa a
+[3371.7s] aparecer com mais frequência agora
+[3373.1s] também em prova por muita gente tá
+[3375.2s] querendo utilizar o indici ao invés do
+[3377.3s] proc V E Proc H mas isso vai ficar como
+[3380.6s] assunto para uma próxima Live tudo bem e
+[3384.5s] se você gostou dessa Live Não deixe de
+[3386.8s] se inscrever no canal de curtir e se
+[3388.9s] você se tornar membro do canal eu
+[3391.2s] consigo preparar mais lives gratuitas
+[3393.2s] como essas para que você e todo mundo
+[3396.0s] possa ter conteúdo gratuito o tempo todo
+[3397.8s] aqui no YouTube dependo dos membros do
+[3401.1s] canal para conseguir preparar cada vez
+[3403.0s] mais lives gratuitas como essas tá então
+[3405.1s] se você ainda não é membro pense em se
+[3406.9s] tornar um membro para ajudar o canal e
+[3408.7s] como consequência eu deixo muitos vídeos
+[3410.8s] liberados Apenas para quem é membro
+[3412.9s] Então vai ter conteúdo exclusivo para
+[3414.7s] quem é membro tudo tudo bem Vamos
+[3418.0s] ficando por aqui agradecendo a
+[3428.4s] vocês e geralmente é proc V tá galera o
+[3432.6s] proc V é a função mais cobrada Então
+[3436.2s] pode estudar o proc H pode você pode
+[3438.4s] focar em estudar o proc H também sim mas
+[3441.2s] a função que mais cai porque é mais
+[3443.4s] comum ser utilizado é a função V então o
+[3447.6s] foco maior tá na função procv e resolver
+[3449.9s] questões da função procv é isso na
+[3452.7s] próxima semana a gente vai ter mais
+[3454.1s] conteúdos gratuitos como esses E é claro
+[3457.5s] acompanha o canal ativa o Sininho aí que
+[3459.4s] você vai ser notificado das lives quando
+[3461.8s] tiver estamos junto Muito obrigado pela
+[3464.6s] presença audiência vamos embora meus
+[3466.4s] amores estuda que a vida muda se você
+[3468.6s] quiser estudar tudo de forma completa
+[3470.7s] seguindo o nosso curso completo O link
+[3472.3s] tá na descrição ou você acessa o site
+[3474.8s] informática concursos
+[3476.6s] com lá ter um projeto full que dá acesso
+[3478.9s] a mais de 40 cursos além de mapa mental
+[3480.8s] ebook de questões comentadas desafio de
+[3483.6s] 30 simulados e muito mais é isso Até a
+[3487.2s] próxima se Deus permitir fui cheiro do
+[3496.4s] [Música]
+[3505.1s] mago p
+[3512.0s] [Música]
+[3536.2s] p
+[3538.6s] [Música]

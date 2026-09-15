@@ -1,0 +1,52 @@
+[
+  {
+    "enunciado": "A descentralização administrativa ocorre quando as atribuições que os entes descentralizados exercem decorrem diretamente da Constituição e possuem força própria.",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 1,
+    "comentario": "A descentralização administrativa ocorre quando as atribuições são conferidas pelo ente central e não possuem força própria da Constituição.",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "As autarquias são entidades administrativas que possuem autonomia política, podendo legislar sobre suas próprias competências.",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 1,
+    "comentario": "As autarquias não possuem autonomia política, mas sim administrativa, e não têm competência legislativa própria.",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "Órgãos públicos não possuem personalidade jurídica e são centros de competência para o desempenho de funções estatais através de seus agentes.",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 0,
+    "comentario": "De fato, órgãos públicos não possuem personalidade jurídica e atuam como centros de competência dentro da estrutura da administração.",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "A criação de uma autarquia pode ser feita por meio de um ato administrativo unilateral do Poder Executivo.",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 1,
+    "comentario": "A criação de autarquias deve ocorrer por lei específica, e não por ato administrativo unilateral.",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "No Brasil, a teoria do órgão afirma que os atos administrativos são imputados ao agente que os pratica, e não ao órgão que representa.",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 1,
+    "comentario": "A teoria do órgão estabelece que os atos são imputados ao órgão e não ao agente que os pratica.",
+    "banca": "Cebraspe"
+  }
+]

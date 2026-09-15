@@ -1,0 +1,33 @@
+Iniciamos o estudo da Teoria Geral dos Atos Administrativos, o pilar central do Direito Administrativo em bancas como Cebraspe e FGV.
+
+Ato administrativo é toda manifestação unilateral de vontade da Administração Pública que tenha por fim imediato adquirir, resguardar, transferir, modificar ou extinguir direitos.
+
+Vamos aos Requisitos ou Elementos de Validade do Ato Administrativo. Mnemônico clássico: CO-FI-FO-MO-OB.
+
+CO de Competência: poder atribuído pela lei ao agente público para desempenhar suas funções. É irrenunciável e intransferível por acordo entre as partes.
+
+FI de Finalidade: o objetivo de interesse público almejado pela lei. O desvio de finalidade acarreta nulidade absoluta do ato.
+
+FO de Forma: a maneira pela qual o ato se exterioriza. No direito público, a regra é a forma escrita solene.
+
+MO de Motivo: a situação de fato e de direito que fundamenta a prática do ato administrativo.
+
+OB de Objeto: o efeito jurídico imediato produzido pelo ato, aquilo que ele cria, altera ou extingue.
+
+Regra de Ouro: CO-FI-FO são SEMPRE elementos vinculados! Já MO e OB podem ser discricionários, formando o mérito administrativo.
+
+Vamos aos Atributos do Ato Administrativo: Mnemônico P-A-T-I.
+
+Presunção de Legitimidade e Veracidade: presume-se que os atos foram praticados em conformidade com a lei e que os fatos são verdadeiros. Presunção relativa (juris tantum).
+
+Autoexecutoriedade: a Administração pode executar suas decisões diretamente, inclusive com uso moderado da força, sem necessidade de autorização judicial prévia.
+
+Tipicidade: o ato deve corresponder a figuras previamente definidas pela legislação.
+
+Imperatividade: o ato se impõe a terceiros independentemente da sua concordância.
+
+Extinção dos Atos: Anulação versus Revogação. Anulação ocorre por motivo de Ilegalidade, tem efeitos retroativos (ex tunc), e pode ser feita pela Adm ou pelo Judiciário.
+
+Já a Revogação ocorre por Conveniência e Oportunidade sobre ato perfeitamente legal. Produz efeitos não retroativos (ex nunc) e SÓ pode ser feita pela própria Administração!
+
+Convalidação de Atos: permite sanar vícios sanáveis. Mnemônico FO-CO: vício de Forma não essencial e vício de Competência não exclusiva.

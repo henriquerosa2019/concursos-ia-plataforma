@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/api/generate-moments", "destination": "/api/ai.js" },
+    { "source": "/api/generate-ai-raiox", "destination": "/api/ai.js" },
+    { "source": "/api/generate-ai-flashcards", "destination": "/api/ai.js" },
+    { "source": "/api/generate-ai-quiz", "destination": "/api/ai.js" },
+    { "source": "/api/(.*)", "destination": "/api/ai.js" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" }
+      ]
+    }
+  ]
+}

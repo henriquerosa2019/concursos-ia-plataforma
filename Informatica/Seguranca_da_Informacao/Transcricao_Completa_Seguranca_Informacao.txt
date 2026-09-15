@@ -1,0 +1,85 @@
+Olá concursistas, sejam muito bem-vindos a mais uma aula essencial de Informática para Concursos.
+
+Hoje vamos dissecar o tema com maior índice de questões e pegadinhas em bancas como Cebraspe, FGV e FCC: Segurança da Informação, Malwares e Criptografia.
+
+Vamos começar pelos Princípios Básicos da Segurança da Informação. Guardem o mnemônico sagrado: D-I-C-A-A.
+
+A letra D significa Disponibilidade: a informação deve estar acessível e utilizável sob demanda por pessoas autorizadas a qualquer momento.
+
+Se um servidor web cai por sobrecarga, por um ataque DoS ou DDoS, o princípio violado é a Disponibilidade.
+
+A letra I significa Integridade: proteger a informação contra alterações, modificações ou exclusões não autorizadas.
+
+A letra C significa Confidencialidade: garantir o sigilo, ou seja, que a informação só seja conhecida por quem tem autorização legítima.
+
+A criptografia é o mecanismo técnico clássico para assegurar a confidencialidade de mensagens e arquivos.
+
+A letra A significa Autenticidade: comprovar a real identidade da pessoa ou entidade que originou a mensagem.
+
+E a última letra A refere-se ao Não-Repúdio, também chamado de Irretratabilidade em editais: impedir que o autor negue a autoria da transação.
+
+Atenção máxima para pegadinha do Cebraspe: a banca costuma misturar Autenticidade com Confidencialidade ou dizer que Legalidade é princípio básico da ISO 27002.
+
+Agora entramos no Bloco 2: O Raio-X dos Principais Malwares e Pragas Virtuais.
+
+Primeiro malware vital: Ransomware. O que ele faz? Ele criptografa os arquivos da vítima usando algoritmos fortes.
+
+Após sequestrar os dados, o atacante exibe uma mensagem de resgate, exigindo pagamento quase sempre em criptomoedas como Bitcoin.
+
+Segundo malware: Vírus vs. Worm. Essa é a questão mais batida de todas as bancas examinadoras.
+
+O Vírus necessita de um arquivo hospedeiro para se anexar e EXIGE execução humana para começar a agir.
+
+Já o Worm, ou Verme da rede, propaga-se de forma AUTOMÁTICA pelas redes de computadores, explorando vulnerabilidades sem intervenção do usuário.
+
+O Worm não precisa de hospedeiro, e seu efeito principal é a saturação da banda de internet e lentidão extrema na rede.
+
+Terceiro malware: Trojan Horse, ou Cavalo de Troia. É um programa aparentemente inofensivo que o usuário instala de boa-fé.
+
+Em segundo plano, ele abre portas de comunicação, chamadas de backdoors, permitindo que invasores controlem a máquina remotamente.
+
+Quarto malware: Spyware. Software espião que coleta informações sem consentimento.
+
+Temos duas modalidades famosas de spyware em prova: o Keylogger, que captura as teclas digitadas, e o Screenlogger, que fotografa cliques na tela.
+
+Quinto malware: Rootkit. É um conjunto avançado de utilitários que se instala no nível do kernel do sistema.
+
+A finalidade principal do Rootkit não é destruir arquivos, mas sim OCULTAR invasores e outros malwares do antivírus e do gerenciador de tarefas.
+
+Sexto malware: Bot e Botnet. Um bot transforma o computador em zumbi, controlado remotamente para disparar ataques em massa de negação de serviço.
+
+Vamos agora para os Golpes na Internet: Phishing versus Pharming.
+
+Phishing é uma técnica de Engenharia Social. Uma isca, geralmente um e-mail fraudulento simulando um banco, que induz a vítima a entregar dados voluntariamente.
+
+Pharming é diferente e muito mais perigoso: envolve o envenenamento de cache DNS ou modificação do arquivo hosts.
+
+Mesmo digitando a URL correta do banco, o usuário é redirecionado de forma invisível para o servidor do hacker.
+
+Entramos agora no Bloco de Criptografia e Assinatura Digital.
+
+Criptografia Simétrica: utiliza uma única chave compartilhada, chamada de chave secreta, tanto para cifrar quanto para decifrar.
+
+Vantagem da Simétrica: extremamente rápida e eficiente para grandes volumes de dados. Exemplos de algoritmos: AES, DES, 3DES e RC4.
+
+Criptografia Assimétrica: utiliza um par de chaves matematicamente correlacionadas: a Chave Pública e a Chave Privada.
+
+A Chave Pública é distribuída para todo o mundo. A Chave Privada nunca sai do controle de seu titular.
+
+Se alguém quer me enviar uma mensagem confidencial, cifra com a minha chave pública, e somente eu, com minha chave privada, consigo decifrar.
+
+E como funciona a Assinatura Digital? Atenção total: ela é gerada cifrando o hash do documento com a CHAVE PRIVADA DO EMISSOR.
+
+Qualquer pessoa que receba o documento pode verificar a autenticidade utilizando a CHAVE PÚBLICA DO EMISSOR.
+
+Regra de ouro que você nunca mais vai esquecer: a Assinatura Digital garante Autenticidade, Integridade e Não-Repúdio.
+
+Pegadinha clássica do Cebraspe: 'A assinatura digital garante a confidencialidade do documento.' Resposta: ERRADO!
+
+Um documento assinado digitalmente é legível por qualquer pessoa, a menos que ele também seja encriptado.
+
+Para fechar: Firewall versus Antivírus. O Firewall filtra portas lógicas e pacotes de rede baseando-se em regras de tráfego.
+
+O Firewall NÃO analisa o conteúdo interno de arquivos baixados para detectar vírus. Essa função é exclusiva do Antivírus.
+
+Com esses conceitos e mnemônicos fixados, vocês estão prontos para acertar 100% das questões desse tema em qualquer edital!

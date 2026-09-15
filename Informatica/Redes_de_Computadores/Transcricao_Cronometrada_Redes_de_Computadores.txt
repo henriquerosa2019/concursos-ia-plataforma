@@ -1,0 +1,902 @@
+[0.6s] [00:00] Salve salve galera, sejam todos muito
+[3.3s] [00:03] bem-vindos a mais uma aula. Eu sou o
+[5.5s] [00:05] professor Fábio Augusto, professor de
+[7.1s] [00:07] informática e hoje nós vamos falar aí
+[9.7s] [00:09] para você que vai prestar concurso sobre
+[12.2s] [00:12] um assunto importante dentro da
+[14.1s] [00:14] informática que são as redes de
+[16.4s] [00:16] computadores. Vá, acompanha comigo aí na
+[19.4s] [00:19] tela. Então vamos lá. redes de
+[22.8s] [00:22] computadores. Para você que não me
+[25.3s] [00:25] conhece, nunca ouviu falar de mim, eu
+[27.8s] [00:27] deixo aí para vocês meus contatos
+[29.7s] [00:29] interativos, as minhas redes sociais.
+[32.3s] [00:32] Então, começando pelo meu site, é lá o
+[34.7s] [00:34] Fábiousto.info,
+[37.0s] [00:36] lá você vai encontrar os meus cursos de
+[39.4s] [00:39] informática. Para você que tem
+[40.9s] [00:40] dificuldade em entender a matéria de
+[43.3s] [00:43] informática, lá você vai encontrar os
+[46.0s] [00:45] meus cursos totalmente voltados para
+[48.9s] [00:48] você que precisa ter uma direção na hora
+[51.9s] [00:51] de estudar. Também tem aí o meu
+[55.1s] [00:55] Instagram @fábio se você ainda não me
+[57.8s] [00:57] segue, vai lá me siga, né? Acompanha aí
+[61.6s] [01:01] a evolução, né? Da matéria de
+[64.0s] [01:04] informática dentro dos concursos. E
+[66.6s] [01:06] também se inscreva no meu canal no
+[69.0s] [01:08] YouTube, o Fábio Augusto Informática. Lá
+[71.6s] [01:11] você tem questões comentadas, aulões,
+[74.8s] [01:14] dicas, tudo que você precisa para ir bem
+[78.5s] [01:18] na sua prova. E também deixo o meu
+[80.6s] [01:20] WhatsApp. Se você tiver alguma dúvida,
+[83.4s] [01:23] sugestão, elogio, pode mandar para mim
+[86.2s] [01:26] que eu vou ter o maior prazer em
+[88.3s] [01:28] responder. Fechou? Então, bora lá. Vamos
+[91.8s] [01:31] falar sobre redes de computador. Então,
+[96.0s] [01:36] redes de computadores. Então, coloquei
+[98.0s] [01:38] aqui para você o seguinte, ó.
+[101.6s] [01:41] Você já se perguntou como os
+[103.8s] [01:43] computadores se conectam e compartilham
+[106.7s] [01:46] informações? Já ou não? Já parou para
+[109.4s] [01:49] pensar? Por exemplo, hoje a gente
+[111.3s] [01:51] utiliza a internet. A internet, ela é
+[114.6s] [01:54] uma rede, né,
+[117.1s] [01:57] que traz pra gente
+[119.6s] [01:59] várias várias informações de diversos
+[123.3s] [02:03] lugares ao mesmo tempo. Então, como é
+[125.9s] [02:05] que eu consigo ali no caso da minha casa
+[129.1s] [02:09] acessar
+[130.8s] [02:10] sites, acessar aplicativos pelo meu
+[134.6s] [02:14] celular, eh, e ter ali, por exemplo,
+[138.2s] [02:18] prontamente as respostas para o meu uso,
+[142.2s] [02:22] né? Isso só é possível graças ao que a
+[146.2s] [02:26] gente chama de redes, né? as redes elas
+[150.5s] [02:30] vão trazer para você uma forma, um
+[153.5s] [02:33] sistema que vai conectar todos os
+[157.1s] [02:37] dispositivos, ali, no caso,
+[159.2s] [02:39] computadores,
+[160.9s] [02:40] eh celulares, tablets e afins para que
+[165.6s] [02:45] eles possam se comunicar e compartilhar
+[168.3s] [02:48] as informações, que seriam os dados, tá?
+[171.7s] [02:51] Então, o que são redes de computadores?
+[174.8s] [02:54] Então, coloquei lá para você aqui, ó,
+[177.6s] [02:57] primeira definição, né, conceitual em
+[181.4s] [03:01] provas que cobram conceitos. Isso daqui
+[183.8s] [03:03] é extremamente importante, mas se você
+[187.0s] [03:07] julgar pertinente, anote, tá? Redes de
+[191.0s] [03:10] computadores são o quê? Sistemas que
+[195.6s] [03:15] interconectam diversos dispositivos.
+[199.0s] [03:18] Ponto.
+[200.6s] [03:20] Isso são redes de computadores. Embora a
+[204.6s] [03:24] gente coloque a palavra computadores,
+[207.8s] [03:27] não significa que esteja voltado apenas
+[212.0s] [03:32] para computadores, porque eu cito aqui,
+[214.2s] [03:34] ó, computadores, impressoras,
+[218.0s] [03:38] smartphones
+[219.8s] [03:39] e outros dispositivos inteligentes.
+[223.4s] [03:43] Então, você tem aí, por exemplo, a sua
+[226.1s] [03:46] TV, né? Você tem aí o seu assistente
+[230.5s] [03:50] pessoal, que pode ser a Alexa, né, que
+[234.7s] [03:54] pode ser também eh,
+[239.4s] [03:59] enfim, vários outros equipamentos que
+[241.4s] [04:01] você possa utilizar aí na sua casa. A
+[244.6s] [04:04] conexão, ela pode acontecer por meio de
+[247.0s] [04:07] cabos, sinais de rádio, né, que seria
+[251.2s] [04:11] Wi-Fi ou infravermelho,
+[255.3s] [04:15] né? Então, por exemplo, Alexa pode
+[258.0s] [04:18] comandar aí a sua televisão, que só vai
+[261.2s] [04:21] ser acionada por infravermelho,
+[263.7s] [04:23] né? Então, através de um comando que a
+[268.0s] [04:28] Alexa recebeu, ela pode simplesmente
+[270.5s] [04:30] mandar, né, para a TV o comando de ligar
+[276.0s] [04:36] ou desligar.
+[278.0s] [04:37] Tudo bem?
+[279.6s] [04:39] Beleza?
+[281.6s] [04:41] Depois,
+[283.4s] [04:43] essas conexões permitem o
+[286.2s] [04:46] compartilhamento de recursos como
+[288.7s] [04:48] arquivos, impressoras, internet e muito
+[292.9s] [04:52] mais, né? Então é a função da rede é
+[296.2s] [04:56] trazer essas particularidades, não é?
+[299.8s] [04:59] Então, ó, eh, imagine uma rede com uma
+[303.3s] [05:03] grande rodovia digital, onde os
+[306.9s] [05:06] dispositivos possam ali, no caso, viajar
+[309.7s] [05:09] trocando informações e tornando a
+[312.4s] [05:12] comunicação e o acesso de maneira mais
+[316.0s] [05:16] eficaz,
+[317.7s] [05:17] tá? Beleza? Aí ele traz a pra gente, ó,
+[323.4s] [05:23] compartilhamento de recursos
+[326.6s] [05:26] permite que diversos usuários possam
+[330.2s] [05:30] acessar e compartilhar o quê? Arquivos,
+[333.2s] [05:33] impressoras e outros recursos. Por
+[335.4s] [05:35] exemplo, é através da rede que você vai
+[338.2s] [05:38] conseguir o quê? fazer impressões.
+[341.6s] [05:41] Você pensa que quando você passar no
+[343.6s] [05:43] concurso, você vai ter ali, por exemplo,
+[346.4s] [05:46] uma impressora só para você na sua mesa,
+[349.6s] [05:49] você tem essa essa doce ilusão, não, né?
+[355.2s] [05:55] Então você imagina que você terá sim uma
+[359.5s] [05:59] impressora, mas essa impressora ela pode
+[361.4s] [06:01] ser uma impressora compartilhada para
+[363.7s] [06:03] vários usuários, às vezes até mesmo pela
+[366.0s] [06:06] repartição pública inteira, né? Então, a
+[369.9s] [06:09] partir do momento que nós temos o
+[372.2s] [06:12] compartilhamento de recursos, nós
+[375.3s] [06:15] estamos compartilhando informações
+[378.5s] [06:18] através da rede, que seria compartilhar
+[381.1s] [06:21] uma pasta, compartilhar um arquivo,
+[383.8s] [06:23] compartilhar acessos, não é? Assim como
+[387.8s] [06:27] nós temos o compartilhamento,
+[390.8s] [06:30] né, de elementos como uma impressora,
+[396.7s] [06:36] tá?
+[398.8s] [06:38] Depois, comunicação eficiente.
+[403.2s] [06:43] O que que vem a ser uma comunicação
+[405.4s] [06:45] eficiente? Bom, a partir do momento que
+[407.9s] [06:47] você tem uma rede ali, essa comunicação,
+[410.8s] [06:50] ela pode partir de diversas maneiras,
+[414.2s] [06:54] né? Então, por exemplo, ela pode ser
+[418.0s] [06:58] através de uma de uma mensagem
+[420.4s] [07:00] instantânea, ela pode ser através de um
+[426.1s] [07:06] e-mail, de uma chamada através de uma
+[429.4s] [07:09] videoconferência,
+[431.0s] [07:11] né, ou através daqueles chats internos
+[434.3s] [07:14] que existe para você poder falar sobre
+[440.7s] [07:20] assuntos internos, né, que as empresas
+[442.7s] [07:22] utilizam, né, tem aí alguns exemplos que
+[445.6s] [07:25] podem ser utilizados
+[448.1s] [07:28] e também nós temos, claro, a principal
+[452.4s] [07:32] funcionalidade de uma rede, acessar
+[456.3s] [07:36] a internet,
+[459.8s] [07:39] né, que traz ali pra gente a
+[463.0s] [07:43] caracterização
+[464.6s] [07:44] de fazer com que eh
+[468.6s] [07:48] todos os equipamentos de um determinado
+[470.9s] [07:50] ambiente possam ali estar conectados.
+[474.4s] [07:54] onlines, certo? Beleza. Alvaldo tá aqui
+[479.0s] [07:59] fazendo uma pergunta sobre o que é CAN.
+[482.4s] [08:02] Can, meu caro Valdo, é o que a gente
+[485.4s] [08:05] chama de
+[488.0s] [08:07] controller área network. Quer dizer o
+[491.7s] [08:11] quê? Quer dizer que é uma rede de
+[495.4s] [08:15] controle, né, de comunicação voltada
+[498.0s] [08:18] para fazer o quê?
+[500.3s] [08:20] a interligação de dispositivos,
+[504.6s] [08:24] né, dentro de uma área industrial.
+[510.0s] [08:30] Então, a gente pode falar assim que é
+[512.3s] [08:32] conectar veículos e máquinas
+[514.5s] [08:34] industriais,
+[516.1s] [08:36] ela foi projetada para a indústria
+[520.2s] [08:40] automotiva, por exemplo, né? Então, é
+[522.3s] [08:42] para isso. Tudo bem? Beleza.
+[527.0s] [08:47] Muito bem, meus queridos. E aí, dando
+[530.2s] [08:50] continuidade, a gente tem os tipos de
+[532.3s] [08:52] rede, né? O CAN já é uma rede mais
+[535.0s] [08:55] fechada, né, voltada pra indústria
+[537.3s] [08:57] automotiva, mas a gente tem as redes que
+[540.6s] [09:00] são utilizadas, né, não só para questões
+[544.5s] [09:04] de prova, mas como no nosso dia a dia,
+[547.6s] [09:07] né? Então, tá lá, ó. Existem diferentes
+[551.1s] [09:11] tipos de rede de acordo com o quê? com a
+[555.8s] [09:15] sua utilização e, no caso a distância
+[560.7s] [09:20] que ela pode desenvolver para fazer o a
+[566.2s] [09:26] propagação da informação, né? Então ele
+[569.6s] [09:29] traz lá pra gente, ó, primeira rede é
+[571.8s] [09:31] chamada de rede local, também conhecida
+[574.8s] [09:34] por LAN.
+[577.3s] [09:37] A rede local conecta o quê?
+[580.9s] [09:40] dispositivos dentro de uma área
+[582.8s] [09:42] geográfica limitada. É o que eu falo da
+[585.3s] [09:45] distância, né? Essa área limitada, ela
+[588.9s] [09:48] pode ser um escritório,
+[591.7s] [09:51] ela pode ser uma casa, ela pode ser uma
+[594.3s] [09:54] escola, ela pode ser um prédio, não é?
+[598.4s] [09:58] Então, um prédio, ele pode ter ali a sua
+[601.6s] [10:01] rede, não, toda cabeada, tá? Em geral, a
+[606.9s] [10:06] gente considera uma rede local lã aquela
+[611.5s] [10:11] que utiliza cabos,
+[615.8s] [10:15] tá?
+[617.7s] [10:17] Ou o Wi-Fi, só que aí a gente muda para
+[622.0s] [10:21] W LAN,
+[624.6s] [10:24] tá? Que aí seria o quê? Uma rede local,
+[628.7s] [10:28] um Wi-Fi,
+[630.8s] [10:30] tá? E a gente pode conectar, por
+[633.8s] [10:33] exemplo, impressora sem fio, né, dentro
+[637.5s] [10:37] do ambiente. E aí você pode, mesmo
+[640.6s] [10:40] utilizando o cabo, fazendo parte da
+[643.0s] [10:43] mesma rede, mandar imprimir, né? Então,
+[647.1s] [10:47] a caracterização
+[649.6s] [10:49] da rede LAN é uma rede que tem a sua
+[653.7s] [10:53] limitação geográfica voltada para, né,
+[657.6s] [10:57] geralmente um endereço, tá bom?
+[661.6s] [11:01] Depois a gente tem a rede de área ampla,
+[666.8s] [11:06] Wide network, que é o quê? W
+[672.4s] [11:12] simplesmente one, né? Ela conecta o quê?
+[676.8s] [11:16] Ela conecta países, continentes,
+[681.4s] [11:21] distâncias ali muito grandes. A gente
+[684.6s] [11:24] pode dizer que nesse tipo aqui de rede a
+[688.4s] [11:28] gente tem a caracterização da internet,
+[693.4s] [11:33] tá? Então vai utilizar o quê? linhas
+[698.0s] [11:37] telefônicas, fibra ótica, satélite, tudo
+[701.7s] [11:41] que for necessário pra gente poder
+[704.5s] [11:44] conectar ali, no caso, os computadores e
+[708.4s] [11:48] os dispositivos em todo o mundo.
+[713.0s] [11:52] Beleza?
+[715.0s] [11:55] E depois a gente tem quem? A MAN ou
+[719.4s] [11:59] Metropolitan Área Network, né, que é a
+[722.3s] [12:02] rede de área metropolitana,
+[725.4s] [12:05] tá? Então, nesse caso, a distância ela é
+[729.7s] [12:09] um pouco maior. Pode ser, por exemplo,
+[734.5s] [12:14] cidade,
+[736.2s] [12:16] bairros, dependendo do tamanho da
+[737.8s] [12:17] cidade. Podemos também ter ali, eh, no
+[742.8s] [12:22] caso de universidades à distância de um
+[745.0s] [12:25] campus pro outro, né? Então, ele vai
+[748.0s] [12:28] interligar diferentes empresas,
+[750.4s] [12:30] instituições dentro de uma cidade, né? é
+[753.5s] [12:33] a caracterização que a gente tem aqui de
+[756.4s] [12:36] uma rede man. Beleza?
+[762.9s] [12:42] Legal.
+[765.9s] [12:45] Então, eu gosto de brincar que esses
+[768.2s] [12:48] daqui é o famoso coreano, tá? Me
+[770.9s] [12:50] desculpa a brincadeira aí se tem algum
+[772.6s] [12:52] coreano acompanhando a nossa aula, mas
+[775.2s] [12:55] eu gosto de falar que é o mã Wan Lan ou
+[778.3s] [12:58] Lan, né? é o coreano aí que traz as
+[782.9s] [13:02] principais redes, tipos de redes que
+[785.4s] [13:05] podem ser cobrados aí na sua prova, tá?
+[791.9s] [13:11] Beleza?
+[794.0s] [13:14] Muito bem. Aí, continuando, eu tenho
+[796.3s] [13:16] aqui, ó,
+[798.6s] [13:18] componentes que precisam existir dentro
+[802.2s] [13:22] de uma rede. Então, que tipo de
+[805.1s] [13:25] componente precisa existir para que uma
+[807.8s] [13:27] rede possa funcionar,
+[811.0s] [13:30] né? Então, tá lá, ó. Então, uma rede ela
+[814.4s] [13:34] é composta por alguns componentes, entre
+[817.4s] [13:37] eles o que a gente precisa do primeiro é
+[821.1s] [13:41] o dispositivo, que é o computador, é o
+[824.2s] [13:44] smartphone,
+[825.8s] [13:45] a impressora e etc. Preciso desse cara.
+[829.4s] [13:49] Depois eu preciso fazer com que esse
+[831.8s] [13:51] cara possa se conectar a esta rede. E
+[834.8s] [13:54] para ele se conectar a esta rede, ele
+[836.4s] [13:56] precisa usar um meio de transmissão.
+[838.5s] [13:58] Esse meio pode ser o cabo ou não. Pode
+[842.0s] [14:01] ser através do cabo ou pode ser através
+[844.8s] [14:04] do Wi-Fi.
+[847.6s] [14:07] Depois eu preciso que este esse, vamos
+[852.0s] [14:12] dizer assim, host, né, que é o
+[854.3s] [14:14] dispositivo, precisa de um dispositivo
+[858.2s] [14:18] de interconexão, que é o quê? O
+[860.9s] [14:20] roteador,
+[862.5s] [14:22] o moldem propriamente dito, que é o que
+[864.5s] [14:24] a gente tem hoje, né? O roteador e o
+[866.3s] [14:26] mod, eles estão integrados num único
+[870.2s] [14:30] dispositivo, né? E esse dispositivo de
+[874.2s] [14:34] interconexão
+[876.4s] [14:36] vai através da conexão que é feita do
+[878.9s] [14:38] dispositivo a ele, através do cabo,
+[881.1s] [14:41] através do Wi-Fi, permitir que esse
+[884.2s] [14:44] dispositivo possa ter acesso a essa
+[887.4s] [14:47] rede, seja através da internet ou não,
+[891.1s] [14:51] porque pode ser apenas um suitch que vai
+[894.5s] [14:54] permitir com que ele não tenha acesso à
+[896.1s] [14:56] internet, mas que ele possa compartilhar
+[898.0s] [14:58] arquivos dentro de uma sala cheias de
+[901.6s] [15:01] computadores,
+[903.6s] [15:03] né? Então aqui, por exemplo, a gente
+[905.4s] [15:05] consegue ilustrar, ó, esquece esse lado
+[908.3s] [15:08] daqui, ó. Opa, deixa eu voltar. Esquece
+[911.0s] [15:10] esse lado aqui, ó. Por exemplo, poderia
+[913.3s] [15:13] ter isso aqui só, né? Eu tenho aqui, que
+[916.8s] [15:16] seria o nosso servidor, um switch que
+[919.9s] [15:19] vai trazer informações do servidor para
+[922.2s] [15:22] distribuir para esses três computadores,
+[925.0s] [15:25] tá? Isso pode acontecer, pode, é uma
+[928.7s] [15:28] rede.
+[930.6s] [15:30] Beleza,
+[932.1s] [15:32] tudo bem. Mas
+[935.6s] [15:35] uma vez que eu utilizo ali o meu
+[939.4s] [15:39] roteador,
+[941.2s] [15:41] né, atrelado ao modem, que hoje isso
+[943.1s] [15:43] daqui pode ser uma peça só, né, a gente
+[947.5s] [15:47] pode simplesmente acessar as informações
+[951.9s] [15:51] através da internet. E aí, neste caso, a
+[955.8s] [15:55] gente vai necessitar de um software de
+[958.0s] [15:57] rede que trace um sistema operacional
+[961.2s] [16:01] para poder fazer ali, no caso, a
+[965.0s] [16:05] configuração da rede em si. Que que é a
+[967.2s] [16:07] configuração da rede, professor? meu
+[969.4s] [16:09] sistema operacional, ele vai ser capaz,
+[971.4s] [16:11] por exemplo, de receber o endereço de IP
+[974.9s] [16:14] e permitir a conexão através de um
+[976.8s] [16:16] navegador.
+[978.5s] [16:18] O navegador, por sua vez, para poder
+[980.5s] [16:20] permitir que a internet flua, ele vai
+[983.4s] [16:23] adotar os protocolos para poder fazer
+[986.3s] [16:26] com que a navegação aconteça e assim
+[990.5s] [16:30] sucessivamente, né? Então, para você
+[993.1s] [16:33] ver, uma série de coisas que a gente faz
+[995.2s] [16:35] de maneira automática, né, no nosso dia
+[998.0s] [16:37] a dia, passam por controles e etapas que
+[1002.0s] [16:42] são ali, no caso determinantes para que
+[1004.7s] [16:44] a internet aconteça ali no seu
+[1007.3s] [16:47] dispositivo, seja no celular, seja no
+[1010.8s] [16:50] computador.
+[1012.4s] [16:52] Certo?
+[1013.6s] [16:53] Bom, já que entendemos os meios de
+[1017.6s] [16:57] transmissão, que é a cabo ou Wi-Fi,
+[1020.6s] [17:00] vamos falar dos tipos de conexão que
+[1023.2s] [17:03] existem, OK?
+[1026.2s] [17:06] Tipos de conexão que existem. Temos o
+[1030.0s] [17:09] tipo de conexão com fio e o sem fio. O
+[1033.7s] [17:13] com fio é simples, né? A gente tem ali
+[1035.7s] [17:15] alguns exemplos. Temos o Ethernet, que é
+[1039.5s] [17:19] o cabo de rede propriamente dito, né? o
+[1041.8s] [17:21] tipo de conexão que existe no cabo de
+[1044.0s] [17:23] rede, né? Temos a fibra ótica,
+[1048.7s] [17:28] né, que é um fio de vidro que a gente
+[1052.1s] [17:32] tem, que a transmissão é feita ali em
+[1054.1s] [17:34] altíssima velocidade,
+[1056.4s] [17:36] né?
+[1057.9s] [17:37] E temos as conexões sem fio. As conexões
+[1061.0s] [17:41] sem fio são aquelas que utilizam os
+[1064.0s] [17:44] sinais de ondas
+[1066.4s] [17:46] de rádio para poder transmitir os dados.
+[1069.1s] [17:49] Então nós temos o Wi-Fi,
+[1071.3s] [17:51] o Bluetooth, né, que são ali utilizados
+[1074.9s] [17:54] para poder fazer com que o dispositivo,
+[1078.7s] [17:58] os dispositivos possam ali, no caso,
+[1081.7s] [18:01] serem utilizados. Então, por exemplo,
+[1083.8s] [18:03] uma impressora, ela pode usar o Wi-Fi ou
+[1086.6s] [18:06] Bluetooth.
+[1088.2s] [18:08] Um mouse, por exemplo, ele pode ser
+[1090.2s] [18:10] também o Wi-Fi ou Bluetooth.
+[1092.8s] [18:12] E a transmissão tá acontecendo, não é?
+[1096.4s] [18:16] Hoje nós temos projetores que utilizam o
+[1099.1s] [18:19] Wi-Fi. Eu não preciso ligar mais o
+[1101.6s] [18:21] projetor através do quê? De uma de um
+[1105.3s] [18:25] cabo, né? Eu posso usar a conexão sem
+[1107.9s] [18:27] fio para poder fazer esse tipo de
+[1109.8s] [18:29] conexão. E todo tipo de conexão é uma
+[1113.8s] [18:33] rede, né? Porque eu vou transmitir
+[1116.4s] [18:36] informação de um dispositivo para outro.
+[1120.2s] [18:40] Perfeito. Beleza. Só que para que isso
+[1123.9s] [18:43] aconteça, é aquilo que eu falei, é
+[1126.0s] [18:46] necessário que eh regras sejam seguidas
+[1130.2s] [18:50] e essas regras são definidas como
+[1133.0s] [18:53] protocolos,
+[1135.1s] [18:55] tá? Então nós temos aqui, ó, protocolos
+[1139.4s] [18:59] presentes
+[1141.0s] [19:01] dentro de uma rede, né? Então aqui a
+[1145.1s] [19:05] gente tem alguns exemplos, não são
+[1146.8s] [19:06] todos, tá? São só alguns exemplos.
+[1149.8s] [19:09] Então, nós estamos aí falando de redes
+[1154.0s] [19:14] de computadores,
+[1155.8s] [19:15] mas existem uma série de outras coisas
+[1158.5s] [19:18] que precisam ser ali no caso alimentadas
+[1161.2s] [19:21] em relação a os modelos de redes que
+[1164.9s] [19:24] podem ser eh configurados dentro de um
+[1169.0s] [19:29] ambiente. Mas vamos falar dos protocolos
+[1170.7s] [19:30] agora.
+[1172.6s] [19:32] Protocolos de comunicação, coloquei ali
+[1175.0s] [19:34] para você, são como regras que garantem
+[1178.3s] [19:38] que os dispositivos de uma rede possam
+[1181.1s] [19:41] se comunicar entre si de forma eficiente
+[1184.8s] [19:44] e organizada.
+[1186.8s] [19:46] Esses protocolos definem como os dados
+[1190.5s] [19:50] são formatados, enviados e recebidos,
+[1194.0s] [19:53] garantindo que as informações sejam
+[1195.8s] [19:55] interpretadas corretamente por todos os
+[1198.1s] [19:58] dispositivos.
+[1199.6s] [19:59] Então, a função do protocolo é
+[1201.6s] [20:01] justamente fazer o quê? Organizar as
+[1205.6s] [20:05] informações para que as informações
+[1207.4s] [20:07] possam chegar de maneira correta, tá?
+[1213.0s] [20:13] Nós temos aí o principal protocolo de
+[1215.7s] [20:15] comunicação, que é o TCP.
+[1219.2s] [20:19] Então, TCP
+[1221.8s] [20:21] significa transmissão,
+[1229.1s] [20:29] IP
+[1231.2s] [20:31] endereço.
+[1236.4s] [20:36] Então, através de uma transmissão e de
+[1238.5s] [20:38] um endereço, eu consigo conectar
+[1242.3s] [20:42] dispositivo, seja ele qual for. Eu posso
+[1245.9s] [20:45] ali, no caso, conectar
+[1248.4s] [20:48] o meu computador, meu smartphone, meu
+[1251.1s] [20:51] tablet. Eu posso conectar também a minha
+[1257.7s] [20:57] Alexa. Eu posso conectar também eh
+[1263.8s] [21:03] através da internet. os meus
+[1266.7s] [21:06] dispositivos de o que a gente chama de
+[1271.2s] [21:11] internet das coisas, né? Então eu posso
+[1273.1s] [21:13] conectar aqui
+[1276.4s] [21:16] a minha televisão, eu posso conectar
+[1279.2s] [21:19] também
+[1280.8s] [21:20] o meu interruptor para acender e apagar
+[1283.4s] [21:23] a luz ou a própria luz, né? lâmpada, eu
+[1286.1s] [21:26] posso controlar a intensidade da luz, a
+[1289.4s] [21:29] cor, enfim, tudo isso através desse
+[1294.2s] [21:34] protocolo, TCP,
+[1297.0s] [21:37] tá? Depois nós temos o protocolo HTTP.
+[1302.8s] [21:42] Quando se fala de rede, é obrigatório
+[1305.6s] [21:45] saber ali a existência e a utilização
+[1309.6s] [21:49] desses protocolos, tá?
+[1312.6s] [21:52] http, que é protocolo aqui de
+[1316.3s] [21:56] hipertexto, né? Ele é utilizado para
+[1319.8s] [21:59] comunicação entre os navegadores e os
+[1323.6s] [22:03] servidores web. Como assim? O HTTP ele
+[1328.2s] [22:08] vai fazer o papel de interpretar
+[1332.6s] [22:12] onde estão as páginas HTML, né,
+[1336.5s] [22:16] propriamente dita. E essas páginas HTML,
+[1339.6s] [22:19] elas estão hospedadas onde? em
+[1341.4s] [22:21] servidores web. Então, quando você
+[1344.3s] [22:24] digita uma URL, você vai digitar no seu
+[1347.4s] [22:27] navegador, você vai acionar ou o HTTP ou
+[1352.2s] [22:32] o HTTPS,
+[1355.4s] [22:35] dependendo do acesso. O HTTP é um
+[1358.6s] [22:38] protocolo que não requer criptografia,
+[1361.8s] [22:41] por isso que ele não tem o S, tá? Já o
+[1365.0s] [22:45] https é um protocolo que é acionado
+[1368.8s] [22:48] quando o site que você está buscando
+[1371.8s] [22:51] requer ali no caso a criptografia.
+[1375.7s] [22:55] Então se eu vou acessar um site que não
+[1378.1s] [22:58] requer criptografia, significa que ele é
+[1380.3s] [23:00] inseguro? Não. Significa que ele não
+[1384.2s] [23:04] requer criptografia.
+[1387.2s] [23:07] E se ele não está com a criptografia,
+[1389.6s] [23:09] ele não é inseguro. Tá dando para
+[1391.7s] [23:11] entender o que eu tô falando? Eu vou
+[1393.6s] [23:13] acessar, por exemplo, um site que, né,
+[1397.3s] [23:17] você pode acessar ele livremente, sei
+[1399.5s] [23:19] lá, vou acessar o all. Então, a página
+[1402.5s] [23:22] inicial do all, por exemplo, pode ser
+[1404.2s] [23:24] http,
+[1406.1s] [23:26] mas quando eu vou acessar um conteúdo
+[1408.2s] [23:28] exclusivo do all, o protocolo muda para
+[1411.0s] [23:30] https. Por quê? Porque eu vou precisar
+[1413.0s] [23:32] digitar o quê? Meu login em senha do,
+[1416.8s] [23:36] tá? Então, dessa maneira, a gente
+[1420.7s] [23:40] consegue separar o que que é o HTTP e o
+[1423.3s] [23:43] que que é o https.
+[1426.0s] [23:45] Tudo bem? Depois
+[1429.0s] [23:49] nós temos aqui o SMTP.
+[1433.4s] [23:53] O SMTP ele é um protocolo
+[1436.9s] [23:56] exclusivo de e-mail, mas com a
+[1440.1s] [24:00] funcionalidade de enviar e-mail.
+[1444.4s] [24:04] Para receber, nós temos o protocolo POP
+[1449.8s] [24:09] e
+[1451.8s] [24:11] tá? Pop, popolo
+[1456.5s] [24:16] que vai trazer pra gente aqui, ó, uma
+[1459.7s] [24:19] cópia das mensagens
+[1463.6s] [24:23] do servidor, tá? Então, funciona da
+[1466.7s] [24:26] seguinte maneira. está configurado no
+[1469.0s] [24:29] meu celular, por exemplo, POP para
+[1471.4s] [24:31] recebimento de e-mails. Então, ele vai
+[1474.3s] [24:34] ir lá acessar o servidor e vai baixar
+[1476.4s] [24:36] uma cópia das mensagens do servidor para
+[1478.6s] [24:38] o meu celular.
+[1481.8s] [24:41] Quando eu ler as mensagens do meu
+[1483.8s] [24:43] celular,
+[1485.3s] [24:45] será marcado como lido no meu celular e
+[1489.4s] [24:49] não no servidor. Você entendeu? Então,
+[1492.6s] [24:52] neste caso, o que que acontece? Acontece
+[1496.5s] [24:56] o seguinte.
+[1498.2s] [24:58] Quando eu for acessar o webmail, por
+[1501.0s] [25:00] exemplo, nenhum outro computador pelo
+[1503.8s] [25:03] navegador, todas as mensagens que eu li
+[1506.4s] [25:06] no meu celular estarão lá, mas marcadas
+[1509.2s] [25:09] como não lidas. Por quê? Porque o POP
+[1512.6s] [25:12] baixo uma cópia das mensagens, tá? Então
+[1515.7s] [25:15] não há sincronização
+[1518.7s] [25:18] diferente do imapiste
+[1524.4s] [25:24] a sincronização.
+[1531.2s] [25:31] Como assim existe a sincronização? OMAP
+[1534.4s] [25:34] ele é um protocolo de e-mail que
+[1536.3s] [25:36] funciona
+[1537.9s] [25:37] diretamente no servidor. Não é que ele
+[1540.8s] [25:40] está no servidor, ele funciona
+[1543.2s] [25:43] diretamente acessando o servidor. Ele é
+[1545.4s] [25:45] online, tá? Então isso quer dizer que
+[1550.2s] [25:50] ele não baixa uma cópia, ele acessa o
+[1552.6s] [25:52] servidor. E quando ele acessa o servidor
+[1554.9s] [25:54] e você está lendo as mensagens pelo
+[1556.9s] [25:56] celular, é marcado como lido no servidor
+[1559.8s] [25:59] e não no celular.
+[1561.8s] [26:01] Isso quer dizer que se eu for acessar o
+[1564.0s] [26:04] meu e-mail de qualquer outro
+[1565.4s] [26:05] dispositivo, todas as mensagens que eu
+[1567.8s] [26:07] li serão marcadas como lidas e estarão
+[1571.4s] [26:11] ali marcadas como lidas em qualquer
+[1573.8s] [26:13] dispositivo. Então, eu tenho meu e-mail
+[1576.2s] [26:16] configurado no celular, no tablet e no
+[1578.8s] [26:18] computador.
+[1580.4s] [26:20] Se eu acessei o e-mail pelo celular e li
+[1583.4s] [26:23] as mensagens, automaticamente nos três
+[1586.8s] [26:26] dispositivos, a informação ela vai ser a
+[1589.2s] [26:29] mesma. Em todas as mensagens lidas
+[1592.5s] [26:32] estarão marcadas como lidas. Deu para
+[1595.7s] [26:35] entender como é que funciona isso?
+[1597.8s] [26:37] Então, esses três protocolos são
+[1600.6s] [26:40] protocolos exclusivos de email, tá
+[1604.7s] [26:44] claro?
+[1606.4s] [26:46] Depois a gente tem o FTP.
+[1609.0s] [26:49] O FTP ele é um protocolo para transferir
+[1612.2s] [26:52] arquivos. Ponto.
+[1615.7s] [26:55] Tá? Então ele traz a caracterização de
+[1619.9s] [26:59] ser um protocolo de transferência,
+[1622.8s] [27:02] mas é aí que mora o perigo. O FTP
+[1627.0s] [27:07] transfere arquivos
+[1630.1s] [27:10] aqui, ó.
+[1633.5s] [27:13] Transf
+[1635.3s] [27:15] arquivos.
+[1638.2s] [27:18] Так.
+[1653.7s] [27:33] Deixa eu escrever aqui, ó.
+[1658.2s] [27:38] Já o HTTP e o https eles também podem
+[1662.7s] [27:42] ser conhecidos como protocolo de
+[1666.2s] [27:46] transferência de hipertexto,
+[1669.0s] [27:49] tá? Vou colocar aqui, ó, protocolo de
+[1672.0s] [27:52] comunicação, mas também de transferência
+[1678.2s] [27:58] de
+[1681.5s] [28:01] hipertexto.
+[1683.8s] [28:03] O que é um hipertexto? Hipertexto é mais
+[1686.5s] [28:06] do que texto, não é? Pensa supermercado.
+[1690.3s] [28:10] Supermercado
+[1691.8s] [28:11] é um tipo de comércio. Hipermercado é um
+[1698.2s] [28:18] outro tipo de comércio que é maior, né?
+[1701.9s] [28:21] Então, quando a gente falar de
+[1703.0s] [28:22] hipertexto é mais do que texto.
+[1705.8s] [28:25] Hipertexto quer dizer que além de texto
+[1708.0s] [28:28] ele vai ter ele vai ter imagens, ele vai
+[1711.0s] [28:31] ter som, ele pode ter vídeo, que é o que
+[1714.0s] [28:34] a gente tem nas páginas da internet, tá?
+[1717.5s] [28:37] Então, assinada alternativa que traz
+[1719.9s] [28:39] protocolo de transferência de
+[1721.5s] [28:41] hipertexto, só que o FTP vai estar entre
+[1723.6s] [28:43] as alternativas. Cuidado,
+[1726.1s] [28:46] tem gente que lê apenas transferência e
+[1728.3s] [28:48] já associa a FTP.
+[1730.6s] [28:50] FTP é transferência de arquivos.
+[1734.9s] [28:54] HTTP ou HTTPS é transferência de
+[1739.8s] [28:59] hipertexto,
+[1741.7s] [29:01] tá? Muito cuidado com essas armadilhas
+[1744.6s] [29:04] que as bancas costumam trazer, beleza?
+[1748.0s] [29:08] Bom, importância das redes de
+[1751.5s] [29:11] computadores. Olha lá, por que que as
+[1753.7s] [29:13] redes de computadores são essenciais
+[1756.6s] [29:16] hoje em dia, né? Então elas simplesmente
+[1761.2s] [29:21] revolucionaram a forma como a gente
+[1763.9s] [29:23] trabalha, como a gente se comunica, como
+[1766.0s] [29:26] a gente acessa informações e até mesmo
+[1768.9s] [29:28] como nós nos divertimos. É ou não é?
+[1772.2s] [29:32] Fala a verdade. Pensa, você consegue
+[1776.6s] [29:36] hoje acessar o computador sem acesso à
+[1779.4s] [29:39] internet? Fala a verdade para mim. Você
+[1783.4s] [29:43] liga o computador quando não tem
+[1784.9s] [29:44] internet?
+[1786.4s] [29:46] Não, né? Por quê? Porque nós somos
+[1788.2s] [29:48] totalmente dependentes dela hoje em dia,
+[1790.8s] [29:50] né? Hoje você quer fazer qualquer coisa
+[1794.0s] [29:53] consultando a rede, de fato, seja para
+[1797.3s] [29:57] consultar a previsão do tempo, seja para
+[1799.4s] [29:59] consultar, por exemplo, eh, o trânsito,
+[1803.6s] [30:03] seja para consultar, sei lá, qualquer
+[1806.9s] [30:06] informação,
+[1808.5s] [30:08] né? Então, você precisa hoje da
+[1811.4s] [30:11] internet. Então, as redes elas vão ter o
+[1814.8s] [30:14] papel de conectar quem? pessoas,
+[1816.8s] [30:16] empresas, governos. Ela vai trazer ali o
+[1820.8s] [30:20] papel de compartilhar, além das
+[1824.9s] [30:24] informações, conhecimento e o principal,
+[1828.5s] [30:28] que são os acessos aos serviços
+[1831.1s] [30:31] essenciais.
+[1833.0s] [30:33] Hoje a rede tem um papel importantíssimo
+[1836.4s] [30:36] em relação a serviços essenciais. Hoje,
+[1840.4s] [30:40] por exemplo, empresas,
+[1842.6s] [30:42] a rede facilita todo o trabalho, né?
+[1846.9s] [30:46] Seja um compartilhamento de informações,
+[1850.3s] [30:50] a gestão ali desses dados na educação.
+[1856.1s] [30:56] Hoje o compartilhamento de informação
+[1860.0s] [31:00] gera ali pra gente mobilidade, vamos
+[1863.4s] [31:03] dizer assim, mais imediata, né? Então eu
+[1867.9s] [31:07] consigo ali através da educação
+[1870.8s] [31:10] promover, por exemplo, com que os alunos
+[1872.6s] [31:12] possam acessar plataformas
+[1875.8s] [31:15] eh
+[1877.6s] [31:17] educacionais,
+[1879.3s] [31:19] plataformas de bibliotecas digitais,
+[1882.7s] [31:22] plataformas de aplicação de
+[1885.3s] [31:25] conhecimento, né? E hoje na educação a
+[1889.9s] [31:29] gente também pode aplicar a inteligência
+[1892.5s] [31:32] artificial,
+[1894.6s] [31:34] não é? na saúde, qual o papel que a rede
+[1897.8s] [31:37] tem? A rede vai permitir ali que as
+[1901.2s] [31:41] informações médicas possam ser
+[1903.2s] [31:43] compartilhadas,
+[1905.7s] [31:45] compartilhamento ali, por exemplo, de
+[1908.2s] [31:48] serviços como a telemedicina e que é uma
+[1912.2s] [31:52] revolução aí extremamente,
+[1915.0s] [31:55] vamos dizer assim, eh pertinente.
+[1918.8s] [31:58] Então, pô, eu não vou até um pronto
+[1920.7s] [32:00] socorro ficar lá horas e horas esperando
+[1924.5s] [32:04] pro médico me analisar e pedir para eu
+[1927.2s] [32:07] tomar determinado remédio, sendo que ele
+[1929.2s] [32:09] pode me atender ali através da
+[1932.1s] [32:12] telemedicina, não pela comodidade, mas
+[1935.5s] [32:15] também pela, vamos dizer assim, eh,
+[1938.4s] [32:18] necessidade. Eu estou impossibilitado de
+[1940.8s] [32:20] sair, né? Então, a telemedicina pode me
+[1944.7s] [32:24] ajudar,
+[1946.2s] [32:26] não consigo me deslocar agora.
+[1948.9s] [32:28] a telemedicina pode ajudar. E é claro
+[1951.6s] [32:31] que no entretenimento, né? No
+[1953.0s] [32:32] entretenimento, jogos online, seja
+[1956.2s] [32:36] também para assistir filmes através de
+[1958.4s] [32:38] streaming, né? Eh, ficar zapeando nas
+[1963.1s] [32:43] redes sociais, tudo isso é
+[1964.6s] [32:44] caracterização
+[1966.5s] [32:46] da importância de uma rede, tá?
+[1971.5s] [32:51] Mas é preciso ter segurança. E é aqui
+[1974.0s] [32:54] que a gente vai falar de seguranças em
+[1975.9s] [32:55] redes. Então, tá lá. Segurança
+[1979.3s] [32:59] em redes. A segurança em redes é crucial
+[1982.6s] [33:02] para proteger informações confidenciais,
+[1986.5s] [33:06] evitar acessos não autorizados, né?
+[1991.3s] [33:11] Redes eh
+[1993.8s] [33:13] podem ser vulneráveis a diversos tipos
+[1997.0s] [33:17] de ameaças.
+[1998.7s] [33:18] Dependendo de como ela foi configurada,
+[2000.8s] [33:20] ela pode ser eh suscetível a invasões,
+[2005.4s] [33:25] né?
+[2006.7s] [33:26] também como a presença de vírus,
+[2009.8s] [33:29] malwares, hackers, ataques de fishing,
+[2012.8s] [33:32] né? Então você pode ter essas
+[2015.0s] [33:35] características.
+[2016.9s] [33:36] É fundamental
+[2020.3s] [33:40] trazer medidas de segurança para
+[2022.6s] [33:42] proteger e garantir a integridade da
+[2025.6s] [33:45] RIF. Bom, então para que isso aconteça,
+[2030.0s] [33:50] nós precisamos adotar ali alguns
+[2033.0s] [33:53] elementos de segurança. O primeiro
+[2035.6s] [33:55] elemento de segurança dentro de uma
+[2037.4s] [33:57] rede, quem é? Firewall. O que o firewall
+[2041.0s] [34:00] é? O Fwall é o controlador de acesso, é
+[2045.0s] [34:04] o porteiro, é o cara que impede, por
+[2048.1s] [34:08] exemplo, acessos não autorizados e
+[2051.0s] [34:11] impede o tráfego que é suspeito.
+[2054.6s] [34:14] É a funcionalidade dele, tá? Depois o
+[2059.6s] [34:19] antivírus.
+[2061.6s] [34:21] O antivírus ele é um programa que vai
+[2066.2s] [34:26] detectar e remover
+[2068.8s] [34:28] vírus, tá?
+[2071.4s] [34:31] ou qualquer tipo de malware que possa
+[2073.6s] [34:33] representar ali algum tipo de ameaça à
+[2076.7s] [34:36] rede.
+[2079.2s] [34:39] Dentro de uma rede, a gente precisa
+[2081.5s] [34:41] trabalhar com senhas fortes.
+[2085.2s] [34:45] Utilizar senhas fortes e únicas para
+[2087.9s] [34:47] cada conta é essencial para proteger os
+[2091.2s] [34:51] dados e evitar o quê? O acesso não
+[2094.4s] [34:54] autorizado.
+[2100.3s] [35:00] A caracterização da segurança em rede é
+[2103.3s] [35:03] justamente impedir
+[2105.9s] [35:05] o acesso não autorizado,
+[2109.0s] [35:09] tá?
+[2110.8s] [35:10] E depois
+[2112.6s] [35:12] atualizações de segurança. Olha lá, ó.
+[2118.1s] [35:18] Manter o software atualizado com as
+[2121.1s] [35:21] últimas correções de segurança é
+[2124.3s] [35:24] fundamental para proteger a rede contra
+[2127.2s] [35:27] novas ameaças. Então, ter o antivírus
+[2130.6s] [35:30] atualizado, né? Manter o sistema
+[2134.7s] [35:34] operacional
+[2136.6s] [35:36] atualizado e fazer com que as pessoas
+[2140.6s] [35:40] que estão operando a rede utilizem
+[2145.3s] [35:45] métodos de segurança e prevenções,
+[2149.2s] [35:49] gera ali, por exemplo, um ambiente,
+[2152.6s] [35:52] vamos dizer assim, mais confortável. Eu
+[2156.9s] [35:56] não vou dizer seguro, mas eu vou dizer
+[2160.2s] [36:00] mais confortável
+[2162.3s] [36:02] em relação a possíveis infecções, tá?
+[2166.9s] [36:06] Então essa é a caracterização que a
+[2168.8s] [36:08] gente tem em segurança em redes, tá?
+[2173.3s] [36:13] Aplicações. Bom, já sabemos, né? A rede
+[2177.3s] [36:17] ela pode ser aplicada em diversas
+[2179.8s] [36:19] aplicações que nós temos no nosso dia a
+[2182.3s] [36:22] dia. A primeira grande aplicação é o que
+[2185.2s] [36:25] é o trabalho em equipe. Então, redes
+[2187.8s] [36:27] permitem que equipes possam trabalhar
+[2189.4s] [36:29] juntas em projetos. Hoje a rede faz um
+[2192.7s] [36:32] papel fundamental, principalmente no que
+[2195.2s] [36:35] a gente chama de trabalhar de maneira
+[2198.1s] [36:38] colaborativa,
+[2199.8s] [36:39] né? Então, as equipes podem trabalhar no
+[2202.7s] [36:42] mesmo projeto ao mesmo tempo e se
+[2204.6s] [36:44] comunicarem ali ao mesmo tempo que o
+[2207.5s] [36:47] projeto é realizado, né? Redes sociais.
+[2211.5s] [36:51] As redes sociais trazem ali pra gente o
+[2213.7s] [36:53] quê?
+[2215.3s] [36:55] A conexão de pessoas
+[2218.8s] [36:58] e mundo propriamente adid, né? Então,
+[2221.8s] [37:01] vamos falar assim, ó, conectar as
+[2223.6s] [37:03] pessoas de todo mundo, trazendo
+[2226.1s] [37:06] informações sobre produtos e serviços,
+[2229.0s] [37:08] trazendo ali também diversão, né? Por
+[2232.6s] [37:12] não? Então, as redes sociais têm esse
+[2235.6s] [37:15] papel e é claro,
+[2237.9s] [37:17] hoje o comércio eletrônico supera o
+[2240.6s] [37:20] comércio varista, né? Então, quer dizer,
+[2244.6s] [37:24] o comércio físico hoje ele não traz a
+[2249.9s] [37:29] mesma,
+[2251.6s] [37:31] vamos dizer assim, eh
+[2257.1s] [37:37] presença. Vamos, porque não dá para
+[2259.5s] [37:39] comparar, né? O comércio eletrônico ele
+[2262.1s] [37:42] funciona 24 horas, enquanto o comércio
+[2265.0s] [37:45] varegista não. Ah, mas tem lojas que
+[2267.7s] [37:47] funcionam 24 horas. Tudo bem, mas a loja
+[2271.1s] [37:51] ela vai ter um poder de atendimento de
+[2274.6s] [37:54] pessoas e o comércio eletrônico tem o
+[2278.0s] [37:58] poder de atendimento de milhares e
+[2280.4s] [38:00] milhares de pessoas ao mesmo tempo.
+[2284.2s] [38:04] Percebe a diferença e o poder que o
+[2286.3s] [38:06] comércio eletrônico tem, né? E isso só é
+[2289.8s] [38:09] possível graças ao quê? A utilização
+[2294.0s] [38:14] de redes. Fechou? E ó, tendências
+[2298.6s] [38:18] futuras das redes de computador. Olha
+[2301.8s] [38:21] só, como a gente já sabe,
+[2304.6s] [38:24] as redes estão sempre em constante
+[2307.8s] [38:27] evolução,
+[2309.3s] [38:29] seja impulsionadas pela demanda por
+[2312.6s] [38:32] conectividade, porque a gente tem cada
+[2314.8s] [38:34] vez mais coisas se conectando à
+[2317.6s] [38:37] internet, né?
+[2319.8s] [38:39] também pela demanda de velocidade, a
+[2322.9s] [38:42] gente precisa de mais, vamos dizer
+[2325.4s] [38:45] assim, eh
+[2329.0s] [38:48] respostas prontamente ali sendo trazidas
+[2333.8s] [38:53] e segurança, né? Também precisamos de
+[2337.2s] [38:57] segurança.
+[2338.7s] [38:58] Então, quais são as tendências futuras
+[2341.2s] [39:01] que as redes podem ali no caso incluir?
+[2344.3s] [39:04] Bom, internet das coisas é uma coisa que
+[2346.0s] [39:05] a gente já vivencia no nosso dia a dia,
+[2348.2s] [39:08] né? Então, dispositivos inteligentes
+[2350.1s] [39:10] conectados à internet para que você
+[2352.3s] [39:12] possa fazer as ações do seu dia a dia de
+[2354.4s] [39:14] maneira mais cômoda, como por exemplo,
+[2357.0s] [39:16] né, controlar, né, a a luminosidade da
+[2361.9s] [39:21] casa, abrir ali as persianas,
+[2365.7s] [39:25] inclusive abrir torneiras,
+[2368.6s] [39:28] fechar, né, enfim, você pode controlar
+[2371.4s] [39:31] tudo isso através do seu smartphone ou
+[2375.3s] [39:35] programando isso para acontecer.
+[2378.6s] [39:38] Depois, rede 5G. A rede 5G chegou
+[2383.3s] [39:43] justamente para compartilhar ainda mais
+[2386.8s] [39:46] as informações através da internet das
+[2389.5s] [39:49] coisas, porque oferece o quê? Velocidade
+[2392.8s] [39:52] de conexão muito mais rápida, menor
+[2395.9s] [39:55] latência. Sabe o que que é latência?
+[2398.8s] [39:58] Sabe quando você assiste um jogo de
+[2402.0s] [40:02] futebol, principalmente na Copa do
+[2403.4s] [40:03] Mundo, que isso é muito comum, e aí você
+[2405.8s] [40:05] está aqui na sua casa e de repente você
+[2409.1s] [40:09] escuta no vizinho gol, só que não
+[2412.0s] [40:12] aconteceu ainda na sua casa.
+[2415.0s] [40:14] E aí,
+[2416.6s] [40:16] segundos depois, gol na sua casa também.
+[2419.1s] [40:19] O que é isso? Isso é a latência,
+[2421.9s] [40:21] tá? Então,
+[2424.4s] [40:24] o que que a rede oferece, né? Hoje em
+[2428.3s] [40:28] dia, hoje em dia a promessa é que a
+[2432.2s] [40:32] latência seja cada vez menor, ao ponto
+[2435.4s] [40:35] de não ter diferença. O gol vai sair lá
+[2439.7s] [40:39] no seu vizinho, mas por microssegundos
+[2443.4s] [40:43] vai acontecer na sua casa também. Ele
+[2445.3s] [40:45] vai gritar: "Gol, você em seguida gol".
+[2447.8s] [40:47] E não é aquela gol. Aí o cara tá saindo
+[2451.1s] [40:51] ainda lá da área da defesa para poder
+[2454.6s] [40:54] chegar até o ataque na sua casa, né?
+[2457.3s] [40:57] Então isso não vai acontecer. A
+[2459.4s] [40:59] tendência é que a latência seja cada vez
+[2462.2s] [41:02] menor. Computação em nuvem. Olha lá, ó.
+[2467.5s] [41:07] Hoje a gente não consegue falar de
+[2471.0s] [41:11] internet e rede sem mencionar a
+[2473.6s] [41:13] computação e nuvem. Isso não é possível.
+[2476.7s] [41:16] Então, hoje permite que os usuários
+[2479.8s] [41:19] possam acessar esses recursos e serviços
+[2482.8s] [41:22] por meio da internet, eliminando aí o
+[2485.6s] [41:25] uso de hardwares locais, né? E, é claro,
+[2489.9s] [41:29] a segurança aprimorada. Futuras vão
+[2493.3s] [41:33] trazer mais medidas de segurança para
+[2496.1s] [41:36] proteger os dados e evitar ataques
+[2499.7s] [41:39] cibernéticos.
+[2501.5s] [41:41] Beleza, gente? Então isso foi um
+[2504.6s] [41:44] apanhado geral que a gente tem sobre
+[2507.0s] [41:47] redes de computadores, tá? E para você
+[2511.7s] [41:51] que precisa aí no caso estudar de uma
+[2515.6s] [41:55] maneira efetiva, a nova está oferecendo
+[2521.6s] [42:01] aí no caso para você
+[2526.6s] [42:06] a Black Friday
+[2529.5s] [42:09] da nova. é a maior Black Friday da
+[2532.1s] [42:12] história que permite que você possa ter
+[2535.0s] [42:14] aí a sua assinatura de todos os cursos
+[2538.6s] [42:18] da NVA,
+[2541.4s] [42:21] só que com um grande presente, ao invés
+[2543.7s] [42:23] de você pagar
+[2546.7s] [42:26] apenas um ano, você vai pagar um ano, só
+[2549.7s] [42:29] que vai receber mais um de graça. É isso
+[2551.6s] [42:31] aí, ó. Um ano grátis. Então, o acesso
+[2554.4s] [42:34] por 2 anos de todos os cursos da nova,
+[2558.8s] [42:38] onde você vai ter ali ferramenta, plano
+[2562.2s] [42:42] do especialista, que é para você poder
+[2564.9s] [42:44] organizar os seus estudos, gerenciar os
+[2567.4s] [42:47] seus estudos, definir quantas horas cada
+[2571.8s] [42:51] matéria vai ter durante o dia, né? Então
+[2574.6s] [42:54] você vai ter essa, vamos dizer assim,
+[2577.4s] [42:57] direção que muita gente não tem e acaba
+[2581.4s] [43:01] prejudicando o seu estudo por não ter
+[2583.3s] [43:03] essa organização.
+[2585.3s] [43:05] Você tem ali um mapa de questões para
+[2587.2s] [43:07] você poder treinar, né? ver com que você
+[2589.9s] [43:09] está em relação ao conteúdo que foi
+[2593.4s] [43:13] aprendido. Você também tem a tutoria
+[2596.6s] [43:16] especializada para você poder tirar as
+[2599.2s] [43:19] suas dúvidas sempre que julgar
+[2602.1s] [43:22] necessário.
+[2603.9s] [43:23] Pode participar das mentorias ali
+[2606.7s] [43:26] semanais fechadas só para os assinantes
+[2611.3s] [43:31] e tirar as suas dúvidas diretamente com
+[2613.4s] [43:33] o professor ao vivo. E claro, a
+[2617.0s] [43:37] plataforma mapa da prova, para que você
+[2619.5s] [43:39] possa ali saber quais são os assuntos
+[2623.2s] [43:43] pertinentes que você deve estudar para a
+[2625.6s] [43:45] sua prova, né? Além de realizar os seus
+[2629.3s] [43:49] simulados
+[2630.8s] [43:50] para treinar ainda mais, como que seria
+[2634.4s] [43:54] se a prova fosse hoje, né?
+[2637.8s] [43:57] Tudo isso por 12 parcelas de 24,90. Mas
+[2642.8s] [44:02] professor, por que que eu pagaria isso,
+[2644.7s] [44:04] né? Primeiro vamos conhecer um pouquinho
+[2647.4s] [44:07] da nova. A nova ela é, vamos dizer
+[2651.6s] [44:11] assim, uma eh empresa, claro, que
+[2656.2s] [44:16] oferece para os alunos a possibilidade
+[2659.8s] [44:19] de aprender
+[2662.0s] [44:22] um conceito, uma metodologia, uma forma
+[2666.5s] [44:26] para alcançar o objetivo da aprovação. A
+[2670.4s] [44:30] Nova tem mais de 67.000 1000 alunos
+[2672.8s] [44:32] ativos e mais de 70.000 aprovados.
+[2676.9s] [44:36] Então, olha que bacana, né? A quantidade
+[2679.8s] [44:39] de pessoas que acreditou, né, na
+[2684.2s] [44:44] metodologia e conseguiu aí a sua
+[2688.0s] [44:48] aprovação. Você pode ser mais um deles,
+[2691.3s] [44:51] né?
+[2693.2s] [44:53] Você tem aqui com a nova ferramentas e
+[2695.6s] [44:55] recursos exclusivos que em nenhum outro
+[2698.2s] [44:58] lugar você vai encontrar. Então você
+[2700.8s] [45:00] pode ver que quem faz nova sempre traz
+[2705.3s] [45:05] ali para você comentários positivos
+[2707.6s] [45:07] sobre a metodologia e a forma como o
+[2711.2s] [45:11] conteúdo é passado.
+[2713.8s] [45:13] Estamos há mais de 10 anos no mercado
+[2717.6s] [45:17] oferecendo, né, essa metodologia e cada
+[2721.9s] [45:21] vez mais aprimorando para poder trazer
+[2726.1s] [45:26] para você a possibilidade da aprovação.
+[2730.4s] [45:30] Então não perca tempo. Você está aí na
+[2733.8s] [45:33] Black Friday com 72%
+[2737.1s] [45:37] ali de desconto, pagando apenas 12
+[2740.3s] [45:40] parcelas de R$ 24,90.
+[2743.7s] [45:43] Para adquirir, basta clicar no link que
+[2745.8s] [45:45] está fixado no chat ou clicar no link
+[2749.6s] [45:49] que está na descrição desse vídeo.
+[2752.3s] [45:52] Fechou? Muito bem, meus queridos. Então,
+[2755.8s] [45:55] eu voltar aqui para vocês. Quero
+[2758.0s] [45:58] agradecer mais uma vez a presença, a
+[2760.8s] [46:00] participação de todos. Eu espero que
+[2763.6s] [46:03] esse conceito que eu passei para vocês
+[2765.5s] [46:05] sobre redes de computadores tenha sido
+[2768.6s] [46:08] válido, que você possa ter anotado todos
+[2772.4s] [46:12] os elementos importantes e pertinentes
+[2774.7s] [46:14] que podem aparecer aí na sua prova,
+[2777.5s] [46:17] beleza? Então, vou ficando por aqui, um
+[2780.4s] [46:20] forte abraço para você e até a próxima.
+[2783.5s] [46:23] Valeu,

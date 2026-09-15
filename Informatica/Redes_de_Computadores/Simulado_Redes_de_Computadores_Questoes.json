@@ -1,0 +1,71 @@
+[
+  {
+    "enunciado": "1. (CEBRASPE / Polícia Federal - Adaptada) O switch é um dispositivo de interconexão que opera na camada física do modelo OSI e, por esse motivo, retransmite todo pacote recebido por uma de suas portas para todas as demais portas da rede local.",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 1,
+    "comentario": "Gabarito: ERRADO. O switch opera na Camada de Enlace (Camada 2) e utiliza os endereços físicos (MAC) das placas de rede para encaminhar o quadro exclusivamente para a porta do destinatário (unicast). Quem opera na camada física e transmite para todas as portas por broadcast é o hub.",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "2. (FGV / MPE - Adaptada) Um usuário necessita enviar um e-mail utilizando um cliente de correio eletrônico instalado em seu computador e, simultaneamente, manter as mensagens recebidas sincronizadas entre seu smartphone e seu notebook sem que sejam apagadas do servidor. Os protocolos empregados respectivamente para o envio e para essa sincronização são:",
+    "options": [
+      "A) POP3 e SMTP",
+      "B) SMTP e IMAP",
+      "C) IMAP e POP3",
+      "D) HTTP e POP3",
+      "E) SMTP e FTP"
+    ],
+    "correct_index": 1,
+    "comentario": "Gabarito: B. O envio de e-mails entre clientes e servidores de correio é realizado via SMTP (porta 587/25). Para manter as pastas sincronizadas em múltiplos dispositivos sem remover as mensagens do servidor, utiliza-se o IMAP (porta 143/993).",
+    "banca": "FGV"
+  },
+  {
+    "enunciado": "3. (CEBRASPE / PRF - Adaptada) Em uma topologia física em estrela, a interrupção do funcionamento de uma estação de trabalho isolada acarreta a indisponibilidade total de comunicação entre as demais estações da rede.",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 1,
+    "comentario": "Gabarito: ERRADO. Na topologia em estrela, cada estação possui um enlace independente até o nó central (switch). A queda de um único computador não afeta a comunicação entre os outros nós. A rede só pararia por completo caso o concentrador central sofresse uma pane.",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "4. (VUNESP / TJ-SP - Adaptada) Assinale a alternativa que apresenta corretamente uma característica do protocolo de transporte UDP:",
+    "options": [
+      "A) Garante a entrega dos pacotes por meio de confirmação (ACK).",
+      "B) Estabelece uma conexão prévia por meio do aperto de mão em três vias (Three-Way Handshake).",
+      "C) É um protocolo não orientado à conexão, indicado para transmissões em tempo real que priorizam baixa latência.",
+      "D) Realiza controle estrito de fluxo e de congestionamento de rede.",
+      "E) Opera exclusivamente na camada de aplicação da arquitetura TCP/IP."
+    ],
+    "correct_index": 2,
+    "comentario": "Gabarito: C. O UDP (User Datagram Protocol) opera sem conexão (connectionless), sem confirmação de entrega e sem retransmissão, priorizando velocidade e baixa latência (ideal para streaming, voz sobre IP e consultas DNS).",
+    "banca": "Vunesp"
+  },
+  {
+    "enunciado": "5. (FCC / TRT - Adaptada) Uma rede de computadores que interliga estações de trabalho situadas em diferentes prédios de um mesmo município metropolitano de grande porte é classificada geograficamente como:",
+    "options": [
+      "A) PAN",
+      "B) LAN",
+      "C) MAN",
+      "D) WAN",
+      "E) SAN"
+    ],
+    "correct_index": 2,
+    "comentario": "Gabarito: C. Uma MAN (Metropolitan Area Network) abrange a extensão geográfica de uma cidade ou região metropolitana. PAN é pessoal (poucos metros), LAN é local (um escritório/prédio) e WAN é de longa distância (países/mundo).",
+    "banca": "FCC"
+  },
+  {
+    "enunciado": "6. (CEBRASPE / Polícia Federal - Adaptada) Os endereços IPv4 são constituídos por 32 bits representados em quatro octetos em notação decimal, enquanto os endereços IPv6 são formados por 128 bits organizados em oito grupos de quatro dígitos hexadecimais.",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 0,
+    "comentario": "Gabarito: CERTO. IPv4 possui exatamente 32 bits (ex: 192.168.0.1) e o IPv6 possui 128 bits (ex: 2001:0db8:85a3:0000:0000:8a2e:0370:7334), permitindo uma quantidade praticamente infinita de endereçamentos para sanar o esgotamento do IPv4.",
+    "banca": "Cebraspe"
+  }
+]

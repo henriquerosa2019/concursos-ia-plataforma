@@ -1,0 +1,25 @@
+{
+  "cards": [
+    {
+      "q": "O que é um Trojan Horse (Cavalo de Troia) e qual sua tática de ataque?",
+      "a": "É um programa que se passa por um software legítimo ou útil (jogo, cartão virtual), mas que em segundo plano abre portas de comunicação (backdoors) para controle remoto pelo invasor."
+    },
+    {
+      "q": "O que é um Spyware do tipo Keylogger e do tipo Screenlogger?",
+      "a": "Keylogger grava todas as teclas digitadas no teclado físico; Screenlogger captura imagens da tela ao redor do cursor do mouse (usado para capturar cliques em teclados virtuais bancários)."
+    },
+    {
+      "q": "Qual a diferença entre um golpe de Phishing e um golpe de Pharming?",
+      "a": "Phishing usa engenharia social (e-mails ou links falsos) induzindo o usuário ao erro; Pharming corrompe o serviço de DNS (envenenamento de cache), redirecionando o usuário mesmo quando ele digita o endereço correto."
+    },
+    {
+      "q": "Qual a diferença entre a Criptografia Simétrica e a Criptografia Assimétrica?",
+      "a": "Simétrica usa uma única chave secreta para cifrar e decifrar (mais rápida); Assimétrica usa um par de chaves complementares: chave pública (para cifrar) e chave privada (para decifrar)."
+    },
+    {
+      "q": "Quais princípios da segurança da informação a Assinatura Digital garante por si só?",
+      "a": "Garante Autenticidade, Integridade e Não-repúdio. Ela NÃO garante Confidencialidade (sigilo), a menos que o documento seja também encriptado."
+    }
+  ],
+  "quiz": []
+}

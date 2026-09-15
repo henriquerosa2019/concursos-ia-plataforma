@@ -1,0 +1,17 @@
+[5.0s] Iniciamos o estudo da Teoria Geral dos Atos Administrativos, o pilar central do Direito Administrativo em bancas como Cebraspe e FGV.
+[35.0s] Ato administrativo é toda manifestação unilateral de vontade da Administração Pública que tenha por fim imediato adquirir, resguardar, transferir, modificar ou extinguir direitos.
+[80.0s] Vamos aos Requisitos ou Elementos de Validade do Ato Administrativo. Mnemônico clássico: CO-FI-FO-MO-OB.
+[125.0s] CO de Competência: poder atribuído pela lei ao agente público para desempenhar suas funções. É irrenunciável e intransferível por acordo entre as partes.
+[175.0s] FI de Finalidade: o objetivo de interesse público almejado pela lei. O desvio de finalidade acarreta nulidade absoluta do ato.
+[225.0s] FO de Forma: a maneira pela qual o ato se exterioriza. No direito público, a regra é a forma escrita solene.
+[275.0s] MO de Motivo: a situação de fato e de direito que fundamenta a prática do ato administrativo.
+[325.0s] OB de Objeto: o efeito jurídico imediato produzido pelo ato, aquilo que ele cria, altera ou extingue.
+[380.0s] Regra de Ouro: CO-FI-FO são SEMPRE elementos vinculados! Já MO e OB podem ser discricionários, formando o mérito administrativo.
+[440.0s] Vamos aos Atributos do Ato Administrativo: Mnemônico P-A-T-I.
+[490.0s] Presunção de Legitimidade e Veracidade: presume-se que os atos foram praticados em conformidade com a lei e que os fatos são verdadeiros. Presunção relativa (juris tantum).
+[550.0s] Autoexecutoriedade: a Administração pode executar suas decisões diretamente, inclusive com uso moderado da força, sem necessidade de autorização judicial prévia.
+[610.0s] Tipicidade: o ato deve corresponder a figuras previamente definidas pela legislação.
+[665.0s] Imperatividade: o ato se impõe a terceiros independentemente da sua concordância.
+[730.0s] Extinção dos Atos: Anulação versus Revogação. Anulação ocorre por motivo de Ilegalidade, tem efeitos retroativos (ex tunc), e pode ser feita pela Adm ou pelo Judiciário.
+[800.0s] Já a Revogação ocorre por Conveniência e Oportunidade sobre ato perfeitamente legal. Produz efeitos não retroativos (ex nunc) e SÓ pode ser feita pela própria Administração!
+[875.0s] Convalidação de Atos: permite sanar vícios sanáveis. Mnemônico FO-CO: vício de Forma não essencial e vício de Competência não exclusiva.

@@ -1,0 +1,99 @@
+[
+  {
+    "enunciado": "1. (CESPE / Adaptada) Na função =PROCV do Microsoft Excel, o primeiro argumento define o número de índice da coluna que contém a resposta desejada, enquanto o segundo define a matriz da tabela.",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 1,
+    "comentario": "O 1º argumento é o <strong>valor procurado</strong>. O número de índice da coluna é o 3º argumento!",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "2. (FGV / Adaptada) Em uma planilha, um assistente precisa localizar o salário de um servidor a partir do número da sua matrícula (coluna A, dados de A2 a D100). A função adequada e sua categoria no menu do Excel são:",
+    "options": [
+      "A) SOMASE, categoria Matemática.",
+      "B) PROCV, categoria Pesquisa e Referência.",
+      "C) PROCH, categoria Estatística.",
+      "D) ÍNDICE, categoria Lógica."
+    ],
+    "correct_index": 1,
+    "comentario": "Como a disposição é em colunas, utiliza-se o <strong>PROCV</strong>. A categoria é <strong>Pesquisa e Referência</strong>.",
+    "banca": "FGV"
+  },
+  {
+    "enunciado": "3. (FCC / Adaptada) Sabendo que A2=101, B2=Teclado, C2=80; A3=102, B3=Mouse, C3=45; A4=103, B4=Monitor, C4=750; qual o resultado da fórmula =PROCV(103; A1:C5; 3; 0)?",
+    "options": [
+      "A) Mouse",
+      "B) Monitor",
+      "C) 45",
+      "D) 750",
+      "E) #N/D"
+    ],
+    "correct_index": 3,
+    "comentario": "O código 103 está na linha 4. A 3ª coluna dessa linha é o Preço (750). Como o 4º argumento é 0 (exato), retorna <strong>750</strong>.",
+    "banca": "FCC"
+  },
+  {
+    "enunciado": "4. (Vunesp / Adaptada) Com base na mesma tabela, qual o resultado de =PROCV(MÍNIMO(A2:A5); A2:C5; 2; FALSO)?",
+    "options": [
+      "A) Teclado",
+      "B) Mouse",
+      "C) 101",
+      "D) 80"
+    ],
+    "correct_index": 0,
+    "comentario": "MÍNIMO(A2:A5) = 101. O PROCV busca 101 e retorna o dado da coluna 2 (Produto) = <strong>Teclado</strong>.",
+    "banca": "Vunesp"
+  },
+  {
+    "enunciado": "Em uma planilha do Excel, um analista precisa buscar o nome de um servidor a partir do seu ID (coluna A, dados de A2 a D100) utilizando a função PROCV. O analista, ao não especificar o quarto argumento da função, inadvertidamente assume que a busca será exata. Qual é o comportamento padrão da função PROCV nesse caso?",
+    "options": [
+      "A) A busca será exata e retornará um erro se o ID não for encontrado.",
+      "B) A busca será aproximada e poderá retornar um valor que não corresponde ao ID buscado.",
+      "C) A busca será sempre exata, independentemente de como os dados estão organizados.",
+      "D) A busca não funcionará e gerará um erro de sintaxe."
+    ],
+    "correct_index": 1,
+    "comentario": "A função PROCV, quando o quarto argumento é omitido, assume que a busca é aproximada (1 ou VERDADEIRO). Isso pode levar a resultados incorretos se o usuário acreditar que está realizando uma busca exata.",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "Considerando uma tabela de dados onde a primeira coluna possui valores em ordem crescente, um administrador deseja utilizar a função PROCV para achar um valor específico. Qual é a condição necessária para que a função funcione corretamente em modo de busca aproximada (ignorar o quarto argumento)?",
+    "options": [
+      "A) Os valores na primeira coluna devem ser dispostos em ordem decrescente.",
+      "B) A tabela deve estar em ordem crescente na primeira coluna.",
+      "C) Não há necessidade de ordenação na tabela para busca aproximada.",
+      "D) A função PROCV não pode realizar busca aproximada."
+    ],
+    "correct_index": 1,
+    "comentario": "Para que a busca aproximada funcione corretamente, a primeira coluna da matriz deve estar ordenada em ordem crescente. Se não estiver, o resultado pode ser incorreto.",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "Em uma planilha de controle de estoque, um analista deseja buscar a quantidade de um produto a partir do seu código (coluna A, dados de A2 a D100), utilizando a função PROCV. Se a fórmula utilizada for =PROCV(200; A2:D100; 3), qual é a consequência se o argumento de busca exata não for especificado?",
+    "options": [
+      "A) O Excel sempre retornará a quantidade exata do produto.",
+      "B) O Excel poderá retornar a quantidade mais próxima, mesmo que não seja exata.",
+      "C) O Excel resultará em erro #N/D se o código não existir.",
+      "D) O Excel retornará um erro #VALOR! se a coluna não estiver ordenada.",
+      "E) O Excel ignorará a busca e retornará uma célula vazia."
+    ],
+    "correct_index": 1,
+    "comentario": "A ausência do argumento de busca exata permite que o Excel utilize a busca aproximada, retornando o valor correspondente mais próximo se o código não for encontrado. Isso pode resultar em dados incorretos se o usuário espera uma correspondência exata.",
+    "banca": "FGV"
+  },
+  {
+    "enunciado": "Considere a tabela de notas dos alunos com as seguintes colunas: A (Nome), B (Matrícula), C (Nota 1), D (Nota 2). Se a fórmula =PROCV(B5; B2:D10; 3; 0) retornar um erro #N/D, qual das alternativas abaixo explica corretamente esse erro?",
+    "options": [
+      "A) O número da matrícula na célula B5 não está presente na coluna B.",
+      "B) O índice da coluna especificado (3) é maior que a largura da matriz.",
+      "C) A tabela de notas não está ordenada em ordem crescente.",
+      "D) O valor procurado na célula B5 é texto e a coluna B contém números.",
+      "E) A fórmula não deve usar o argumento de busca 0, pois isso gera erro."
+    ],
+    "correct_index": 0,
+    "comentario": "O erro #N/D ocorre quando o valor procurado na célula B5 não está presente na primeira coluna da matriz (coluna B). Isso indica que a busca exata não encontrou correspondência.",
+    "banca": "FGV"
+  }
+]

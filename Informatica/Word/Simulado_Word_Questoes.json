@@ -1,0 +1,52 @@
+[
+  {
+    "enunciado": "1. (CEBRASPE / Adaptada) No Microsoft Word em língua portuguesa, a combinação de teclas Ctrl + S tem como finalidade salvar as alterações efetuadas no documento ativo em seu diretório de origem.",
+    "options": ["A) CERTO", "B) ERRADO"],
+    "correct_index": 1,
+    "comentario": "O atalho para salvar no Word (PT-BR) é <strong>Ctrl + B</strong>. O atalho <strong>Ctrl + S</strong> aplica a formatação de <strong>Sublinhado</strong>.",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "2. (FGV / Adaptada) Um servidor público precisa incluir uma tabela extensa em formato horizontal (paisagem) na página 4 de um relatório de 10 páginas, mantendo as demais páginas no formato vertical (retrato). Para viabilizar essa formatação, ele deve utilizar:",
+    "options": [
+      "A) Quebra de linha manual (Shift + Enter).",
+      "B) Quebra de página automática (Ctrl + Enter).",
+      "C) Quebra de seção (Próxima página).",
+      "D) Alteração de margens da página sem quebras."
+    ],
+    "correct_index": 2,
+    "comentario": "Apenas a <strong>Quebra de Seção</strong> cria blocos estruturais independentes que permitem orientações e margens distintas dentro do mesmo documento.",
+    "banca": "FGV"
+  },
+  {
+    "enunciado": "3. (FCC / Adaptada) No LibreOffice Writer 7 (em português), os comandos de atalho para aplicar Negrito e Salvar o arquivo são, respectivamente:",
+    "options": [
+      "A) Ctrl + N e Ctrl + B",
+      "B) Ctrl + B e Ctrl + S",
+      "C) Ctrl + N e Ctrl + S",
+      "D) Ctrl + B e Ctrl + B"
+    ],
+    "correct_index": 1,
+    "comentario": "No LibreOffice Writer os atalhos seguem o padrão em inglês: <strong>Ctrl + B</strong> para Bold (Negrito) e <strong>Ctrl + S</strong> para Save (Salvar).",
+    "banca": "FCC"
+  },
+  {
+    "enunciado": "4. (VUNESP / Adaptada) Ao elaborar um trabalho acadêmico no Word, o autor deseja que o sumário termine e o primeiro capítulo inicie no início de uma nova folha, mantendo a mesma orientação e margens. O comando mais rápido para essa ação é:",
+    "options": [
+      "A) Pressionar a tecla Enter repetidamente até chegar à folha seguinte.",
+      "B) Inserir uma Quebra de Página (Ctrl + Enter).",
+      "C) Inserir Quebra de Seção Contínua.",
+      "D) Selecionar Layout > Alinhamento Justificado."
+    ],
+    "correct_index": 1,
+    "comentario": "A <strong>Quebra de Página (Ctrl + Enter)</strong> é a ferramenta correta e profissional para iniciar o texto no topo da próxima página sem criar caracteres de parágrafo desnecessários.",
+    "banca": "Vunesp"
+  },
+  {
+    "enunciado": "5. (CEBRASPE / Adaptada) O recurso de Mala Direta no Microsoft Word possibilita a integração entre um documento padrão e uma fonte de dados (como uma lista no Excel), gerando documentos personalizados para múltiplos destinatários de maneira automatizada.",
+    "options": ["A) CERTO", "B) ERRADO"],
+    "correct_index": 0,
+    "comentario": "Item <strong>CERTO</strong>. A Mala Direta (Mail Merge) serve exatamente para mesclar dados variáveis (de tabelas ou bancos) com modelos fixos de texto.",
+    "banca": "Cebraspe"
+  }
+]

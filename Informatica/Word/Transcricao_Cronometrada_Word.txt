@@ -1,0 +1,16 @@
+[5.0s] Iniciamos agora nossa aula sobre Processadores de Texto para Concursos: Microsoft Word versus LibreOffice Writer.
+[30.0s] As bancas examinadoras adoram comparar os atalhos de teclado e os recursos de formatação entre as duas ferramentas.
+[65.0s] Primeira grande pegadinha: Atalho para Salvar. No Word em português é CTRL+B. No LibreOffice Writer é CTRL+S.
+[110.0s] No Word, o CTRL+S sublinha o texto selecionado! Enquanto no Writer, sublinhar é CTRL+U de underline.
+[155.0s] Segunda comparação: Localizar e Pesquisar. No Word usamos CTRL+L de Localizar. No Writer usamos CTRL+F de Find.
+[205.0s] Terceira comparação: Imprimir. No Word usamos CTRL+P. No Writer também é CTRL+P. Aqui há convergência.
+[250.0s] Vamos falar de Quebra de Página versus Quebra de Seção. Este é um dos pontos mais cobrados pela Fundação Carlos Chagas e pela FGV.
+[300.0s] A Quebra de Página apenas envia o texto para a página seguinte, mantendo a mesma orientação e o mesmo cabeçalho.
+[350.0s] Já a Quebra de Seção cria uma divisão lógica independente no documento.
+[400.0s] É a Quebra de Seção que permite ter uma página em modo Retrato e a próxima em modo Paisagem no mesmo arquivo.
+[460.0s] Também permite numerar páginas a partir da introdução, desvinculando o cabeçalho das páginas anteriores da capa e sumário.
+[520.0s] Outro recurso fundamental: Mala Direta. Permite gerar cartas, circulares ou certificados em lote cruzando um modelo de texto com uma tabela de dados.
+[580.0s] Controle de Alterações: ferramenta essencial para trabalho colaborativo, exibindo inserções, exclusões e formatações com marcas de revisão.
+[640.0s] Extensões padrão: o Word salva nativamente em .DOCX e o LibreOffice Writer salva nativamente em .ODT do padrão OpenDocument.
+[700.0s] Ambos conseguem exportar nativamente para formato PDF sem a necessidade de instalar impressoras virtuais adicionais.
+[760.0s] Lembrem-se: o alinhamento Justificado ajusta os espaços entre as palavras para que o texto encoste perfeitamente nas margens esquerda e direita.

@@ -1,0 +1,26 @@
+{
+  "name": "concursos-ia-plataforma",
+  "version": "1.0.0",
+  "description": "Plataforma Definitiva de Estudos para Concursos Públicos com IA, Supabase e Metodologia dos 4 Pilares",
+  "main": "servidor.py",
+  "scripts": {
+    "start": "python servidor.py",
+    "dev": "python servidor.py",
+    "build": "echo 'Build concluído com sucesso para Vercel'"
+  },
+  "keywords": [
+    "concursos",
+    "estudos",
+    "ia",
+    "gemini",
+    "openai",
+    "supabase",
+    "anki",
+    "flashcards",
+    "simulados",
+    "cebraspe",
+    "fgv"
+  ],
+  "author": "Henrique",
+  "license": "MIT"
+}

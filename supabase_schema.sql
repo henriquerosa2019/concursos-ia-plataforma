@@ -106,11 +106,13 @@ CREATE POLICY "Permitir escrita em aulas" ON public.aulas FOR ALL USING (true) W
 
 DROP POLICY IF EXISTS "Permitir leitura pública em conteudos" ON public.conteudos_aulas;
 CREATE POLICY "Permitir leitura pública em conteudos" ON public.conteudos_aulas FOR SELECT USING (true);
-DROP POLICY IF EXISTS "Permitir escrita em conteudos" ON public.conteudos_aulas FOR ALL USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Permitir escrita em conteudos" ON public.conteudos_aulas;
+CREATE POLICY "Permitir escrita em conteudos" ON public.conteudos_aulas FOR ALL USING (true) WITH CHECK (true);
 
 DROP POLICY IF EXISTS "Permitir leitura pública em progresso" ON public.progresso_aluno;
 CREATE POLICY "Permitir leitura pública em progresso" ON public.progresso_aluno FOR SELECT USING (true);
-DROP POLICY IF EXISTS "Permitir escrita em progresso" ON public.progresso_aluno FOR ALL USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Permitir escrita em progresso" ON public.progresso_aluno;
+CREATE POLICY "Permitir escrita em progresso" ON public.progresso_aluno FOR ALL USING (true) WITH CHECK (true);
 
 -- Inserir disciplinas padrão se não existirem
 INSERT INTO public.disciplinas (id, nome, icone, ordem) VALUES

@@ -1815,32 +1815,276 @@
   }
 
 
-  /* Responsividade do Modo Leitura Word / Livro */
+  /* ==============================================================================
+     RESPONSIVIDADE MOBILE & CONTROLE DO MENU DE MATÉRIAS (SIDEBAR)
+     ============================================================================== */
+  .btn-sidebar-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    margin-right: 6px;
+  }
+  .btn-sidebar-toggle:hover {
+    background: var(--surface);
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+  }
+  .btn-sidebar-close {
+    background: transparent;
+    border: none;
+    color: var(--text3);
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    display: none;
+  }
+  .btn-sidebar-close:hover {
+    color: #f85149;
+    background: rgba(248, 81, 73, 0.1);
+  }
+
+  /* Overlay Escuro para Mobile Drawer */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 99990;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+  }
+
+  /* Barra móvel rápida no topo da área dos 4 Pilares */
+  .mobile-topics-bar {
+    display: none;
+    margin-bottom: 12px;
+  }
+  .btn-mobile-topics {
+    width: 100%;
+    background: linear-gradient(135deg, rgba(31, 111, 235, 0.18) 0%, rgba(137, 87, 229, 0.18) 100%);
+    border: 1px solid rgba(88, 166, 255, 0.45);
+    color: var(--text);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    transition: all 0.2s;
+  }
+  .btn-mobile-topics:active {
+    transform: scale(0.98);
+  }
+  .mobile-badge-pill {
+    background: var(--accent-blue);
+    color: #fff;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-weight: 800;
+  }
+
+  /* Transição e Modo Recolhido no Desktop (Tela Cheia dos 4 Pilares) */
+  @media (min-width: 901px) {
+    .sidebar {
+      transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), padding 0.25s ease, margin 0.25s ease;
+    }
+    .sidebar.collapsed {
+      width: 0 !important;
+      min-width: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      border: none !important;
+      overflow: hidden !important;
+    }
+  }
+
+  /* Responsividade Total no Celular / Telas Menores (max-width: 900px) */
   @media (max-width: 900px) {
+    .btn-sidebar-close {
+      display: inline-block !important;
+    }
+    .mobile-topics-bar {
+      display: block !important;
+    }
+    .btn-sidebar-text {
+      display: none !important;
+    }
+
+    /* O menu de matérias fica recolhido por padrão no celular e desliza como gaveta */
+    .sidebar {
+      position: fixed !important;
+      top: 0 !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      width: 86% !important;
+      max-width: 320px !important;
+      height: 100vh !important;
+      z-index: 99999 !important;
+      transform: translateX(-100%);
+      transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 12px 0 50px rgba(0, 0, 0, 0.85);
+      background: var(--surface) !important;
+    }
+    .sidebar.open {
+      transform: translateX(0) !important;
+    }
+
+    /* A tela dos 4 Pilares ocupa 100% da largura máxima do celular */
+    .main-wrapper {
+      position: relative !important;
+      width: 100% !important;
+      overflow-x: hidden !important;
+    }
+    .content-area {
+      padding: 12px 8px !important;
+      gap: 12px !important;
+      width: 100% !important;
+      max-width: 100vw !important;
+      box-sizing: border-box !important;
+    }
+    .tab-pane {
+      padding: 14px 6px !important;
+    }
+
+    /* Topbar Compacta no Celular */
+    .topbar {
+      padding: 8px 10px !important;
+      gap: 8px !important;
+      flex-wrap: wrap !important;
+    }
+    .brand-title {
+      font-size: 13.5px !important;
+    }
+    .badge-tag {
+      display: none !important;
+    }
+    .search-box {
+      order: 3 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 4px 0 0 0 !important;
+    }
+    .topbar-actions {
+      gap: 5px !important;
+      overflow-x: auto !important;
+      flex-wrap: nowrap !important;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 2px;
+      max-width: 100%;
+    }
+    .topbar-actions .btn, .topbar-actions .ai-status-badge {
+      padding: 5px 9px !important;
+      font-size: 11px !important;
+      white-space: nowrap !important;
+    }
+
+    /* Banner do Teste Grátis no Celular */
+    #trialNoticeBar {
+      padding: 8px 12px !important;
+      font-size: 12px !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 6px !important;
+    }
+
+    /* Cards de Resumo no topo em 2 colunas no celular */
+    .summary-strip {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 8px !important;
+    }
+    .metric-card {
+      padding: 8px 10px !important;
+      gap: 8px !important;
+    }
+    .metric-icon-wrap {
+      width: 32px !important;
+      height: 32px !important;
+      font-size: 15px !important;
+    }
+    .metric-val {
+      font-size: 16px !important;
+    }
+    .metric-lbl {
+      font-size: 10px !important;
+    }
+
+    /* Abas dos 4 Pilares com rolagem horizontal touch */
+    .nav-tabs {
+      overflow-x: auto !important;
+      flex-wrap: nowrap !important;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 6px !important;
+      gap: 4px !important;
+    }
+    .nav-tab {
+      padding: 10px 12px !important;
+      font-size: 12px !important;
+    }
+
+    /* Flashcard Trainer no Celular */
+    .flashcard-container {
+      max-width: 100% !important;
+      margin: 10px 0 !important;
+    }
+    .flashcard {
+      padding: 24px 16px !important;
+      min-height: 180px !important;
+    }
+    .flashcard-text {
+      font-size: 15px !important;
+    }
+
+    /* Quiz Interativo no Celular */
+    .quiz-item {
+      padding: 14px 12px !important;
+    }
+
+    /* Modo Leitura Livro / Word no celular */
     .reader-stage {
-      padding: 16px 42px !important;
-      min-height: 500px !important;
+      padding: 10px 4px !important;
+      min-height: 400px !important;
     }
     .reader-pages-container.double-spread {
       flex-direction: column !important;
     }
     .reader-page-sheet {
-      padding: 24px 20px !important;
-      min-height: 480px !important;
+      padding: 16px 12px !important;
+      font-size: 14px !important;
+      min-height: 400px !important;
+    }
+    .reader-hero-title {
+      font-size: 18px !important;
     }
     .reader-nav-circle {
-      width: 36px !important;
-      height: 36px !important;
-      font-size: 20px !important;
-    }
-    .reader-nav-prev {
-      left: 4px !important;
-    }
-    .reader-nav-next {
-      right: 4px !important;
+      width: 32px !important;
+      height: 32px !important;
+      font-size: 18px !important;
     }
     .reader-toolbar {
-      padding: 8px 12px !important;
+      padding: 6px 10px !important;
     }
   }
 
@@ -1848,14 +2092,16 @@
 </head>
 <body>
 
-<!-- Banner de Teste Grátis 7 Dias -->
-<div id="trialNoticeBar" style="display: none; background: linear-gradient(90deg, #1e1b4b 0%, #172554 50%, #0f172a 100%); border-bottom: 1px solid rgba(245, 197, 66, 0.4); padding: 9px 20px; font-size: 13px; color: #fff; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; z-index: 999; box-shadow: 0 2px 10px rgba(0,0,0,0.3);">
-  <div style="display: flex; align-items: center; gap: 10px;">
-    <span style="font-size: 18px;">🎁</span>
-    <span>Você está no <strong>TESTE GRÁTIS DE 7 DIAS</strong>: Restam <strong><span id="trialDaysCountText" style="color: #f5c542; font-weight: 800;">7 dias restantes</span></strong> com acesso livre a todas as matérias cadastradas!</span>
+<!-- Banner de Teste Grátis 7 Dias com Contador Regressivo (Cronômetro 24h) -->
+<div id="trialNoticeBar" style="display: none; background: linear-gradient(90deg, #1e1b4b 0%, #172554 50%, #0f172a 100%); border-bottom: 1px solid rgba(245, 197, 66, 0.4); padding: 9px 20px; font-size: 13px; color: #fff; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; z-index: 999; box-shadow: 0 2px 10px rgba(0,0,0,0.3); transition: all 0.3s ease;">
+  <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+    <span id="trialNoticeIcon" style="font-size: 18px;">🎁</span>
+    <span id="trialNoticeMainText">
+      Você está no <strong>TESTE GRÁTIS DE 7 DIAS</strong>: Restam <strong><span id="trialDaysCountText" style="color: #f5c542; font-weight: 800;">7 dias restantes</span></strong> com acesso livre a todas as matérias cadastradas!
+    </span>
   </div>
   <div style="display: flex; align-items: center; gap: 10px;">
-    <a href="https://mpago.la/2wLuWDh" target="_blank" style="background: linear-gradient(135deg, #f5c542 0%, #d4af37 100%); color: #070a0f; font-weight: 800; font-size: 11.5px; padding: 6px 16px; text-decoration: none; border-radius: 20px; box-shadow: 0 2px 12px rgba(245, 197, 66, 0.4); display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+    <a href="https://mpago.la/2wLuWDh" target="_blank" id="trialNoticeBtn" style="background: linear-gradient(135deg, #f5c542 0%, #d4af37 100%); color: #070a0f; font-weight: 800; font-size: 11.5px; padding: 6px 16px; text-decoration: none; border-radius: 20px; box-shadow: 0 2px 12px rgba(245, 197, 66, 0.4); display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
       ⚡ Desbloquear Acesso Vitalício (R$ 97)
     </a>
   </div>
@@ -1864,6 +2110,10 @@
 <!-- Top Navigation -->
 <div class="topbar">
   <div class="brand">
+    <button class="btn-sidebar-toggle" id="btnToggleSidebar" onclick="toggleSidebar()" title="Recolher ou Expandir Menu de Matérias (Modo Tela Cheia)" aria-label="Menu de Matérias">
+      <span id="sidebarToggleIcon">☰</span>
+      <span class="btn-sidebar-text">Matérias</span>
+    </button>
     <div class="brand-logo">📚</div>
     <div>
       <div class="brand-title">
@@ -1916,10 +2166,16 @@
 </div>
 
 <div class="main-wrapper">
+  <!-- Overlay escuro para menu drawer no celular -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
   <!-- Sidebar -->
   <div class="sidebar">
     <div class="sidebar-header">
-      <span>DISCIPLINAS & CONTEÚDOS</span>
+      <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 6px;">
+        <span>DISCIPLINAS & CONTEÚDOS</span>
+        <button class="btn-sidebar-close" onclick="closeSidebar()" title="Fechar Menu" type="button">✕</button>
+      </div>
       <div style="display: flex; gap: 4px; flex-wrap: wrap;">
         <button class="btn" style="padding: 2px 6px; font-size: 11px;" onclick="openCreateDisciplineModal()" title="Criar nova matéria / disciplina">+ Matéria</button>
         <button class="btn btn-green" style="padding: 2px 6px; font-size: 11px; font-weight: 700;" onclick="openImportLessonModal('pdf')" title="Importar nova prova ou simulado em PDF">+ Prova (PDF)</button>
@@ -1935,6 +2191,16 @@
 
   <!-- Main Content -->
   <div class="content-area" id="contentArea">
+    <!-- Barra Móvel no Celular para Abrir Matérias -->
+    <div class="mobile-topics-bar" id="mobileTopicsBar">
+      <button class="btn-mobile-topics" onclick="openSidebar()" type="button">
+        <span style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 18px;">📚</span>
+          <span id="mobileTopicTitleText" style="font-weight: 700;">Ver Matérias & Tópicos</span>
+        </span>
+        <span class="mobile-badge-pill">Menu ☰</span>
+      </button>
+    </div>
     <!-- Top Summary Cards -->
     <div class="summary-strip">
       <div class="metric-card">
@@ -3131,6 +3397,34 @@
       </a>
       <button onclick="closeModal('modalTrialExpired')" class="btn" style="color: var(--text3); font-size: 12px; justify-content: center;">
         Continuar navegando no modo demonstração &rarr;
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Limite de Importação do Teste Grátis de 7 Dias -->
+<div class="modal-overlay" id="modalTrialImportLimit" style="display: none; align-items: center; justify-content: center; z-index: 999999;">
+  <div class="modal-box" style="width: 500px; max-width: 95%; text-align: center; border: 2px solid var(--border-gold); box-shadow: 0 20px 60px rgba(0,0,0,0.85), 0 0 35px rgba(245, 197, 66, 0.25);">
+    <div style="font-size: 42px; margin-bottom: 8px;">🔒</div>
+    <div class="modal-title" style="font-size: 20px; color: #fff; justify-content: center;">LIMITE DO TESTE GRÁTIS ATINGIDO</div>
+    <p style="font-size: 13.5px; color: var(--text2); line-height: 1.6; margin: 12px 0 18px;">
+      Você já utilizou sua <strong>1 importação personalizada inclusa no Teste Grátis de 7 Dias</strong> (vídeo do YouTube ou prova em PDF).
+    </p>
+    <div style="background: var(--surface2); border: 1px solid rgba(245, 197, 66, 0.3); border-radius: 12px; padding: 16px; text-align: left; margin-bottom: 20px;">
+      <div style="font-size: 12px; color: #f5c542; font-weight: 800; text-transform: uppercase; margin-bottom: 6px;">⚡ DESBLOQUEIE O ACESSO VITALÍCIO</div>
+      <div style="font-size: 13px; color: var(--text); line-height: 1.5;">
+        Com o <strong>Plano Vitalício (R$ 97)</strong> você tem:
+        <br>✔ <strong>Importações Ilimitadas</strong> de PDFs, Apostilas e Vídeos do YouTube
+        <br>✔ <strong>IA Ilimitada</strong> para gerar novos Flashcards e Simulados inéditos
+        <br>✔ Acesso vitalício a todas as matérias cadastradas sem nenhuma mensalidade
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <a href="https://mpago.la/2wLuWDh" target="_blank" class="btn btn-primary" style="background: var(--gold-gradient); color: #070a0f; font-weight: 900; font-size: 14.5px; padding: 13px; border-radius: 25px; text-decoration: none; justify-content: center; box-shadow: 0 4px 15px rgba(245, 197, 66, 0.4);">
+        ⚡ LIBERAR IMPORTAÇÕES ILIMITADAS (R$ 97)
+      </a>
+      <button onclick="closeModal('modalTrialImportLimit')" class="btn" style="color: var(--text3); font-size: 12px; justify-content: center;">
+        Continuar estudando as matérias já cadastradas &rarr;
       </button>
     </div>
   </div>
@@ -5204,7 +5498,20 @@
     alert("Para abrir a pasta no Windows Explorer, acesse:\nC:\\PROJETOS IA\\Concursos");
   }
 
+  function getTrialImportCount() {
+    return parseInt(localStorage.getItem('concursos_trial_imported_count') || '0', 10);
+  }
+
   function openImportLessonModal(mode) {
+    const userPlan = localStorage.getItem('concursos_user_plan');
+    if (userPlan !== 'vitalicio') {
+      const count = getTrialImportCount();
+      if (count >= 1) {
+        openModal('modalTrialImportLimit');
+        return;
+      }
+    }
+
     const modal = document.getElementById('modalImportLesson');
     if (!modal) return;
     modal.style.display = 'flex';
@@ -5242,6 +5549,16 @@
       return;
     }
 
+    const userPlan = localStorage.getItem('concursos_user_plan');
+    if (userPlan !== 'vitalicio') {
+      const count = getTrialImportCount();
+      if (count >= 1) {
+        closeModal('modalImportLesson');
+        openModal('modalTrialImportLimit');
+        return;
+      }
+    }
+
     const btn = document.getElementById('btnRunImportLesson');
     const spinner = document.getElementById('importLessonSpinner');
     btn.disabled = true;
@@ -5263,7 +5580,12 @@
       const data = await resp.json();
       if (data.success) {
         closeModal('modalImportLesson');
-        showToast("🎉 Aula cadastrada com sucesso! Pronto para fixar.", "📥");
+        if (userPlan !== 'vitalicio') {
+          localStorage.setItem('concursos_trial_imported_count', '1');
+          showToast("🎉 Aula importada com sucesso! Você utilizou sua 1 importação do teste grátis.", "📥");
+        } else {
+          showToast("🎉 Aula cadastrada com sucesso! Pronto para fixar.", "📥");
+        }
         document.getElementById('importSub').value = '';
         document.getElementById('importTitle').value = '';
         document.getElementById('importContent').value = '';
@@ -6284,6 +6606,15 @@
       ratedHard: 0
     };
 
+    // No celular, ao tocar no tópico, encolhe a sidebar automaticamente para liberar 100% da tela para os 4 Pilares
+    if (window.innerWidth <= 900 && typeof closeSidebar === 'function') {
+      closeSidebar();
+    }
+    const mobileLabel = document.getElementById('mobileTopicTitleText');
+    if (mobileLabel) {
+      mobileLabel.textContent = (TOPIC_DISPLAY_NAMES[sub] || sub.replace(/_/g, ' '));
+    }
+
     document.querySelectorAll('.subarea-item').forEach(el => el.classList.remove('active'));
     if (window.event && window.event.currentTarget) {
       window.event.currentTarget.classList.add('active');
@@ -7070,16 +7401,84 @@
   }
 
   // ==============================================================================
-  // SISTEMA DE TESTE GRÁTIS POR 7 DIAS (COM CONTADOR E CONVITE AO PLANO VITALÍCIO)
+  // GESTÃO DO MENU DE MATÉRIAS (SIDEBAR COLLAPSIBLE / MOBILE DRAWER)
   // ==============================================================================
+  function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const icon = document.getElementById('sidebarToggleIcon');
+    if (!sidebar) return;
+
+    if (window.innerWidth <= 900) {
+      const isOpen = sidebar.classList.contains('open');
+      if (isOpen) {
+        sidebar.classList.remove('open');
+        if (overlay) overlay.classList.remove('active');
+        if (icon) icon.textContent = '☰';
+      } else {
+        sidebar.classList.add('open');
+        if (overlay) overlay.classList.add('active');
+        if (icon) icon.textContent = '✕';
+      }
+    } else {
+      const isCollapsed = sidebar.classList.contains('collapsed');
+      if (isCollapsed) {
+        sidebar.classList.remove('collapsed');
+        if (icon) icon.textContent = '◀';
+      } else {
+        sidebar.classList.add('collapsed');
+        if (icon) icon.textContent = '☰';
+      }
+    }
+  }
+
+  function openSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const icon = document.getElementById('sidebarToggleIcon');
+    if (sidebar) {
+      if (window.innerWidth <= 900) {
+        sidebar.classList.add('open');
+        if (overlay) overlay.classList.add('active');
+        if (icon) icon.textContent = '✕';
+      } else {
+        sidebar.classList.remove('collapsed');
+        if (icon) icon.textContent = '◀';
+      }
+    }
+  }
+
+  function closeSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const icon = document.getElementById('sidebarToggleIcon');
+    if (sidebar) {
+      sidebar.classList.remove('open');
+      if (overlay) overlay.classList.remove('active');
+      if (icon) icon.textContent = '☰';
+    }
+  }
+  window.toggleSidebar = toggleSidebar;
+  window.openSidebar = openSidebar;
+  window.closeSidebar = closeSidebar;
+
+  // ==============================================================================
+  // SISTEMA DE TESTE GRÁTIS POR 7 DIAS (COM CRONÔMETRO REGRESSIVO NAS ÚLTIMAS 24H)
+  // ==============================================================================
+  let trialCountdownInterval = null;
+
   function initTrialSystem() {
     try {
       const urlParams = new URLSearchParams(window.location.search);
       const isTrialParam = urlParams.get('trial') === '7dias';
+      const is24hParam = urlParams.get('trial') === '24h';
       
       const userPlan = localStorage.getItem('concursos_user_plan');
       const trialBar = document.getElementById('trialNoticeBar');
+      const noticeIcon = document.getElementById('trialNoticeIcon');
+      const mainText = document.getElementById('trialNoticeMainText');
       const daysCountText = document.getElementById('trialDaysCountText');
+      const trialNoticeBtn = document.getElementById('trialNoticeBtn');
 
       // Se o aluno já é assinante vitalício, oculta a barra de teste
       if (userPlan === 'vitalicio') {
@@ -7089,30 +7488,86 @@
 
       // Se não houver data de início registrada, ou se veio pela URL com trial=7dias
       let trialStart = localStorage.getItem('concursos_trial_start');
-      if (!trialStart || isTrialParam) {
-        if (!trialStart) {
+      if (!trialStart || isTrialParam || is24hParam) {
+        if (!trialStart || isTrialParam) {
           trialStart = new Date().toISOString();
           localStorage.setItem('concursos_trial_start', trialStart);
         }
       }
 
+      if (is24hParam) {
+        // Simulação de teste faltando 23h59m para verificação do cronômetro
+        trialStart = new Date(Date.now() - (6 * 24 * 60 * 60 * 1000) - (20 * 60 * 1000)).toISOString();
+      }
+
       if (trialStart) {
-        const start = new Date(trialStart);
+        const start = isNaN(Number(trialStart)) ? new Date(trialStart) : new Date(Number(trialStart));
+        const trialDurationMs = 7 * 24 * 60 * 60 * 1000;
+        const expirationDate = new Date(start.getTime() + trialDurationMs);
         const now = new Date();
-        const diffDays = (now - start) / (1000 * 60 * 60 * 24);
-        const daysRemaining = Math.max(0, Math.ceil(7 - diffDays));
+        const diffMs = expirationDate.getTime() - now.getTime();
+        const diffDays = diffMs / (1000 * 60 * 60 * 24);
+        const daysRemaining = Math.max(0, Math.ceil(diffDays));
 
         if (trialBar) trialBar.style.display = 'flex';
 
-        if (daysRemaining > 0) {
+        if (diffMs > 24 * 60 * 60 * 1000) {
+          // Mais de 24 horas restantes
           if (daysCountText) {
             daysCountText.textContent = `${daysRemaining} ${daysRemaining === 1 ? 'dia restante' : 'dias restantes'}`;
           }
-        } else {
-          if (daysCountText) {
-            daysCountText.textContent = 'Período de teste concluído';
+        } else if (diffMs > 0) {
+          // Menos de 24 horas restantes: Cronômetro Regressivo segundo a segundo
+          if (trialBar) {
+            trialBar.style.background = 'linear-gradient(90deg, #450a0a 0%, #7f1d1d 50%, #450a0a 100%)';
+            trialBar.style.borderBottom = '2px solid #ef4444';
+            trialBar.style.boxShadow = '0 4px 20px rgba(239, 68, 68, 0.4)';
           }
-          // Exibe modal convidando a desbloquear o plano vitalício
+          if (noticeIcon) noticeIcon.textContent = '⚠️';
+          if (trialNoticeBtn) {
+            trialNoticeBtn.textContent = '⚡ Garantir Acesso Vitalício (R$ 97)';
+          }
+
+          if (mainText) {
+            mainText.innerHTML = `
+              <span>⚠️ ATENÇÃO: Seu <strong>TESTE GRÁTIS EXPIRA EM 1 DIA</strong>! ⏳ Tempo restante: 
+              <strong style="font-family: monospace; font-size: 15px; font-weight: 900; color: #fef08a; background: rgba(0,0,0,0.5); padding: 3px 9px; border-radius: 6px; letter-spacing: 1.5px; border: 1px solid rgba(254, 240, 138, 0.4);" id="trialCountdownDisplay">00:00:00</strong> 
+              com acesso livre a todas as matérias!</span>
+            `;
+          }
+
+          function tickCountdown() {
+            const currentNow = new Date();
+            const remaining = expirationDate.getTime() - currentNow.getTime();
+            const countdownEl = document.getElementById('trialCountdownDisplay');
+
+            if (remaining <= 0) {
+              if (countdownEl) countdownEl.textContent = '00:00:00';
+              if (trialCountdownInterval) clearInterval(trialCountdownInterval);
+              const hasSeen = sessionStorage.getItem('concursos_trial_expired_modal_shown');
+              if (!hasSeen) {
+                openModal('modalTrialExpired');
+                sessionStorage.setItem('concursos_trial_expired_modal_shown', 'true');
+              }
+              return;
+            }
+
+            const hrs = String(Math.floor(remaining / (1000 * 60 * 60))).padStart(2, '0');
+            const mins = String(Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+            const secs = String(Math.floor((remaining % (1000 * 60)) / 1000)).padStart(2, '0');
+
+            if (countdownEl) {
+              countdownEl.textContent = `${hrs}:${mins}:${secs}`;
+            }
+          }
+
+          tickCountdown();
+          if (trialCountdownInterval) clearInterval(trialCountdownInterval);
+          trialCountdownInterval = setInterval(tickCountdown, 1000);
+
+        } else {
+          // Expirado
+          if (daysCountText) daysCountText.textContent = 'Período encerrado';
           const hasSeenExpiredModal = sessionStorage.getItem('concursos_trial_expired_modal_shown');
           if (!hasSeenExpiredModal) {
             openModal('modalTrialExpired');

@@ -1,5 +1,45 @@
-// Vercel Serverless API Handler para Plataforma Concursos IA
-// Permite execução na nuvem das rotas de IA (Gemini / OpenAI) e Supabase
+import fs from 'fs';
+import path from 'path';
+
+let catalogCache = null;
+function getCatalog() {
+  if (catalogCache) return catalogCache;
+  const candidates = [
+    path.join(process.cwd(), 'api', 'preseeded_topics.json'),
+    path.join(process.cwd(), 'preseeded_topics.json'),
+    path.join(process.cwd(), 'public', 'preseeded_topics.json'),
+    path.join(process.cwd(), '.vercel', 'output', 'static', 'preseeded_topics.json')
+  ];
+  for (const c of candidates) {
+    try {
+      if (fs.existsSync(c)) {
+        catalogCache = JSON.parse(fs.readFileSync(c, 'utf8'));
+        return catalogCache;
+      }
+    } catch (e) {}
+  }
+  return catalogCache || {};
+}
+
+function findTopicData(disc, sub) {
+  const cat = getCatalog();
+  if (cat[disc] && cat[disc][sub]) return cat[disc][sub];
+  
+  const norm = s => String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  const dNorm = norm(disc);
+  const sNorm = norm(sub);
+  
+  for (const [dKey, subs] of Object.entries(cat)) {
+    if (norm(dKey) === dNorm) {
+      for (const [sKey, data] of Object.entries(subs)) {
+        if (norm(sKey) === sNorm) return data;
+      }
+      const firstKey = Object.keys(subs)[0];
+      if (firstKey) return subs[firstKey];
+    }
+  }
+  return null;
+}
 
 export default async function handler(req, res) {
   // CORS Headers
@@ -240,6 +280,123 @@ export default async function handler(req, res) {
       status: isPaid ? 'aprovado' : 'recebido',
       message: 'Notificação de pagamento processada com sucesso no Projeto Aprovação'
     });
+  }
+
+  // 7. Árvore de Disciplinas e Tópicos na Nuvem (Vercel Serverless)
+  if (pathname === '/api/structure') {
+    const cat = getCatalog();
+    const tree = {};
+    let totalFiles = 0, totalCards = 0, totalQuiz = 0;
+    for (const [disc, subs] of Object.entries(cat)) {
+      tree[disc] = {};
+      for (const [sub, tdata] of Object.entries(subs)) {
+        const cCount = (tdata.flashcards || []).length;
+        const qCount = (tdata.quiz || []).length;
+        const fCount = (tdata.meta ? 1 : 0) + (cCount ? 1 : 0) + (qCount ? 1 : 0) + (tdata.transcript?.full_text ? 1 : 0);
+        totalCards += cCount;
+        totalQuiz += qCount;
+        totalFiles += fCount;
+        tree[disc][sub] = {
+          cards_count: cCount,
+          quiz_count: qCount,
+          files_count: fCount,
+          files: [
+            { name: `Aula_01_${sub}.md`, type: 'markdown', size: (tdata.meta?.markdown_content || '').length },
+            { name: `Flashcards_${sub}_Anki.txt`, type: 'cards', cards_count: cCount },
+            { name: `Simulado_${sub}_Questoes.json`, type: 'quiz', quiz_count: qCount }
+          ]
+        };
+      }
+    }
+    return res.status(200).json({
+      tree,
+      total_files: totalFiles,
+      total_cards: totalCards,
+      total_quiz: totalQuiz,
+      base_dir: 'Vercel Cloud'
+    });
+  }
+
+  // 8. Metadados e Conteúdo da Aula Selecionada
+  if (pathname === '/api/lesson') {
+    const disc = url.searchParams.get('discipline') || 'Informatica';
+    const sub = url.searchParams.get('subarea') || 'Excel';
+    const topic = findTopicData(disc, sub);
+    if (topic && topic.meta) {
+      return res.status(200).json(topic.meta);
+    }
+    return res.status(200).json({
+      discipline: disc,
+      subarea: sub,
+      title: `${disc} • ${sub}`,
+      professor: 'Prof. Titular',
+      duration: 'Conteúdo Programático',
+      category: 'Edital Oficial',
+      youtube_url: '',
+      markdown_content: `# ${disc} • ${sub}\n\nMaterial preparado pelo Projeto Aprovação.`,
+      has_lesson: false
+    });
+  }
+
+  // 9. Flashcards do Tópico (Anki)
+  if (pathname === '/api/flashcards') {
+    const disc = url.searchParams.get('discipline') || 'Informatica';
+    const sub = url.searchParams.get('subarea') || 'Excel';
+    const topic = findTopicData(disc, sub);
+    return res.status(200).json(topic?.flashcards || []);
+  }
+
+  // 10. Questões do Simulado Oficial Cebraspe
+  if (pathname === '/api/quiz') {
+    const disc = url.searchParams.get('discipline') || 'Informatica';
+    const sub = url.searchParams.get('subarea') || 'Excel';
+    const topic = findTopicData(disc, sub);
+    return res.status(200).json(topic?.quiz || []);
+  }
+
+  // 11. Transcrição e Leitura
+  if (pathname === '/api/transcript') {
+    const disc = url.searchParams.get('discipline') || 'Informatica';
+    const sub = url.searchParams.get('subarea') || 'Excel';
+    const topic = findTopicData(disc, sub);
+    return res.status(200).json(topic?.transcript || { full_text: '', timed: [] });
+  }
+
+  // 12. Caderno de Erros e Revisões
+  if (pathname === '/api/reviews') {
+    return res.status(200).json({ cards: [], quiz: [], total: 0 });
+  }
+
+  // 13. Progresso do Usuário
+  if (pathname === '/api/progress') {
+    return res.status(200).json({
+      due_today: 0,
+      total_studied_cards: 0,
+      cebraspe_count: 0,
+      cebraspe_history: [],
+      cards_details: {}
+    });
+  }
+
+  // 14. Exportação de Decks Anki
+  if (pathname === '/api/export-anki') {
+    const disc = url.searchParams.get('discipline');
+    const sub = url.searchParams.get('subarea');
+    const cat = getCatalog();
+    let lines = [];
+    if (disc && sub) {
+      const topic = findTopicData(disc, sub);
+      (topic?.flashcards || []).forEach(c => lines.push(`${c.q}\t${c.a}`));
+    } else {
+      for (const subs of Object.values(cat)) {
+        for (const t of Object.values(subs)) {
+          (t.flashcards || []).forEach(c => lines.push(`${c.q}\t${c.a}`));
+        }
+      }
+    }
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Content-Disposition', 'attachment; filename="flashcards_anki.txt"');
+    return res.status(200).send(lines.join('\n'));
   }
 
   // Default fallback

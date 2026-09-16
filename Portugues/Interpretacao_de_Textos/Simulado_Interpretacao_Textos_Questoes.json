@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "enunciado": "Em questões de interpretação de texto da banca Cebraspe, uma inferência é válida quando decorre logicamente dos pressupostos e pistas do texto, ainda que a informação não esteja explicitamente escrita.",
+    "gabarito": "C",
+    "justificativa": "CERTO. A inferência textual é a dedução legítima a partir de indícios textuais fornecidos pelo autor.",
+    "banca": "Cebraspe",
+    "ano": 2024
+  },
+  {
+    "id": 2,
+    "enunciado": "O texto que apresenta instruções passo a passo para a realização de uma inscrição em concurso público classifica-se tipologicamente como dissertativo-argumentativo.",
+    "gabarito": "E",
+    "justificativa": "ERRADO. Textos que orientam, instruem ou prescrevem passos são tipologicamente INJUNTIVOS (ou instrucionais).",
+    "banca": "Cebraspe",
+    "ano": 2023
+  },
+  {
+    "id": 3,
+    "enunciado": "A coesão anafórica ocorre quando um termo faz referência a uma informação que ainda será apresentada nos parágrafos posteriores.",
+    "gabarito": "E",
+    "justificativa": "ERRADO. A referência ao que ainda será dito é CATAFÓRICA. A anafórica retoma o que já foi dito anteriormente.",
+    "banca": "Cebraspe",
+    "ano": 2024
+  },
+  {
+    "id": 4,
+    "enunciado": "A substituição da conjunção concessiva 'embora' por 'conquanto' mantém a correção gramatical e o sentido original do período.",
+    "gabarito": "C",
+    "justificativa": "CERTO. Ambas são conjunções subordinativas concessivas e preservam o valor semântico.",
+    "banca": "Cebraspe",
+    "ano": 2023
+  }
+]

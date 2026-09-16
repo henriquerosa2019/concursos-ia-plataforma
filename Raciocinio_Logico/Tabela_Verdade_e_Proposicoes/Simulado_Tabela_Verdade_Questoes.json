@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "enunciado": "A frase 'Estude com dedicação para a prova do concurso!' constitui uma proposição lógica simples.",
+    "gabarito": "E",
+    "justificativa": "ERRADO. Frases imperativas (que expressam ordem ou pedido) não possuem valor de verdade, portanto não são proposições lógicas.",
+    "banca": "Cebraspe",
+    "ano": 2024
+  },
+  {
+    "id": 2,
+    "enunciado": "Se a proposição P é verdadeira e a proposição Q é falsa, então a condicional 'Se P, então Q' é necessariamente falsa.",
+    "gabarito": "C",
+    "justificativa": "CERTO. A condicional (P → Q) só é falsa no caso V → F.",
+    "banca": "Cebraspe",
+    "ano": 2024
+  },
+  {
+    "id": 3,
+    "enunciado": "A negação lógica da proposição 'O candidato fez a prova e foi aprovado' é 'O candidato não fez a prova ou não foi aprovado'.",
+    "gabarito": "C",
+    "justificativa": "CERTO. Lei de De Morgan: ~(A ∧ B) ≡ ~A ∨ ~B.",
+    "banca": "Cebraspe",
+    "ano": 2023
+  },
+  {
+    "id": 4,
+    "enunciado": "A proposição composta 'O sol brilha ou a lua é de queijo' é verdadeira se ao menos uma das proposições simples for verdadeira.",
+    "gabarito": "C",
+    "justificativa": "CERTO. Na disjunção inclusiva (OU), basta uma proposição verdadeira para que o todo seja verdadeiro.",
+    "banca": "Cebraspe",
+    "ano": 2023
+  }
+]

@@ -678,7 +678,11 @@ def scan_concursos_tree():
     total_cards = 0
     total_quiz = 0
     
-    ignore_dirs = {'.git', '__pycache__', 'scratch', '.system_generated', 'Excel'}
+    ignore_dirs = {
+        '.git', '__pycache__', 'scratch', '.system_generated', 'Excel',
+        'api', 'assets', 'public', 'referencias', 'tests', 'node_modules',
+        '.vercel', 'Raciocínio_Lógico'
+    }
     
     for item in sorted(os.listdir(BASE_DIR)):
         item_path = os.path.join(BASE_DIR, item)
@@ -735,8 +739,9 @@ def scan_concursos_tree():
                         "files_count": len(files_list)
                     }
                     
-            # Inclui a disciplina no mapa estrutural
-            tree[discipline] = sub_dict
+            # Inclui a disciplina no mapa estrutural somente se possuir tópicos
+            if sub_dict:
+                tree[discipline] = sub_dict
                 
     return {
         "tree": tree,
@@ -759,8 +764,27 @@ def read_file_content(rel_path):
     except Exception as e:
         return None, str(e)
 
-def get_subarea_context(discipline, subarea):
+def find_subarea_folder(discipline, subarea):
     folder = os.path.join(BASE_DIR, discipline, subarea)
+    if os.path.exists(folder) and os.path.isdir(folder):
+        return folder
+    import unicodedata
+    def norm(s):
+        return unicodedata.normalize('NFKD', str(s)).encode('ASCII', 'ignore').decode('ASCII').lower().replace('_', '').replace(' ', '')
+    d_norm = norm(discipline)
+    s_norm = norm(subarea)
+    for d in os.listdir(BASE_DIR):
+        dp = os.path.join(BASE_DIR, d)
+        if os.path.isdir(dp) and norm(d) == d_norm:
+            for s in os.listdir(dp):
+                sp = os.path.join(dp, s)
+                if os.path.isdir(sp) and norm(s) == s_norm:
+                    return sp
+            return os.path.join(dp, subarea)
+    return folder
+
+def get_subarea_context(discipline, subarea):
+    folder = find_subarea_folder(discipline, subarea)
     if not os.path.exists(folder):
         return f"Matéria: {discipline} - Tópico: {subarea}"
     
@@ -777,7 +801,7 @@ def get_subarea_context(discipline, subarea):
     return "\n\n".join(context_parts) if context_parts else f"Matéria: {discipline}, Tópico: {subarea}"
 
 def get_lesson_metadata(discipline, subarea):
-    folder = os.path.join(BASE_DIR, discipline, subarea)
+    folder = find_subarea_folder(discipline, subarea)
     if not os.path.exists(folder):
         return {
             "title": f"{discipline} • {subarea}",
@@ -829,7 +853,7 @@ def get_lesson_metadata(discipline, subarea):
     }
 
 def load_reviews(discipline, subarea):
-    folder = os.path.join(BASE_DIR, discipline, subarea)
+    folder = find_subarea_folder(discipline, subarea)
     rfile = os.path.join(folder, "revisoes_erros.json")
     if os.path.exists(rfile):
         try:
@@ -840,14 +864,14 @@ def load_reviews(discipline, subarea):
     return {"cards": [], "quiz": []}
 
 def save_reviews(discipline, subarea, data):
-    folder = os.path.join(BASE_DIR, discipline, subarea)
+    folder = find_subarea_folder(discipline, subarea)
     os.makedirs(folder, exist_ok=True)
     rfile = os.path.join(folder, "revisoes_erros.json")
     with open(rfile, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
 def load_quiz_questions(discipline, subarea):
-    folder = os.path.join(BASE_DIR, discipline, subarea)
+    folder = find_subarea_folder(discipline, subarea)
     if os.path.exists(folder):
         for f in os.listdir(folder):
             if "simulado" in f.lower() and f.endswith(".json"):
@@ -859,7 +883,7 @@ def load_quiz_questions(discipline, subarea):
     return []
 
 def save_quiz_questions(discipline, subarea, questions):
-    folder = os.path.join(BASE_DIR, discipline, subarea)
+    folder = find_subarea_folder(discipline, subarea)
     os.makedirs(folder, exist_ok=True)
     target = None
     if os.path.exists(folder):
@@ -1219,6 +1243,18 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                     self.wfile.write(f.read())
                 return
 
+        # 0.3 Catálogo Pré-carregado Offline / Fallback
+        if path == "/preseeded_topics.json":
+            preseeded_file = os.path.join(BASE_DIR, "preseeded_topics.json")
+            if os.path.exists(preseeded_file):
+                self.send_response(200)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.send_header("Cache-Control", "no-cache")
+                self.end_headers()
+                with open(preseeded_file, "rb") as f:
+                    self.wfile.write(f.read())
+                return
+
         # 1. Página Inicial SPA / Plataforma de Estudos (/app ou /)
         if path in ("/", "/index.html", "/app", "/plataforma"):
             if os.path.exists(HTML_FILE):
@@ -1311,7 +1347,7 @@ class ConcursosHandler(BaseHTTPRequestHandler):
         elif path == "/api/flashcards":
             disc = query.get("discipline", ["Informatica"])[0]
             sub = query.get("subarea", ["Excel"])[0]
-            folder = os.path.join(BASE_DIR, disc, sub)
+            folder = find_subarea_folder(disc, sub)
             cards = []
             seen = set()
             
@@ -1434,7 +1470,7 @@ class ConcursosHandler(BaseHTTPRequestHandler):
         elif path == "/api/transcript":
             disc = query.get("discipline", ["Informatica"])[0]
             sub = query.get("subarea", ["Excel"])[0]
-            folder = os.path.join(BASE_DIR, disc, sub)
+            folder = find_subarea_folder(disc, sub)
             timed_file = None
             full_file = None
             if os.path.exists(folder):

@@ -1,0 +1,5 @@
+Em qual única situação uma proposição condicional (P -> Q) tem valor lógico FALSO?	Apenas quando a primeira for Verdadeira e a segunda for Falsa (V -> F = F, mnemônico Vera Fischer).
+Como se faz a negação lógica da condicional 'Se estudo, então passo'?	Regra do MANÉ (Mantém a 1ª E Nega a 2ª): 'Estudo e não passo'.
+Frases interrogativas, exclamativas e imperativas podem ser consideradas proposições lógicas?	NÃO. Apenas sentenças declarativas fechadas que podem ser valoradas como V ou F são proposições lógicas.
+Qual é a negação de 'Pedro é auditor E Maria é juíza' segundo a Lei de De Morgan?	'Pedro não é auditor OU Maria não é juíza' (Nega ambas e troca o 'E' pelo 'OU').
+Quantas linhas possui a tabela-verdade de uma proposição composta com 3 proposições simples distintas?	8 linhas (cálculo: 2^n = 2^3 = 8).

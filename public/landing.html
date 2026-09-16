@@ -107,6 +107,68 @@
       transform: translateY(-4px);
     }
 
+    /* Banner Superior de Anúncio - Teste Grátis 7 Dias */
+    .trial-top-bar {
+      background: linear-gradient(90deg, #b45309 0%, #d97706 25%, #f59e0b 50%, #d4af37 75%, #b45309 100%);
+      background-size: 200% auto;
+      animation: gradientShift 6s ease infinite;
+      color: #070a0f;
+      padding: 10px 16px;
+      font-size: 13.5px;
+      font-weight: 700;
+      position: relative;
+      z-index: 1001;
+      box-shadow: 0 2px 14px rgba(245, 158, 11, 0.4);
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .trial-top-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      text-align: center;
+    }
+    .trial-top-text {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: 0.2px;
+    }
+    .trial-fire-icon {
+      font-size: 16px;
+      animation: pulseFire 1.5s infinite;
+    }
+    @keyframes pulseFire {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.25); }
+    }
+    .trial-top-btn {
+      background: #070a0f;
+      color: #f5c542;
+      border: 1px solid rgba(245, 197, 66, 0.5);
+      padding: 5px 15px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 800;
+      text-decoration: none;
+      transition: all 0.2s;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .trial-top-btn:hover {
+      background: #121826;
+      color: #ffffff;
+      transform: scale(1.04);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
     /* Navbar */
     .navbar {
       position: sticky;
@@ -1046,6 +1108,19 @@
 </head>
 <body>
 
+  <!-- BANNER DE ANÚNCIO: TESTE GRÁTIS POR 7 DIAS -->
+  <div class="trial-top-bar" id="trialTopBar">
+    <div class="container trial-top-inner">
+      <div class="trial-top-text">
+        <span class="trial-fire-icon">🔥</span>
+        <span><strong>ACESSO LIBERADO:</strong> Experimente a Plataforma Oficial por <strong>7 DIAS GRÁTIS</strong> sem compromisso e sem cartão!</span>
+      </div>
+      <a href="/app?trial=7dias" class="trial-top-btn">
+        Experimentar 7 Dias Grátis &rarr;
+      </a>
+    </div>
+  </div>
+
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="container nav-inner">
@@ -1070,8 +1145,8 @@
         <a href="/app" class="btn btn-outline" style="padding: 9px 18px; font-size: 13px;">
           👤 Área do Aluno
         </a>
-        <a href="/app" class="btn btn-gold" style="padding: 9px 20px; font-size: 13px;">
-          🚀 Acessar Plataforma
+        <a href="/app?trial=7dias" class="btn btn-gold" style="padding: 9px 20px; font-size: 13px;">
+          ✨ Teste Grátis (7 Dias)
         </a>
       </div>
     </div>
@@ -1081,8 +1156,8 @@
   <section class="hero-section">
     <div class="container hero-grid">
       <div>
-        <div class="hero-badge">
-          ⭐ Método Moderno de Alta Retenção com IA
+        <div class="hero-badge" style="background: rgba(245, 197, 66, 0.15); border-color: var(--gold-primary); color: var(--gold-primary); font-weight: 800;">
+          🎁 NOVIDADE: TESTE GRÁTIS POR 7 DIAS LIBERADO
         </div>
         <h1 class="hero-title">
           Passe na Frente dos <span class="gold-gradient-text">Concorrentes</span> com Inteligência Artificial
@@ -1092,18 +1167,18 @@
         </p>
 
         <div class="hero-ctas">
-          <a href="#planos" class="btn btn-gold btn-lg">
-            ⚡ ENTRAR NO PROJETO APROVAÇÃO
+          <a href="/app?trial=7dias" class="btn btn-gold btn-lg" style="box-shadow: 0 8px 30px rgba(245, 197, 66, 0.45);">
+            🎯 EXPERIMENTAR 7 DIAS GRÁTIS
           </a>
-          <a href="/app" class="btn btn-outline btn-lg">
-            👤 ÁREA DO ALUNO
+          <a href="#planos" class="btn btn-outline btn-lg">
+            ⚡ PLANO VITALÍCIO (R$ 97)
           </a>
         </div>
 
         <div class="hero-features-list">
-          <span>Acesso Imediato</span>
-          <span>Sincronizado no Supabase</span>
-          <span>Modo Oficial Cebraspe (+1/-1)</span>
+          <span>7 Dias de Teste Gratuito</span>
+          <span>Sem Cartão Antecipado</span>
+          <span>5 Matérias Oficiais Liberadas</span>
           <span>Caderno de Erros Status 0</span>
         </div>
       </div>
@@ -1463,6 +1538,13 @@
                 QUERO ACESSAR AGORA ⚡
               </button>
 
+              <div style="margin-top: 14px; text-align: center;">
+                <span style="font-size: 12px; color: var(--text-gray);">Prefere experimentar primeiro?</span><br>
+                <a href="/app?trial=7dias" style="display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--gold-primary); font-weight: 800; text-decoration: underline; margin-top: 4px;">
+                  👉 Iniciar Teste Grátis de 7 Dias sem cartão
+                </a>
+              </div>
+
               <div class="pricing-guarantees">
                 <span>🔒 Compra Segura</span>
                 <span>⚡ Acesso Imediato</span>
@@ -1485,6 +1567,16 @@
       </div>
 
       <div class="faq-wrapper">
+        <div class="faq-item active">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Como funciona o Teste Grátis de 7 Dias?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <strong>O Teste Grátis de 7 Dias é 100% livre, sem cartão e sem compromisso!</strong> Você pode clicar em "Experimentar 7 Dias Grátis" e entrar imediatamente na plataforma de estudos. Você terá acesso completo aos 4 Pilares nas 5 matérias oficiais já cadastradas (Informática, Direito Administrativo, Direito Constitucional, Língua Portuguesa e Raciocínio Lógico), podendo treinar flashcards Anki e realizar simulados Cebraspe. Se você gostar e decidir continuar seus estudos até a aprovação, poderá ativar o plano vitalício permanente por apenas R$ 97.
+          </div>
+        </div>
+
         <div class="faq-item">
           <div class="faq-question" onclick="toggleFaq(this)">
             <span>Como funciona o Método dos 4 Pilares?</span>
@@ -1550,12 +1642,12 @@
         </p>
 
         <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
-          <button onclick="irParaPagamento(event)" class="btn btn-gold btn-lg">
-            ⚡ GARANTIR MINHA VAGA POR R$ 97
-          </button>
-          <a href="/app" class="btn btn-outline btn-lg">
-            👤 ÁREA DO ALUNO
+          <a href="/app?trial=7dias" class="btn btn-gold btn-lg" style="box-shadow: 0 8px 30px rgba(245, 197, 66, 0.45);">
+            🎯 EXPERIMENTAR 7 DIAS GRÁTIS
           </a>
+          <button onclick="irParaPagamento(event)" class="btn btn-outline btn-lg">
+            ⚡ GARANTIR VAGA VITALÍCIA (R$ 97)
+          </button>
         </div>
 
         <div style="margin-top: 24px; font-size: 13px; color: var(--text-muted);">

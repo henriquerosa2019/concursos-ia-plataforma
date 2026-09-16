@@ -1848,6 +1848,19 @@
 </head>
 <body>
 
+<!-- Banner de Teste Grátis 7 Dias -->
+<div id="trialNoticeBar" style="display: none; background: linear-gradient(90deg, #1e1b4b 0%, #172554 50%, #0f172a 100%); border-bottom: 1px solid rgba(245, 197, 66, 0.4); padding: 9px 20px; font-size: 13px; color: #fff; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; z-index: 999; box-shadow: 0 2px 10px rgba(0,0,0,0.3);">
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <span style="font-size: 18px;">🎁</span>
+    <span>Você está no <strong>TESTE GRÁTIS DE 7 DIAS</strong>: Restam <strong><span id="trialDaysCountText" style="color: #f5c542; font-weight: 800;">7 dias restantes</span></strong> com acesso livre a todas as matérias cadastradas!</span>
+  </div>
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <a href="https://mpago.la/2wLuWDh" target="_blank" style="background: linear-gradient(135deg, #f5c542 0%, #d4af37 100%); color: #070a0f; font-weight: 800; font-size: 11.5px; padding: 6px 16px; text-decoration: none; border-radius: 20px; box-shadow: 0 2px 12px rgba(245, 197, 66, 0.4); display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+      ⚡ Desbloquear Acesso Vitalício (R$ 97)
+    </a>
+  </div>
+</div>
+
 <!-- Top Navigation -->
 <div class="topbar">
   <div class="brand">
@@ -1913,73 +1926,7 @@
     </div>
 
     <div class="tree-list" id="treeList">
-      <!-- Informática -->
-      <div class="discipline-group">
-        <div class="discipline-title" onclick="toggleGroup('grp-inf')">
-          <span><span class="discipline-icon">💻</span> Informática</span>
-          <span class="count-badge" id="infCount">1 aula</span>
-        </div>
-        <div class="subarea-list" id="grp-inf">
-          <div class="subarea-item active" onclick="selectSubarea('Informatica', 'Excel')">
-            <span>📊 Excel (Aula 08 - PROCV)</span>
-            <span class="count-badge" id="subCountExcel">5 arqs</span>
-          </div>
-          <div class="subarea-item" onclick="selectPlaceholder('Informática', 'Word')">
-            <span>📝 Word</span>
-            <span class="count-badge">0</span>
-          </div>
-          <div class="subarea-item" onclick="selectPlaceholder('Informática', 'Segurança da Informação')">
-            <span>🛡️ Segurança da Informação</span>
-            <span class="count-badge">0</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Português -->
-      <div class="discipline-group">
-        <div class="discipline-title" onclick="toggleGroup('grp-port')">
-          <span><span class="discipline-icon">📖</span> Português</span>
-          <span class="count-badge">0</span>
-        </div>
-        <div class="subarea-list" id="grp-port">
-          <div class="subarea-item" onclick="selectPlaceholder('Português', 'Interpretação de Textos')">
-            <span>📄 Interpretação de Textos</span>
-            <span class="count-badge">0</span>
-          </div>
-          <div class="subarea-item" onclick="selectPlaceholder('Português', 'Morfologia e Sintaxe')">
-            <span>✍️ Morfologia e Sintaxe</span>
-            <span class="count-badge">0</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Direito Constitucional -->
-      <div class="discipline-group">
-        <div class="discipline-title" onclick="toggleGroup('grp-const')">
-          <span><span class="discipline-icon">⚖️</span> Direito Constitucional</span>
-          <span class="count-badge">0</span>
-        </div>
-        <div class="subarea-list" id="grp-const">
-          <div class="subarea-item" onclick="selectPlaceholder('Direito Constitucional', 'Artigo 5º e Direitos Fundamentais')">
-            <span>📜 Art. 5º e Direitos Fundamentais</span>
-            <span class="count-badge">0</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Direito Administrativo -->
-      <div class="discipline-group">
-        <div class="discipline-title" onclick="toggleGroup('grp-adm')">
-          <span><span class="discipline-icon">🏛️</span> Direito Administrativo</span>
-          <span class="count-badge">0</span>
-        </div>
-        <div class="subarea-list" id="grp-adm">
-          <div class="subarea-item" onclick="selectPlaceholder('Direito Administrativo', 'Atos Administrativos e Poderes')">
-            <span>🏢 Atos Administrativos</span>
-            <span class="count-badge">0</span>
-          </div>
-        </div>
-      </div>
+      <!-- As disciplinas e tópicos cadastrados são gerados dinamicamente com os 4 Pilares -->
     </div>
   </div>
 
@@ -3153,6 +3100,41 @@
 <div class="toast" id="toastBox">
   <span id="toastIcon">✨</span>
   <span id="toastMsg">Operação concluída!</span>
+</div>
+
+<!-- Modal 11: Resumo e Convite de Término do Teste Grátis de 7 Dias -->
+<div class="modal-overlay" id="modalTrialExpired" style="display: none; align-items: center; justify-content: center;">
+  <div class="modal-box" style="width: 520px; max-width: 95%; text-align: center; border: 2px solid var(--border-gold); box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 40px rgba(245, 197, 66, 0.2);">
+    <div style="font-size: 42px; margin-bottom: 10px;">🎉</div>
+    <div class="modal-title" style="font-size: 22px; color: #fff; justify-content: center;">PARABÉNS PELOS SEUS 7 DIAS DE TESTE!</div>
+    <p style="font-size: 14px; color: var(--text2); line-height: 1.6; margin: 12px 0 20px;">
+      Seu período de teste grátis foi concluído com sucesso. Esperamos que o <strong>Método dos 4 Pilares</strong> tenha acelerado sua memorização e precisão em questões!
+    </p>
+
+    <div style="background: var(--surface2); border: 1px solid rgba(245, 197, 66, 0.3); border-radius: 12px; padding: 18px; text-align: left; margin-bottom: 20px;">
+      <div style="font-size: 12px; color: #f5c542; font-weight: 800; text-transform: uppercase; margin-bottom: 6px;">🔥 OFERTA DE LANÇAMENTO EXCLUSIVA</div>
+      <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px;">
+        <span style="font-size: 14px; color: var(--text3); text-decoration: line-through;">R$ 197,00</span>
+        <span style="font-size: 32px; font-weight: 900; color: var(--text);">R$ 97,00</span>
+        <span style="font-size: 12px; color: var(--text2);">à vista ou até 12x</span>
+      </div>
+      <div style="font-size: 13px; color: var(--text2); line-height: 1.5;">
+        ✔ Acesso Vitalício permanente sem mensalidades<br>
+        ✔ Todas as 5 matérias + atualizações para novos editais<br>
+        ✔ Gerador Ilimitado de Simulados e Flashcards com IA<br>
+        ✔ Sincronização em nuvem Supabase em todos os dispositivos
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <a href="https://mpago.la/2wLuWDh" target="_blank" class="btn btn-primary" style="background: var(--gold-gradient); color: #070a0f; font-weight: 900; font-size: 15px; padding: 14px; border-radius: 30px; text-decoration: none; box-shadow: 0 4px 20px rgba(245, 197, 66, 0.4); justify-content: center;">
+        ⚡ DESBLOQUEAR ACESSO VITALÍCIO (R$ 97)
+      </a>
+      <button onclick="closeModal('modalTrialExpired')" class="btn" style="color: var(--text3); font-size: 12px; justify-content: center;">
+        Continuar navegando no modo demonstração &rarr;
+      </button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -4992,8 +4974,13 @@
   function openManualCardModal() {
     document.getElementById('modalManualCard').style.display = 'flex';
   }
+  function openModal(id) {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'flex';
+  }
   function closeModal(id) {
-    document.getElementById(id).style.display = 'none';
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
   }
 
   // AI Flashcard Generation
@@ -5816,31 +5803,116 @@
     });
   }
 
+  // Catálogo Oficial dos 4 Pilares pré-carregado para acesso imediato
+  const DEFAULT_CONCURSOS_TREE = {
+    "Informatica": {
+      "Excel": { "cards_count": 12, "quiz_count": 8, "files_count": 8 },
+      "Redes_de_Computadores": { "cards_count": 12, "quiz_count": 6, "files_count": 6 },
+      "Seguranca_da_Informacao": { "cards_count": 10, "quiz_count": 5, "files_count": 7 },
+      "Word": { "cards_count": 10, "quiz_count": 5, "files_count": 7 }
+    },
+    "Direito_Administrativo": {
+      "Administracao_Direta_e_Indireta": { "cards_count": 6, "quiz_count": 5, "files_count": 6 },
+      "Atos_Administrativos": { "cards_count": 6, "quiz_count": 5, "files_count": 6 }
+    },
+    "Direito_Constitucional": {
+      "Artigo_5": { "cards_count": 6, "quiz_count": 5, "files_count": 4 }
+    },
+    "Portugues": {
+      "Interpretacao_de_Textos": { "cards_count": 5, "quiz_count": 4, "files_count": 4 }
+    },
+    "Raciocinio_Logico": {
+      "Tabela_Verdade_e_Proposicoes": { "cards_count": 5, "quiz_count": 4, "files_count": 4 }
+    }
+  };
+
+  const DISC_DISPLAY_NAMES = {
+    'Informatica': 'Informática',
+    'Direito_Administrativo': 'Direito Administrativo',
+    'Direito_Constitucional': 'Direito Constitucional',
+    'Portugues': 'Língua Portuguesa',
+    'Raciocinio_Logico': 'Raciocínio Lógico'
+  };
+
+  const TOPIC_DISPLAY_NAMES = {
+    'Excel': 'Excel (PROCV e PROCH)',
+    'Redes_de_Computadores': 'Redes de Computadores',
+    'Seguranca_da_Informacao': 'Segurança da Informação',
+    'Word': 'Word e Processadores de Texto',
+    'Administracao_Direta_e_Indireta': 'Administração Direta e Indireta',
+    'Atos_Administrativos': 'Atos Administrativos',
+    'Artigo_5': 'Artigo 5º - Direitos Fundamentais',
+    'Interpretacao_de_Textos': 'Interpretação e Tipologia Textual',
+    'Tabela_Verdade_e_Proposicoes': 'Tabela Verdade e Proposições Lógicas'
+  };
+
+  const TOPIC_ICONS = {
+    'Excel': '📊',
+    'Redes_de_Computadores': '🌐',
+    'Seguranca_da_Informacao': '🛡️',
+    'Word': '📝',
+    'Administracao_Direta_e_Indireta': '🏢',
+    'Atos_Administrativos': '📜',
+    'Artigo_5': '⚖️',
+    'Interpretacao_de_Textos': '📖',
+    'Tabela_Verdade_e_Proposicoes': '🧩'
+  };
+
+  let globalPreseededCatalog = null;
+  async function loadPreseededCatalog() {
+    if (globalPreseededCatalog) return globalPreseededCatalog;
+    try {
+      const resp = await fetch('/preseeded_topics.json');
+      if (resp.ok) {
+        globalPreseededCatalog = await resp.json();
+      }
+    } catch(e) {}
+    return globalPreseededCatalog || {};
+  }
+
   // Carregar Estrutura e Preencher Sidebar Dinamicamente
   async function loadStructureAndSidebar() {
     try {
       const resp = await fetch('/api/structure');
-      const data = await resp.json();
-      globalTreeCache = data.tree || {};
-      renderSidebar(globalTreeCache);
-      updateDisciplineSelects(globalTreeCache);
-
-      const discCount = Object.keys(data.tree || {}).length;
-      let subCount = 0;
-      Object.values(data.tree || {}).forEach(subs => subCount += Object.keys(subs).length);
-      
-      const elD = document.getElementById('metricDisciplines');
-      const elS = document.getElementById('metricSubareas');
-      const elC = document.getElementById('metricCards');
-      const elQ = document.getElementById('metricQuiz');
-
-      if (elD) elD.textContent = discCount;
-      if (elS) elS.textContent = subCount;
-      if (elC) elC.textContent = data.total_cards || 0;
-      if (elQ) elQ.textContent = data.total_quiz || 0;
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data && data.tree && Object.keys(data.tree).length > 0) {
+          globalTreeCache = data.tree;
+        } else {
+          globalTreeCache = DEFAULT_CONCURSOS_TREE;
+        }
+      } else {
+        globalTreeCache = DEFAULT_CONCURSOS_TREE;
+      }
     } catch(e) {
-      console.warn("Falha ao carregar estrutura do backend:", e);
+      console.warn("Falha ao carregar estrutura do backend, usando catalogo padrao:", e);
+      globalTreeCache = DEFAULT_CONCURSOS_TREE;
     }
+
+    renderSidebar(globalTreeCache);
+    updateDisciplineSelects(globalTreeCache);
+
+    const discCount = Object.keys(globalTreeCache || {}).length;
+    let subCount = 0;
+    let totalCards = 0;
+    let totalQuiz = 0;
+    Object.values(globalTreeCache || {}).forEach(subs => {
+      subCount += Object.keys(subs).length;
+      Object.values(subs).forEach(sinfo => {
+        totalCards += (sinfo.cards_count || 0);
+        totalQuiz += (sinfo.quiz_count || 0);
+      });
+    });
+    
+    const elD = document.getElementById('metricDisciplines');
+    const elS = document.getElementById('metricSubareas');
+    const elC = document.getElementById('metricCards');
+    const elQ = document.getElementById('metricQuiz');
+
+    if (elD) elD.textContent = discCount;
+    if (elS) elS.textContent = subCount;
+    if (elC) elC.textContent = totalCards;
+    if (elQ) elQ.textContent = totalQuiz;
   }
 
   function renderSidebar(tree) {
@@ -5870,7 +5942,7 @@
 
     for (const [disc, subs] of Object.entries(tree)) {
       const icon = icons[disc] || '📁';
-      const discName = disc.replace(/_/g, ' ');
+      const discName = DISC_DISPLAY_NAMES[disc] || disc.replace(/_/g, ' ');
       const subKeys = Object.keys(subs || {});
       const grpId = 'grp-' + disc.toLowerCase().replace(/[^a-z0-9]/g, '-');
 
@@ -5901,7 +5973,8 @@
         `;
       } else {
         for (const [sub, info] of Object.entries(subs)) {
-          const subName = sub.replace(/_/g, ' ');
+          const subName = TOPIC_DISPLAY_NAMES[sub] || sub.replace(/_/g, ' ');
+          const subIcon = TOPIC_ICONS[sub] || (sub.toLowerCase().includes('excel') ? '📊' : '📄');
           const isActive = (disc === currentDiscipline && sub === currentSubarea);
           const cardCount = info.cards_count || 0;
           const fileCount = info.files_count || 0;
@@ -5910,8 +5983,8 @@
           html += `
             <div class="subarea-item ${isActive ? 'active' : ''}" onclick="selectSubarea('${disc}', '${sub}')" title="${subName}">
               <div style="display: flex; align-items: center; gap: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0;">
-                <span>${sub === 'Excel' ? '📊' : '📄'}</span>
-                <span style="overflow: hidden; text-overflow: ellipsis;">${sub === 'Excel' ? 'Excel (PROCV)' : subName}</span>
+                <span>${subIcon}</span>
+                <span style="overflow: hidden; text-overflow: ellipsis;">${subName}</span>
               </div>
               <div style="display: flex; align-items: center; gap: 4px; flex-shrink: 0;">
                 <span class="count-badge">${badgeText}</span>
@@ -6218,19 +6291,38 @@
     }
 
     try {
-      const resp = await fetch(`/api/lesson?discipline=${encodeURIComponent(disc)}&subarea=${encodeURIComponent(sub)}`);
-      const meta = await resp.json();
+      let meta = null;
+      try {
+        const resp = await fetch(`/api/lesson?discipline=${encodeURIComponent(disc)}&subarea=${encodeURIComponent(sub)}`);
+        if (resp.ok) meta = await resp.json();
+      } catch(e) {}
+
+      if (!meta || !meta.markdown_content) {
+        if (!globalPreseededCatalog) await loadPreseededCatalog();
+        meta = globalPreseededCatalog?.[disc]?.[sub]?.meta;
+      }
+      if (!meta) {
+        meta = {
+          title: (TOPIC_DISPLAY_NAMES[sub] || sub.replace(/_/g, ' ')),
+          professor: "Prof. Titular Especialista",
+          duration: "Conteúdo Programático Oficial",
+          category: (DISC_DISPLAY_NAMES[disc] || disc.replace(/_/g, ' ')),
+          youtube_url: (disc === 'Informatica' && sub === 'Excel' ? "https://www.youtube.com/watch?v=2tCnNcz5fqw" : ""),
+          markdown_content: `# ${disc} • ${sub}\n\nMaterial dos 4 Pilares de Alta Retenção.`
+        };
+      }
+
       currentLessonMeta = meta;
       currentYoutubeUrl = meta.youtube_url || (disc === 'Informatica' && sub === 'Excel' ? "https://www.youtube.com/watch?v=2tCnNcz5fqw" : "");
       
       const titleEl = document.getElementById('lessonTitle');
-      if (titleEl) titleEl.textContent = meta.title || `${disc} • ${sub}`;
+      if (titleEl) titleEl.textContent = meta.title || (TOPIC_DISPLAY_NAMES[sub] || `${disc} • ${sub}`);
 
       const metaSpans = document.querySelectorAll('.lesson-meta span');
       if (metaSpans.length >= 4) {
-        metaSpans[0].innerHTML = `👨‍🏫 <strong>${meta.professor}</strong>`;
-        metaSpans[1].textContent = `⏱️ ${meta.duration}`;
-        metaSpans[2].textContent = `🏷️ ${meta.category}`;
+        metaSpans[0].innerHTML = `👨‍🏫 <strong>${meta.professor || 'Prof. Titular'}</strong>`;
+        metaSpans[1].textContent = `⏱️ ${meta.duration || 'Oficial'}`;
+        metaSpans[2].textContent = `🏷️ ${meta.category || (DISC_DISPLAY_NAMES[disc] || disc)}`;
         if (meta.youtube_url) {
           metaSpans[3].innerHTML = `<a href="${meta.youtube_url}" target="_blank" style="color: var(--accent-blue); text-decoration: none;">🔗 Ver no YouTube</a>`;
           metaSpans[3].style.display = 'inline';
@@ -6241,7 +6333,9 @@
 
       renderDynamicLessonTabs(meta.markdown_content, disc, sub);
       renderKeyMoments(disc, sub, meta);
-    } catch(e) {}
+    } catch(e) {
+      console.warn("Erro ao selecionar subárea:", e);
+    }
 
     const trFilter = document.getElementById('transcriptFilter');
     if (trFilter) trFilter.value = '';
@@ -6423,8 +6517,8 @@
   async function syncAllToSupabase() {
     const btn = document.getElementById('btnSyncSupabase');
     const prog = document.getElementById('syncSupabaseProgress');
-    btn.disabled = true;
-    prog.style.display = 'block';
+    if (btn) btn.disabled = true;
+    if (prog) prog.style.display = 'block';
 
     try {
       const resp = await fetch('/api/supabase/sync-all', { method: 'POST' });
@@ -6438,140 +6532,109 @@
     } catch(e) {
       alert("Erro na sincronização: " + e.message);
     } finally {
-      btn.disabled = false;
-      prog.style.display = 'none';
+      if (btn) btn.disabled = false;
+      if (prog) prog.style.display = 'none';
     }
   }
 
-  function viewSupabaseSchemaNotice() {
-    alert("O arquivo 'supabase_schema.sql' está pronto na pasta raiz do seu projeto (C:\\PROJETOS IA\\Concursos\\supabase_schema.sql).\n\nBasta abrir o Supabase no navegador, ir no 'SQL Editor' e colar o conteúdo para criar todas as tabelas em 1 clique!");
-  }
-
-  function openNewTopicModal() {
-    document.getElementById('modalNewTopic').style.display = 'flex';
-  }
-
-  async function submitCreateTopic() {
-    const disc = document.getElementById('newTopicDisc').value;
-    const sub = document.getElementById('newTopicSub').value.trim();
-    if (!sub) {
-      alert("Informe o nome do tópico.");
-      return;
-    }
-
-    try {
-      const resp = await fetch('/api/create-topic', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ discipline: disc, subarea: sub })
-      });
-      const data = await resp.json();
-      if (data.success) {
-        showToast("Novo tópico criado com sucesso!", "📁");
-        closeModal('modalNewTopic');
-        document.getElementById('newTopicSub').value = '';
-        await loadStructureAndSidebar();
-        selectSubarea(disc, sub.replace(/\s+/g, '_'));
-      }
-    } catch(e) {
-      alert("Erro ao criar tópico: " + e.message);
-    }
-  }
-
-  function handleGlobalSearch(term) {
-    if (term.length > 1) {
-      switchTab(4);
-      switchTranscriptSubTab('timed');
-      const filterInput = document.getElementById('transcriptFilter');
-      if (filterInput) {
-        filterInput.value = term;
-        filterTranscript(term);
-      }
-    }
-  }
-
-  // Carregar flashcards existentes da pasta via API
+  // Carregar flashcards existentes da pasta via API com fallback
   async function loadExistingFlashcards() {
+    let cards = null;
     try {
       const resp = await fetch(`/api/flashcards?discipline=${encodeURIComponent(currentDiscipline)}&subarea=${encodeURIComponent(currentSubarea)}`);
-      const cards = await resp.json();
-      if (cards && cards.length > 0) {
-        rawFlashcardsData = cards;
-        currentFlashcardTierFilter = 'all';
-        const activeFilterBtn = document.getElementById('filterCardAll');
-        if (activeFilterBtn) {
-          document.querySelectorAll('.sm2-filter-btn').forEach(b => b.classList.remove('active'));
-          activeFilterBtn.classList.add('active');
-        }
-        flashcardsData = [...rawFlashcardsData];
-        currentCardIndex = 0;
-        isCardFlipped = false;
-        updateFlashcardFilterCounts();
-        updateCard();
-      } else {
-        rawFlashcardsData = [];
-        flashcardsData = [];
-        updateFlashcardFilterCounts();
-        updateCard();
-      }
+      if (resp.ok) cards = await resp.json();
     } catch(e) {}
-  }
 
-  // Carregar questões de simulado existentes da pasta via API
-  async function loadExistingQuiz() {
-    try {
-      const resp = await fetch(`/api/quiz?discipline=${encodeURIComponent(currentDiscipline)}&subarea=${encodeURIComponent(currentSubarea)}`);
-      const questions = await resp.json();
-      if (questions && questions.length > 0) {
-        quizData = questions;
-        renderQuiz();
-      } else {
-        quizData = [];
-        const container = document.getElementById('quizContainer');
-        if (container) {
-          container.innerHTML = `
-            <div class="empty-review-box">
-              <div class="empty-review-icon">📝</div>
-              <div class="empty-review-title">Nenhum Simulado Criado Neste Tópico</div>
-              <p class="empty-review-desc">Clique no botão abaixo para gerar um mini-simulado inédito com IA no estilo da sua banca.</p>
-              <button class="btn btn-primary" onclick="openAiQuizModal()">⚡ Gerar Simulado com IA</button>
-            </div>
-          `;
-        }
-        document.getElementById('tabQuizCount').textContent = "0";
+    if (!cards || cards.length === 0) {
+      if (!globalPreseededCatalog) await loadPreseededCatalog();
+      cards = globalPreseededCatalog?.[currentDiscipline]?.[currentSubarea]?.flashcards || [];
+    }
+
+    if (cards && cards.length > 0) {
+      rawFlashcardsData = cards;
+      currentFlashcardTierFilter = 'all';
+      const activeFilterBtn = document.getElementById('filterCardAll');
+      if (activeFilterBtn) {
+        document.querySelectorAll('.sm2-filter-btn').forEach(b => b.classList.remove('active'));
+        activeFilterBtn.classList.add('active');
       }
-    } catch(e) {
-      console.warn("Falha ao carregar simulado da API:", e);
+      flashcardsData = [...rawFlashcardsData];
+      currentCardIndex = 0;
+      isCardFlipped = false;
+      updateFlashcardFilterCounts();
+      updateCard();
+    } else {
+      rawFlashcardsData = [];
+      flashcardsData = [];
+      updateFlashcardFilterCounts();
+      updateCard();
     }
   }
 
-  // Carregar transcrição completa do servidor
+  // Carregar questões de simulado existentes da pasta via API com fallback
+  async function loadExistingQuiz() {
+    let questions = null;
+    try {
+      const resp = await fetch(`/api/quiz?discipline=${encodeURIComponent(currentDiscipline)}&subarea=${encodeURIComponent(currentSubarea)}`);
+      if (resp.ok) questions = await resp.json();
+    } catch(e) {}
+
+    if (!questions || questions.length === 0) {
+      if (!globalPreseededCatalog) await loadPreseededCatalog();
+      questions = globalPreseededCatalog?.[currentDiscipline]?.[currentSubarea]?.quiz || [];
+    }
+
+    if (questions && questions.length > 0) {
+      quizData = questions;
+      renderQuiz();
+    } else {
+      quizData = [];
+      const container = document.getElementById('quizContainer');
+      if (container) {
+        container.innerHTML = `
+          <div class="empty-review-box">
+            <div class="empty-review-icon">📝</div>
+            <div class="empty-review-title">Nenhum Simulado Criado Neste Tópico</div>
+            <p class="empty-review-desc">Clique no botão abaixo para gerar um mini-simulado inédito com IA no estilo da sua banca.</p>
+            <button class="btn btn-primary" onclick="openAiQuizModal()">⚡ Gerar Simulado com IA</button>
+          </div>
+        `;
+      }
+      document.getElementById('tabQuizCount').textContent = "0";
+    }
+  }
+
+  // Carregar transcrição completa do servidor com fallback
   async function loadFullTranscript() {
+    let data = null;
     try {
       const resp = await fetch(`/api/transcript?discipline=${encodeURIComponent(currentDiscipline)}&subarea=${encodeURIComponent(currentSubarea)}`);
-      const data = await resp.json();
-      
-      const isVideo = Boolean(data.is_video || (currentYoutubeUrl && currentYoutubeUrl.trim().length > 0));
+      if (resp.ok) data = await resp.json();
+    } catch(e) {}
 
-      if (data && data.timed && data.timed.length > 0) {
-        fullTimedTranscript = data.timed;
-        fullTextContinuous = data.full_text || "";
-        renderFullTranscript(fullTimedTranscript);
-        readerRawContent = fullTextContinuous || (currentLessonMeta && currentLessonMeta.markdown_content) || "";
-        currentReaderPageIndex = 0;
-        renderReaderWorkspace();
-      } else {
-        fullTimedTranscript = [];
-        const list = document.getElementById('transcriptList');
-        if (list) {
-          list.innerHTML = `<div style="padding: 24px; color: var(--text3); text-align: center;">${isVideo ? 'Nenhuma transcrição cronometrada disponível para este tópico.' : 'Nenhum trecho de leitura disponível.'}</div>`;
-        }
-        readerRawContent = (currentLessonMeta && currentLessonMeta.markdown_content) || "";
-        currentReaderPageIndex = 0;
-        renderReaderWorkspace();
+    if (!data || (!data.timed?.length && !data.full_text)) {
+      if (!globalPreseededCatalog) await loadPreseededCatalog();
+      data = globalPreseededCatalog?.[currentDiscipline]?.[currentSubarea]?.transcript || { full_text: '', timed: [] };
+    }
+
+    const isVideo = Boolean(data.is_video || (currentYoutubeUrl && currentYoutubeUrl.trim().length > 0));
+
+    if (data && data.timed && data.timed.length > 0) {
+      fullTimedTranscript = data.timed;
+      fullTextContinuous = data.full_text || "";
+      renderFullTranscript(fullTimedTranscript);
+      readerRawContent = fullTextContinuous || (currentLessonMeta && currentLessonMeta.markdown_content) || "";
+      currentReaderPageIndex = 0;
+      renderReaderWorkspace();
+    } else {
+      fullTimedTranscript = [];
+      const list = document.getElementById('transcriptList');
+      if (list) {
+        list.innerHTML = `<div style="padding: 24px; color: var(--text3); text-align: center;">${isVideo ? 'Nenhuma transcrição cronometrada disponível para este tópico.' : 'Nenhum trecho de leitura disponível.'}</div>`;
       }
-    } catch(e) {
-      console.warn("Falha ao carregar transcrição da API:", e);
+      readerRawContent = data.full_text || (currentLessonMeta && currentLessonMeta.markdown_content) || "";
+      currentReaderPageIndex = 0;
+      renderReaderWorkspace();
     }
   }
 
@@ -7010,8 +7073,68 @@
     container.innerHTML = html;
   }
 
+  // ==============================================================================
+  // SISTEMA DE TESTE GRÁTIS POR 7 DIAS (COM CONTADOR E CONVITE AO PLANO VITALÍCIO)
+  // ==============================================================================
+  function initTrialSystem() {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const isTrialParam = urlParams.get('trial') === '7dias';
+      
+      const userPlan = localStorage.getItem('concursos_user_plan');
+      const trialBar = document.getElementById('trialNoticeBar');
+      const daysCountText = document.getElementById('trialDaysCountText');
+
+      // Se o aluno já é assinante vitalício, oculta a barra de teste
+      if (userPlan === 'vitalicio') {
+        if (trialBar) trialBar.style.display = 'none';
+        return;
+      }
+
+      // Se não houver data de início registrada, ou se veio pela URL com trial=7dias
+      let trialStart = localStorage.getItem('concursos_trial_start');
+      if (!trialStart || isTrialParam) {
+        if (!trialStart) {
+          trialStart = new Date().toISOString();
+          localStorage.setItem('concursos_trial_start', trialStart);
+        }
+      }
+
+      if (trialStart) {
+        const start = new Date(trialStart);
+        const now = new Date();
+        const diffDays = (now - start) / (1000 * 60 * 60 * 24);
+        const daysRemaining = Math.max(0, Math.ceil(7 - diffDays));
+
+        if (trialBar) trialBar.style.display = 'flex';
+
+        if (daysRemaining > 0) {
+          if (daysCountText) {
+            daysCountText.textContent = `${daysRemaining} ${daysRemaining === 1 ? 'dia restante' : 'dias restantes'}`;
+          }
+        } else {
+          if (daysCountText) {
+            daysCountText.textContent = 'Período de teste concluído';
+          }
+          // Exibe modal convidando a desbloquear o plano vitalício
+          const hasSeenExpiredModal = sessionStorage.getItem('concursos_trial_expired_modal_shown');
+          if (!hasSeenExpiredModal) {
+            openModal('modalTrialExpired');
+            sessionStorage.setItem('concursos_trial_expired_modal_shown', 'true');
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('Erro ao inicializar trial system:', e);
+    }
+  }
+  window.initTrialSystem = initTrialSystem;
+
   // Init
   window.addEventListener('DOMContentLoaded', async () => {
+    initTrialSystem();
+    loadPreseededCatalog();
+    renderSidebar(DEFAULT_CONCURSOS_TREE);
     await loadProgress();
     loadStructureAndSidebar();
     fetchAiConfig();
@@ -7840,16 +7963,21 @@
 
   function checkStoredAuth() {
     try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const isTrial = urlParams.get('trial') === '7dias' || !!localStorage.getItem('concursos_trial_start');
       const saved = localStorage.getItem('projeto_aprovacao_user');
       if (saved) {
         currentUser = JSON.parse(saved);
         updateUserBadgeUI();
+      } else if (isTrial) {
+        // Aluno em modo Teste Grátis de 7 Dias: acesso direto imediato a todos os tópicos e recursos
+        updateUserBadgeUI();
       } else {
-        // Exibe a tela de login do Projeto Aprovação imediatamente ao entrar
+        // Visitante padrão que não iniciou teste ainda
         openAuthModal('login');
       }
     } catch(e) {
-      openAuthModal('login');
+      // Falha silenciosa para não travar a experiência
     }
   }
 

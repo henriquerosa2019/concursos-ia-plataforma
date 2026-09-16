@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "enunciado": "A determinação judicial para busca e apreensão no domicílio do investigado pode ser cumprida em qualquer horário do dia ou da noite, desde que com a presença de testemunhas.",
+    "gabarito": "E",
+    "justificativa": "ERRADO. A determinação judicial só pode ser executada durante o dia (Art. 5º, XI, CF/88). Durante a noite, somente em flagrante delito, desastre ou socorro.",
+    "banca": "Cebraspe",
+    "ano": 2024
+  },
+  {
+    "id": 2,
+    "enunciado": "O remédio constitucional cabível para assegurar o conhecimento de informações relativas à pessoa do impetrante, constantes de registros de entidades governamentais, é o habeas data.",
+    "gabarito": "C",
+    "justificativa": "CERTO. Art. 5º, LXXII, 'a' da CF/88: conceder-se-á habeas data para assegurar o conhecimento de informações relativas à pessoa do impetrante.",
+    "banca": "Cebraspe",
+    "ano": 2024
+  },
+  {
+    "id": 3,
+    "enunciado": "Para o exercício do direito de reunião pacífica e sem armas em locais abertos ao público, a Constituição Federal exige prévia autorização da autoridade policial.",
+    "gabarito": "E",
+    "justificativa": "ERRADO. Não se exige autorização, apenas PRÉVIO AVISO (Art. 5º, XVI, CF/88).",
+    "banca": "Cebraspe",
+    "ano": 2023
+  },
+  {
+    "id": 4,
+    "enunciado": "Qualquer pessoa física ou jurídica tem legitimidade ativa para ajuizar Ação Popular em defesa do patrimônio público.",
+    "gabarito": "E",
+    "justificativa": "ERRADO. Pessoa jurídica NÃO pode propor ação popular (Súmula 365 do STF). Apenas o cidadão (eleitor).",
+    "banca": "Cebraspe",
+    "ano": 2024
+  },
+  {
+    "id": 5,
+    "enunciado": "São gratuitas as ações de habeas corpus e habeas data, e, na forma da lei, os atos necessários ao exercício da cidadania.",
+    "gabarito": "C",
+    "justificativa": "CERTO. Art. 5º, LXXVII da CF/88: são gratuitas as ações de 'habeas-corpus' e 'habeas-data'.",
+    "banca": "Cebraspe",
+    "ano": 2023
+  }
+]

@@ -4,6 +4,7 @@
   "description": "Plataforma Definitiva de Estudos para Concursos Públicos com IA, Supabase e Metodologia dos 4 Pilares",
   "main": "servidor.py",
   "scripts": {
+    "build": "node build.js",
     "start": "python servidor.py",
     "dev": "python servidor.py"
   },

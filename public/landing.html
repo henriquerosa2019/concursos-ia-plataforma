@@ -519,22 +519,10 @@
       animation: floatPillSlow 4.5s ease-in-out infinite alternate;
       will-change: transform;
     }
-    .pill-bottom-left {
-      bottom: -16px;
-      left: -12px;
-      z-index: 12;
-      animation: floatPillBottom 5s ease-in-out infinite alternate;
-      will-change: transform;
-    }
     @keyframes floatPillSlow {
       0% { transform: translateY(0px) rotate(0deg); }
       50% { transform: translateY(-9px) rotate(0.8deg); }
       100% { transform: translateY(5px) rotate(-0.5deg); }
-    }
-    @keyframes floatPillBottom {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(6px); }
-      100% { transform: translateY(-5px); }
     }
 
     /* Section Styles */

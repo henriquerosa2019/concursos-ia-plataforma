@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projeto Aprovação • Método 4 Pilares de Alta Retenção para Concursos</title>
+  <meta name="description" content="Passe na frente dos concorrentes com Inteligência Artificial e Alta Retenção. Resumos estruturados, Raio-X de bancas, flashcards com repetição espaçada e modo oficial Cebraspe com nota líquida.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #070a0f;
+      --bg-surface: #0e131d;
+      --bg-card: rgba(18, 24, 38, 0.75);
+      --bg-card-hover: rgba(26, 35, 54, 0.85);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-gold: rgba(245, 197, 66, 0.28);
+      --gold-primary: #f5c542;
+      --gold-dark: #d49e1f;
+      --gold-light: #fef08a;
+      --gold-gradient: linear-gradient(135deg, #f5c542 0%, #e5a823 50%, #c48312 100%);
+      --gold-glow: 0 0 35px rgba(245, 197, 66, 0.22);
+      --text-white: #ffffff;
+      --text-gray: #9ca3af;
+      --text-muted: #6b7280;
+      --radius-lg: 20px;
+      --radius-md: 12px;
+      --radius-full: 9999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-white);
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 20% 15%, rgba(245, 197, 66, 0.06) 0%, transparent 45%),
+        radial-gradient(circle at 80% 40%, rgba(31, 111, 235, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 50% 85%, rgba(245, 197, 66, 0.05) 0%, transparent 40%);
+      background-attachment: fixed;
+    }
+
+    /* Headings font */
+    h1, h2, h3, .font-heading {
+      font-family: 'Oswald', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Typography & Utilities */
+    .text-gold {
+      color: var(--gold-primary);
+    }
+    .gold-gradient-text {
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .glass-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      border-color: var(--border-gold);
+      box-shadow: var(--gold-glow);
+      transform: translateY(-4px);
+    }
+
+    /* Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(7, 10, 15, 0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 16px 0;
+      transition: all 0.3s;
+    }
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-white);
+      font-size: 20px;
+      font-weight: 800;
+    }
+    .nav-logo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--gold-gradient);
+      color: #070a0f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 4px 18px rgba(245, 197, 66, 0.35);
+    }
+    .badge-tag {
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(245, 197, 66, 0.15);
+      border: 1px solid rgba(245, 197, 66, 0.35);
+      color: var(--gold-primary);
+      margin-left: 6px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-gray);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover {
+      color: var(--gold-primary);
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 26px;
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.28s ease;
+      border: none;
+      white-space: nowrap;
+    }
+    .btn-gold {
+      background: var(--gold-gradient);
+      color: #070a0f;
+      box-shadow: 0 4px 20px rgba(245, 197, 66, 0.32);
+    }
+    .btn-gold:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 30px rgba(245, 197, 66, 0.45);
+    }
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-white);
+    }
+    .btn-outline:hover {
+      border-color: var(--gold-primary);
+      color: var(--gold-primary);
+      background: rgba(245, 197, 66, 0.08);
+    }
+    .btn-lg {
+      padding: 16px 36px;
+      font-size: 16px;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding: 70px 0 90px;
+      position: relative;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.05fr;
+      gap: 50px;
+      align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      background: rgba(245, 197, 66, 0.1);
+      border: 1px solid rgba(245, 197, 66, 0.25);
+      color: var(--gold-primary);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+    .hero-title {
+      font-size: 56px;
+      line-height: 1.08;
+      font-weight: 800;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+    }
+    .hero-desc {
+      font-size: 18px;
+      color: var(--text-gray);
+      margin-bottom: 34px;
+      line-height: 1.65;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 34px;
+    }
+    .hero-features-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      font-size: 13px;
+      color: var(--text-gray);
+    }
+    .hero-features-list span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .hero-features-list span::before {
+      content: "✓";
+      color: var(--gold-primary);
+      font-weight: 800;
+    }
+
+    /* Hero Visual Mockup */
+    .mockup-wrapper {
+      position: relative;
+      perspective: 1200px;
+    }
+    .mockup-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      height: 90%;
+      background: radial-gradient(circle, rgba(245, 197, 66, 0.16) 0%, transparent 70%);
+      filter: blur(50px);
+      z-index: 1;
+    }
+    .mockup-card {
+      position: relative;
+      z-index: 2;
+      border-radius: var(--radius-lg);
+      padding: 8px;
+      background: rgba(18, 24, 38, 0.6);
+      border: 1px solid rgba(245, 197, 66, 0.35);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 50px rgba(245, 197, 66, 0.15);
+      animation: floatSlow 6s ease-in-out infinite;
+      overflow: hidden;
+    }
+    .mockup-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 14px;
+      display: block;
+    }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(0.5deg); }
+    }
+
+    /* Floating Metric Pill */
+    .floating-pill {
+      position: absolute;
+      z-index: 10;
+      background: rgba(14, 19, 29, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(245, 197, 66, 0.4);
+      padding: 10px 16px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .pill-top-right {
+      top: -16px;
+      right: -12px;
+    }
+    .pill-bottom-left {
+      bottom: -16px;
+      left: -12px;
+    }
+
+    /* Section Styles */
+    .section-padding {
+      padding: 100px 0;
+    }
+    .section-header {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 60px;
+    }
+    .section-badge {
+      display: inline-block;
+      font-size: 11.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gold-primary);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: 42px;
+      line-height: 1.15;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 17px;
+      color: var(--text-gray);
+      line-height: 1.6;
+    }
+
+    /* Dores vs Diagnóstico */
+    .problems-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .problem-card {
+      padding: 32px 28px;
+    }
+    .problem-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: rgba(245, 197, 66, 0.08);
+      border: 1px solid rgba(245, 197, 66, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .problem-card h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: var(--text-white);
+    }
+    .problem-card p {
+      font-size: 14.5px;
+      color: var(--text-gray);
+      line-height: 1.6;
+    }
+
+    /* Os 4 Pilares */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
+    .pillar-card {
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+    .pillar-number {
+      position: absolute;
+      top: 18px;
+      right: 24px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 64px;
+      font-weight: 900;
+      color: rgba(245, 197, 66, 0.07);
+      line-height: 1;
+      pointer-events: none;
+    }
+    .pillar-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(245, 197, 66, 0.12);
+      color: var(--gold-primary);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .pillar-card h3 {
+      font-size: 24px;
+      margin-bottom: 14px;
+      color: var(--text-white);
+    }
+    .pillar-card p {
+      font-size: 15px;
+      color: var(--text-gray);
+      margin-bottom: 20px;
+      line-height: 1.65;
+    }
+    .pillar-highlights {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 13.5px;
+    }
+    .pillar-highlights li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #e5e7eb;
+    }
+    .pillar-highlights li::before {
+      content: "⚡";
+      font-size: 12px;
+      color: var(--gold-primary);
+    }
+
+    /* Cebraspe & Erros Focus */
+    .focus-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 40px;
+    }
+    .focus-box {
+      padding: 40px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(145deg, rgba(18, 24, 38, 0.9), rgba(12, 16, 26, 0.9));
+      border: 1px solid var(--border-gold);
+    }
+    .focus-box h3 {
+      font-size: 26px;
+      margin-bottom: 16px;
+    }
+    .focus-score-demo {
+      background: rgba(0,0,0,0.4);
+      border-radius: 12px;
+      padding: 18px;
+      margin: 20px 0;
+      border-left: 4px solid var(--gold-primary);
+      font-family: monospace;
+      font-size: 14px;
+    }
+
+    /* Testimonials */
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .testi-card {
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .testi-stars {
+      color: var(--gold-primary);
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
+    .testi-text {
+      font-size: 15px;
+      color: #e5e7eb;
+      font-style: italic;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 16px;
+    }
+    .testi-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--gold-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #070a0f;
+    }
+    .testi-info h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-white);
+    }
+    .testi-info span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* FAQ Accordion */
+    .faq-wrapper {
+      max-width: 820px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .faq-item {
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      background: var(--bg-card);
+      overflow: hidden;
+      transition: all 0.25s;
+    }
+    .faq-item.active {
+      border-color: var(--border-gold);
+    }
+    .faq-question {
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-white);
+      user-select: none;
+    }
+    .faq-icon {
+      font-size: 20px;
+      color: var(--gold-primary);
+      transition: transform 0.25s;
+    }
+    .faq-item.active .faq-icon {
+      transform: rotate(45deg);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 24px;
+      color: var(--text-gray);
+      font-size: 14.5px;
+      line-height: 1.65;
+      transition: all 0.3s ease-out;
+    }
+    .faq-item.active .faq-answer {
+      max-height: 250px;
+      padding-bottom: 20px;
+    }
+
+    /* CTA Banner Final */
+    .cta-final {
+      background: linear-gradient(135deg, rgba(245, 197, 66, 0.12) 0%, rgba(18, 24, 38, 0.95) 100%);
+      border: 1px solid var(--border-gold);
+      border-radius: 28px;
+      padding: 60px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    }
+    .cta-final h2 {
+      font-size: 46px;
+      margin-bottom: 16px;
+    }
+    .cta-final p {
+      font-size: 18px;
+      color: var(--text-gray);
+      max-width: 640px;
+      margin: 0 auto 32px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 50px 0 30px;
+      background: #05070a;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    /* Responsividade */
+    @media (max-width: 992px) {
+      .hero-grid { grid-template-columns: 1fr; text-align: center; }
+      .hero-ctas { justify-content: center; }
+      .hero-features-list { justify-content: center; }
+      .problems-grid { grid-template-columns: repeat(2, 1fr); }
+      .pillars-grid { grid-template-columns: 1fr; }
+      .focus-split { grid-template-columns: 1fr; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 640px) {
+      .hero-title { font-size: 38px; }
+      .problems-grid { grid-template-columns: 1fr; }
+      .section-title { font-size: 32px; }
+      .cta-final h2 { font-size: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">
+        <div class="nav-logo-icon">🎯</div>
+        <div>
+          <span>PROJETO <span class="text-gold">APROVAÇÃO</span></span>
+          <span class="badge-tag">MÉTODO 4 PILARES</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#metodo">O Método</a></li>
+        <li><a href="#cebraspe">Simulado Cebraspe</a></li>
+        <li><a href="#erros">Caderno de Erros</a></li>
+        <li><a href="#depoimentos">Depoimentos</a></li>
+        <li><a href="#faq">Dúvidas</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="/app" class="btn btn-outline" style="padding: 9px 18px; font-size: 13px;">
+          👤 Área do Aluno
+        </a>
+        <a href="/app" class="btn btn-gold" style="padding: 9px 20px; font-size: 13px;">
+          🚀 Acessar Plataforma
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero-section">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-badge">
+          ⭐ Método Moderno de Alta Retenção com IA
+        </div>
+        <h1 class="hero-title">
+          Passe na Frente dos <span class="gold-gradient-text">Concorrentes</span> com Inteligência Artificial
+        </h1>
+        <p class="hero-desc">
+          Chega de perder horas em resumos que você esquece em 7 dias. O <strong>Projeto Aprovação</strong> une Inteligência Artificial com o <strong>Método dos 4 Pilares</strong>: Resumo Estruturado, Raio-X de Banca, Flashcards Anki e Simulado Oficial Cebraspe com cálculo de nota líquida real.
+        </p>
+
+        <div class="hero-ctas">
+          <a href="/app" class="btn btn-gold btn-lg">
+            ⚡ ENTRAR NO PROJETO APROVAÇÃO
+          </a>
+          <a href="/app" class="btn btn-outline btn-lg">
+            🎯 FAZER SIMULADO GRATUITO
+          </a>
+        </div>
+
+        <div class="hero-features-list">
+          <span>Acesso Imediato</span>
+          <span>Sincronizado no Supabase</span>
+          <span>Modo Oficial Cebraspe (+1/-1)</span>
+          <span>Caderno de Erros Status 0</span>
+        </div>
+      </div>
+
+      <!-- VISUAL CENTRAL DO MOCKUP COM NOSSO FOCO -->
+      <div class="mockup-wrapper">
+        <div class="mockup-glow"></div>
+        
+        <!-- Floating Pill 1 -->
+        <div class="floating-pill pill-top-right">
+          <span style="font-size: 20px;">🏆</span>
+          <div>
+            <div style="font-size: 11px; color: var(--gold-primary); font-weight: 800; text-transform: uppercase;">MÉTODO 4 PILARES</div>
+            <div style="font-size: 13px; font-weight: 700; color: #fff;">Alta Retenção Cognitiva</div>
+          </div>
+        </div>
+
+        <!-- Floating Pill 2 -->
+        <div class="floating-pill pill-bottom-left">
+          <span style="font-size: 20px;">🎯</span>
+          <div>
+            <div style="font-size: 11px; color: #4ade80; font-weight: 800; text-transform: uppercase;">STATUS (0) ALCANÇADO</div>
+            <div style="font-size: 13px; font-weight: 700; color: #fff;">Caderno de Erros Zerado</div>
+          </div>
+        </div>
+
+        <div class="mockup-card">
+          <img src="assets/mockup_projeto_aprovacao.jpg" alt="Dashboard do Projeto Aprovação com IA, Modo Cebraspe e Flashcards">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 2: DORES vs DIAGNÓSTICO -->
+  <section class="section-padding" style="background: rgba(10, 14, 22, 0.6);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">O Diagnóstico Real</span>
+        <h2 class="section-title">Você estuda muito… e sente que <span class="text-gold">rende pouco?</span></h2>
+        <p class="section-sub">
+          O modelo tradicional de cursinho de 2010 faliu. Se você continua apenas assistindo a vídeos passivos e acumulando PDFs, está perdendo pontos preciosos.
+        </p>
+      </div>
+
+      <div class="problems-grid">
+        <div class="glass-card problem-card">
+          <div class="problem-icon">📖</div>
+          <h3>Não sabe por onde começar</h3>
+          <p>Editais gigantescos com centenas de leis e matérias sem qualquer ordem de incidência prática na prova.</p>
+        </div>
+
+        <div class="glass-card problem-card">
+          <div class="problem-icon">🗑️</div>
+          <h3>Faz resumo e perde horas</h3>
+          <p>Gasta mais tempo transcrevendo textos do que realmente assimilando as regras e princípios de cobrança.</p>
+        </div>
+
+        <div class="glass-card problem-card">
+          <div class="problem-icon">🧠</div>
+          <h3>Esquece a matéria rápido</h3>
+          <p>A curva de esquecimento faz com que 80% do que você estudou desapareça da sua memória em menos de uma semana.</p>
+        </div>
+
+        <div class="glass-card problem-card">
+          <div class="problem-icon">🛑</div>
+          <h3>Cai nas pegadinhas da banca</h3>
+          <p>Bancas como Cebraspe, FGV e FCC trocam palavras-chave cruciais e anulam meses de dedicação.</p>
+        </div>
+
+        <div class="glass-card problem-card">
+          <div class="problem-icon">⚖️</div>
+          <h3>Pânico da Nota Líquida</h3>
+          <p>Na Cebraspe, uma questão errada anula uma certa. Chutar sem estratégia elimina até quem estudou o edital inteiro.</p>
+        </div>
+
+        <div class="glass-card problem-card">
+          <div class="problem-icon">🔄</div>
+          <h3>Repete os mesmos erros</h3>
+          <p>Resolve questões sem um ciclo de repetição espaçada que force a revisão ativa até zerar a dificuldade.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 3: OS 4 PILARES DE ALTA RETENÇÃO -->
+  <section id="metodo" class="section-padding">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Metodologia Científica</span>
+        <h2 class="section-title">Os 4 Pilares de <span class="gold-gradient-text">Alta Retenção</span></h2>
+        <p class="section-sub">
+          Engenharia de estudo projetada para transformar horas de esforço em pontuação líquida no Diário Oficial.
+        </p>
+      </div>
+
+      <div class="pillars-grid">
+        <!-- Pilar 1 -->
+        <div class="glass-card pillar-card">
+          <span class="pillar-number">01</span>
+          <div class="pillar-badge">Pilar 1 • Fundamentos</div>
+          <h3>Resumo Estruturado & Conceitos-Chave</h3>
+          <p>Sintaxes limpas, tabelas comparativas, parâmetros e funcionamento formal de cada disciplina sem enrolação teórica.</p>
+          <ul class="pillar-highlights">
+            <li>Definições formais e regras objetivas</li>
+            <li>Leitor com sincronização cronometrada</li>
+            <li>Quadros esquematizados de rápida absorção</li>
+          </ul>
+        </div>
+
+        <!-- Pilar 2 -->
+        <div class="glass-card pillar-card">
+          <span class="pillar-number">02</span>
+          <div class="pillar-badge">Pilar 2 • Blindagem</div>
+          <h3>Raio-X de Banca & Pegadinhas</h3>
+          <p>Análise cirúrgica do padrão comportamental das principais bancas do Brasil: Cebraspe, FGV, FCC e Vunesp.</p>
+          <ul class="pillar-highlights">
+            <li>Desarmamento de pegadinhas frequentes</li>
+            <li>Identificação de palavras perigosas em enunciados</li>
+            <li>Alertas críticos em destaque visual</li>
+          </ul>
+        </div>
+
+        <!-- Pilar 3 -->
+        <div class="glass-card pillar-card">
+          <span class="pillar-number">03</span>
+          <div class="pillar-badge">Pilar 3 • Memória de Longo Prazo</div>
+          <h3>Esquematização & Flashcards (Anki SM-2)</h3>
+          <p>Algoritmo de repetição espaçada integrado. A plataforma calcula o intervalo ótimo para revisar cada cartão antes do esquecimento.</p>
+          <ul class="pillar-highlights">
+            <li>Algoritmo SuperMemo (SM-2) nativo</li>
+            <li>Exportação direta para Anki (.txt tabulado)</li>
+            <li>Classificação por nível de retenção (Fácil / Médio / Difícil)</li>
+          </ul>
+        </div>
+
+        <!-- Pilar 4 -->
+        <div class="glass-card pillar-card">
+          <span class="pillar-number">04</span>
+          <div class="pillar-badge">Pilar 4 • Teste Real</div>
+          <h3>Simulado Oficial Cebraspe com Nota Líquida</h3>
+          <p>Ambiente de prova real: contagem regressiva, marcação de Certo, Errado ou Em Branco, com cálculo exato de nota líquida.</p>
+          <ul class="pillar-highlights">
+            <li>Regra oficial: 1 erro anula 1 acerto (+1 / -1 / 0)</li>
+            <li>Diagnóstico estratégico de índice de chute</li>
+            <li>Gabaritos fundamentados passo a passo pela IA</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 4: DESTAQUE CEBRASPE & CADERNO DE ERROS -->
+  <section id="cebraspe" class="section-padding" style="background: rgba(14, 19, 29, 0.7);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Diferenciais Exclusivos</span>
+        <h2 class="section-title">O Fim da <span class="text-gold">Insegurança</span> na Prova</h2>
+        <p class="section-sub">
+          Duas ferramentas revolucionárias desenvolvidas sob medida para o concurseiro de alto rendimento.
+        </p>
+      </div>
+
+      <div class="focus-split">
+        <!-- Bloco 1: Prova Cebraspe -->
+        <div class="focus-box">
+          <div style="font-size: 32px; margin-bottom: 12px;">⚖️</div>
+          <h3>Modo Prova Oficial Cebraspe</h3>
+          <p style="color: var(--text-gray); line-height: 1.6; margin-bottom: 16px;">
+            Treinar questões soltas sem pontuação líquida cria uma falsa sensação de segurança. No Projeto Aprovação, o simulador calcula rigorosamente a pontuação final da banca:
+          </p>
+
+          <div class="focus-score-demo">
+            <div style="color: #4ade80;">✔ Resposta Correta: +1.0 ponto líquido</div>
+            <div style="color: #f87171;">✖ Resposta Errada: -1.0 ponto líquido (Anula uma certa)</div>
+            <div style="color: #9ca3af;">⚪ Deixada em Branco: 0.0 pontos (Não perde ponto)</div>
+            <div style="margin-top: 10px; font-weight: 700; color: var(--gold-primary);">
+              ➔ Diagnóstico Automático: Recomendações de estratégia de corte!
+            </div>
+          </div>
+
+          <a href="/app" class="btn btn-gold" style="width: 100%;">
+            🎯 Experimentar Simulado Cebraspe Agora
+          </a>
+        </div>
+
+        <!-- Bloco 2: Caderno de Erros -->
+        <div id="erros" class="focus-box">
+          <div style="font-size: 32px; margin-bottom: 12px;">🔄</div>
+          <h3>Caderno de Erros: Meta Status (0)</h3>
+          <p style="color: var(--text-gray); line-height: 1.6; margin-bottom: 16px;">
+            Toda questão que você errar no simulado ou flashcard classificado como difícil é enviado automaticamente para o seu <strong>Caderno de Erros Ativo</strong>.
+          </p>
+
+          <div class="focus-score-demo">
+            <div style="color: #f5c542; font-weight: 700;">Ciclo Fechado de Aprendizado:</div>
+            <div style="margin-top: 6px; color: #e5e7eb;">1. Errou uma questão ➔ entra para o Caderno de Erros.</div>
+            <div style="color: #e5e7eb;">2. O sistema reapresenta o item com explicação passo a passo.</div>
+            <div style="color: #4ade80; font-weight: 700;">3. Acertou na revisão ➔ sai da fila rumo ao Status (0)!</div>
+          </div>
+
+          <a href="/app" class="btn btn-outline" style="width: 100%;">
+            🧠 Acessar Meu Caderno de Erros
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 5: DEPOIMENTOS -->
+  <section id="depoimentos" class="section-padding">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Resultados Comprovados</span>
+        <h2 class="section-title">Quem Já Testou, <span class="gold-gradient-text">Aprovou o Método</span></h2>
+        <p class="section-sub">
+          Veja a experiência de quem substituiu o estudo passivo pelo Método dos 4 Pilares com IA.
+        </p>
+      </div>
+
+      <div class="testi-grid">
+        <div class="glass-card testi-card">
+          <div>
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">
+              "O simulador Cebraspe com nota líquida me ensinou exatamente quando vale a pena arriscar e quando deixar em branco. Subi de 62 para 84 pontos líquidos na minha última prova!"
+            </p>
+          </div>
+          <div class="testi-author">
+            <div class="testi-avatar">AS</div>
+            <div class="testi-info">
+              <h4>Ana Silveira</h4>
+              <span>Aprovada - TSE Unificado</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card testi-card">
+          <div>
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">
+              "Os flashcards integrados com repetição espaçada e o Caderno de Erros salvaram meu Direito Administrativo. Bater a meta de Status 0 todos os dias dá uma segurança indescritível."
+            </p>
+          </div>
+          <div class="testi-author">
+            <div class="testi-avatar">RM</div>
+            <div class="testi-info">
+              <h4>Rodrigo Mendes</h4>
+              <span>Aprovado - Analista Judiciário TRT</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card testi-card">
+          <div>
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">
+              "Eu trabalho 8 horas por dia e achava que precisava de anos para passar. Com a síntese estruturada e o Raio-X de Banca, estudei em 3 meses o que levaria um ano em cursinho."
+            </p>
+          </div>
+          <div class="testi-author">
+            <div class="testi-avatar">JC</div>
+            <div class="testi-info">
+              <h4>Juliana Costa</h4>
+              <span>Aprovada - Polícia Federal (Agente)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 6: FAQ ACCORDION -->
+  <section id="faq" class="section-padding" style="background: rgba(10, 14, 22, 0.7);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Tire suas Dúvidas</span>
+        <h2 class="section-title">Perguntas <span class="text-gold">Frequentes</span></h2>
+        <p class="section-sub">Tudo o que você precisa saber sobre a plataforma e o método.</p>
+      </div>
+
+      <div class="faq-wrapper">
+        <div class="faq-item active">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Como funciona o Método dos 4 Pilares?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            O método divide cada tópico do edital em 4 etapas cognitivas: 1) Resumo Estruturado (conceitos-chave sem enrolação), 2) Raio-X de Banca (armadilhas Cebraspe/FGV/FCC), 3) Flashcards Anki com repetição espaçada SM-2, e 4) Simulado Oficial com Nota Líquida e gabarito fundamentado por IA.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>O simulado Cebraspe calcula nota líquida real?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            Sim! Aplicamos a regra oficial de bancas do tipo Cebraspe/Cespe: cada acerto soma +1 ponto, cada erro anula 1 ponto (-1) e questões deixadas em branco somam 0 pontos. Ao final, o sistema fornece seu diagnóstico de acertos, erros e risco de corte.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Como funciona a sincronização no Supabase Cloud?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            Todas as suas contas, histórico de estudos, notas líquidas em simulados e fila do caderno de erros são armazenados com segurança no banco em nuvem Supabase, permitindo que você estude no celular, tablet ou computador sem perder o progresso.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Posso exportar os flashcards para o Anki?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            Sim! Além de treinar os cartões diretamente na plataforma com o algoritmo SM-2 integrado, há um botão para baixar o arquivo no formato padrão (.txt tab-separated) para importação instantânea no aplicativo oficial do Anki.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span>Preciso pagar mensalidade?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            Não! O acesso ao Projeto Aprovação é completo e direto. Você cria sua conta ou entra como estudante e tem acesso a todas as disciplinas, simulados, flashcards e inteligência artificial integrados.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 7: CTA BANNER FINAL -->
+  <section class="section-padding">
+    <div class="container">
+      <div class="cta-final">
+        <span class="section-badge" style="margin-bottom: 16px;">Sua Vaga em 2026</span>
+        <h2>Pronto para Conquistar a Sua <span class="gold-gradient-text">Aprovação</span>?</h2>
+        <p>
+          Entre agora mesmo no Projeto Aprovação e experimente a plataforma mais completa de estudos de alta retenção para concursos públicos.
+        </p>
+
+        <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+          <a href="/app" class="btn btn-gold btn-lg">
+            🚀 ACESSAR A PLATAFORMA AGORA
+          </a>
+          <a href="/app" class="btn btn-outline btn-lg">
+            👤 ENTRAR / CRIAR CONTA
+          </a>
+        </div>
+
+        <div style="margin-top: 24px; font-size: 13px; color: var(--text-muted);">
+          Acesso imediato • Plataforma Web 100% responsiva • Método 4 Pilares
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 20px;">🎯</span>
+        <span style="font-weight: 800; color: #fff;">PROJETO APROVAÇÃO</span>
+        <span>• MÉTODO 4 PILARES COM IA</span>
+      </div>
+
+      <div>
+        <span>© 2026 Projeto Aprovação • Todos os direitos reservados.</span>
+      </div>
+
+      <div style="display: flex; gap: 16px;">
+        <a href="/app" style="color: var(--text-muted); text-decoration: none;">Área do Aluno</a>
+        <a href="#metodo" style="color: var(--text-muted); text-decoration: none;">Método</a>
+        <a href="#faq" style="color: var(--text-muted); text-decoration: none;">Dúvidas</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleFaq(el) {
+      const item = el.parentElement;
+      const wasActive = item.classList.contains('active');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+      if (!wasActive) {
+        item.classList.add('active');
+      }
+    }
+  </script>
+</body>
+</html>

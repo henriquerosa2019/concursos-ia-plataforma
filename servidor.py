@@ -1207,6 +1207,18 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                     self.wfile.write(f.read())
                 return
 
+        # 0.2 Página de Sucesso / Matrícula Aprovada
+        if path in ("/sucesso", "/sucesso.html"):
+            sucesso_file = os.path.join(BASE_DIR, "sucesso.html")
+            if os.path.exists(sucesso_file):
+                self.send_response(200)
+                self.send_header("Content-type", "text/html; charset=utf-8")
+                self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+                self.end_headers()
+                with open(sucesso_file, "rb") as f:
+                    self.wfile.write(f.read())
+                return
+
         # 1. Página Inicial SPA / Plataforma de Estudos (/app ou /)
         if path in ("/", "/index.html", "/app", "/plataforma"):
             if os.path.exists(HTML_FILE):

@@ -8,6 +8,7 @@
     { "source": "/api/(.*)", "destination": "/api/ai.js" },
     { "source": "/app", "destination": "/app.html" },
     { "source": "/plataforma", "destination": "/app.html" },
+    { "source": "/sucesso", "destination": "/sucesso.html" },
     { "source": "/landing", "destination": "/index.html" },
     { "source": "/", "destination": "/index.html" }
   ],

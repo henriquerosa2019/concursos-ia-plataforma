@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#070a0f">
+  <title>Matrícula Confirmada! • Projeto Aprovação</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #070a0f;
+      --bg-card: rgba(18, 24, 38, 0.85);
+      --border-gold: rgba(245, 197, 66, 0.35);
+      --gold-primary: #f5c542;
+      --gold-gradient: linear-gradient(135deg, #f5c542 0%, #e5a823 50%, #c48312 100%);
+      --text-white: #ffffff;
+      --text-gray: #9ca3af;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      background: var(--bg-dark);
+      color: var(--text-white);
+      font-family: 'Inter', -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 16px;
+      background-image: 
+        radial-gradient(circle at 50% 20%, rgba(245, 197, 66, 0.12) 0%, transparent 60%),
+        radial-gradient(circle at 80% 80%, rgba(31, 111, 235, 0.06) 0%, transparent 50%);
+    }
+    .success-card {
+      background: var(--bg-card);
+      border: 2px solid var(--border-gold);
+      border-radius: var(--radius-lg);
+      padding: 48px 36px;
+      max-width: 640px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 25px 80px rgba(0,0,0,0.8), 0 0 50px rgba(245, 197, 66, 0.2);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      animation: fadeIn 0.6s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .success-icon-badge {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(74, 222, 128, 0.15);
+      border: 2px solid #4ade80;
+      color: #4ade80;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+      margin: 0 auto 24px;
+      box-shadow: 0 0 30px rgba(74, 222, 128, 0.3);
+    }
+    .badge-status {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      background: rgba(245, 197, 66, 0.15);
+      border: 1px solid rgba(245, 197, 66, 0.4);
+      color: var(--gold-primary);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(28px, 5vw, 38px);
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 1.15;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+    .sub-msg {
+      font-size: 15.5px;
+      color: var(--text-gray);
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+    .order-box {
+      background: rgba(7, 10, 15, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 30px;
+      text-align: left;
+    }
+    .order-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      font-size: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .order-row:last-child { border-bottom: none; }
+    .order-row span:first-child { color: var(--text-gray); }
+    .order-row span:last-child { font-weight: 700; color: var(--text-white); }
+    .btn-access {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 16px 28px;
+      border-radius: var(--radius-full);
+      background: var(--gold-gradient);
+      color: #070a0f;
+      font-size: 16px;
+      font-weight: 800;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 8px 25px rgba(245, 197, 66, 0.4);
+      transition: all 0.25s;
+    }
+    .btn-access:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(245, 197, 66, 0.55);
+    }
+    .support-note {
+      margin-top: 20px;
+      font-size: 12.5px;
+      color: var(--text-gray);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="success-card">
+    <div class="success-icon-badge">✓</div>
+    <span class="badge-status">Pagamento Aprovado • Matrícula Liberada</span>
+    <h1>Bem-vindo(a) ao <span style="color: var(--gold-primary);">Projeto Aprovação</span></h1>
+    <p class="sub-msg">
+      Sua inscrição foi confirmada com sucesso! Você agora tem acesso vitalício e ilimitado ao <strong>Método dos 4 Pilares</strong> com Inteligência Artificial.
+    </p>
+
+    <div class="order-box">
+      <div class="order-row">
+        <span>Plano:</span>
+        <span style="color: var(--gold-primary);">Acesso Vitalício Completo</span>
+      </div>
+      <div class="order-row">
+        <span>Investimento:</span>
+        <span>R$ 97,00 (À vista ou até 12x)</span>
+      </div>
+      <div class="order-row">
+        <span>Status da Matrícula:</span>
+        <span style="color: #4ade80;">Ativo no Supabase Cloud</span>
+      </div>
+      <div class="order-row">
+        <span>Método:</span>
+        <span>4 Pilares + Modo Cebraspe Oficial</span>
+      </div>
+    </div>
+
+    <a href="/app" class="btn-access">
+      🚀 Acessar Meus Estudos Agora
+    </a>
+
+    <div class="support-note">
+      🔒 Ambiente 100% seguro • Seus dados estão sincronizados na nuvem Supabase.
+    </div>
+  </div>
+
+</body>
+</html>

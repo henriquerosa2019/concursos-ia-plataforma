@@ -13,6 +13,7 @@ const filesToCopy = [
   { src: 'landing.html', dest: 'landing.html' },
   { src: 'index.html', dest: 'app.html' },
   { src: 'index.html', dest: 'plataforma.html' },
+  { src: 'sucesso.html', dest: 'sucesso.html' },
   { src: 'mockup_projeto_aprovacao.jpg', dest: 'mockup_projeto_aprovacao.jpg' }
 ];
 

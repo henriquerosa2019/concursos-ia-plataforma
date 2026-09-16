@@ -172,6 +172,76 @@ export default async function handler(req, res) {
     });
   }
 
+  // 6. Webhook de Pagamento (Kiwify, Hotmart, Eduzz, Mercado Pago)
+  if (pathname === '/api/webhook-pagamento' || pathname === '/api/pagamento/webhook') {
+    const body = req.body || {};
+    const email = (
+      body.Customer?.email ||
+      body.customer?.email ||
+      body.data?.buyer?.email ||
+      body.buyer?.email ||
+      body.payer?.email ||
+      body.email ||
+      ''
+    ).trim().toLowerCase();
+
+    const nome = (
+      body.Customer?.full_name ||
+      body.customer?.full_name ||
+      body.data?.buyer?.name ||
+      body.buyer?.name ||
+      body.payer?.first_name ||
+      body.name ||
+      'Estudante'
+    ).trim();
+
+    const status = (
+      body.order_status ||
+      body.status ||
+      body.event ||
+      body.action ||
+      'paid'
+    ).toString().toLowerCase();
+
+    const isPaid = status.includes('paid') || status.includes('approved') || status.includes('completed');
+
+    if (email && isPaid) {
+      const supaUrl = process.env.SUPABASE_URL;
+      const supaKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || process.env.SUPABASE_ANON_KEY;
+      if (supaUrl && supaKey) {
+        try {
+          await fetch(`${supaUrl}/rest/v1/perfis_usuarios`, {
+            method: 'POST',
+            headers: {
+              'apikey': supaKey,
+              'Authorization': `Bearer ${supaKey}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'resolution=merge-duplicates'
+            },
+            body: JSON.stringify({
+              email: email,
+              nome: nome,
+              plano: 'vitalicio',
+              valor_pago: 97.00,
+              status: 'ativo',
+              atualizado_em: new Date().toISOString()
+            })
+          });
+        } catch (e) {
+          console.error('Erro ao sincronizar webhook com Supabase:', e);
+        }
+      }
+    }
+
+    return res.status(200).json({
+      success: true,
+      processed: true,
+      email: email,
+      status: isPaid ? 'aprovado' : 'recebido',
+      message: 'Notificação de pagamento processada com sucesso no Projeto Aprovação'
+    });
+  }
+
   // Default fallback
   return res.status(200).json({
     success: true,

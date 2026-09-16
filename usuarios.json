@@ -5,7 +5,7 @@
     "email": "henriquerosa2019",
     "senha_hash": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
     "created_at": "2026-09-15T17:24:36.820562",
-    "ultimo_login": "2026-09-15T20:44:01.303486"
+    "ultimo_login": "2026-09-16T09:24:14.229884"
   },
   "concurseiro_aprovado@gmail.com": {
     "id": "44424c1e-a48d-41bc-92ae-7ed4f3eda9de",
@@ -46,5 +46,13 @@
     "senha_hash": "852c8a54e930862d030c671f664131eb7a323de77092320ddf09bc80b9725c33",
     "created_at": "2026-09-15T20:43:58.212896",
     "ultimo_login": "2026-09-15T20:43:58.212896"
+  },
+  "aluno_1789561450@aprovacao.com.br": {
+    "id": "ddd62c5a-b151-4c22-8f57-340fa188c359",
+    "nome": "Aluno Teste 450",
+    "email": "aluno_1789561450@aprovacao.com.br",
+    "senha_hash": "852c8a54e930862d030c671f664131eb7a323de77092320ddf09bc80b9725c33",
+    "created_at": "2026-09-16T09:24:11.579887",
+    "ultimo_login": "2026-09-16T09:24:11.579887"
   }
 }

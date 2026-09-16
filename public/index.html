@@ -2,7 +2,11 @@
 <html lang="pt-BR" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#070a0f">
+  <meta name="format-detection" content="telephone=no">
   <title>Projeto Aprovação • Método 4 Pilares de Alta Retenção para Concursos</title>
   <meta name="description" content="Passe na frente dos concorrentes com Inteligência Artificial e Alta Retenção. Resumos estruturados, Raio-X de bancas, flashcards com repetição espaçada e modo oficial Cebraspe com nota líquida.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,12 +40,27 @@
       padding: 0;
     }
 
+    html {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
     body {
+      width: 100%;
+      max-width: 100%;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: var(--bg-dark);
       color: var(--text-white);
       line-height: 1.6;
       overflow-x: hidden;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
       background-image: 
         radial-gradient(circle at 20% 15%, rgba(245, 197, 66, 0.06) 0%, transparent 45%),
         radial-gradient(circle at 80% 40%, rgba(31, 111, 235, 0.05) 0%, transparent 50%),
@@ -57,9 +76,11 @@
     }
 
     .container {
+      width: 100%;
       max-width: 1240px;
       margin: 0 auto;
       padding: 0 24px;
+      box-sizing: border-box;
     }
 
     /* Typography & Utilities */
@@ -261,66 +282,197 @@
       font-weight: 800;
     }
 
+    /* Header Antes vs Depois em Destaque */
+    .before-after-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+    .ba-badge {
+      flex: 1;
+      padding: 14px 18px;
+      border-radius: 14px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: all 0.3s ease;
+    }
+    .ba-before {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1.5px solid rgba(239, 68, 68, 0.45);
+      text-align: left;
+    }
+    .ba-before .ba-tag {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(22px, 3.5vw, 28px);
+      font-weight: 900;
+      color: #ef4444;
+      letter-spacing: 1.5px;
+      text-shadow: 0 0 16px rgba(239, 68, 68, 0.4);
+    }
+    .ba-before .ba-desc {
+      font-size: 11px;
+      font-weight: 700;
+      color: #fca5a5;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .ba-after {
+      background: rgba(245, 197, 66, 0.14);
+      border: 1.5px solid rgba(245, 197, 66, 0.5);
+      text-align: right;
+      box-shadow: 0 0 25px rgba(245, 197, 66, 0.2);
+    }
+    .ba-after .ba-tag {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(22px, 3.5vw, 28px);
+      font-weight: 900;
+      color: var(--gold-primary);
+      letter-spacing: 1.5px;
+      text-shadow: 0 0 16px rgba(245, 197, 66, 0.5);
+    }
+    .ba-after .ba-desc {
+      font-size: 11px;
+      font-weight: 800;
+      color: #fef08a;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .ba-lightning-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      color: var(--gold-primary);
+      filter: drop-shadow(0 0 12px rgba(245, 197, 66, 0.8));
+      animation: lightningPulse 2s ease-in-out infinite;
+      user-select: none;
+    }
+    @keyframes lightningPulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.3); opacity: 1; filter: drop-shadow(0 0 22px rgba(245, 197, 66, 1)); }
+    }
+
     /* Hero Visual Mockup */
     .mockup-wrapper {
       position: relative;
       perspective: 1200px;
+      width: 100%;
     }
     .mockup-glow {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 90%;
-      height: 90%;
-      background: radial-gradient(circle, rgba(245, 197, 66, 0.16) 0%, transparent 70%);
+      width: 92%;
+      height: 92%;
+      background: radial-gradient(circle, rgba(245, 197, 66, 0.18) 0%, transparent 70%);
       filter: blur(50px);
       z-index: 1;
+      pointer-events: none;
     }
     .mockup-card {
       position: relative;
       z-index: 2;
       border-radius: var(--radius-lg);
       padding: 8px;
-      background: rgba(18, 24, 38, 0.6);
-      border: 1px solid rgba(245, 197, 66, 0.35);
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 50px rgba(245, 197, 66, 0.15);
+      background: rgba(18, 24, 38, 0.65);
+      border: 1.5px solid rgba(245, 197, 66, 0.38);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85), 0 0 50px rgba(245, 197, 66, 0.2);
       animation: floatSlow 6s ease-in-out infinite;
       overflow: hidden;
+      will-change: transform;
     }
     .mockup-card img {
       width: 100%;
       height: auto;
       border-radius: 14px;
       display: block;
+      transition: transform 0.4s ease;
+    }
+    .mockup-card:hover img {
+      transform: scale(1.015);
     }
 
     @keyframes floatSlow {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-10px) rotate(0.5deg); }
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .mockup-bottom-badge {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(7, 10, 15, 0.88);
+      border: 1px solid rgba(245, 197, 66, 0.4);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--gold-light);
+      white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+      pointer-events: none;
+      z-index: 5;
+    }
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 8px #4ade80;
     }
 
     /* Floating Metric Pill */
     .floating-pill {
       position: absolute;
       z-index: 10;
-      background: rgba(14, 19, 29, 0.85);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(245, 197, 66, 0.4);
+      background: rgba(14, 19, 29, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(245, 197, 66, 0.45);
       padding: 10px 16px;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7), 0 0 20px rgba(245, 197, 66, 0.15);
       display: flex;
       align-items: center;
       gap: 10px;
     }
+    /* O método 4 pilares acima à direita se move lentamente */
     .pill-top-right {
-      top: -16px;
+      top: -18px;
       right: -12px;
+      z-index: 12;
+      animation: floatPillSlow 4.5s ease-in-out infinite alternate;
+      will-change: transform;
     }
     .pill-bottom-left {
       bottom: -16px;
       left: -12px;
+      z-index: 12;
+      animation: floatPillBottom 5s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+    @keyframes floatPillSlow {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-9px) rotate(0.8deg); }
+      100% { transform: translateY(5px) rotate(-0.5deg); }
+    }
+    @keyframes floatPillBottom {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(6px); }
+      100% { transform: translateY(-5px); }
     }
 
     /* Section Styles */
@@ -618,9 +770,167 @@
       gap: 20px;
     }
 
-    /* Responsividade */
+    /* Seção de Oferta / Precificação (Inspirada no Lançamento 2026) */
+    .pricing-card-wrapper {
+      max-width: 920px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .pricing-card-box {
+      background: linear-gradient(135deg, rgba(14, 19, 29, 0.98) 0%, rgba(18, 24, 38, 0.94) 100%);
+      border: 2px solid var(--border-gold);
+      border-radius: 24px;
+      box-shadow: 0 25px 80px rgba(0,0,0,0.8), 0 0 50px rgba(245, 197, 66, 0.18);
+      position: relative;
+      overflow: hidden;
+      padding: 48px 44px;
+    }
+    .corner-ribbon {
+      position: absolute;
+      top: 28px;
+      right: -55px;
+      transform: rotate(45deg);
+      background: var(--gold-gradient);
+      color: #070a0f;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 900;
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      padding: 7px 55px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      z-index: 5;
+      text-transform: uppercase;
+    }
+    .pricing-header-inner {
+      text-align: center;
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .pricing-main-title {
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 900;
+      color: var(--text-white);
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+    .pricing-sub-desc {
+      font-size: 16px;
+      color: var(--text-gray);
+      font-style: italic;
+    }
+    .pricing-content-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.95fr;
+      gap: 36px;
+      align-items: center;
+    }
+    .pricing-feature-items {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .pricing-feature-items li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+    .pricing-feature-items .p-check {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(245, 197, 66, 0.15);
+      border: 1.5px solid var(--gold-primary);
+      color: var(--gold-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+    .pricing-action-col {
+      background: rgba(7, 10, 15, 0.65);
+      border: 1px solid var(--border-gold);
+      border-radius: 20px;
+      padding: 32px 26px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
+    }
+    .pricing-old-price {
+      font-size: 16px;
+      color: #9ca3af;
+      text-decoration: line-through;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+    .pricing-label-small {
+      font-size: 14px;
+      color: var(--gold-light);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .pricing-amount {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 4px;
+      margin: 6px 0;
+    }
+    .pricing-amount .currency {
+      font-family: 'Oswald', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--gold-primary);
+    }
+    .pricing-amount .value {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(52px, 8vw, 76px);
+      font-weight: 900;
+      color: var(--gold-primary);
+      line-height: 1;
+      text-shadow: 0 0 30px rgba(245, 197, 66, 0.4);
+    }
+    .pricing-installments {
+      font-size: 13px;
+      color: var(--text-gray);
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+    .btn-pricing-cta {
+      width: 100%;
+      padding: 16px 20px;
+      font-size: 15.5px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      box-shadow: 0 8px 25px rgba(245, 197, 66, 0.4);
+      border-radius: var(--radius-full);
+    }
+    .pricing-guarantees {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+
+    /* Responsividade Avançada para Android e iOS (Mobile, Tablet, Desktop) */
     @media (max-width: 992px) {
-      .hero-grid { grid-template-columns: 1fr; text-align: center; }
+      .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 40px; }
       .hero-ctas { justify-content: center; }
       .hero-features-list { justify-content: center; }
       .problems-grid { grid-template-columns: repeat(2, 1fr); }
@@ -628,12 +938,109 @@
       .focus-split { grid-template-columns: 1fr; }
       .testi-grid { grid-template-columns: 1fr; }
       .nav-links { display: none; }
+      .pricing-content-grid { grid-template-columns: 1fr; gap: 30px; }
+      .pricing-action-col { max-width: 440px; margin: 0 auto; width: 100%; }
     }
+
+    @media (max-width: 768px) {
+      .container { padding: 0 16px; }
+      .navbar { padding: 10px 0; }
+      .nav-inner { gap: 10px; }
+      .nav-logo { font-size: 16px; gap: 8px; }
+      .nav-logo-icon { width: 32px; height: 32px; font-size: 16px; border-radius: 8px; }
+      .badge-tag { display: none; }
+      .nav-actions { gap: 6px; }
+      .nav-actions .btn-outline { display: none; }
+      .nav-actions .btn-gold { padding: 8px 14px; font-size: 12px; }
+
+      .hero-section { padding: 30px 0 50px; }
+      .section-padding { padding: 50px 0; }
+      
+      /* Ajuste dos pills para caber em telas menores sem scroll horizontal */
+      .pill-top-right {
+        top: 8px;
+        right: 8px;
+        padding: 8px 12px;
+      }
+      .pill-bottom-left {
+        bottom: 8px;
+        left: 8px;
+        padding: 8px 12px;
+      }
+      .floating-pill span { font-size: 16px !important; }
+      .floating-pill div div:first-child { font-size: 10px !important; }
+      .floating-pill div div:last-child { font-size: 11.5px !important; }
+
+      .pricing-card-box { padding: 36px 20px; border-radius: 20px; }
+      .corner-ribbon {
+        top: 18px;
+        right: -55px;
+        font-size: 11px;
+        padding: 5px 50px;
+      }
+      .mockup-bottom-badge {
+        font-size: 10px;
+        padding: 4px 12px;
+        bottom: 8px;
+      }
+    }
+
     @media (max-width: 640px) {
-      .hero-title { font-size: 38px; }
+      .hero-title { font-size: clamp(32px, 8vw, 42px); }
+      .hero-desc { font-size: 15.5px; }
+      .hero-ctas { flex-direction: column; width: 100%; }
+      .hero-ctas .btn { width: 100%; }
       .problems-grid { grid-template-columns: 1fr; }
-      .section-title { font-size: 32px; }
-      .cta-final h2 { font-size: 32px; }
+      .section-title { font-size: clamp(28px, 7vw, 36px); }
+      .cta-final h2 { font-size: clamp(28px, 7vw, 36px); }
+      .cta-final { padding: 40px 20px; }
+      
+      /* Header Antes / Depois no mobile */
+      .before-after-header {
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+      .ba-badge {
+        padding: 10px 12px;
+        border-radius: 12px;
+      }
+      .ba-before .ba-tag, .ba-after .ba-tag {
+        font-size: 19px;
+      }
+      .ba-before .ba-desc, .ba-after .ba-desc {
+        font-size: 9.5px;
+      }
+      .ba-lightning-divider {
+        font-size: 20px;
+      }
+
+      .pricing-main-title { font-size: 22px; }
+      .pricing-sub-desc { font-size: 13.5px; }
+      .pricing-feature-items li { font-size: 13.5px; }
+      .pricing-amount .value { font-size: 60px; }
+      .btn-pricing-cta { font-size: 14px; padding: 14px 18px; }
+    }
+
+    @media (max-width: 420px) {
+      .ba-before .ba-tag, .ba-after .ba-tag {
+        font-size: 16px;
+      }
+      .ba-before .ba-desc, .ba-after .ba-desc {
+        font-size: 8.5px;
+      }
+      .floating-pill {
+        display: none; /* Em telas ultracompactas (iPhone SE / Androids pequenos) oculta pills para focar 100% no mockup */
+      }
+      .nav-actions .btn {
+        padding: 7px 12px;
+        font-size: 11.5px;
+      }
+      .nav-logo span {
+        font-size: 16px;
+      }
+      .badge-tag {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -654,6 +1061,7 @@
         <li><a href="#metodo">O Método</a></li>
         <li><a href="#cebraspe">Simulado Cebraspe</a></li>
         <li><a href="#erros">Caderno de Erros</a></li>
+        <li><a href="#planos">Planos</a></li>
         <li><a href="#depoimentos">Depoimentos</a></li>
         <li><a href="#faq">Dúvidas</a></li>
       </ul>
@@ -700,20 +1108,35 @@
         </div>
       </div>
 
-      <!-- VISUAL CENTRAL DO MOCKUP COM NOSSO FOCO -->
+      <!-- VISUAL CENTRAL DO MOCKUP COM HEADER ANTES vs DEPOIS -->
       <div class="mockup-wrapper">
+        <!-- HEADER ANTES vs DEPOIS COM FONTES GRANDES -->
+        <div class="before-after-header">
+          <div class="ba-badge ba-before">
+            <div class="ba-tag">❌ ANTES</div>
+            <div class="ba-desc">Desorganização • Estresse • Baixa Retenção</div>
+          </div>
+          
+          <div class="ba-lightning-divider">⚡</div>
+
+          <div class="ba-badge ba-after">
+            <div class="ba-tag">🏆 DEPOIS</div>
+            <div class="ba-desc">Alta Retenção • Método 4 Pilares</div>
+          </div>
+        </div>
+
         <div class="mockup-glow"></div>
         
-        <!-- Floating Pill 1 -->
+        <!-- Floating Pill 1 (Método 4 Pilares acima à direita se move lentamente) -->
         <div class="floating-pill pill-top-right">
-          <span style="font-size: 20px;">🏆</span>
+          <span style="font-size: 22px;">🏆</span>
           <div>
-            <div style="font-size: 11px; color: var(--gold-primary); font-weight: 800; text-transform: uppercase;">MÉTODO 4 PILARES</div>
+            <div style="font-size: 11px; color: var(--gold-primary); font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px;">MÉTODO 4 PILARES</div>
             <div style="font-size: 13px; font-weight: 700; color: #fff;">Alta Retenção Cognitiva</div>
           </div>
         </div>
 
-        <!-- Floating Pill 2 -->
+        <!-- Floating Pill 2 (Inferior Esquerdo) -->
         <div class="floating-pill pill-bottom-left">
           <span style="font-size: 20px;">🎯</span>
           <div>
@@ -722,8 +1145,13 @@
           </div>
         </div>
 
+        <!-- Quadro ao Centro com Imagem em Movimento Suave (sobe e desce) -->
         <div class="mockup-card">
-          <img src="assets/mockup_projeto_aprovacao.jpg" alt="Dashboard do Projeto Aprovação com IA, Modo Cebraspe e Flashcards">
+          <img src="assets/mockup_projeto_aprovacao.jpg" alt="Projeto Aprovação - Método 4 Pilares: Antes e Depois com 2 Mulheres e Dashboard IA">
+          <div class="mockup-bottom-badge">
+            <span class="badge-dot"></span>
+            <span>Projeto Aprovação - Método 4 Pilares</span>
+          </div>
         </div>
       </div>
     </div>
@@ -967,6 +1395,86 @@
     </div>
   </section>
 
+  <!-- SEÇÃO DE OFERTA / VALOR (BASEADA NA IMAGEM 2: LANÇAMENTO 2026) -->
+  <section id="planos" class="section-padding" style="background: radial-gradient(circle at 50% 50%, rgba(245, 197, 66, 0.08) 0%, rgba(7, 10, 15, 0.95) 75%);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Investimento com Retorno Imediato</span>
+        <h2 class="section-title">Acesso Completo ao <span class="gold-gradient-text">Projeto Aprovação</span></h2>
+        <p class="section-sub">
+          Sem mensalidades abusivas. Tenha em mãos toda a inteligência artificial, o Método 4 Pilares e a melhor preparação do Brasil por um valor promocional único.
+        </p>
+      </div>
+
+      <div class="pricing-card-wrapper">
+        <div class="pricing-card-box">
+          <!-- Ribbon Lançamento 2026 -->
+          <div class="corner-ribbon">
+            <span>LANÇAMENTO 2026</span>
+          </div>
+
+          <div class="pricing-header-inner">
+            <h3 class="pricing-main-title">PROJETO APROVAÇÃO • MÉTODO 4 PILARES</h3>
+            <p class="pricing-sub-desc">Garanta sua vaga na primeira turma com desconto exclusivo.</p>
+          </div>
+
+          <div class="pricing-content-grid">
+            <!-- Coluna de Benefícios -->
+            <div class="pricing-features-col">
+              <ul class="pricing-feature-items">
+                <li>
+                  <span class="p-check">✔</span>
+                  <span>Todos os Módulos do Método 4 Pilares com IA</span>
+                </li>
+                <li>
+                  <span class="p-check">✔</span>
+                  <span>Simulados Oficiais Cebraspe com Nota Líquida (+1 / -1)</span>
+                </li>
+                <li>
+                  <span class="p-check">✔</span>
+                  <span>Treinador Inteligente de Flashcards Anki (SM-2)</span>
+                </li>
+                <li>
+                  <span class="p-check">✔</span>
+                  <span>Caderno de Erros Automático com Meta Status (0)</span>
+                </li>
+                <li>
+                  <span class="p-check">✔</span>
+                  <span>Raio-X Cirúrgico de Bancas: Cebraspe, FGV, FCC e Vunesp</span>
+                </li>
+                <li>
+                  <span class="p-check">✔</span>
+                  <span>Acesso Vitalício e Sincronização em Nuvem Supabase</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Coluna de Preço e CTA -->
+            <div class="pricing-action-col">
+              <div class="pricing-old-price">De R$ 197,00</div>
+              <div class="pricing-label-small">Por apenas</div>
+              <div class="pricing-amount">
+                <span class="currency">R$</span>
+                <span class="value">97</span>
+              </div>
+              <div class="pricing-installments">À VISTA OU EM ATÉ 12X</div>
+              
+              <a href="/app" class="btn btn-gold btn-pricing-cta">
+                QUERO ACESSAR AGORA ⚡
+              </a>
+
+              <div class="pricing-guarantees">
+                <span>🔒 Compra Segura</span>
+                <span>⚡ Acesso Imediato</span>
+                <span>🛡️ Garantia de 7 Dias</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- SEÇÃO 6: FAQ ACCORDION -->
   <section id="faq" class="section-padding" style="background: rgba(10, 14, 22, 0.7);">
     <div class="container">
@@ -977,7 +1485,7 @@
       </div>
 
       <div class="faq-wrapper">
-        <div class="faq-item active">
+        <div class="faq-item">
           <div class="faq-question" onclick="toggleFaq(this)">
             <span>Como funciona o Método dos 4 Pilares?</span>
             <span class="faq-icon">+</span>
@@ -1017,13 +1525,14 @@
           </div>
         </div>
 
-        <div class="faq-item">
+        <div class="faq-item active">
           <div class="faq-question" onclick="toggleFaq(this)">
             <span>Preciso pagar mensalidade?</span>
             <span class="faq-icon">+</span>
           </div>
           <div class="faq-answer">
-            Não! O acesso ao Projeto Aprovação é completo e direto. Você cria sua conta ou entra como estudante e tem acesso a todas as disciplinas, simulados, flashcards e inteligência artificial integrados.
+            <strong>Não! Você não paga nenhuma mensalidade recorrente.</strong> O acesso ao <strong>Projeto Aprovação • Método 4 Pilares</strong> é vitalício em taxa única promocional de lançamento: de <span style="text-decoration: line-through; opacity: 0.75;">R$ 197,00</span> por apenas <strong>R$ 97,00 à vista ou em até 12x</strong>.<br><br>
+            Você garante acesso imediato e vitalício a todos os módulos com Inteligência Artificial, simulados oficiais Cebraspe com cálculo de nota líquida (+1 / -1), treinador de flashcards Anki (algoritmo SM-2), Caderno de Erros com meta Status (0), Raio-X cirúrgico de bancas (Cebraspe, FGV, FCC, Vunesp) e sincronização permanente no banco em nuvem Supabase.
           </div>
         </div>
       </div>

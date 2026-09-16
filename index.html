@@ -1875,24 +1875,26 @@
 
   <div class="search-box">
     <span class="search-icon">🔍</span>
-    <input type="text" id="globalSearch" placeholder="Pesquisar em toda a aula..." oninput="handleGlobalSearch(this.value)">
+    <input type="text" id="globalSearch" name="search_estudos_livre" autocomplete="off" spellcheck="false" placeholder="Pesquisar em toda a aula..." oninput="handleGlobalSearch(this.value)">
   </div>
 
   <div class="topbar-actions">
-    <a href="/landing" class="btn" style="border-color: rgba(245, 197, 66, 0.4); color: #f5c542; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px;" title="Ver Landing Page Oficial do Projeto Aprovação">
+    <!-- Botão de Landing Page ocultado na visualização do aluno -->
+    <a href="/landing" class="btn" id="btnLandingPageLink" style="display: none; border-color: rgba(245, 197, 66, 0.4); color: #f5c542; font-weight: 700; text-decoration: none; align-items: center; gap: 6px; padding: 6px 12px;" title="Ver Landing Page Oficial do Projeto Aprovação">
       🌐 Landing Page
     </a>
     <button class="btn" id="globalThemeBtn" onclick="toggleAppTheme()" title="Alternar entre Fundo Branco (Claro) e Fundo Escuro em todo o Aplicativo" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600; padding: 6px 12px;">
       <span id="globalThemeIcon">☀️</span> <span id="globalThemeText">Modo Claro</span>
     </button>
-    <div class="ai-status-badge" id="aiStatusBadge" onclick="openAiConfigModal()" title="Configurar provedor de IA (Gemini / OpenAI)">
+    <!-- Badge técnico de IA ocultado para alunos -->
+    <div class="ai-status-badge" id="aiStatusBadge" onclick="openAiConfigModal()" style="display: none;" title="Configurar provedor de IA (Gemini / OpenAI)">
       🤖 IA: Verificando... ⚙️
     </div>
     <div class="ai-status-badge" id="userAuthBadge" onclick="handleAuthBadgeClick()" title="Minha Conta no Projeto Aprovação" style="border-color: rgba(88, 166, 255, 0.4); color: var(--accent-blue); font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
       <span id="userAuthIcon">👤</span> <span id="userAuthText">Entrar</span>
     </div>
-    <div class="ai-status-badge" id="supabaseStatusBadge" onclick="openSupabaseModal()" title="Configurar Banco de Dados Supabase na Nuvem" style="border-color: rgba(16, 185, 129, 0.3); color: var(--accent-green, #10b981); cursor: pointer;">
-      ☁️ <span id="supabaseStatusText">Supabase: Verificando...</span>
+    <div class="ai-status-badge" id="supabaseStatusBadge" onclick="openSupabaseModal()" title="Sincronizar PC ➔ Nuvem: Salva com segurança seus estudos, acertos de questões, flashcards e progresso diário na nuvem para que você nunca perca seu progresso e possa estudar em qualquer dispositivo." style="border-color: rgba(16, 185, 129, 0.4); color: var(--accent-green, #10b981); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; padding: 6px 12px;">
+      <span id="supabaseSyncIcon">🔄</span> <span id="supabaseStatusText">Sincronizar PC ➔ Nuvem</span>
     </div>
     <button class="btn btn-purple" onclick="openAiFlashcardModal()">
       ✨ Novo Flashcard (IA)
@@ -1906,7 +1908,8 @@
     <button class="btn btn-green" onclick="downloadAnkiDeck()" title="Exportar Deck para o Anki (atual ou consolidado)">
       📥 Exportar Anki
     </button>
-    <button class="btn" onclick="openFolder()">
+    <!-- Botão de Pasta Local ocultado para os alunos -->
+    <button class="btn" onclick="openFolder()" id="btnLocalFolder" style="display: none;">
       📁 Pasta Local
     </button>
   </div>
@@ -2652,56 +2655,52 @@
   </div>
 </div>
 
-<!-- Modal Supabase: Banco de Dados na Nuvem & Sincronização -->
+<!-- Modal Supabase: Sincronizar Estudos PC ➔ Nuvem -->
 <div class="modal-overlay" id="modalSupabase">
-  <div class="modal-box" style="max-width: 560px;">
-    <div class="modal-title">☁️ Banco de Dados Supabase (Nuvem)</div>
-    <p style="font-size: 13px; color: var(--text2); margin-bottom: 14px; line-height: 1.5;">
-      Conecte seu projeto <strong>Supabase</strong> para armazenar todas as aulas, resumos, raiox, flashcards, simulados e momentos-chave na nuvem. Isso elimina inconsistências de arquivos locais e permite regerar tudo a qualquer hora!
+  <div class="modal-box" style="max-width: 540px;">
+    <div class="modal-title">☁️ Sincronizar Estudos: PC ➔ Nuvem</div>
+    <p style="font-size: 13.5px; color: var(--text2); margin-bottom: 14px; line-height: 1.6;">
+      Salve com segurança todos os seus estudos, flashcards estudados, caderno de erros, histórico de questões e progresso na nuvem. Assim, você nunca perde seus dados e pode continuar estudando em qualquer computador ou dispositivo.
     </p>
     
-    <div id="supabaseStatusBanner" style="padding: 10px 14px; border-radius: 8px; margin-bottom: 14px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; background: var(--surface2); border: 1px solid var(--border);">
-      <span id="supabaseStatusDot">🟡</span> <span id="supabaseStatusMsg">Verificando status do banco...</span>
+    <div id="supabaseStatusBanner" style="padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 10px; background: var(--surface2); border: 1px solid var(--border);">
+      <span id="supabaseStatusDot">☁️</span> <span id="supabaseStatusMsg">Pronto para sincronizar seu progresso com a nuvem.</span>
     </div>
 
-    <div class="modal-input-group">
-      <label>Supabase Project URL</label>
-      <input type="text" id="cfgSupabaseUrl" placeholder="https://seu-projeto.supabase.co">
-      <small style="color: var(--text3); font-size: 11px;">Encontrado em: Supabase Dashboard ➔ Settings ➔ API ➔ Project URL</small>
-    </div>
-
-    <div class="modal-input-group">
-      <label>Supabase Anon / Service Key</label>
-      <input type="password" id="cfgSupabaseKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
-      <small style="color: var(--text3); font-size: 11px;">Encontrado em: Supabase Dashboard ➔ Settings ➔ API ➔ anon/public key</small>
-    </div>
-
-    <div style="display: flex; gap: 10px; margin-bottom: 16px;">
-      <button class="btn" type="button" onclick="testSupabaseConnection()" id="btnTestSupabase" style="flex: 1;">
-        🔌 Testar Conexão
+    <div style="background: linear-gradient(135deg, rgba(31, 111, 235, 0.08) 0%, rgba(16, 185, 129, 0.08) 100%); border: 1.5px solid rgba(16, 185, 129, 0.4); border-radius: 12px; padding: 18px; text-align: center; margin-bottom: 16px;">
+      <div style="font-size: 28px; margin-bottom: 6px;">🔄</div>
+      <div style="font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 6px;">Salvar Progresso Atual na Nuvem</div>
+      <p style="font-size: 12.5px; color: var(--text2); margin-bottom: 14px; line-height: 1.4;">
+        Envia todas as suas matérias, anotações e revisões deste computador diretamente para a sua nuvem segura.
+      </p>
+      <button class="btn btn-green" type="button" onclick="syncAllToSupabase()" id="btnSyncSupabase" style="width: 100%; font-size: 14px; font-weight: 800; padding: 12px; justify-content: center; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">
+        🚀 Sincronizar Tudo Agora (PC ➔ Nuvem)
       </button>
-      <button class="btn btn-primary" type="button" onclick="saveSupabaseConfig()" id="btnSaveSupabase" style="flex: 1;">
-        💾 Salvar Configuração
-      </button>
-    </div>
-
-    <hr style="border: 0; border-top: 1px solid var(--border); margin: 16px 0;">
-
-    <div style="background: var(--surface2); border: 1px dashed var(--accent-blue); border-radius: 8px; padding: 14px; margin-bottom: 16px;">
-      <div style="font-weight: 700; font-size: 13px; margin-bottom: 4px; color: var(--text);">🔄 Migrar & Sincronizar Tudo para o Supabase</div>
-      <div style="font-size: 12px; color: var(--text2); margin-bottom: 10px; line-height: 1.4;">
-        Envia automaticamente todas as suas matérias, aulas, apostilas, transcrições e simulados locais direto para as tabelas do Supabase.
-      </div>
-      <button class="btn btn-green" type="button" onclick="syncAllToSupabase()" id="btnSyncSupabase" style="width: 100%; font-weight: 600;">
-        🚀 Sincronizar Tudo do Meu Computador para a Nuvem
-      </button>
-      <div id="syncSupabaseProgress" style="display: none; margin-top: 10px; font-size: 12px; color: var(--accent-blue); text-align: center;">
-        ⏳ Sincronizando aulas com o Supabase... Aguarde...
+      <div id="syncSupabaseProgress" style="display: none; margin-top: 12px; font-size: 12px; color: var(--accent-blue); font-weight: 600;">
+        ⏳ Sincronizando estudos com a nuvem... Aguarde um momento...
       </div>
     </div>
 
-    <div class="modal-actions" style="justify-content: space-between;">
-      <button class="btn" type="button" onclick="viewSupabaseSchemaNotice()">📜 Ver Script SQL do Banco</button>
+    <!-- Configurações Avançadas de Conexão (Ocultas por padrão para não expor termos técnicos ao aluno) -->
+    <details style="margin-top: 10px; padding: 10px; background: var(--surface2); border-radius: 8px; border: 1px solid var(--border); font-size: 12px;">
+      <summary style="cursor: pointer; color: var(--text3); font-weight: 600;">⚙️ Configurações Técnicas de Servidor (Avançado)</summary>
+      <div style="margin-top: 12px;">
+        <div class="modal-input-group" style="margin-bottom: 10px;">
+          <label style="font-size: 11px;">Supabase Project URL</label>
+          <input type="text" id="cfgSupabaseUrl" placeholder="https://seu-projeto.supabase.co" style="font-size: 12px; padding: 8px;">
+        </div>
+        <div class="modal-input-group" style="margin-bottom: 10px;">
+          <label style="font-size: 11px;">Supabase Anon / Service Key</label>
+          <input type="password" id="cfgSupabaseKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." style="font-size: 12px; padding: 8px;">
+        </div>
+        <div style="display: flex; gap: 8px; margin-top: 10px;">
+          <button class="btn" type="button" onclick="testSupabaseConnection()" id="btnTestSupabase" style="flex: 1; font-size: 11px;">🔌 Testar Conexão</button>
+          <button class="btn btn-primary" type="button" onclick="saveSupabaseConfig()" id="btnSaveSupabase" style="flex: 1; font-size: 11px;">💾 Salvar</button>
+        </div>
+      </div>
+    </details>
+
+    <div class="modal-actions" style="justify-content: flex-end; margin-top: 16px;">
       <button class="btn" type="button" onclick="closeModal('modalSupabase')">Fechar</button>
     </div>
   </div>
@@ -6412,36 +6411,32 @@
 
   async function checkSupabaseStatus() {
     const badge = document.getElementById('supabaseStatusText');
+    const badgeContainer = document.getElementById('supabaseStatusBadge');
     const dot = document.getElementById('supabaseStatusDot');
     const msg = document.getElementById('supabaseStatusMsg');
     const banner = document.getElementById('supabaseStatusBanner');
     const urlInput = document.getElementById('cfgSupabaseUrl');
     
+    const syncTooltip = "Sincronizar PC ➔ Nuvem: Salva com segurança seus estudos, acertos de questões, flashcards e progresso diário na nuvem para que você nunca perca seu progresso e possa estudar em qualquer dispositivo.";
+
     try {
       const resp = await fetch('/api/supabase/status');
       const data = await resp.json();
       if (data.connected) {
-        if (badge) badge.textContent = "Supabase: 🟢 Conectado";
+        if (badge) badge.textContent = "Sincronizar PC ➔ Nuvem 🟢";
+        if (badgeContainer) badgeContainer.title = syncTooltip + " (Status: Conectado e Sincronizado)";
         if (dot) dot.textContent = "🟢";
-        if (msg) msg.textContent = "Supabase Conectado e Operacional!";
+        if (msg) msg.textContent = "Nuvem Conectada: Seus estudos estão salvos e sincronizados com segurança!";
         if (banner) {
           banner.style.background = "rgba(16, 185, 129, 0.1)";
           banner.style.borderColor = "rgba(16, 185, 129, 0.3)";
           banner.style.color = "var(--accent-green, #10b981)";
         }
-      } else if (data.configured) {
-        if (badge) badge.textContent = "Supabase: 🟡 Erro Conexão";
-        if (dot) dot.textContent = "🟡";
-        if (msg) msg.textContent = data.message || "Não foi possível conectar ao Supabase.";
-        if (banner) {
-          banner.style.background = "rgba(245, 158, 11, 0.1)";
-          banner.style.borderColor = "rgba(245, 158, 11, 0.3)";
-          banner.style.color = "#f59e0b";
-        }
       } else {
-        if (badge) badge.textContent = "Supabase: ⚪ Modo Local";
-        if (dot) dot.textContent = "⚪";
-        if (msg) msg.textContent = "Operando no modo local (disco). Conecte ao Supabase para sincronização em nuvem.";
+        if (badge) badge.textContent = "Sincronizar PC ➔ Nuvem";
+        if (badgeContainer) badgeContainer.title = syncTooltip;
+        if (dot) dot.textContent = "☁️";
+        if (msg) msg.textContent = "Clique no botão abaixo para enviar seus estudos e revisões para a nuvem.";
         if (banner) {
           banner.style.background = "var(--surface2)";
           banner.style.borderColor = "var(--border)";
@@ -6452,7 +6447,8 @@
         urlInput.value = data.url;
       }
     } catch(e) {
-      if (badge) badge.textContent = "Supabase: ⚪ Local";
+      if (badge) badge.textContent = "Sincronizar PC ➔ Nuvem";
+      if (badgeContainer) badgeContainer.title = syncTooltip;
     }
   }
 

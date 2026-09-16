@@ -58,3 +58,11 @@ Para qualquer aula em vídeo (YouTube ou arquivo) fornecida pelo usuário para e
 - **Repositório GitHub:** `https://github.com/henriquerosa2019/concursos-ia-plataforma.git`
 - **Identidade da Plataforma:** Projeto Aprovação • Método 4 Pilares de Alta Retenção (Resumo, Raio-X, Flashcards Anki, Modo Prova Cebraspe & Caderno de Erros).
 
+---
+
+## 6. Comunicação com o Usuário: Resposta Direta a Perguntas (?) Antes de Ações
+- Sempre que o usuário fizer uma pergunta (mensagem contendo `?` ou solicitando dúvidas/informações):
+  1. O assistente deve **responder diretamente à pergunta em primeiro lugar**, com clareza e objetividade, antes de apresentar ações, execuções ou códigos.
+  2. Priorizar sempre a resposta explicativa imediata à dúvida colocada pelo usuário.
+
+

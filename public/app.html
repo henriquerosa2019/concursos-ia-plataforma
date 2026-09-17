@@ -3210,6 +3210,9 @@
     <p style="font-size: 13px; color: var(--text2); margin-bottom: 14px;">
       Cria questões inéditas baseadas no conteúdo da aula com alternativas e gabarito comentado no estilo da banca que você escolher.
     </p>
+    <div id="aiQuizTrialNotice" style="display: none; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 8px; padding: 10px 14px; font-size: 12.5px; color: #f59e0b; margin-bottom: 14px; line-height: 1.4;">
+      ⚡ <b>Plano Teste 7 Dias:</b> Você tem direito a gerar <b>1 simulado com IA</b> nesta matéria global.
+    </div>
     <div class="modal-input-group">
       <label>Estilo da Banca Examinadora</label>
       <select id="aiQuizBanca">
@@ -3232,6 +3235,29 @@
       <button class="btn btn-primary" id="btnRunAiQuiz" onclick="generateAiQuiz()">
         <span id="aiQuizSpinner" style="display:none;" class="spinner"></span>
         <span>Gerar Simulado</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 2.1: Limite de Simulado no Período de Teste 7 Dias -->
+<div class="modal-overlay" id="modalTrialSimuladoLimit" style="display: none; align-items: center; justify-content: center; z-index: 10000;">
+  <div class="modal-box" style="max-width: 480px; text-align: center; border: 1.5px solid rgba(245, 158, 11, 0.5); box-shadow: 0 12px 48px rgba(0,0,0,0.7); border-radius: 16px; padding: 28px;">
+    <div style="font-size: 46px; margin-bottom: 12px;">🔒</div>
+    <div class="modal-title" style="color: #f59e0b; justify-content: center; font-size: 20px; font-weight: 800;">
+      Limite do Período de Teste Atingido
+    </div>
+    <p style="font-size: 14px; color: var(--text2); line-height: 1.6; margin: 16px 0 24px 0;">
+      No plano <b>Teste 7 Dias</b>, é permitida a geração de <b>1 simulado com IA por matéria global</b>.<br><br>
+      Você já utilizou a sua geração de simulado para a disciplina <b id="trialLimitDisciplineName" style="color: var(--text); font-weight: 700;">Informática</b>.<br><br>
+      Para gerar simulados ilimitados em todas as matérias e bancas, ter acesso aos flashcards completos e salvar permanentemente todo o seu ecossistema de aprovação, desbloqueie seu Acesso Vitalício!
+    </p>
+    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+      <a href="/landing#oferta" target="_blank" class="btn btn-warning" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #ffffff; font-weight: 800; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-size: 14px; box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);">
+        ⭐ Desbloquear Acesso Vitalício (R$ 97)
+      </a>
+      <button class="btn" type="button" onclick="closeModal('modalTrialSimuladoLimit')" style="padding: 12px 18px; border-radius: 8px; font-weight: 600;">
+        Continuar Estudando
       </button>
     </div>
   </div>
@@ -6045,11 +6071,148 @@
     renderFullTranscript(filtered, query);
   }
 
+  // Pesquisa Global na Aula (Resolve qualquer ReferenceError na barra superior)
+  function handleGlobalSearch(query) {
+    const q = (query || '').toLowerCase().trim();
+
+    // 1. Aba Transcrição (Tab 4)
+    if (typeof currentTab !== 'undefined' && currentTab === 4) {
+      if (typeof filterTranscript === 'function') {
+        filterTranscript(q);
+      }
+      return;
+    }
+
+    // 2. Aba Flashcards (Tab 2)
+    if (typeof currentTab !== 'undefined' && currentTab === 2) {
+      if (typeof flashcardsData !== 'undefined' && Array.isArray(flashcardsData) && flashcardsData.length) {
+        if (!q) {
+          if (typeof updateFlashcardFilterCounts === 'function') updateFlashcardFilterCounts();
+          if (typeof updateCard === 'function') updateCard();
+        } else {
+          const matchIdx = flashcardsData.findIndex(c => (c.q && c.q.toLowerCase().includes(q)) || (c.a && c.a.toLowerCase().includes(q)));
+          if (matchIdx !== -1) {
+            currentCardIndex = matchIdx;
+            isCardFlipped = false;
+            if (typeof updateCard === 'function') updateCard();
+          }
+        }
+      }
+      return;
+    }
+
+    // 3. Aba Simulado (Tab 3)
+    if (typeof currentTab !== 'undefined' && currentTab === 3) {
+      const qCards = document.querySelectorAll('.quiz-item, .cebraspe-item');
+      if (qCards.length) {
+        qCards.forEach(card => {
+          if (!q) {
+            card.style.display = 'block';
+          } else {
+            const text = (card.textContent || '').toLowerCase();
+            card.style.display = text.includes(q) ? 'block' : 'none';
+          }
+        });
+      }
+      return;
+    }
+
+    // 4. Aba Resumo / Raio-X (Tabs 0 ou 1)
+    const readerContainer = document.getElementById('readerContainerBox') || document.getElementById('tab0') || document.getElementById('tab1Content');
+    if (readerContainer && q) {
+      const allTextNodes = readerContainer.querySelectorAll('p, li, h2, h3, tr');
+      for (let el of allTextNodes) {
+        if (el.textContent && el.textContent.toLowerCase().includes(q)) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          el.style.backgroundColor = 'rgba(245, 158, 11, 0.2)';
+          setTimeout(() => { el.style.backgroundColor = ''; }, 2000);
+          break;
+        }
+      }
+    }
+  }
+
+  // Identificação robusta de Usuário no Período de Teste (7 Dias)
+  function isUserTrial() {
+    if (typeof isMasterUser === 'function' && isMasterUser()) return false;
+    const emailLower = (currentUser?.email || localStorage.getItem('concursos_user_email') || '').toLowerCase().trim();
+    if (emailLower === 'master@aprovacao.com' || emailLower === 'henriquerosa2019' || emailLower === 'admin@aprovacao.com') return false;
+    
+    let plan = (currentUser?.plano || localStorage.getItem('concursos_user_plan') || '').toLowerCase().trim();
+    try {
+      const overrides = JSON.parse(localStorage.getItem('concursos_master_user_overrides') || '{}');
+      if (emailLower && overrides[emailLower]?.plano) {
+        plan = overrides[emailLower].plano;
+      }
+    } catch(e) {}
+    
+    if (plan === 'vitalicio') return false;
+    const urlParams = new URLSearchParams(window.location.search);
+    return plan === 'teste' || plan === 'trial' || urlParams.get('trial') === '7dias' || !!localStorage.getItem('concursos_trial_start');
+  }
+
+  // Chave de rastreamento de simulados gerados por matéria no plano de teste
+  function getTrialSimuladoUsageKey() {
+    const userKey = (typeof getCurrentUserEmailOrId === 'function') ? getCurrentUserEmailOrId() : (currentUser?.email || localStorage.getItem('concursos_user_email') || 'trial_user');
+    return 'concursos_trial_simulados_' + userKey;
+  }
+
+  // Verifica se o aluno teste já gerou o único simulado permitido para a matéria global
+  function hasTrialGeneratedSimuladoForDiscipline(disc) {
+    if (!isUserTrial()) return false;
+    try {
+      const key = getTrialSimuladoUsageKey();
+      const usage = JSON.parse(localStorage.getItem(key) || '{}');
+      const discKey = (disc || currentDiscipline || 'Informatica').trim();
+      return Boolean(usage[discKey]);
+    } catch(e) {
+      return false;
+    }
+  }
+
+  // Registra a geração do simulado de teste na matéria global
+  function recordTrialSimuladoGenerated(disc) {
+    if (!isUserTrial()) return;
+    try {
+      const key = getTrialSimuladoUsageKey();
+      const usage = JSON.parse(localStorage.getItem(key) || '{}');
+      const discKey = (disc || currentDiscipline || 'Informatica').trim();
+      usage[discKey] = {
+        generated_at: new Date().toISOString(),
+        discipline: discKey
+      };
+      localStorage.setItem(key, JSON.stringify(usage));
+    } catch(e) {}
+  }
+
+  // Modal de Aviso de Limite do Período de Teste
+  function showTrialSimuladoLimitModal(disc) {
+    const dName = (disc || currentDiscipline || 'Informática').replace(/_/g, ' ');
+    const modalEl = document.getElementById('modalTrialSimuladoLimit');
+    const discSpan = document.getElementById('trialLimitDisciplineName');
+    if (discSpan) discSpan.textContent = dName;
+    if (modalEl) modalEl.style.display = 'flex';
+  }
+
   // Modals
   function openAiFlashcardModal() {
     document.getElementById('modalAiCards').style.display = 'flex';
   }
   function openAiQuizModal() {
+    if (isUserTrial() && hasTrialGeneratedSimuladoForDiscipline(currentDiscipline)) {
+      showTrialSimuladoLimitModal(currentDiscipline);
+      return;
+    }
+    const trialNotice = document.getElementById('aiQuizTrialNotice');
+    if (trialNotice) {
+      if (isUserTrial()) {
+        const dName = (currentDiscipline || 'Informática').replace(/_/g, ' ');
+        trialNotice.style.display = 'block';
+        trialNotice.innerHTML = `⚡ <b>Plano Teste 7 Dias:</b> Você tem direito a gerar <b>1 simulado com IA</b> nesta matéria (<b>${dName}</b>).`;
+      } else {
+        trialNotice.style.display = 'none';
+      }
+    }
     document.getElementById('modalAiQuiz').style.display = 'flex';
   }
   function openManualCardModal() {
@@ -6066,6 +6229,7 @@
 
   // AI Flashcard Generation
   async function generateAiFlashcards() {
+    const isTrial = isUserTrial();
     const count = document.getElementById('aiCardCount').value;
     const focus = document.getElementById('aiCardFocus').value.trim();
     const spinner = document.getElementById('aiCardSpinner');
@@ -6082,7 +6246,9 @@
           discipline: currentDiscipline,
           subarea: currentSubarea,
           count: parseInt(count),
-          focus: focus
+          focus: focus,
+          is_trial: isTrial,
+          save_to_db: !isTrial
         })
       });
       const data = await resp.json();
@@ -6105,8 +6271,15 @@
     }
   }
 
-  // AI Quiz Generation com Deduplicação Rigorosa
+  // AI Quiz Generation com Deduplicação Rigorosa e Limite do Plano Teste (1 por Matéria Global)
   async function generateAiQuiz() {
+    const isTrial = isUserTrial();
+    if (isTrial && hasTrialGeneratedSimuladoForDiscipline(currentDiscipline)) {
+      closeModal('modalAiQuiz');
+      showTrialSimuladoLimitModal(currentDiscipline);
+      return;
+    }
+
     const banca = document.getElementById('aiQuizBanca').value;
     const count = document.getElementById('aiQuizCount').value;
     const spinner = document.getElementById('aiQuizSpinner');
@@ -6124,7 +6297,9 @@
           subarea: currentSubarea,
           banca: banca,
           count: parseInt(count),
-          existing_questions: quizData.map(q => q.enunciado)
+          existing_questions: quizData.map(q => q.enunciado),
+          is_trial: isTrial,
+          save_to_db: !isTrial
         })
       });
       const data = await resp.json();
@@ -6143,7 +6318,12 @@
         });
         renderQuiz();
         switchTab(3);
-        if (addedCount > 0) {
+
+        if (isTrial) {
+          recordTrialSimuladoGenerated(currentDiscipline);
+          const dName = (currentDiscipline || 'Informática').replace(/_/g, ' ');
+          showToast(`⚡ Simulado inédito (${banca}) gerado para ${dName}! (1 de 1 utilizado no teste)`, "🎯");
+        } else if (addedCount > 0) {
           showToast(`${addedCount} novas questões inéditas (${banca}) geradas!`, "⚡");
         } else {
           showToast("Questões já existentes no simulado.", "ℹ️");
@@ -6618,6 +6798,7 @@
   }
 
   async function generateAiRaioX() {
+    const isTrial = (typeof isUserTrial === 'function') ? isUserTrial() : false;
     const banca = document.getElementById('raioXBanca').value;
     const focus = document.getElementById('raioXFocus').value.trim();
     const btn = document.getElementById('btnRunAiRaioX');
@@ -6634,15 +6815,25 @@
           discipline: currentDiscipline,
           subarea: currentSubarea,
           banca: banca,
-          focus: focus
+          focus: focus,
+          is_trial: isTrial,
+          save_to_db: !isTrial
         })
       });
       const data = await resp.json();
       if (data.success) {
         closeModal('modalAiRaioX');
         showToast(`⚡ Raio-X & Pegadinhas (${banca}) gerado com sucesso!`, '🎯');
-        await selectSubarea(currentDiscipline, currentSubarea);
-        switchTab(1); // Alternar diretamente para a aba Raio-X
+        if (isTrial && data.markdown) {
+          const tab1Box = document.getElementById('tab1Content');
+          if (tab1Box && typeof parseMarkdownPegadinhas === 'function') {
+            tab1Box.innerHTML = parseMarkdownPegadinhas(data.markdown);
+          }
+          switchTab(1);
+        } else {
+          await selectSubarea(currentDiscipline, currentSubarea);
+          switchTab(1); // Alternar diretamente para a aba Raio-X
+        }
       } else {
         alert("Erro ao gerar Raio-X: " + (data.error || "Tente novamente."));
       }

@@ -781,6 +781,229 @@ export default async function handler(req, res) {
     return res.status(200).send(lines.join('\n'));
   }
 
+  // 15. Geração de Novo Simulado com IA (Vercel Serverless)
+  if (pathname === '/api/generate-ai-quiz' && req.method === 'POST') {
+    const body = req.body || {};
+    const disc = body.discipline || 'Informatica';
+    const sub = body.subarea || 'Excel';
+    const banca = body.banca || 'Cebraspe';
+    const count = parseInt(body.count || 3, 10);
+    const clientExisting = body.existing_questions || [];
+    const isTrial = Boolean(body.is_trial);
+
+    const apiKey = process.env.GEMINI_API_KEY;
+    let questions = [];
+    let provider = 'offline_curated';
+
+    if (apiKey) {
+      try {
+        const topic = findTopicData(disc, sub);
+        const context = topic?.meta?.markdown_content || topic?.transcript?.full_text || `${disc} • ${sub}`;
+        const isCebraspe = banca.toLowerCase().includes('cebraspe');
+        const optionsExample = isCebraspe ? '["A) CERTO", "B) ERRADO"]' : '["A) ...", "B) ...", "C) ...", "D) ...", "E) ..."]';
+        const prompt = `Você é um elaborador sênior de concursos da banca ${banca}. Crie exatamente ${count} questões INÉDITAS sobre ${disc} - ${sub}. Contexto: ${context.slice(0, 5000)}. Não repita estas questões: ${existingList}. Formato JSON: { "questions": [{ "enunciado": "...", "options": ${optionsExample}, "correct_index": 0, "comentario": "Fundamentação pedagógica detalhada", "banca": "${banca}" }] }`;
+
+        const geminiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { responseMimeType: 'application/json', temperature: 0.7 }
+          })
+        });
+        if (geminiResp.ok) {
+          const geminiData = await geminiResp.json();
+          const raw = geminiData.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed.questions) && parsed.questions.length > 0) {
+            questions = parsed.questions;
+            provider = 'gemini';
+          }
+        }
+      } catch (e) {
+        console.error('Erro Gemini Quiz:', e);
+      }
+    }
+
+    if (!questions.length) {
+      const topic = findTopicData(disc, sub);
+      const bank = (topic && Array.isArray(topic.quiz)) ? topic.quiz : [];
+      const existingClean = clientExisting.map(e => String(e).toLowerCase().replace(/[^a-z0-9]/g, ''));
+      const available = bank.filter(q => {
+        const norm = (q.enunciado || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        return !existingClean.some(ec => norm.includes(ec) || ec.includes(norm));
+      });
+
+      if (available.length >= count) {
+        questions = available.slice(0, count);
+      } else if (available.length > 0) {
+        questions = [...available];
+      } else if (bank.length > 0) {
+        questions = bank.slice(0, count).map(q => ({
+          ...q,
+          enunciado: `(${banca} • Simulado Inédito) ${q.enunciado.replace(/^\(\w+\)\s*/, '')}`,
+          banca: banca
+        }));
+      } else {
+        questions = [
+          {
+            enunciado: `(Banca ${banca}) No âmbito de ${disc.replace(/_/g, ' ')} (${sub.replace(/_/g, ' ')}), os conceitos e regras essenciais possuem aplicação direta nas rotinas técnicas e administrativas do serviço público.`,
+            options: banca.toLowerCase().includes('cebraspe') ? ["A) CERTO", "B) ERRADO"] : ["A) CERTO", "B) ERRADO", "C) Depende da Norma", "D) Incorreto"],
+            correct_index: 0,
+            comentario: `Fundamentação teórica oficial aplicada ao conteúdo de ${sub.replace(/_/g, ' ')}.`,
+            banca: banca
+          }
+        ];
+      }
+      provider = 'curated_bank';
+    }
+
+    // Se NÃO for trial e save_to_db for permitido, atualiza no catálogo em memória
+    if (!isTrial && body.save_to_db !== false) {
+      const cat = getCatalog();
+      if (cat[disc] && cat[disc][sub]) {
+        if (!Array.isArray(cat[disc][sub].quiz)) cat[disc][sub].quiz = [];
+        questions.forEach(q => {
+          if (!cat[disc][sub].quiz.some(eq => eq.enunciado === q.enunciado)) {
+            cat[disc][sub].quiz.push(q);
+          }
+        });
+      }
+    }
+
+    return res.status(200).json({
+      success: true,
+      questions: questions,
+      provider: provider,
+      is_trial: isTrial,
+      saved_to_db: !isTrial && body.save_to_db !== false
+    });
+  }
+
+  // 16. Geração de Flashcards com IA (Vercel Serverless)
+  if (pathname === '/api/generate-ai-flashcards' && req.method === 'POST') {
+    const body = req.body || {};
+    const disc = body.discipline || 'Informatica';
+    const sub = body.subarea || 'Excel';
+    const count = parseInt(body.count || 4, 10);
+    const focus = body.focus || '';
+    const isTrial = Boolean(body.is_trial);
+
+    const apiKey = process.env.GEMINI_API_KEY;
+    let cards = [];
+    let provider = 'offline_curated';
+
+    if (apiKey) {
+      try {
+        const topic = findTopicData(disc, sub);
+        const context = topic?.meta?.markdown_content || topic?.transcript?.full_text || `${disc} • ${sub}`;
+        const prompt = `Crie exatamente ${count} flashcards de alto impacto para concursos públicos sobre ${disc} - ${sub}. Foco: ${focus || 'Pegadinhas e Casos Críticos'}. Contexto: ${context.slice(0, 5000)}. Formato JSON estrito: { "cards": [{ "q": "Pergunta desafiadora inédita", "a": "Resposta fundamentada com a regra de prova" }] }`;
+
+        const geminiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { responseMimeType: 'application/json', temperature: 0.7 }
+          })
+        });
+        if (geminiResp.ok) {
+          const geminiData = await geminiResp.json();
+          const raw = geminiData.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed.cards) && parsed.cards.length > 0) {
+            cards = parsed.cards;
+            provider = 'gemini';
+          }
+        }
+      } catch (e) {
+        console.error('Erro Gemini Flashcards:', e);
+      }
+    }
+
+    if (!cards.length) {
+      const topic = findTopicData(disc, sub);
+      const bank = (topic && Array.isArray(topic.flashcards)) ? topic.flashcards : [];
+      if (bank.length > 0) {
+        cards = bank.slice(0, count);
+      } else {
+        cards = [
+          { q: `Qual o conceito-chave de ${sub.replace(/_/g, ' ')} em ${disc.replace(/_/g, ' ')}?`, a: `Regra de alta retenção voltada para os pontos de maior incidência em provas.` }
+        ];
+      }
+      provider = 'curated_bank';
+    }
+
+    if (!isTrial && body.save_to_db !== false) {
+      const cat = getCatalog();
+      if (cat[disc] && cat[disc][sub]) {
+        if (!Array.isArray(cat[disc][sub].flashcards)) cat[disc][sub].flashcards = [];
+        cards.forEach(c => {
+          if (!cat[disc][sub].flashcards.some(ec => ec.q === c.q)) {
+            cat[disc][sub].flashcards.push(c);
+          }
+        });
+      }
+    }
+
+    return res.status(200).json({
+      success: true,
+      cards: cards,
+      provider: provider,
+      is_trial: isTrial,
+      saved_to_db: !isTrial && body.save_to_db !== false
+    });
+  }
+
+  // 17. Geração de Raio-X & Pegadinhas com IA (Vercel Serverless)
+  if (pathname === '/api/generate-ai-raiox' && req.method === 'POST') {
+    const body = req.body || {};
+    const disc = body.discipline || 'Informatica';
+    const sub = body.subarea || 'Excel';
+    const banca = body.banca || 'Cebraspe';
+    const focus = body.focus || '';
+    const isTrial = Boolean(body.is_trial);
+
+    const topic = findTopicData(disc, sub);
+    let raioxMarkdown = '';
+    let provider = 'offline_curated';
+
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (apiKey) {
+      try {
+        const context = topic?.meta?.markdown_content || topic?.transcript?.full_text || `${disc} • ${sub}`;
+        const prompt = `Gere uma seção analítica de 'Raio-X de Banca & Pegadinhas' no estilo da banca ${banca} para ${disc} - ${sub}. Foco: ${focus || 'Armadilhas Frequentes'}. Contexto: ${context.slice(0, 5000)}. Retorne em Markdown claro com pontos críticos numerados, Pegadinha vs Verdade.`;
+
+        const geminiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+        });
+        if (geminiResp.ok) {
+          const geminiData = await geminiResp.json();
+          raioxMarkdown = geminiData.candidates?.[0]?.content?.parts?.[0]?.text || '';
+          if (raioxMarkdown) provider = 'gemini';
+        }
+      } catch (e) {
+        console.error('Erro Gemini Raio-X:', e);
+      }
+    }
+
+    if (!raioxMarkdown) {
+      raioxMarkdown = `## 2. Pontos Críticos de Banca & Pegadinhas (${banca})\n\n1. **Inversão de Conceitos Centrais:**\n   - *Pegadinha:* A banca ${banca} costuma alterar o sentido ou a ordem dos requisitos fundamentais de ${sub.replace(/_/g, ' ')}.\n   - *Como não errar:* Memorize a definição exata e os mnemônicos do Pilar 1.\n\n2. **Exceções Ocultas:**\n   - *Pegadinha:* Afirmar que uma regra geral não possui ressalvas no contexto prático.\n   - *Verdade:* Aplique a fundamentação consolidada e atente-se às palavras restritivas (sempre, jamais, unicamente).`;
+      provider = 'curated_template';
+    }
+
+    return res.status(200).json({
+      success: true,
+      markdown: raioxMarkdown,
+      banca: banca,
+      provider: provider,
+      is_trial: isTrial,
+      saved_to_db: !isTrial && body.save_to_db !== false
+    });
+  }
+
   // Default fallback
   return res.status(200).json({
     success: true,
@@ -788,3 +1011,4 @@ export default async function handler(req, res) {
     timestamp: new Date().toISOString()
   });
 }
+

@@ -2689,7 +2689,8 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                             break
                 provider_used = "banco_curado"
 
-            if cards_to_save and os.path.exists(folder):
+            is_trial = bool(payload.get("is_trial", False) or not payload.get("save_to_db", True))
+            if cards_to_save and os.path.exists(folder) and not is_trial:
                 anki_target = None
                 for f in os.listdir(folder):
                     if "anki" in f.lower() and f.endswith(".txt"):
@@ -2796,7 +2797,8 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 except Exception:
                     pass
 
-            if questions_to_return:
+            is_trial = bool(payload.get("is_trial", False) or not payload.get("save_to_db", True))
+            if questions_to_return and not is_trial:
                 for q in questions_to_return:
                     q["banca"] = q.get("banca", banca)
                     q_clean = re.sub(r'^\d+\.\s*', '', q.get("enunciado", "")).strip().lower()
@@ -2930,7 +2932,8 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             if auto_full_text:
                 msg += " Transcrição do YouTube extraída e cronometrada!"
                 
-            if supabase_client and supabase_client.is_supabase_configured():
+            is_trial = bool(payload.get("is_trial", False) or not payload.get("save_to_db", True))
+            if not is_trial and supabase_client and supabase_client.is_supabase_configured():
                 try:
                     supabase_client.sync_all_local_to_supabase()
                 except Exception as e_supa_sync:
@@ -3018,9 +3021,11 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             banca = payload.get("banca", "Cebraspe").strip()
             focus = payload.get("focus", "").strip()
             
+            is_trial = bool(payload.get("is_trial", False) or not payload.get("save_to_db", True))
             context = get_subarea_context(disc, sub)
             raiox_md, prov = generate_raiox_content(disc, sub, context, banca=banca, focus=focus)
-            update_lesson_markdown_with_raiox(disc, sub, raiox_md)
+            if not is_trial:
+                update_lesson_markdown_with_raiox(disc, sub, raiox_md)
             
             self.send_response(200)
             self.send_header("Content-type", "application/json; charset=utf-8")

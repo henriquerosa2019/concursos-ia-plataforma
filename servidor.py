@@ -1612,6 +1612,18 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 with open(sucesso_file, "rb") as f:
                     self.wfile.write(f.read())
+        # 0.2.1 Matriz Visual de Homologação (Miro Board)
+        if path in ("/matriz-testes", "/matriz", "/checklist", "/matriz_testes_miro.html", "/matriz.html", "/checklist.html"):
+            matriz_file = os.path.join(BASE_DIR, "MATRIZ DE TESTES", "matriz_testes_miro.html")
+            if not os.path.exists(matriz_file):
+                matriz_file = os.path.join(BASE_DIR, "public", "matriz_testes_miro.html")
+            if os.path.exists(matriz_file):
+                self.send_response(200)
+                self.send_header("Content-type", "text/html; charset=utf-8")
+                self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+                self.end_headers()
+                with open(matriz_file, "rb") as f:
+                    self.wfile.write(f.read())
                 return
 
         # 0.3 Catálogo Pré-carregado Offline / Fallback

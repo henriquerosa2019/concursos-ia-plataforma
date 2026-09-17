@@ -1269,47 +1269,57 @@
   .sm2-rating-group {
     display: flex;
     gap: 8px;
-    margin-top: 14px;
+    margin-top: 6px;
     justify-content: center;
-    flex-wrap: wrap;
+    width: 100%;
+    max-width: 520px;
   }
   .sm2-btn {
-    padding: 8px 14px;
-    border-radius: 8px;
+    flex: 1 1 0;
+    padding: 9px 12px;
+    border-radius: 9px;
     font-size: 12.5px;
     font-weight: 700;
     cursor: pointer;
     border: 1px solid transparent;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    transition: all 0.18s;
+    justify-content: center;
+    gap: 5px;
+    transition: all 0.18s ease;
+    white-space: nowrap;
+    min-width: 0;
+  }
+  .sm2-btn-badge {
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.85;
   }
   .sm2-btn-hard {
-    background: rgba(248, 81, 73, 0.15);
+    background: rgba(248, 81, 73, 0.18);
     border-color: var(--accent-red);
     color: #ff7b72;
   }
-  .sm2-btn-hard:hover {
-    background: rgba(248, 81, 73, 0.3);
+  .sm2-btn-hard:hover, .sm2-btn-hard:active {
+    background: rgba(248, 81, 73, 0.35);
     transform: translateY(-1px);
   }
   .sm2-btn-good {
-    background: rgba(210, 153, 34, 0.15);
+    background: rgba(210, 153, 34, 0.18);
     border-color: var(--accent-orange);
-    color: #e3b341;
+    color: #f5c542;
   }
-  .sm2-btn-good:hover {
-    background: rgba(210, 153, 34, 0.3);
+  .sm2-btn-good:hover, .sm2-btn-good:active {
+    background: rgba(210, 153, 34, 0.35);
     transform: translateY(-1px);
   }
   .sm2-btn-easy {
-    background: rgba(46, 160, 67, 0.15);
+    background: rgba(46, 160, 67, 0.18);
     border-color: var(--accent-green);
     color: #3fb950;
   }
-  .sm2-btn-easy:hover {
-    background: rgba(46, 160, 67, 0.3);
+  .sm2-btn-easy:hover, .sm2-btn-easy:active {
+    background: rgba(46, 160, 67, 0.35);
     transform: translateY(-1px);
   }
   .sm2-card-chip {
@@ -2336,17 +2346,128 @@
       border-radius: 8px !important;
     }
 
-    /* Flashcard Trainer no Celular */
+    /* Flashcard Trainer no Celular: Otimização Total para Caber na Tela sem Rolagem */
+    .tab-action-bar {
+      padding: 4px 0 !important;
+      margin-bottom: 6px !important;
+      flex-wrap: wrap !important;
+      gap: 6px !important;
+    }
+    .tab-action-bar > div:first-child {
+      display: none !important;
+    }
+    .tab-action-bar .btn {
+      padding: 6px 10px !important;
+      font-size: 11.5px !important;
+    }
+
+    /* Barra de Filtros de Repetição Espaçada em Linha Única Scrollável no Celular */
+    .sm2-filter-bar {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      gap: 6px !important;
+      margin-bottom: 8px !important;
+      padding: 2px 2px 6px 2px !important;
+      justify-content: flex-start !important;
+      scrollbar-width: none !important;
+    }
+    .sm2-filter-bar::-webkit-scrollbar {
+      display: none !important;
+    }
+    .sm2-filter-bar > span {
+      display: none !important;
+    }
+    .sm2-filter-btn {
+      flex-shrink: 0 !important;
+      padding: 5px 11px !important;
+      font-size: 11px !important;
+      border-radius: 16px !important;
+    }
+
     .flashcard-container {
       max-width: 100% !important;
-      margin: 10px 0 !important;
+      margin: 4px 0 !important;
     }
     .flashcard {
-      padding: 24px 16px !important;
-      min-height: 180px !important;
+      padding: 16px 14px 22px 14px !important;
+      min-height: 125px !important;
+      border-radius: 14px !important;
+    }
+    .flashcard-side {
+      font-size: 10px !important;
+      margin-bottom: 5px !important;
+      letter-spacing: 0.5px !important;
     }
     .flashcard-text {
-      font-size: 15px !important;
+      font-size: 14.5px !important;
+      line-height: 1.45 !important;
+    }
+    .card-indicator {
+      bottom: 5px !important;
+      font-size: 10.5px !important;
+    }
+
+    /* Avaliação SM-2 no Celular: 3 Botões em UMA ÚNICA LINHA logo abaixo do card */
+    #cardReviewBar {
+      margin: 8px 0 6px 0 !important;
+      gap: 4px !important;
+      width: 100% !important;
+    }
+    #cardReviewBar > div:first-child {
+      font-size: 10px !important;
+      margin-bottom: 2px !important;
+    }
+    .sm2-rating-group {
+      display: flex !important;
+      flex-direction: row !important;
+      width: 100% !important;
+      gap: 6px !important;
+      margin-top: 2px !important;
+    }
+    .sm2-btn {
+      flex: 1 1 0 !important;
+      padding: 10px 4px !important;
+      font-size: 11.5px !important;
+      font-weight: 800 !important;
+      border-radius: 8px !important;
+      min-width: 0 !important;
+      gap: 3px !important;
+      justify-content: center !important;
+      text-align: center !important;
+    }
+    .sm2-btn-badge {
+      font-size: 10px !important;
+      font-weight: 600 !important;
+      opacity: 0.85 !important;
+    }
+
+    /* Controles de Navegação Compactos no Celular */
+    .flashcard-controls {
+      margin-top: 8px !important;
+      gap: 6px !important;
+      display: flex !important;
+      justify-content: center !important;
+      flex-wrap: wrap !important;
+    }
+    .flashcard-controls .btn {
+      padding: 6px 11px !important;
+      font-size: 11.5px !important;
+    }
+
+    /* Toast de Notificação no Celular: Topo da tela para desimpedir ações e botões inferiores */
+    .toast {
+      top: 68px !important;
+      bottom: auto !important;
+      right: auto !important;
+      left: 50% !important;
+      transform: translate(-50%, -20px) !important;
+      max-width: 90vw !important;
+      pointer-events: none !important;
+    }
+    .toast.show {
+      transform: translate(-50%, 0) !important;
     }
 
     /* Quiz Interativo no Celular */
@@ -2800,31 +2921,33 @@
             <div class="card-indicator" id="cardIndicator">Card 1 de 7</div>
             <div id="cardSm2Status" class="sm2-card-chip" style="display: none;">🔁 Repetições: 0 • Intervalo: 1d</div>
           </div>
-          <div class="flashcard-controls">
-            <button class="btn" onclick="prevCard()">⬅️ Anterior</button>
-            <button class="btn btn-primary" onclick="flipCard()">🔄 Virar Card</button>
-            <button class="btn" onclick="nextCard()">Próximo ➡️</button>
-          </div>
-          <div style="display: flex; justify-content: center; margin-top: 10px;">
-            <button class="btn btn-danger" id="btnEndFlashcards" onclick="finishFlashcardsSession()" style="min-width: 170px; font-weight: 600; padding: 7px 18px;" title="Encerrar sessão de estudo de flashcards">
-              ⏹️ Encerrar
-            </button>
-          </div>
-          <div id="cardReviewBar" style="display: none; flex-direction: column; align-items: center; gap: 8px; margin-top: 14px;">
+
+          <!-- AVALIAÇÃO SM-2: IMEDIATAMENTE ABAIXO DO CARD (VISÍVEL NO CELULAR SEM ROLAR) -->
+          <div id="cardReviewBar" style="display: none; flex-direction: column; align-items: center; gap: 6px; margin: 10px 0 8px 0;">
             <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text3);">
               🧠 Avaliação SM-2 (Repetição Espaçada)
             </div>
             <div class="sm2-rating-group">
               <button class="sm2-btn sm2-btn-hard" onclick="rateCardSM2(1)" title="Errei ou achei difícil. Repetir amanhã (salva no Caderno de Erros).">
-                🔴 Difícil (1 dia)
+                <span>🔴 Difícil</span> <span class="sm2-btn-badge">(1d)</span>
               </button>
               <button class="sm2-btn sm2-btn-good" onclick="rateCardSM2(3)" title="Acertei com esforço médio. Repetir em 3 dias.">
-                🟡 Bom (3 dias)
+                <span>🟡 Bom</span> <span class="sm2-btn-badge">(3d)</span>
               </button>
               <button class="sm2-btn sm2-btn-easy" onclick="rateCardSM2(5)" title="Acertei com segurança! Repetir em 7 dias.">
-                🟢 Fácil (7 dias)
+                <span>🟢 Fácil</span> <span class="sm2-btn-badge">(7d)</span>
               </button>
             </div>
+          </div>
+
+          <!-- CONTROLES DE NAVEGAÇÃO COMPACTOS -->
+          <div class="flashcard-controls">
+            <button class="btn" onclick="prevCard()">⬅️ Anterior</button>
+            <button class="btn btn-primary" onclick="flipCard()">🔄 Virar Card</button>
+            <button class="btn" onclick="nextCard()">Próximo ➡️</button>
+            <button class="btn btn-danger" id="btnEndFlashcards" onclick="finishFlashcardsSession()" title="Encerrar sessão de estudo de flashcards">
+              ⏹️ Encerrar
+            </button>
           </div>
         </div>
       </div>
@@ -4971,7 +5094,17 @@
       sideEl.textContent = "VERSO (RESPOSTA)";
       sideEl.style.color = "var(--accent-green)";
       textEl.textContent = card.a;
-      if (reviewBar) reviewBar.style.display = 'flex';
+      if (reviewBar) {
+        reviewBar.style.display = 'flex';
+        if (window.innerWidth <= 768) {
+          setTimeout(() => {
+            const rect = reviewBar.getBoundingClientRect();
+            if (rect.bottom > window.innerHeight) {
+              reviewBar.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }
+          }, 40);
+        }
+      }
     }
     
     indEl.textContent = `Card ${currentCardIndex + 1} de ${flashcardsData.length}`;
@@ -5094,6 +5227,17 @@
       flashcardsSessionStats.studied.add(flashcardsData[currentCardIndex].q);
     }
     updateCard();
+    if (isCardFlipped && window.innerWidth <= 768) {
+      setTimeout(() => {
+        const reviewBar = document.getElementById('cardReviewBar');
+        if (reviewBar && reviewBar.style.display !== 'none') {
+          const rect = reviewBar.getBoundingClientRect();
+          if (rect.bottom > window.innerHeight) {
+            reviewBar.scrollIntoView({ behavior: 'smooth', block: 'end' });
+          }
+        }
+      }, 50);
+    }
   }
 
   function nextCard() {
@@ -6479,6 +6623,19 @@
     // 3. Ao entrar nas Revisões (Tab 5), recarrega as revisões do servidor
     if (index === 5) {
       renderReviews();
+    }
+
+    // No celular, posiciona suavemente no conteúdo da aba ativa (Flashcards, Simulado, etc.)
+    if (window.innerWidth <= 768) {
+      setTimeout(() => {
+        const activePane = panes[index];
+        if (activePane) {
+          const rect = activePane.getBoundingClientRect();
+          if (rect.top < 0 || rect.top > 200) {
+            activePane.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      }, 50);
     }
   }
 

@@ -458,36 +458,292 @@
     gap: 4px;
   }
 
-  /* Tabs */
-  .nav-tabs {
-    display: flex;
+  /* ==============================================================================
+     LINHA DOS 4 PILARES DE ALTA RETENÇÃO - DESIGN RESPONSIVO E DE ALTO IMPACTO
+     ============================================================================== */
+  .nav-tabs-container {
+    width: 100%;
     background: var(--surface2);
     border-bottom: 1px solid var(--border);
-    padding: 0 16px;
-    gap: 4px;
-    overflow-x: auto;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    position: relative;
   }
+
+  .nav-tabs {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Cartão Individual de Cada Pilar */
   .nav-tab {
-    padding: 12px 18px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text2);
-    border-bottom: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 10px;
+    padding: 8px 10px 7px 10px;
     cursor: pointer;
-    transition: all 0.15s;
     user-select: none;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    min-height: 60px;
+    box-sizing: border-box;
+    text-align: left;
+    overflow: hidden;
+  }
+
+  .nav-tab:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.22);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  }
+
+  .nav-tab:active {
+    transform: translateY(0);
+  }
+
+  /* Cabeçalho do Cartão (Tag do Pilar + Badge de Quantidade) */
+  .nav-tab-header {
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 4px;
+    pointer-events: none;
+  }
+
+  .nav-tab-tag {
+    font-size: 8.5px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    padding: 2px 5px;
+    border-radius: 4px;
+    line-height: 1;
+    display: inline-block;
+  }
+
+  .tag-pilar1 { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+  .tag-pilar2 { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+  .tag-pilar3 { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+  .tag-pilar4 { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+  .tag-pilar5 { background: rgba(14, 165, 233, 0.15); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3); }
+  .tag-pilar6 { background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
+
+  /* Badges de Contagem (Cards, Quiz, Revisões) */
+  .nav-tab-badge {
+    font-size: 11px;
+    font-weight: 800;
+    padding: 1px 7px;
+    border-radius: 10px;
+    line-height: 1.3;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .badge-cards {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+  }
+
+  .badge-quiz {
+    background: rgba(168, 85, 247, 0.2);
+    color: #c084fc;
+    border: 1px solid rgba(168, 85, 247, 0.4);
+  }
+
+  /* Área Principal do Cartão (Ícone + Título) */
+  .nav-tab-main {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    margin-top: 1px;
+  }
+
+  .nav-tab-icon {
+    font-size: 14px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .nav-tab-title {
+    font-size: clamp(10.5px, 0.9vw, 12px);
+    font-weight: 700;
+    color: #e6edf3;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: -0.3px;
+    line-height: 1.25;
   }
-  .nav-tab:hover {
-    color: var(--text);
+
+  /* Barra Indicadora de Seleção na Base do Cartão */
+  .nav-tab-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 8px;
+    right: 8px;
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+    background: transparent;
+    transition: all 0.2s ease;
   }
-  .nav-tab.active {
-    color: var(--accent-blue);
-    border-bottom-color: var(--accent-blue);
-    background: rgba(88, 166, 255, 0.05);
+
+  /* Estados Ativos Específicos por Pilar */
+  .nav-tab[data-pillar="1"].active {
+    border-color: #38bdf8;
+    background: linear-gradient(180deg, rgba(56, 189, 248, 0.18) 0%, rgba(14, 165, 233, 0.06) 100%);
+    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+  .nav-tab[data-pillar="1"].active .nav-tab-title { color: #ffffff; }
+  .nav-tab[data-pillar="1"].active .nav-tab-indicator { background: #38bdf8; box-shadow: 0 0 10px #38bdf8; }
+
+  .nav-tab[data-pillar="2"].active {
+    border-color: #f59e0b;
+    background: linear-gradient(180deg, rgba(245, 158, 11, 0.18) 0%, rgba(217, 119, 6, 0.06) 100%);
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+  .nav-tab[data-pillar="2"].active .nav-tab-title { color: #ffffff; }
+  .nav-tab[data-pillar="2"].active .nav-tab-indicator { background: #f59e0b; box-shadow: 0 0 10px #f59e0b; }
+
+  .nav-tab[data-pillar="3"].active {
+    border-color: #10b981;
+    background: linear-gradient(180deg, rgba(16, 185, 129, 0.18) 0%, rgba(5, 150, 105, 0.06) 100%);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+  .nav-tab[data-pillar="3"].active .nav-tab-title { color: #ffffff; }
+  .nav-tab[data-pillar="3"].active .nav-tab-indicator { background: #10b981; box-shadow: 0 0 10px #10b981; }
+
+  .nav-tab[data-pillar="4"].active {
+    border-color: #a855f7;
+    background: linear-gradient(180deg, rgba(168, 85, 247, 0.18) 0%, rgba(126, 34, 206, 0.06) 100%);
+    box-shadow: 0 4px 16px rgba(168, 85, 247, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+  .nav-tab[data-pillar="4"].active .nav-tab-title { color: #ffffff; }
+  .nav-tab[data-pillar="4"].active .nav-tab-indicator { background: #a855f7; box-shadow: 0 0 10px #a855f7; }
+
+  .nav-tab[data-pillar="5"].active {
+    border-color: #0ea5e9;
+    background: linear-gradient(180deg, rgba(14, 165, 233, 0.18) 0%, rgba(2, 132, 199, 0.06) 100%);
+    box-shadow: 0 4px 16px rgba(14, 165, 233, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+  .nav-tab[data-pillar="5"].active .nav-tab-title { color: #ffffff; }
+  .nav-tab[data-pillar="5"].active .nav-tab-indicator { background: #0ea5e9; box-shadow: 0 0 10px #0ea5e9; }
+
+  .nav-tab[data-pillar="6"].active {
+    border-color: #f43f5e;
+    background: linear-gradient(180deg, rgba(244, 63, 94, 0.18) 0%, rgba(225, 29, 72, 0.06) 100%);
+    box-shadow: 0 4px 16px rgba(244, 63, 94, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+  .nav-tab[data-pillar="6"].active .nav-tab-title { color: #ffffff; }
+  .nav-tab[data-pillar="6"].active .nav-tab-indicator { background: #f43f5e; box-shadow: 0 0 10px #f43f5e; }
+
+  /* MODO CLARO (LIGHT THEME) */
+  body.light-theme .nav-tabs-container {
+    background: #f1f5f9;
+    border-bottom: 1px solid #cbd5e1;
+  }
+  body.light-theme .nav-tab {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+  body.light-theme .nav-tab .nav-tab-title {
+    color: #1e293b;
+  }
+  body.light-theme .nav-tab:hover {
+    background: #ffffff;
+    border-color: #94a3b8;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  body.light-theme .nav-tab[data-pillar="1"].active {
+    background: #f0f9ff;
+    border-color: #0284c7;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+  }
+  body.light-theme .nav-tab[data-pillar="1"].active .nav-tab-title { color: #0369a1; }
+
+  body.light-theme .nav-tab[data-pillar="2"].active {
+    background: #fffbeb;
+    border-color: #d97706;
+    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.15);
+  }
+  body.light-theme .nav-tab[data-pillar="2"].active .nav-tab-title { color: #b45309; }
+
+  body.light-theme .nav-tab[data-pillar="3"].active {
+    background: #f0fdf4;
+    border-color: #059669;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
+  }
+  body.light-theme .nav-tab[data-pillar="3"].active .nav-tab-title { color: #047857; }
+
+  body.light-theme .nav-tab[data-pillar="4"].active {
+    background: #faf5ff;
+    border-color: #9333ea;
+    box-shadow: 0 4px 12px rgba(147, 51, 234, 0.15);
+  }
+  body.light-theme .nav-tab[data-pillar="4"].active .nav-tab-title { color: #7e22ce; }
+
+  body.light-theme .nav-tab[data-pillar="5"].active {
+    background: #f0f9ff;
+    border-color: #0284c7;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+  }
+  body.light-theme .nav-tab[data-pillar="5"].active .nav-tab-title { color: #0369a1; }
+
+  body.light-theme .nav-tab[data-pillar="6"].active {
+    background: #fff1f2;
+    border-color: #e11d48;
+    box-shadow: 0 4px 12px rgba(225, 29, 72, 0.15);
+  }
+  body.light-theme .nav-tab[data-pillar="6"].active .nav-tab-title { color: #be123c; }
+
+  /* RESPONSIVIDADE PARA TABLETS (<= 980px) */
+  @media (max-width: 980px) {
+    .nav-tabs {
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      gap: 8px !important;
+    }
+  }
+
+  /* RESPONSIVIDADE PARA SMARTPHONES (<= 580px) */
+  @media (max-width: 580px) {
+    .nav-tabs-container {
+      padding: 8px 8px !important;
+    }
+    .nav-tabs {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 6px !important;
+      overflow-x: hidden !important;
+      flex-wrap: wrap !important;
+    }
+    .nav-tab {
+      padding: 7px 8px 6px 8px !important;
+      min-height: 52px !important;
+      border-radius: 8px !important;
+    }
+    .nav-tab-title {
+      font-size: 11.5px !important;
+    }
+    .nav-tab-icon {
+      font-size: 14px !important;
+    }
+    .nav-tab-tag {
+      font-size: 8px !important;
+      padding: 1px 4px !important;
+    }
   }
 
   .tab-pane {
@@ -1480,18 +1736,6 @@
     color: #1f2328;
     border: 1px solid #d0d7de;
   }
-  body.light-theme .nav-tab {
-    color: #57606a;
-  }
-  body.light-theme .nav-tab:hover {
-    color: #1f2328;
-    background: #f0f2f5;
-  }
-  body.light-theme .nav-tab.active {
-    color: #0969da;
-    border-bottom-color: #0969da;
-    background: rgba(9, 105, 218, 0.06);
-  }
   body.light-theme .card,
   body.light-theme .modal-box,
   body.light-theme .key-moment-card,
@@ -2074,17 +2318,22 @@
       font-size: 10px !important;
     }
 
-    /* Abas dos 4 Pilares com rolagem horizontal touch */
+    /* Abas dos 4 Pilares no Celular - Grade de Alta Visibilidade sem Rolagem */
+    .nav-tabs-container {
+      padding: 8px 6px !important;
+    }
     .nav-tabs {
-      overflow-x: auto !important;
-      flex-wrap: nowrap !important;
-      -webkit-overflow-scrolling: touch;
-      padding: 0 6px !important;
-      gap: 4px !important;
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 6px !important;
+      overflow: hidden !important;
+      flex-wrap: wrap !important;
+      padding: 0 !important;
     }
     .nav-tab {
-      padding: 10px 12px !important;
-      font-size: 12px !important;
+      padding: 8px 8px 7px 8px !important;
+      min-height: 52px !important;
+      border-radius: 8px !important;
     }
 
     /* Flashcard Trainer no Celular */
@@ -2305,14 +2554,78 @@
         </div>
       </div>
 
-      <!-- Navigation Tabs -->
-      <div class="nav-tabs">
-        <div class="nav-tab active" onclick="switchTab(0)">📑 1. Resumo & Sintaxe</div>
-        <div class="nav-tab" onclick="switchTab(1)">⚠️ 2. Raio-X & Pegadinhas</div>
-        <div class="nav-tab" onclick="switchTab(2)">🃏 3. Flashcards Interativos (<span id="tabCardCount">7</span>)</div>
-        <div class="nav-tab" onclick="switchTab(3)">📝 4. Simulado de Fixação (<span id="tabQuizCount">4</span>)</div>
-        <div class="nav-tab" onclick="switchTab(4)">🎙️ 5. Momentos-Chave & Transcrição</div>
-        <div class="nav-tab" id="navTabReviews" onclick="switchTab(5)">🎯 6. Revisões (<span id="tabReviewsBadge" class="review-badge badge-zero">0</span>)</div>
+      <!-- Navigation Tabs: Linha dos 4 Pilares de Alta Retenção & Ferramentas -->
+      <div class="nav-tabs-container">
+        <div class="nav-tabs" role="tablist" aria-label="Método 4 Pilares de Alta Retenção">
+          <div class="nav-tab active" onclick="switchTab(0)" role="tab" aria-selected="true" tabindex="0" data-pillar="1" title="Pilar 1: Resumo Estruturado, Teoria e Sintaxe">
+            <div class="nav-tab-header">
+              <span class="nav-tab-tag tag-pilar1">PILAR 1</span>
+            </div>
+            <div class="nav-tab-main">
+              <span class="nav-tab-icon">📑</span>
+              <span class="nav-tab-title">1. Resumo & Sintaxe</span>
+            </div>
+            <div class="nav-tab-indicator"></div>
+          </div>
+
+          <div class="nav-tab" onclick="switchTab(1)" role="tab" aria-selected="false" tabindex="0" data-pillar="2" title="Pilar 2: Raio-X de Banca e Análise de Pegadinhas">
+            <div class="nav-tab-header">
+              <span class="nav-tab-tag tag-pilar2">PILAR 2</span>
+            </div>
+            <div class="nav-tab-main">
+              <span class="nav-tab-icon">⚠️</span>
+              <span class="nav-tab-title">2. Raio-X & Bancas</span>
+            </div>
+            <div class="nav-tab-indicator"></div>
+          </div>
+
+          <div class="nav-tab" onclick="switchTab(2)" role="tab" aria-selected="false" tabindex="0" data-pillar="3" title="Pilar 3: Flashcards Anki com Repetição Espaçada SM-2">
+            <div class="nav-tab-header">
+              <span class="nav-tab-tag tag-pilar3">PILAR 3</span>
+              <span id="tabCardCount" class="nav-tab-badge badge-cards">7</span>
+            </div>
+            <div class="nav-tab-main">
+              <span class="nav-tab-icon">🃏</span>
+              <span class="nav-tab-title">3. Flashcards Anki</span>
+            </div>
+            <div class="nav-tab-indicator"></div>
+          </div>
+
+          <div class="nav-tab" onclick="switchTab(3)" role="tab" aria-selected="false" tabindex="0" data-pillar="4" title="Pilar 4: Mini-Simulado de Fixação estilo Cebraspe / FGV">
+            <div class="nav-tab-header">
+              <span class="nav-tab-tag tag-pilar4">PILAR 4</span>
+              <span id="tabQuizCount" class="nav-tab-badge badge-quiz">4</span>
+            </div>
+            <div class="nav-tab-main">
+              <span class="nav-tab-icon">📝</span>
+              <span class="nav-tab-title">4. Mini-Simulado</span>
+            </div>
+            <div class="nav-tab-indicator"></div>
+          </div>
+
+          <div class="nav-tab" onclick="switchTab(4)" role="tab" aria-selected="false" tabindex="0" data-pillar="5" title="Multimídia: Momentos-Chave e Transcrição Completa da Aula">
+            <div class="nav-tab-header">
+              <span class="nav-tab-tag tag-pilar5">MULTIMÍDIA</span>
+            </div>
+            <div class="nav-tab-main">
+              <span class="nav-tab-icon">🎙️</span>
+              <span class="nav-tab-title">5. Transcrição</span>
+            </div>
+            <div class="nav-tab-indicator"></div>
+          </div>
+
+          <div class="nav-tab" id="navTabReviews" onclick="switchTab(5)" role="tab" aria-selected="false" tabindex="0" data-pillar="6" title="Recuperação Espaçada: Caderno de Erros e Questões Pendentes">
+            <div class="nav-tab-header">
+              <span class="nav-tab-tag tag-pilar6">RECUPERAÇÃO</span>
+              <span id="tabReviewsBadge" class="review-badge badge-zero">0</span>
+            </div>
+            <div class="nav-tab-main">
+              <span class="nav-tab-icon">🎯</span>
+              <span class="nav-tab-title">6. Caderno de Erros</span>
+            </div>
+            <div class="nav-tab-indicator"></div>
+          </div>
+        </div>
       </div>
 
       <!-- Tab 1: Resumo & Sintaxe -->
@@ -5690,8 +6003,10 @@
     const tabs = document.querySelectorAll('.nav-tab');
     const panes = document.querySelectorAll('.tab-pane');
     tabs.forEach((t, i) => {
-      t.classList.toggle('active', i === index);
-      if (panes[i]) panes[i].classList.toggle('active', i === index);
+      const isActive = (i === index);
+      t.classList.toggle('active', isActive);
+      t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      if (panes[i]) panes[i].classList.toggle('active', isActive);
     });
 
     // 1. Ao entrar ou retornar nos Flashcards (Tab 2), limpa e reinicia no Card 1 virado para frente

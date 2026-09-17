@@ -3181,6 +3181,9 @@
     <p style="font-size: 13px; color: var(--text2); margin-bottom: 14px;">
       A inteligência artificial analisará o conteúdo e a transcrição desta aula para formular novos cartões com pegadinhas e regras de prova.
     </p>
+    <div id="aiCardsTrialNotice" style="display: none; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 8px; padding: 10px 14px; font-size: 12.5px; color: #f59e0b; margin-bottom: 14px; line-height: 1.4;">
+      ⚡ <b>Plano Teste 7 Dias:</b> Você tem direito a gerar <b>1 deck de flashcards com IA</b> nesta matéria global.
+    </div>
     <div class="modal-input-group">
       <label>Quantidade de novos cartões</label>
       <select id="aiCardCount">
@@ -3240,20 +3243,20 @@
   </div>
 </div>
 
-<!-- Modal 2.1: Limite de Simulado no Período de Teste 7 Dias -->
+<!-- Modal 2.1: Limite de Recursos no Período de Teste 7 Dias -->
 <div class="modal-overlay" id="modalTrialSimuladoLimit" style="display: none; align-items: center; justify-content: center; z-index: 10000;">
   <div class="modal-box" style="max-width: 480px; text-align: center; border: 1.5px solid rgba(245, 158, 11, 0.5); box-shadow: 0 12px 48px rgba(0,0,0,0.7); border-radius: 16px; padding: 28px;">
     <div style="font-size: 46px; margin-bottom: 12px;">🔒</div>
-    <div class="modal-title" style="color: #f59e0b; justify-content: center; font-size: 20px; font-weight: 800;">
+    <div class="modal-title" id="trialLimitModalTitle" style="color: #f59e0b; justify-content: center; font-size: 20px; font-weight: 800;">
       Limite do Período de Teste Atingido
     </div>
-    <p style="font-size: 14px; color: var(--text2); line-height: 1.6; margin: 16px 0 24px 0;">
-      No plano <b>Teste 7 Dias</b>, é permitida a geração de <b>1 simulado com IA por matéria global</b>.<br><br>
-      Você já utilizou a sua geração de simulado para a disciplina <b id="trialLimitDisciplineName" style="color: var(--text); font-weight: 700;">Informática</b>.<br><br>
-      Para gerar simulados ilimitados em todas as matérias e bancas, ter acesso aos flashcards completos e salvar permanentemente todo o seu ecossistema de aprovação, desbloqueie seu Acesso Vitalício!
+    <p style="font-size: 14px; color: var(--text2); line-height: 1.6; margin: 16px 0 24px 0;" id="trialLimitModalDesc">
+      No plano <b>Teste 7 Dias</b>, é permitida a geração de <b>1 recurso com IA por matéria global</b>.<br><br>
+      Você já utilizou a sua geração para a disciplina <b id="trialLimitDisciplineName" style="color: var(--text); font-weight: 700;">Informática</b>.<br><br>
+      Para gerar simulados, flashcards e Raio-X ilimitados em todas as matérias e bancas, ter acesso completo e salvar permanentemente todo o seu ecossistema de aprovação, desbloqueie seu Acesso Vitalício!
     </p>
     <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-      <a href="/landing#oferta" target="_blank" class="btn btn-warning" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #ffffff; font-weight: 800; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-size: 14px; box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);">
+      <a href="https://mpago.la/2wLuWDh" id="trialLimitCtaBtn" target="_blank" class="btn btn-warning" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #ffffff; font-weight: 800; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-size: 14px; box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);">
         ⭐ Desbloquear Acesso Vitalício (R$ 97)
       </a>
       <button class="btn" type="button" onclick="closeModal('modalTrialSimuladoLimit')" style="padding: 12px 18px; border-radius: 8px; font-weight: 600;">
@@ -3627,6 +3630,9 @@
     <p style="font-size: 13px; color: var(--text2); margin-bottom: 14px; line-height: 1.5;">
       A IA analisará o conteúdo da aula e identificará as armadilhas mais eliminatórias de banca (inversão de conceitos, regras gerais vs. exceções, termos trocados e mnemônicos).
     </p>
+    <div id="aiRaioXTrialNotice" style="display: none; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 8px; padding: 10px 14px; font-size: 12.5px; color: #f59e0b; margin-bottom: 14px; line-height: 1.4;">
+      ⚡ <b>Plano Teste 7 Dias:</b> Você tem direito a gerar <b>1 Raio-X com IA</b> nesta matéria global.
+    </div>
     <div class="modal-input-group">
       <label>Banca Examinadora Foco</label>
       <select id="raioXBanca">
@@ -6151,17 +6157,17 @@
     return plan === 'teste' || plan === 'trial' || urlParams.get('trial') === '7dias' || !!localStorage.getItem('concursos_trial_start');
   }
 
-  // Chave de rastreamento de simulados gerados por matéria no plano de teste
-  function getTrialSimuladoUsageKey() {
+  // Chave de rastreamento de recursos gerados por matéria no plano de teste
+  function getTrialFeatureUsageKey(feature) {
     const userKey = (typeof getCurrentUserEmailOrId === 'function') ? getCurrentUserEmailOrId() : (currentUser?.email || localStorage.getItem('concursos_user_email') || 'trial_user');
-    return 'concursos_trial_simulados_' + userKey;
+    return 'concursos_trial_' + (feature || 'simulados') + '_' + userKey;
   }
 
-  // Verifica se o aluno teste já gerou o único simulado permitido para a matéria global
-  function hasTrialGeneratedSimuladoForDiscipline(disc) {
+  // Verifica se o aluno teste já gerou o único recurso permitido para a matéria global
+  function hasTrialGeneratedFeatureForDiscipline(feature, disc) {
     if (!isUserTrial()) return false;
     try {
-      const key = getTrialSimuladoUsageKey();
+      const key = getTrialFeatureUsageKey(feature);
       const usage = JSON.parse(localStorage.getItem(key) || '{}');
       const discKey = (disc || currentDiscipline || 'Informatica').trim();
       return Boolean(usage[discKey]);
@@ -6170,32 +6176,89 @@
     }
   }
 
-  // Registra a geração do simulado de teste na matéria global
-  function recordTrialSimuladoGenerated(disc) {
+  // Registra a geração do recurso de teste na matéria global
+  function recordTrialFeatureGenerated(feature, disc) {
     if (!isUserTrial()) return;
     try {
-      const key = getTrialSimuladoUsageKey();
+      const key = getTrialFeatureUsageKey(feature);
       const usage = JSON.parse(localStorage.getItem(key) || '{}');
       const discKey = (disc || currentDiscipline || 'Informatica').trim();
       usage[discKey] = {
         generated_at: new Date().toISOString(),
-        discipline: discKey
+        discipline: discKey,
+        feature: feature
       };
       localStorage.setItem(key, JSON.stringify(usage));
     } catch(e) {}
   }
 
-  // Modal de Aviso de Limite do Período de Teste
-  function showTrialSimuladoLimitModal(disc) {
+  // Compatibilidade legada para simulados
+  function getTrialSimuladoUsageKey() {
+    return getTrialFeatureUsageKey('simulados');
+  }
+  function hasTrialGeneratedSimuladoForDiscipline(disc) {
+    return hasTrialGeneratedFeatureForDiscipline('simulados', disc);
+  }
+  function recordTrialSimuladoGenerated(disc) {
+    recordTrialFeatureGenerated('simulados', disc);
+  }
+
+  // Modal de Aviso de Limite do Período de Teste (genérico para Simulados, Flashcards e Raio-X)
+  function showTrialFeatureLimitModal(feature, disc) {
     const dName = (disc || currentDiscipline || 'Informática').replace(/_/g, ' ');
     const modalEl = document.getElementById('modalTrialSimuladoLimit');
+    const titleEl = document.getElementById('trialLimitModalTitle');
+    const descEl = document.getElementById('trialLimitModalDesc');
     const discSpan = document.getElementById('trialLimitDisciplineName');
+    const ctaBtn = document.getElementById('trialLimitCtaBtn');
+
+    let featureName = 'recurso com IA';
+    let featureTitle = 'Limite de IA (Teste 7 Dias)';
+    if (feature === 'simulados') {
+      featureName = 'simulado com IA';
+      featureTitle = 'Limite de Simulado (Teste 7 Dias)';
+    } else if (feature === 'cards' || feature === 'flashcards') {
+      featureName = 'deck de flashcards com IA';
+      featureTitle = 'Limite de Flashcards (Teste 7 Dias)';
+    } else if (feature === 'raiox') {
+      featureName = 'Raio-X de Banca com IA';
+      featureTitle = 'Limite de Raio-X (Teste 7 Dias)';
+    }
+
+    if (titleEl) titleEl.textContent = featureTitle;
     if (discSpan) discSpan.textContent = dName;
+    if (descEl) {
+      descEl.innerHTML = `No plano <b>Teste 7 Dias</b>, é permitida a geração de <b>1 ${featureName} por matéria global</b>.<br><br>` +
+        `Você já utilizou a sua geração de teste para a disciplina <b style="color: var(--text); font-weight: 700;">${dName}</b>.<br><br>` +
+        `Para gerar simulados, flashcards e Raio-X ilimitados em todas as matérias e bancas, ter acesso completo e salvar permanentemente todo o seu ecossistema de aprovação, desbloqueie seu Acesso Vitalício!`;
+    }
+    if (ctaBtn) {
+      ctaBtn.href = 'https://mpago.la/2wLuWDh';
+      ctaBtn.target = '_blank';
+    }
     if (modalEl) modalEl.style.display = 'flex';
+  }
+
+  function showTrialSimuladoLimitModal(disc) {
+    showTrialFeatureLimitModal('simulados', disc);
   }
 
   // Modals
   function openAiFlashcardModal() {
+    if (isUserTrial() && hasTrialGeneratedFeatureForDiscipline('cards', currentDiscipline)) {
+      showTrialFeatureLimitModal('cards', currentDiscipline);
+      return;
+    }
+    const trialNotice = document.getElementById('aiCardsTrialNotice');
+    if (trialNotice) {
+      if (isUserTrial()) {
+        const dName = (currentDiscipline || 'Informática').replace(/_/g, ' ');
+        trialNotice.style.display = 'block';
+        trialNotice.innerHTML = `⚡ <b>Plano Teste 7 Dias:</b> Você tem direito a gerar <b>1 deck de flashcards com IA</b> nesta matéria (<b>${dName}</b>).`;
+      } else {
+        trialNotice.style.display = 'none';
+      }
+    }
     document.getElementById('modalAiCards').style.display = 'flex';
   }
   function openAiQuizModal() {
@@ -6230,6 +6293,12 @@
   // AI Flashcard Generation
   async function generateAiFlashcards() {
     const isTrial = isUserTrial();
+    if (isTrial && hasTrialGeneratedFeatureForDiscipline('cards', currentDiscipline)) {
+      closeModal('modalAiCards');
+      showTrialFeatureLimitModal('cards', currentDiscipline);
+      return;
+    }
+
     const count = document.getElementById('aiCardCount').value;
     const focus = document.getElementById('aiCardFocus').value.trim();
     const spinner = document.getElementById('aiCardSpinner');
@@ -6253,12 +6322,20 @@
       });
       const data = await resp.json();
       if (data.success && data.cards && data.cards.length) {
+        if (isTrial) {
+          recordTrialFeatureGenerated('cards', currentDiscipline);
+        }
         data.cards.forEach(c => flashcardsData.push(c));
         currentCardIndex = flashcardsData.length - data.cards.length;
         isCardFlipped = false;
         switchTab(2, true);
         updateCard();
-        showToast(`${data.cards.length} novos flashcards gerados pela IA!`);
+        if (isTrial) {
+          const dName = (currentDiscipline || 'Informática').replace(/_/g, ' ');
+          showToast(`⚡ Flashcards gerados para ${dName}! (1 de 1 utilizado no teste)`, "🎯");
+        } else {
+          showToast(`${data.cards.length} novos flashcards gerados pela IA!`);
+        }
       } else {
         alert("Não foi possível gerar novos cartões: " + (data.error || 'Erro desconhecido.'));
       }
@@ -6794,11 +6871,30 @@
   let selectedPdfFileName = '';
 
   function openAiRaioXModal() {
+    if (typeof isUserTrial === 'function' && isUserTrial() && hasTrialGeneratedFeatureForDiscipline('raiox', currentDiscipline)) {
+      showTrialFeatureLimitModal('raiox', currentDiscipline);
+      return;
+    }
+    const trialNotice = document.getElementById('aiRaioXTrialNotice');
+    if (trialNotice) {
+      if (typeof isUserTrial === 'function' && isUserTrial()) {
+        const dName = (currentDiscipline || 'Informática').replace(/_/g, ' ');
+        trialNotice.style.display = 'block';
+        trialNotice.innerHTML = `⚡ <b>Plano Teste 7 Dias:</b> Você tem direito a gerar <b>1 Raio-X com IA</b> nesta matéria (<b>${dName}</b>).`;
+      } else {
+        trialNotice.style.display = 'none';
+      }
+    }
     document.getElementById('modalAiRaioX').style.display = 'flex';
   }
 
   async function generateAiRaioX() {
     const isTrial = (typeof isUserTrial === 'function') ? isUserTrial() : false;
+    if (isTrial && hasTrialGeneratedFeatureForDiscipline('raiox', currentDiscipline)) {
+      closeModal('modalAiRaioX');
+      showTrialFeatureLimitModal('raiox', currentDiscipline);
+      return;
+    }
     const banca = document.getElementById('raioXBanca').value;
     const focus = document.getElementById('raioXFocus').value.trim();
     const btn = document.getElementById('btnRunAiRaioX');
@@ -6822,8 +6918,16 @@
       });
       const data = await resp.json();
       if (data.success) {
+        if (isTrial) {
+          recordTrialFeatureGenerated('raiox', currentDiscipline);
+        }
         closeModal('modalAiRaioX');
-        showToast(`⚡ Raio-X & Pegadinhas (${banca}) gerado com sucesso!`, '🎯');
+        if (isTrial) {
+          const dName = (currentDiscipline || 'Informática').replace(/_/g, ' ');
+          showToast(`⚡ Raio-X & Pegadinhas (${banca}) gerado para ${dName}! (1 de 1 utilizado no teste)`, '🎯');
+        } else {
+          showToast(`⚡ Raio-X & Pegadinhas (${banca}) gerado com sucesso!`, '🎯');
+        }
         if (isTrial && data.markdown) {
           const tab1Box = document.getElementById('tab1Content');
           if (tab1Box && typeof parseMarkdownPegadinhas === 'function') {

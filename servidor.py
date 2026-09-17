@@ -107,11 +107,21 @@ def mask_key(k):
 # ALGORITMO DE REPETIÇÃO ESPAÇADA (SM-2 NATIVO) E PROGRESSO
 # ==============================================================================
 
-def load_progress():
+def load_progress(email=None):
+    clean_email = email.lower().strip() if email else ""
     if os.path.exists(PROGRESS_FILE):
         try:
             with open(PROGRESS_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
+                data = json.load(f)
+                if clean_email and "users" in data and clean_email in data["users"]:
+                    u_prog = data["users"][clean_email]
+                    if not isinstance(u_prog, dict):
+                        u_prog = {}
+                    if "cards" not in u_prog:
+                        u_prog["cards"] = {}
+                    return u_prog
+                elif not clean_email:
+                    return data
         except Exception:
             pass
     return {
@@ -120,19 +130,36 @@ def load_progress():
         "cebraspe_simulados": []
     }
 
-def save_progress(data):
+def save_progress(data, email=None):
+    clean_email = email.lower().strip() if email else ""
     try:
+        current_data = {}
+        if os.path.exists(PROGRESS_FILE):
+            try:
+                with open(PROGRESS_FILE, "r", encoding="utf-8") as f:
+                    current_data = json.load(f)
+            except Exception:
+                current_data = {}
+                
+        if clean_email:
+            current_data.setdefault("users", {})[clean_email] = data
+            # Manter espelho global seguro para visualizações de estatísticas gerais
+            if "cards" in data and isinstance(data["cards"], dict):
+                current_data.setdefault("cards", {}).update(data["cards"])
+        else:
+            current_data.update(data)
+            
         with open(PROGRESS_FILE, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
+            json.dump(current_data, f, indent=2, ensure_ascii=False)
         return True
     except Exception:
         return False
 
-def record_card_sm2(card_key, quality, card_a="", discipline="", subarea=""):
+def record_card_sm2(card_key, quality, card_a="", discipline="", subarea="", email=None):
     """
-    quality: 1 = Difícil / Errei, 3 = Médio / Bom, 5 = Fácil / Dominado
+    quality: 1 = Difícil (1 dia), 3 = Bom (3 dias), 5 = Fácil (7 dias)
     """
-    data = load_progress()
+    data = load_progress(email=email)
     card_info = data.get("cards", {}).get(card_key, {
         "repetitions": 0,
         "interval_days": 1,
@@ -155,11 +182,11 @@ def record_card_sm2(card_key, quality, card_a="", discipline="", subarea=""):
         interval = 1
     else:
         if reps == 0:
-            interval = 1 if quality == 3 else 3
+            interval = 3 if quality == 3 else 7
         elif reps == 1:
             interval = 3 if quality == 3 else 7
         else:
-            interval = max(1, int(interval * ef))
+            interval = max(3 if quality == 3 else 7, int(interval * (1.5 if quality == 3 else ef)))
         reps += 1
         
     ef = max(1.3, ef + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02)))
@@ -173,7 +200,7 @@ def record_card_sm2(card_key, quality, card_a="", discipline="", subarea=""):
     card_info["last_review"] = today.isoformat()
     
     data.setdefault("cards", {})[card_key] = card_info
-    save_progress(data)
+    save_progress(data, email=email)
     return card_info
 
 # ==============================================================================
@@ -1176,7 +1203,17 @@ def get_lesson_metadata(discipline, subarea):
         "has_lesson": has_full_lesson
     }
 
-def load_reviews(discipline, subarea):
+def load_reviews(discipline, subarea, email=None):
+    clean_email = email.lower().strip() if email else ""
+    if clean_email:
+        user_safe = re.sub(r'[^a-zA-Z0-9_\-]', '_', clean_email)
+        user_rev_file = os.path.join(BASE_DIR, "userdata", f"reviews_{user_safe}_{discipline}_{subarea}.json")
+        if os.path.exists(user_rev_file):
+            try:
+                with open(user_rev_file, "r", encoding="utf-8") as f:
+                    return json.load(f)
+            except Exception:
+                pass
     folder = find_subarea_folder(discipline, subarea)
     rfile = os.path.join(folder, "revisoes_erros.json")
     if os.path.exists(rfile):
@@ -1187,7 +1224,17 @@ def load_reviews(discipline, subarea):
             pass
     return {"cards": [], "quiz": []}
 
-def save_reviews(discipline, subarea, data):
+def save_reviews(discipline, subarea, data, email=None):
+    clean_email = email.lower().strip() if email else ""
+    if clean_email:
+        os.makedirs(os.path.join(BASE_DIR, "userdata"), exist_ok=True)
+        user_safe = re.sub(r'[^a-zA-Z0-9_\-]', '_', clean_email)
+        user_rev_file = os.path.join(BASE_DIR, "userdata", f"reviews_{user_safe}_{discipline}_{subarea}.json")
+        try:
+            with open(user_rev_file, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=2, ensure_ascii=False)
+        except Exception:
+            pass
     folder = find_subarea_folder(discipline, subarea)
     os.makedirs(folder, exist_ok=True)
     rfile = os.path.join(folder, "revisoes_erros.json")
@@ -1712,7 +1759,8 @@ class ConcursosHandler(BaseHTTPRequestHandler):
 
         # 5. Progresso de Repetição Espaçada e Estatísticas
         elif path == "/api/progress":
-            prog = load_progress()
+            email = query.get("email", [""])[0].strip()
+            prog = load_progress(email=email)
             today = datetime.date.today().isoformat()
             due_cards = 0
             for ck, info in prog.get("cards", {}).items():
@@ -1783,7 +1831,8 @@ class ConcursosHandler(BaseHTTPRequestHandler):
         elif path == "/api/reviews":
             disc = query.get("discipline", ["Informatica"])[0]
             sub = query.get("subarea", ["Excel"])[0]
-            revs = load_reviews(disc, sub)
+            email = query.get("email", [""])[0].strip()
+            revs = load_reviews(disc, sub, email=email)
             total = len(revs.get("cards", [])) + len(revs.get("quiz", []))
             revs["total"] = total
             self.send_response(200)
@@ -2479,12 +2528,13 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             disc = payload.get("discipline", "")
             sub = payload.get("subarea", "")
             quality = int(payload.get("quality", 3)) # 1 (difícil), 3 (médio), 5 (fácil)
+            email = payload.get("email", "").strip()
             if not card_q:
                 self.send_response(400)
                 self.end_headers()
                 self.wfile.write(b"Pergunta do cartao obrigatoria.")
                 return
-            card_res = record_card_sm2(card_q, quality, card_a=card_a, discipline=disc, subarea=sub)
+            card_res = record_card_sm2(card_q, quality, card_a=card_a, discipline=disc, subarea=sub, email=email)
             self.send_response(200)
             self.send_header("Content-type", "application/json; charset=utf-8")
             self.end_headers()
@@ -2492,7 +2542,8 @@ class ConcursosHandler(BaseHTTPRequestHandler):
 
         # 3. Registrar Resultado de Simulado Modo Cebraspe
         elif path == "/api/simulado/cebraspe":
-            prog = load_progress()
+            email = payload.get("email", "").strip()
+            prog = load_progress(email=email)
             record = {
                 "date": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
                 "discipline": payload.get("discipline", "Geral"),
@@ -2505,7 +2556,7 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 "tempo_segundos": payload.get("tempo_segundos", 0)
             }
             prog.setdefault("cebraspe_simulados", []).append(record)
-            save_progress(prog)
+            save_progress(prog, email=email)
             self.send_response(200)
             self.send_header("Content-type", "application/json; charset=utf-8")
             self.end_headers()
@@ -2517,8 +2568,9 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             sub = payload.get("subarea", "Excel")
             item_type = payload.get("type", "card")
             item_data = payload.get("item", {})
+            email = payload.get("email", "").strip()
             
-            revs = load_reviews(disc, sub)
+            revs = load_reviews(disc, sub, email=email)
             if item_type == "card":
                 q = item_data.get("q", "").strip()
                 if q and not any(c.get("q") == q for c in revs.get("cards", [])):
@@ -2528,7 +2580,7 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 if enunciado and not any(qz.get("enunciado") == enunciado for qz in revs.get("quiz", [])):
                     revs.setdefault("quiz", []).append(item_data)
             
-            save_reviews(disc, sub, revs)
+            save_reviews(disc, sub, revs, email=email)
             total = len(revs.get("cards", [])) + len(revs.get("quiz", []))
             self.send_response(200)
             self.send_header("Content-type", "application/json; charset=utf-8")
@@ -2541,14 +2593,15 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             sub = payload.get("subarea", "Excel")
             item_type = payload.get("type", "card")
             identifier = payload.get("id", "").strip()
+            email = payload.get("email", "").strip()
             
-            revs = load_reviews(disc, sub)
+            revs = load_reviews(disc, sub, email=email)
             if item_type == "card":
                 revs["cards"] = [c for c in revs.get("cards", []) if c.get("q", "").strip() != identifier]
             elif item_type == "quiz":
                 revs["quiz"] = [qz for qz in revs.get("quiz", []) if qz.get("enunciado", "").strip() != identifier]
                 
-            save_reviews(disc, sub, revs)
+            save_reviews(disc, sub, revs, email=email)
             total = len(revs.get("cards", [])) + len(revs.get("quiz", []))
             self.send_response(200)
             self.send_header("Content-type", "application/json; charset=utf-8")

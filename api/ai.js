@@ -24,6 +24,8 @@ function getCatalog() {
 let cloudUsersOverrides = {};
 let cloudDeletedUsers = new Set();
 let cloudCreatedUsers = [];
+let cloudUserProgress = {};
+let cloudUserReviews = {};
 
 const BASE_MOCK_USERS = [
   { id: 'master_001', nome: 'Administrador Master', email: 'master@aprovacao.com', role: 'master', plano: 'vitalicio', status: 'ativo', created_at: '2026-09-15T00:00:00Z', ultimo_login: new Date().toISOString(), aulas_criadas: 9 },
@@ -607,18 +609,155 @@ export default async function handler(req, res) {
 
   // 12. Caderno de Erros e Revisões
   if (pathname === '/api/reviews') {
-    return res.status(200).json({ cards: [], quiz: [], total: 0 });
+    const disc = url.searchParams.get('discipline') || 'Informatica';
+    const sub = url.searchParams.get('subarea') || 'Excel';
+    const email = (url.searchParams.get('email') || 'default').toLowerCase().trim();
+    const key = `${email}_${disc}_${sub}`;
+    const userRev = cloudUserReviews[key] || { cards: [], quiz: [], total: 0 };
+    return res.status(200).json(userRev);
+  }
+
+  if (pathname === '/api/reviews/add') {
+    const body = req.body || {};
+    const disc = body.discipline || 'Informatica';
+    const sub = body.subarea || 'Excel';
+    const email = (body.email || 'default').toLowerCase().trim();
+    const type = body.type || 'card';
+    const item = body.item || {};
+    const key = `${email}_${disc}_${sub}`;
+
+    if (!cloudUserReviews[key]) {
+      cloudUserReviews[key] = { cards: [], quiz: [], total: 0 };
+    }
+    const revs = cloudUserReviews[key];
+    if (type === 'card' && item.q) {
+      if (!revs.cards.some(c => c.q.trim() === item.q.trim())) {
+        revs.cards.push(item);
+      }
+    } else if (type === 'quiz' && item.enunciado) {
+      if (!revs.quiz.some(q => q.enunciado.trim() === item.enunciado.trim())) {
+        revs.quiz.push(item);
+      }
+    }
+    revs.total = revs.cards.length + revs.quiz.length;
+    return res.status(200).json({ success: true, total: revs.total, reviews: revs });
+  }
+
+  if (pathname === '/api/reviews/resolve') {
+    const body = req.body || {};
+    const disc = body.discipline || 'Informatica';
+    const sub = body.subarea || 'Excel';
+    const email = (body.email || 'default').toLowerCase().trim();
+    const type = body.type || 'card';
+    const identifier = (body.id || '').trim();
+    const key = `${email}_${disc}_${sub}`;
+
+    if (!cloudUserReviews[key]) {
+      cloudUserReviews[key] = { cards: [], quiz: [], total: 0 };
+    }
+    const revs = cloudUserReviews[key];
+    if (type === 'card' && identifier) {
+      revs.cards = revs.cards.filter(c => (c.q || '').trim() !== identifier);
+    } else if (type === 'quiz' && identifier) {
+      revs.quiz = revs.quiz.filter(q => (q.enunciado || '').trim() !== identifier);
+    }
+    revs.total = revs.cards.length + revs.quiz.length;
+    return res.status(200).json({ success: true, total: revs.total, reviews: revs });
   }
 
   // 13. Progresso do Usuário
   if (pathname === '/api/progress') {
-    return res.status(200).json({
+    const email = (url.searchParams.get('email') || 'default').toLowerCase().trim();
+    const userProg = cloudUserProgress[email] || {
       due_today: 0,
       total_studied_cards: 0,
       cebraspe_count: 0,
       cebraspe_history: [],
       cards_details: {}
+    };
+    const today = new Date().toISOString().slice(0, 10);
+    let dueCount = 0;
+    const cards = userProg.cards_details || {};
+    Object.values(cards).forEach(info => {
+      if (info && info.next_review && info.next_review <= today) {
+        dueCount++;
+      }
     });
+    userProg.due_today = dueCount;
+    userProg.total_studied_cards = Object.keys(cards).length;
+    return res.status(200).json(userProg);
+  }
+
+  // 13.1 Avaliação SM-2 de Flashcard
+  if (pathname === '/api/progress/card') {
+    const body = req.body || {};
+    const cardQ = (body.q || '').trim();
+    const cardA = (body.a || '').trim();
+    const disc = body.discipline || 'Informatica';
+    const sub = body.subarea || 'Excel';
+    const quality = parseInt(body.quality || 3, 10);
+    const email = (body.email || 'default').toLowerCase().trim();
+
+    if (!cardQ) {
+      return res.status(400).json({ success: false, error: 'Pergunta obrigatória' });
+    }
+
+    if (!cloudUserProgress[email]) {
+      cloudUserProgress[email] = {
+        due_today: 0,
+        total_studied_cards: 0,
+        cebraspe_count: 0,
+        cebraspe_history: [],
+        cards_details: {}
+      };
+    }
+    const userProg = cloudUserProgress[email];
+    if (!userProg.cards_details) userProg.cards_details = {};
+
+    const cardInfo = userProg.cards_details[cardQ] || {
+      repetitions: 0,
+      interval_days: 1,
+      ease_factor: 2.5,
+      next_review: ""
+    };
+    if (cardA) cardInfo.a = cardA;
+    if (disc) cardInfo.discipline = disc;
+    if (sub) cardInfo.subarea = sub;
+
+    let reps = cardInfo.repetitions || 0;
+    let interval = cardInfo.interval_days || 1;
+    let ef = cardInfo.ease_factor || 2.5;
+
+    if (quality < 3) {
+      reps = 0;
+      interval = 1;
+    } else {
+      if (reps === 0) {
+        interval = (quality === 3) ? 3 : 7;
+      } else if (reps === 1) {
+        interval = (quality === 3) ? 3 : 7;
+      } else {
+        interval = Math.max((quality === 3 ? 3 : 7), Math.round(interval * (quality === 3 ? 1.5 : ef)));
+      }
+      reps += 1;
+    }
+
+    ef = Math.max(1.3, ef + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02)));
+    const now = new Date();
+    const nextDate = new Date(now.getTime() + (interval * 24 * 60 * 60 * 1000));
+    const nextIso = nextDate.toISOString().slice(0, 10);
+    const todayIso = now.toISOString().slice(0, 10);
+
+    cardInfo.repetitions = reps;
+    cardInfo.interval_days = interval;
+    cardInfo.ease_factor = parseFloat(ef.toFixed(2));
+    cardInfo.next_review = nextIso;
+    cardInfo.last_review = todayIso;
+
+    userProg.cards_details[cardQ] = cardInfo;
+    userProg.total_studied_cards = Object.keys(userProg.cards_details).length;
+
+    return res.status(200).json({ success: true, sm2: cardInfo, progress: userProg });
   }
 
   // 14. Exportação de Decks Anki

@@ -21,6 +21,23 @@ function getCatalog() {
   return catalogCache || {};
 }
 
+let cloudUsersOverrides = {};
+let cloudDeletedUsers = new Set();
+let cloudCreatedUsers = [];
+
+function computeMasterUsers(baseUsers) {
+  let list = [...baseUsers, ...cloudCreatedUsers];
+  list = list.filter(u => !cloudDeletedUsers.has((u.email || '').toLowerCase().trim()));
+  list = list.map(u => {
+    const key = (u.email || '').toLowerCase().trim();
+    if (cloudUsersOverrides[key]) {
+      return { ...u, ...cloudUsersOverrides[key] };
+    }
+    return u;
+  });
+  return list;
+}
+
 function findTopicData(disc, sub) {
   const cat = getCatalog();
   if (cat[disc] && cat[disc][sub]) return cat[disc][sub];
@@ -248,14 +265,27 @@ export default async function handler(req, res) {
         totalQuiz += (t.quiz || []).length;
       }
     }
+
+    const defaultList = [
+      { id: 'master_001', nome: 'Administrador Master', email: 'master@aprovacao.com', role: 'master', plano: 'vitalicio', status: 'ativo', created_at: '2026-09-15T00:00:00Z', ultimo_login: new Date().toISOString(), aulas_criadas: 9 },
+      { id: 'henrique_001', nome: 'Henrique Rosa', email: 'henriquerosa2019', role: 'master', plano: 'vitalicio', status: 'ativo', created_at: '2026-09-15T12:00:00Z', ultimo_login: new Date().toISOString(), aulas_criadas: 9 },
+      { id: 'aluno_101', nome: 'Estudante Concurseiro', email: 'concurseiro_aprovado@gmail.com', role: 'aluno', plano: 'vitalicio', status: 'ativo', created_at: '2026-09-15T17:26:00Z', ultimo_login: '2026-09-16T10:00:00Z', aulas_criadas: 1 },
+      { id: 'aluno_102', nome: 'Aluno Teste 592', email: 'aluno_1789504592@aprovacao.com.br', role: 'aluno', plano: 'trial', status: 'ativo', created_at: '2026-09-15T17:36:00Z', ultimo_login: '2026-09-16T11:00:00Z', aulas_criadas: 1 },
+      { id: 'aluno_103', nome: 'Aluno Teste 450', email: 'aluno_1789561450@aprovacao.com.br', role: 'aluno', plano: 'trial', status: 'ativo', created_at: '2026-09-16T09:24:00Z', ultimo_login: '2026-09-16T14:00:00Z', aulas_criadas: 0 }
+    ];
+    const computed = computeMasterUsers(defaultList);
+    const vitalicioCount = computed.filter(u => u.plano === 'vitalicio' && u.role !== 'master').length;
+    const trialCount = computed.filter(u => u.plano === 'trial').length;
+    const masterCount = computed.filter(u => u.role === 'master').length;
+
     return res.status(200).json({
       success: true,
       users: {
-        total: 12,
-        vitalicio: 4,
-        trial: 8,
-        master: 2,
-        bloqueados: 0
+        total: computed.length,
+        vitalicio: vitalicioCount,
+        trial: trialCount,
+        master: masterCount,
+        bloqueados: computed.filter(u => u.status === 'bloqueado').length
       },
       content: {
         disciplines_count: Object.keys(cat).length,
@@ -301,7 +331,8 @@ export default async function handler(req, res) {
       } catch (e) {}
     }
 
-    return res.status(200).json({ success: true, users: usersList });
+    const computed = computeMasterUsers(usersList);
+    return res.status(200).json({ success: true, users: computed });
   }
 
   if (pathname === '/api/master/aulas') {
@@ -332,6 +363,13 @@ export default async function handler(req, res) {
     const supaUrl = process.env.SUPABASE_URL;
     const supaKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || process.env.SUPABASE_ANON_KEY;
 
+    if (targetEmail) {
+      cloudUsersOverrides[targetEmail] = {
+        ...(cloudUsersOverrides[targetEmail] || {}),
+        ...(updates || {})
+      };
+    }
+
     if (supaUrl && supaKey && targetEmail) {
       try {
         await fetch(`${supaUrl}/rest/v1/perfis_usuarios?email=eq.${targetEmail}`, {
@@ -355,14 +393,31 @@ export default async function handler(req, res) {
 
   if (pathname === '/api/master/user/create' && req.method === 'POST') {
     const { nome, email, password, plano, role } = req.body || {};
+    const newUser = {
+      id: 'usr_' + Date.now(),
+      nome: nome || 'Novo Aluno',
+      email: email || '',
+      plano: plano || 'vitalicio',
+      role: role || 'aluno',
+      status: 'ativo',
+      created_at: new Date().toISOString(),
+      ultimo_login: new Date().toISOString(),
+      aulas_criadas: 0
+    };
+    cloudCreatedUsers.push(newUser);
     return res.status(200).json({
       success: true,
       message: `Aluno ${nome} cadastrado com sucesso!`,
-      user: { id: 'usr_' + Date.now(), nome, email, plano: plano || 'vitalicio', role: role || 'aluno', status: 'ativo' }
+      user: newUser
     });
   }
 
   if (pathname === '/api/master/user/delete' && req.method === 'POST') {
+    const { id, email } = req.body || {};
+    const targetEmail = (email || id || '').trim().toLowerCase();
+    if (targetEmail) {
+      cloudDeletedUsers.add(targetEmail);
+    }
     return res.status(200).json({ success: true, message: 'Conta de aluno excluída com sucesso.' });
   }
 

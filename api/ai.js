@@ -25,8 +25,16 @@ let cloudUsersOverrides = {};
 let cloudDeletedUsers = new Set();
 let cloudCreatedUsers = [];
 
-function computeMasterUsers(baseUsers) {
-  let list = [...baseUsers, ...cloudCreatedUsers];
+const BASE_MOCK_USERS = [
+  { id: 'master_001', nome: 'Administrador Master', email: 'master@aprovacao.com', role: 'master', plano: 'vitalicio', status: 'ativo', created_at: '2026-09-15T00:00:00Z', ultimo_login: new Date().toISOString(), aulas_criadas: 9 },
+  { id: 'henrique_001', nome: 'Henrique Rosa', email: 'henriquerosa2019', role: 'master', plano: 'vitalicio', status: 'ativo', created_at: '2026-09-15T12:00:00Z', ultimo_login: new Date().toISOString(), aulas_criadas: 9 },
+  { id: 'aluno_101', nome: 'Estudante Concurseiro', email: 'concurseiro_aprovado@gmail.com', role: 'aluno', plano: 'vitalicio', status: 'ativo', created_at: '2026-09-15T17:26:00Z', ultimo_login: '2026-09-16T10:00:00Z', aulas_criadas: 1 },
+  { id: 'aluno_102', nome: 'Aluno Teste 592', email: 'aluno_1789504592@aprovacao.com.br', role: 'aluno', plano: 'trial', status: 'ativo', created_at: '2026-09-15T17:36:00Z', ultimo_login: '2026-09-16T11:00:00Z', aulas_criadas: 1 },
+  { id: 'aluno_103', nome: 'Aluno Teste 450', email: 'aluno_1789561450@aprovacao.com.br', role: 'aluno', plano: 'trial', status: 'ativo', created_at: '2026-09-16T09:24:00Z', ultimo_login: '2026-09-16T14:00:00Z', aulas_criadas: 0 }
+];
+
+function computeMasterUsers(baseUsers = BASE_MOCK_USERS) {
+  let list = [...(baseUsers || BASE_MOCK_USERS), ...cloudCreatedUsers];
   list = list.filter(u => !cloudDeletedUsers.has((u.email || '').toLowerCase().trim()));
   list = list.map(u => {
     const key = (u.email || '').toLowerCase().trim();
@@ -207,6 +215,13 @@ export default async function handler(req, res) {
       });
     }
 
+    // Obter dados dinâmicos do aluno considerando overrides do Master
+    const allUsers = computeMasterUsers();
+    const existingUser = allUsers.find(u => (u.email || '').toLowerCase().trim() === targetEmail);
+    const effectivePlan = cloudUsersOverrides[targetEmail]?.plano || existingUser?.plano || (isMaster ? 'vitalicio' : 'trial');
+    const effectiveRole = existingUser?.role || (isMaster ? 'master' : 'aluno');
+    const effectiveNome = existingUser?.nome || (targetEmail.includes('@') ? targetEmail.split('@')[0] : targetEmail);
+
     try {
       const resp = await fetch(`${supaUrl}/auth/v1/token?grant_type=password`, {
         method: 'POST',
@@ -219,10 +234,10 @@ export default async function handler(req, res) {
           success: true,
           user: {
             id: data.user.id,
-            nome: data.user.user_metadata?.nome || targetEmail.split('@')[0],
+            nome: data.user.user_metadata?.nome || effectiveNome,
             email: targetEmail,
-            role: isMaster ? 'master' : 'aluno',
-            plano: isMaster ? 'vitalicio' : 'trial',
+            role: effectiveRole,
+            plano: effectivePlan,
             status: 'ativo'
           },
           token: data.access_token,
@@ -235,22 +250,37 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: true,
       user: {
-        id: 'user_session_' + Date.now(),
-        nome: targetEmail.includes('@') ? targetEmail.split('@')[0] : targetEmail,
+        id: existingUser?.id || ('user_session_' + Date.now()),
+        nome: effectiveNome,
         email: targetEmail,
-        role: isMaster ? 'master' : 'aluno',
-        plano: isMaster ? 'vitalicio' : 'trial',
-        status: 'ativo'
+        role: effectiveRole,
+        plano: effectivePlan,
+        status: existingUser?.status || 'ativo'
       },
       message: 'Bem-vindo de volta ao Projeto Aprovação!'
     });
   }
 
-  if (pathname === '/api/auth/me') {
+  if (pathname === '/api/user/status' || pathname === '/api/auth/me') {
+    const urlObj = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+    const email = (urlObj.searchParams.get('email') || '').trim().toLowerCase();
+    const allUsers = computeMasterUsers();
+    const existingUser = email ? allUsers.find(u => (u.email || '').toLowerCase().trim() === email) : null;
+    const isMaster = email === 'master@aprovacao.com' || email === 'henriquerosa2019';
+    const effectivePlan = (email && cloudUsersOverrides[email]?.plano) || existingUser?.plano || (isMaster ? 'vitalicio' : 'trial');
+    const effectiveRole = existingUser?.role || (isMaster ? 'master' : 'aluno');
     return res.status(200).json({
       success: true,
       project: 'Projeto Aprovação',
-      authenticated: true
+      authenticated: true,
+      user: {
+        id: existingUser?.id || ('usr_' + (email || 'guest')),
+        nome: existingUser?.nome || (email ? email.split('@')[0] : 'Aluno'),
+        email: email,
+        plano: effectivePlan,
+        role: effectiveRole,
+        status: existingUser?.status || 'ativo'
+      }
     });
   }
 

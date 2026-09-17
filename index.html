@@ -7753,16 +7753,31 @@
       const isTrialParam = urlParams.get('trial') === '7dias';
       const is24hParam = urlParams.get('trial') === '24h';
       
-      const userPlan = localStorage.getItem('concursos_user_plan');
+      let userPlan = localStorage.getItem('concursos_user_plan');
+      if (typeof currentUser !== 'undefined' && currentUser && currentUser.email) {
+        const emailLower = (currentUser.email || '').toLowerCase().trim();
+        try {
+          const overrides = JSON.parse(localStorage.getItem('concursos_master_user_overrides') || '{}');
+          if (overrides[emailLower]?.plano) {
+            userPlan = overrides[emailLower].plano;
+          } else if (currentUser.plano) {
+            userPlan = currentUser.plano;
+          }
+        } catch(e) {}
+      }
+      
       const trialBar = document.getElementById('trialNoticeBar');
       const noticeIcon = document.getElementById('trialNoticeIcon');
       const mainText = document.getElementById('trialNoticeMainText');
       const daysCountText = document.getElementById('trialDaysCountText');
       const trialNoticeBtn = document.getElementById('trialNoticeBtn');
 
-      // Se o aluno já é assinante vitalício, oculta a barra de teste
-      if (userPlan === 'vitalicio') {
+      // Se o aluno já é assinante vitalício ou conta master, oculta a barra de teste completamente
+      if (userPlan === 'vitalicio' || (typeof isMasterUser === 'function' && isMasterUser())) {
         if (trialBar) trialBar.style.display = 'none';
+        if (typeof trialCountdownInterval !== 'undefined' && trialCountdownInterval) {
+          clearInterval(trialCountdownInterval);
+        }
         return;
       }
 
@@ -8580,15 +8595,23 @@
       if (data.success && data.user) {
         setAuthAlert(data.message || 'Login efetuado com sucesso!', 'success');
         currentUser = data.user;
-        localStorage.setItem('projeto_aprovacao_user', JSON.stringify(data.user));
-        if (data.user.role) localStorage.setItem('concursos_user_role', data.user.role);
-        if (data.user.plano) localStorage.setItem('concursos_user_plan', data.user.plano);
-        if (data.user.email) localStorage.setItem('concursos_user_email', data.user.email);
-        if (data.user.nome) localStorage.setItem('concursos_user_nome', data.user.nome);
+        try {
+          const emailLower = (data.user.email || '').toLowerCase().trim();
+          const overrides = JSON.parse(localStorage.getItem('concursos_master_user_overrides') || '{}');
+          if (overrides[emailLower]?.plano) {
+            currentUser.plano = overrides[emailLower].plano;
+          }
+        } catch(e) {}
+        localStorage.setItem('projeto_aprovacao_user', JSON.stringify(currentUser));
+        if (currentUser.role) localStorage.setItem('concursos_user_role', currentUser.role);
+        if (currentUser.plano) localStorage.setItem('concursos_user_plan', currentUser.plano);
+        if (currentUser.email) localStorage.setItem('concursos_user_email', currentUser.email);
+        if (currentUser.nome) localStorage.setItem('concursos_user_nome', currentUser.nome);
         updateUserBadgeUI();
+        if (typeof initTrialSystem === 'function') initTrialSystem();
         if (typeof checkMasterRole === 'function') checkMasterRole();
         if (typeof showToast === 'function') {
-          showToast(`Bem-vindo de volta ao Projeto Aprovação, ${data.user.nome}!`, '🎯');
+          showToast(`Bem-vindo de volta ao Projeto Aprovação, ${currentUser.nome}!`, '🎯');
         }
         if (authCloseTimeout) clearTimeout(authCloseTimeout); authCloseTimeout = setTimeout(() => closeAuthModal(), 500);
       } else {
@@ -8690,9 +8713,20 @@
     const isTrialParam = urlParams.get('trial') === '7dias' || !!localStorage.getItem('concursos_trial_start');
 
     if (currentUser) {
+      const emailLower = (currentUser.email || '').toLowerCase().trim();
+      let plan = currentUser.plano || localStorage.getItem('concursos_user_plan');
+      try {
+        const overrides = JSON.parse(localStorage.getItem('concursos_master_user_overrides') || '{}');
+        if (overrides[emailLower]?.plano) {
+          plan = overrides[emailLower].plano;
+          currentUser.plano = plan;
+        }
+      } catch(e) {}
+
       const firstName = (currentUser.nome || 'Aluno').split(' ')[0];
       const isMaster = typeof isMasterUser === 'function' && isMasterUser();
-      const plan = currentUser.plano || localStorage.getItem('concursos_user_plan') || (isMaster ? 'vitalicio' : 'trial');
+      if (isMaster) plan = 'vitalicio';
+      else if (!plan) plan = 'trial';
       const isVitalicio = plan === 'vitalicio';
 
       let planBadgeHtml = '';
@@ -8748,6 +8782,36 @@
     }
   }
 
+  async function syncCurrentUserData() {
+    if (!currentUser || !currentUser.email) return;
+    try {
+      const resp = await fetch(`/api/user/status?email=${encodeURIComponent(currentUser.email)}`);
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data.success && data.user) {
+          if (data.user.plano) {
+            currentUser.plano = data.user.plano;
+            localStorage.setItem('concursos_user_plan', data.user.plano);
+          }
+          if (data.user.role) {
+            currentUser.role = data.user.role;
+            localStorage.setItem('concursos_user_role', data.user.role);
+          }
+          if (data.user.nome) {
+            currentUser.nome = data.user.nome;
+            localStorage.setItem('concursos_user_nome', data.user.nome);
+          }
+          localStorage.setItem('projeto_aprovacao_user', JSON.stringify(currentUser));
+          updateUserBadgeUI();
+          if (typeof initTrialSystem === 'function') initTrialSystem();
+          if (typeof checkMasterRole === 'function') checkMasterRole();
+        }
+      }
+    } catch(e) {
+      console.warn('Erro ao sincronizar status do usuário com o servidor:', e);
+    }
+  }
+
   function checkStoredAuth() {
     try {
       const urlParams = new URLSearchParams(window.location.search);
@@ -8773,10 +8837,21 @@
       const saved = localStorage.getItem('projeto_aprovacao_user');
       if (saved) {
         currentUser = JSON.parse(saved);
+        try {
+          const emailLower = (currentUser.email || '').toLowerCase().trim();
+          const overrides = JSON.parse(localStorage.getItem('concursos_master_user_overrides') || '{}');
+          if (overrides[emailLower]?.plano) {
+            currentUser.plano = overrides[emailLower].plano;
+            localStorage.setItem('concursos_user_plan', currentUser.plano);
+          }
+        } catch(e) {}
         updateUserBadgeUI();
+        if (typeof initTrialSystem === 'function') initTrialSystem();
+        syncCurrentUserData();
       } else if (isTrial) {
         // Aluno em modo Teste Grátis de 7 Dias: acesso direto imediato a todos os tópicos e recursos
         updateUserBadgeUI();
+        if (typeof initTrialSystem === 'function') initTrialSystem();
       } else {
         // Visitante padrão que não iniciou teste ainda
         openAuthModal('login');
@@ -9026,6 +9101,7 @@
       localStorage.setItem('projeto_aprovacao_user', JSON.stringify(currentUser));
       localStorage.setItem('concursos_user_plan', newPlan);
       updateUserBadgeUI();
+      if (typeof initTrialSystem === 'function') initTrialSystem();
       if (typeof checkMasterRole === 'function') checkMasterRole();
     }
 

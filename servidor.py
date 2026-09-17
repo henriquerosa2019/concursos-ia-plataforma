@@ -187,14 +187,87 @@ def record_card_sm2(card_key, quality, card_a="", discipline="", subarea=""):
 
 USERS_FILE = os.path.join(BASE_DIR, "usuarios.json")
 
+def hash_password(password):
+    return hashlib.sha256(password.encode("utf-8")).hexdigest()
+
+def ensure_master_accounts(users):
+    changed = False
+    now_iso = datetime.datetime.now().isoformat()
+    
+    # 1. Conta Master Oficial do Sistema
+    master_email = "master@aprovacao.com"
+    if master_email not in users:
+        users[master_email] = {
+            "id": "master_account_001",
+            "nome": "Administrador Master",
+            "email": master_email,
+            "senha_hash": hash_password("Master2026!"),
+            "role": "master",
+            "plano": "vitalicio",
+            "status": "ativo",
+            "created_at": now_iso,
+            "ultimo_login": now_iso,
+            "trial_start": now_iso,
+            "trial_imported_count": 0,
+            "aulas_criadas": 0
+        }
+        changed = True
+    else:
+        u = users[master_email]
+        if u.get("role") != "master" or u.get("plano") != "vitalicio":
+            u["role"] = "master"
+            u["plano"] = "vitalicio"
+            u["status"] = "ativo"
+            changed = True
+            
+    # 2. Promover conta do Henrique Rosa a Master Vitalício
+    for k, u in list(users.items()):
+        if k == "henriquerosa2019" or u.get("email") == "henriquerosa2019":
+            if u.get("role") != "master" or u.get("plano") != "vitalicio":
+                u["role"] = "master"
+                u["plano"] = "vitalicio"
+                u["status"] = "ativo"
+                changed = True
+
+    # 3. Garantir consistência para todos os alunos
+    for k, u in list(users.items()):
+        if "role" not in u:
+            u["role"] = "aluno"
+            changed = True
+        if "plano" not in u:
+            u["plano"] = "vitalicio" if u.get("role") == "master" else "trial"
+            changed = True
+        if "status" not in u:
+            u["status"] = "ativo"
+            changed = True
+        if "trial_start" not in u:
+            u["trial_start"] = u.get("created_at", now_iso)
+            changed = True
+        if "trial_imported_count" not in u:
+            u["trial_imported_count"] = 0
+            changed = True
+        if "aulas_criadas" not in u:
+            u["aulas_criadas"] = 0
+            changed = True
+
+    if changed:
+        try:
+            with open(USERS_FILE, "w", encoding="utf-8") as f:
+                json.dump(users, f, indent=2, ensure_ascii=False)
+        except Exception as e:
+            print("Erro ao sincronizar usuarios.json:", e)
+
 def load_users():
     if not os.path.exists(USERS_FILE):
-        return {}
-    try:
-        with open(USERS_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except Exception:
-        return {}
+        users = {}
+    else:
+        try:
+            with open(USERS_FILE, "r", encoding="utf-8") as f:
+                users = json.load(f)
+        except Exception:
+            users = {}
+    ensure_master_accounts(users)
+    return users
 
 def save_users(users):
     try:
@@ -202,9 +275,6 @@ def save_users(users):
             json.dump(users, f, indent=2, ensure_ascii=False)
     except Exception as e:
         print("Erro ao salvar usuarios.json:", e)
-
-def hash_password(password):
-    return hashlib.sha256(password.encode("utf-8")).hexdigest()
 
 def register_user(nome, email, password):
     users = load_users()
@@ -229,8 +299,14 @@ def register_user(nome, email, password):
         "nome": nome.strip(),
         "email": email_clean,
         "senha_hash": pwd_hash,
+        "role": "aluno",
+        "plano": "trial",
+        "status": "ativo",
         "created_at": now_iso,
-        "ultimo_login": now_iso
+        "ultimo_login": now_iso,
+        "trial_start": now_iso,
+        "trial_imported_count": 0,
+        "aulas_criadas": 0
     }
 
     users[email_clean] = user_record
@@ -251,7 +327,12 @@ def register_user(nome, email, password):
         "user": {
             "id": user_id,
             "nome": nome.strip(),
-            "email": email_clean
+            "email": email_clean,
+            "role": "aluno",
+            "plano": "trial",
+            "status": "ativo",
+            "trial_start": now_iso,
+            "trial_imported_count": 0
         },
         "supabase_synced": sb_synced,
         "message": f"Conta criada com sucesso no Projeto Aprovação! Seja bem-vindo, {nome.strip()}!"
@@ -278,15 +359,25 @@ def login_user(email_or_user, password):
     if matched_user:
         if matched_user.get("senha_hash") != pwd_hash:
             return {"success": False, "error": "Senha incorreta. Verifique suas credenciais."}
+            
+        if matched_user.get("status") == "bloqueado":
+            return {"success": False, "error": "Esta conta está temporariamente suspensa pelo Administrador Master."}
+            
         matched_user["ultimo_login"] = datetime.datetime.now().isoformat()
         users[matched_user["email"]] = matched_user
         save_users(users)
+        
         return {
             "success": True,
             "user": {
                 "id": matched_user["id"],
                 "nome": matched_user["nome"],
-                "email": matched_user["email"]
+                "email": matched_user["email"],
+                "role": matched_user.get("role", "aluno"),
+                "plano": matched_user.get("plano", "trial"),
+                "status": matched_user.get("status", "ativo"),
+                "trial_start": matched_user.get("trial_start"),
+                "trial_imported_count": matched_user.get("trial_imported_count", 0)
             },
             "message": f"Bem-vindo de volta ao Projeto Aprovação, {matched_user['nome']}!"
         }
@@ -298,13 +389,20 @@ def login_user(email_or_user, password):
             if sb_data and "user" in sb_data:
                 sb_u = sb_data["user"]
                 u_name = sb_u.get("user_metadata", {}).get("nome") or key.split("@")[0]
+                now_iso = datetime.datetime.now().isoformat()
                 new_u = {
                     "id": sb_u.get("id", str(uuid.uuid4())),
                     "nome": u_name,
                     "email": key,
                     "senha_hash": pwd_hash,
-                    "created_at": datetime.datetime.now().isoformat(),
-                    "ultimo_login": datetime.datetime.now().isoformat()
+                    "role": "aluno",
+                    "plano": "trial",
+                    "status": "ativo",
+                    "created_at": now_iso,
+                    "ultimo_login": now_iso,
+                    "trial_start": now_iso,
+                    "trial_imported_count": 0,
+                    "aulas_criadas": 0
                 }
                 users[key] = new_u
                 save_users(users)
@@ -313,7 +411,12 @@ def login_user(email_or_user, password):
                     "user": {
                         "id": new_u["id"],
                         "nome": new_u["nome"],
-                        "email": new_u["email"]
+                        "email": new_u["email"],
+                        "role": "aluno",
+                        "plano": "trial",
+                        "status": "ativo",
+                        "trial_start": now_iso,
+                        "trial_imported_count": 0
                     },
                     "message": f"Autenticado via Supabase! Bem-vindo ao Projeto Aprovação, {u_name}!"
                 }
@@ -321,6 +424,222 @@ def login_user(email_or_user, password):
         pass
 
     return {"success": False, "error": "Credenciais inválidas. Usuário não encontrado ou senha incorreta."}
+
+# ==============================================================================
+# FUNÇÕES DE GESTÃO PRIVILEGIADA DA CONTA MASTER
+# ==============================================================================
+
+def get_master_users_list():
+    users = load_users()
+    user_list = []
+    for k, u in users.items():
+        user_list.append({
+            "id": u.get("id", ""),
+            "nome": u.get("nome", ""),
+            "email": u.get("email", k),
+            "role": u.get("role", "aluno"),
+            "plano": u.get("plano", "trial"),
+            "status": u.get("status", "ativo"),
+            "created_at": u.get("created_at", ""),
+            "ultimo_login": u.get("ultimo_login", ""),
+            "trial_start": u.get("trial_start", ""),
+            "trial_imported_count": u.get("trial_imported_count", 0),
+            "aulas_criadas": u.get("aulas_criadas", 0)
+        })
+    user_list.sort(key=lambda x: x.get("created_at", ""), reverse=True)
+    return user_list
+
+def update_master_user(user_id_or_email, updates):
+    users = load_users()
+    target_key = None
+    target_user = None
+    
+    clean_id = str(user_id_or_email).strip().lower()
+    for k, u in users.items():
+        if k.lower() == clean_id or u.get("id", "").lower() == clean_id or u.get("email", "").lower() == clean_id:
+            target_key = k
+            target_user = u
+            break
+            
+    if not target_user:
+        return {"success": False, "error": "Usuário não encontrado."}
+        
+    if "plano" in updates:
+        target_user["plano"] = updates["plano"]
+    if "status" in updates:
+        target_user["status"] = updates["status"]
+    if "role" in updates:
+        target_user["role"] = updates["role"]
+    if "reset_trial" in updates and updates["reset_trial"]:
+        target_user["trial_start"] = datetime.datetime.now().isoformat()
+        target_user["trial_imported_count"] = 0
+    if "nova_senha" in updates and updates["nova_senha"]:
+        if len(updates["nova_senha"]) < 4:
+            return {"success": False, "error": "A senha deve ter no mínimo 4 caracteres."}
+        target_user["senha_hash"] = hash_password(updates["nova_senha"])
+    if "trial_imported_count" in updates:
+        target_user["trial_imported_count"] = int(updates["trial_imported_count"])
+    if "nome" in updates and updates["nome"]:
+        target_user["nome"] = updates["nome"].strip()
+        
+    users[target_key] = target_user
+    save_users(users)
+    return {"success": True, "message": f"Usuário {target_user.get('nome')} atualizado com sucesso!", "user": target_user}
+
+def create_master_user(nome, email, password, plano="vitalicio", role="aluno"):
+    users = load_users()
+    clean_email = email.strip().lower()
+    if not clean_email or not password or not nome:
+        return {"success": False, "error": "Preencha todos os campos obrigatórios."}
+    if clean_email in users:
+        return {"success": False, "error": "Este e-mail/usuário já existe."}
+        
+    now_iso = datetime.datetime.now().isoformat()
+    new_user = {
+        "id": str(uuid.uuid4()),
+        "nome": nome.strip(),
+        "email": clean_email,
+        "senha_hash": hash_password(password),
+        "role": role,
+        "plano": plano,
+        "status": "ativo",
+        "created_at": now_iso,
+        "ultimo_login": now_iso,
+        "trial_start": now_iso,
+        "trial_imported_count": 0,
+        "aulas_criadas": 0
+    }
+    users[clean_email] = new_user
+    save_users(users)
+    return {"success": True, "message": f"Usuário {nome} cadastrado com sucesso pelo Master!", "user": new_user}
+
+def delete_master_user(user_id_or_email):
+    users = load_users()
+    target_key = None
+    clean_id = str(user_id_or_email).strip().lower()
+    for k, u in users.items():
+        if k.lower() == clean_id or u.get("id", "").lower() == clean_id or u.get("email", "").lower() == clean_id:
+            target_key = k
+            if u.get("role") == "master" and (clean_id == "master@aprovacao.com" or clean_id == "henriquerosa2019"):
+                return {"success": False, "error": "Não é permitido excluir as contas master principais do sistema."}
+            break
+            
+    if not target_key:
+        return {"success": False, "error": "Usuário não encontrado."}
+        
+    del users[target_key]
+    save_users(users)
+    return {"success": True, "message": "Conta de aluno excluída com sucesso."}
+
+def get_master_aulas_list():
+    tree_data = scan_concursos_tree()
+    tree = tree_data.get("tree", {})
+    aulas = []
+    
+    catalog = {}
+    catalog_path = os.path.join(BASE_DIR, "preseeded_topics.json")
+    if os.path.exists(catalog_path):
+        try:
+            with open(catalog_path, "r", encoding="utf-8") as f:
+                catalog = json.load(f)
+        except Exception:
+            pass
+            
+    for disc, subs in tree.items():
+        for sub, sinfo in subs.items():
+            meta = get_lesson_metadata(disc, sub)
+            is_global = disc in catalog and sub in catalog[disc]
+            timed_path = os.path.join(BASE_DIR, disc, sub, f"Transcricao_Cronometrada_{sub}.txt")
+            full_path = os.path.join(BASE_DIR, disc, sub, f"Transcricao_Completa_{sub}.txt")
+            has_tr = os.path.exists(timed_path) or os.path.exists(full_path)
+            
+            aulas.append({
+                "discipline": disc,
+                "subarea": sub,
+                "title": meta.get("title") or sub.replace("_", " "),
+                "professor": meta.get("professor", "Prof. Titular"),
+                "cards_count": sinfo.get("cards_count", 0),
+                "quiz_count": sinfo.get("quiz_count", 0),
+                "files_count": sinfo.get("files_count", 0),
+                "origem": "Oficial (Global)" if is_global else "Criada por Aluno / Local",
+                "is_global": is_global,
+                "youtube_url": meta.get("youtube_url", ""),
+                "has_transcript": has_tr
+            })
+            
+    aulas.sort(key=lambda x: (x["discipline"], x["subarea"]))
+    return aulas
+
+def promote_aula_to_catalog(discipline, subarea):
+    catalog_path = os.path.join(BASE_DIR, "preseeded_topics.json")
+    catalog = {}
+    if os.path.exists(catalog_path):
+        try:
+            with open(catalog_path, "r", encoding="utf-8") as f:
+                catalog = json.load(f)
+        except Exception:
+            catalog = {}
+            
+    meta = get_lesson_metadata(discipline, subarea)
+    cards = get_flashcards(discipline, subarea)
+    quiz = get_quiz_questions(discipline, subarea)
+    transcript = get_transcript(discipline, subarea)
+    
+    if discipline not in catalog:
+        catalog[discipline] = {}
+        
+    catalog[discipline][subarea] = {
+        "meta": meta,
+        "flashcards": cards,
+        "quiz": quiz,
+        "transcript": transcript
+    }
+    
+    with open(catalog_path, "w", encoding="utf-8") as f:
+        json.dump(catalog, f, indent=2, ensure_ascii=False)
+        
+    for target in [os.path.join(BASE_DIR, "public", "preseeded_topics.json"),
+                   os.path.join(BASE_DIR, ".vercel", "output", "static", "preseeded_topics.json")]:
+        if os.path.exists(os.path.dirname(target)):
+            try:
+                with open(target, "w", encoding="utf-8") as ft:
+                    json.dump(catalog, ft, indent=2, ensure_ascii=False)
+            except Exception:
+                pass
+                
+    return {"success": True, "message": f"Aula '{subarea}' promovida com sucesso para o Catálogo Global de todos os alunos!"}
+
+def get_master_stats():
+    users = load_users()
+    tree_data = scan_concursos_tree()
+    
+    total_users = len(users)
+    vitalicios = sum(1 for u in users.values() if u.get("plano") == "vitalicio")
+    trials = sum(1 for u in users.values() if u.get("plano") == "trial")
+    masters = sum(1 for u in users.values() if u.get("role") == "master")
+    bloqueados = sum(1 for u in users.values() if u.get("status") == "bloqueado")
+    
+    total_discs = len(tree_data.get("tree", {}))
+    total_subs = sum(len(subs) for subs in tree_data.get("tree", {}).values())
+    total_cards = tree_data.get("total_cards", 0)
+    total_quiz = tree_data.get("total_quiz", 0)
+    
+    return {
+        "success": True,
+        "users": {
+            "total": total_users,
+            "vitalicio": vitalicios,
+            "trial": trials,
+            "master": masters,
+            "bloqueados": bloqueados
+        },
+        "content": {
+            "disciplines_count": total_discs,
+            "subareas_count": total_subs,
+            "cards_count": total_cards,
+            "quiz_count": total_quiz
+        }
+    }
 
 
 def call_gemini_api(system_prompt, user_prompt, json_mode=True, temperature=0.7):
@@ -1283,6 +1602,31 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             }, ensure_ascii=False).encode("utf-8"))
             return
 
+        # Rotas Master - Painel de Controle Privilegiado
+        elif path == "/api/master/users":
+            users_list = get_master_users_list()
+            self.send_response(200)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": True, "users": users_list}, ensure_ascii=False).encode("utf-8"))
+            return
+
+        elif path == "/api/master/aulas":
+            aulas_list = get_master_aulas_list()
+            self.send_response(200)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": True, "aulas": aulas_list}, ensure_ascii=False).encode("utf-8"))
+            return
+
+        elif path == "/api/master/stats":
+            stats = get_master_stats()
+            self.send_response(200)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps(stats, ensure_ascii=False).encode("utf-8"))
+            return
+
         # 2. Árvore Completa e Métricas
         elif path == "/api/structure":
             data = scan_concursos_tree()
@@ -1999,6 +2343,73 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             self.send_header("Content-type", "application/json; charset=utf-8")
             self.end_headers()
             self.wfile.write(json.dumps({"success": True, "message": "Logout realizado."}).encode("utf-8"))
+            return
+
+        # Rotas Master - Modificações Privilegiadas
+        elif path == "/api/master/user/update":
+            user_id = payload.get("id") or payload.get("email") or ""
+            updates = payload.get("updates", payload)
+            res = update_master_user(user_id, updates)
+            status_code = 200 if res.get("success") else 400
+            self.send_response(status_code)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps(res, ensure_ascii=False).encode("utf-8"))
+            return
+
+        elif path == "/api/master/user/create":
+            nome = payload.get("nome", "").strip()
+            email = payload.get("email", "").strip()
+            password = payload.get("password", "")
+            plano = payload.get("plano", "vitalicio")
+            role = payload.get("role", "aluno")
+            res = create_master_user(nome, email, password, plano=plano, role=role)
+            status_code = 200 if res.get("success") else 400
+            self.send_response(status_code)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps(res, ensure_ascii=False).encode("utf-8"))
+            return
+
+        elif path == "/api/master/user/delete":
+            user_id = payload.get("id") or payload.get("email") or ""
+            res = delete_master_user(user_id)
+            status_code = 200 if res.get("success") else 400
+            self.send_response(status_code)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps(res, ensure_ascii=False).encode("utf-8"))
+            return
+
+        elif path == "/api/master/aula/promote":
+            disc = payload.get("discipline", "").strip()
+            sub = payload.get("subarea", "").strip()
+            res = promote_aula_to_catalog(disc, sub)
+            status_code = 200 if res.get("success") else 400
+            self.send_response(status_code)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps(res, ensure_ascii=False).encode("utf-8"))
+            return
+
+        elif path == "/api/master/aula/delete":
+            disc = payload.get("discipline", "").strip()
+            sub = payload.get("subarea", "").strip()
+            target_folder = os.path.join(BASE_DIR, disc, sub)
+            if os.path.exists(target_folder):
+                import shutil
+                try:
+                    shutil.rmtree(target_folder)
+                    res = {"success": True, "message": f"Tópico '{sub}' excluído com sucesso."}
+                except Exception as e_del:
+                    res = {"success": False, "error": f"Erro ao excluir: {e_del}"}
+            else:
+                res = {"success": False, "error": "Pasta da aula não encontrada no disco."}
+            status_code = 200 if res.get("success") else 400
+            self.send_response(status_code)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps(res, ensure_ascii=False).encode("utf-8"))
             return
 
         # 1. Salvar Configurações de IA

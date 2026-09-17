@@ -2140,6 +2140,9 @@
     <div class="ai-status-badge" id="aiStatusBadge" onclick="openAiConfigModal()" style="display: none;" title="Configurar provedor de IA (Gemini / OpenAI)">
       🤖 IA: Verificando... ⚙️
     </div>
+    <div class="ai-status-badge" id="masterControlBadge" onclick="openMasterDashboard()" title="Centro de Comando Master: Gestão Central de Alunos, Planos e Disciplinas" style="display: none; background: linear-gradient(135deg, #b45309 0%, #d97706 45%, #f59e0b 100%); color: #ffffff; border: 1px solid #fef08a; font-weight: 800; cursor: pointer; align-items: center; gap: 7px; padding: 6px 14px; border-radius: 8px; box-shadow: 0 0 16px rgba(245, 158, 11, 0.45); text-shadow: 0 1px 2px rgba(0,0,0,0.5); letter-spacing: 0.3px;">
+      <span style="font-size: 14px;">👑</span> <span>Painel Master</span>
+    </div>
     <div class="ai-status-badge" id="userAuthBadge" onclick="handleAuthBadgeClick()" title="Minha Conta no Projeto Aprovação" style="border-color: rgba(88, 166, 255, 0.4); color: var(--accent-blue); font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
       <span id="userAuthIcon">👤</span> <span id="userAuthText">Entrar</span>
     </div>
@@ -2721,6 +2724,12 @@
         <span id="loginSpinner" style="display:none;" class="spinner"></span>
         <span id="loginBtnLabel">🚀 Entrar no Projeto Aprovação</span>
       </button>
+
+      <div style="text-align: center; margin-top: 15px; padding-top: 12px; border-top: 1px solid var(--border);">
+        <button type="button" onclick="quickFillMasterLogin()" style="background: transparent; border: none; color: #f59e0b; font-size: 11.5px; font-weight: 700; cursor: pointer; opacity: 0.85; display: inline-flex; align-items: center; gap: 5px; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.85'">
+          <span>👑</span> <span>Acesso Master (Administrador)</span>
+        </button>
+      </div>
     </div>
 
     <!-- FORMULÁRIO 2: CRIAR NOVA CONTA (CADASTRO) -->
@@ -2917,6 +2926,234 @@
     <div class="modal-actions">
       <button class="btn" onclick="closeModal('modalAiConfig')">Cancelar</button>
       <button class="btn btn-primary" onclick="saveAiConfig()">💾 Salvar Configurações</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================================== -->
+<!-- MODAL PRIVILEGIADO: CENTRO DE COMANDO & GESTÃO DA CONTA MASTER -->
+<!-- ============================================================================== -->
+<div class="modal-overlay" id="modalMasterDashboard" style="display: none; z-index: 100000; backdrop-filter: blur(10px);">
+  <div class="modal-box" style="max-width: 1120px; width: 96%; max-height: 92vh; display: flex; flex-direction: column; padding: 0; overflow: hidden; border: 1.5px solid rgba(245, 158, 11, 0.5); box-shadow: 0 16px 50px rgba(0,0,0,0.7); background: var(--surface);">
+    
+    <!-- Header Master -->
+    <div style="background: linear-gradient(90deg, #1e1b4b 0%, #0f172a 60%, #1e1b4b 100%); border-bottom: 1.5px solid rgba(245, 158, 11, 0.4); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="background: linear-gradient(135deg, #f59e0b, #d97706); width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);">
+          👑
+        </div>
+        <div>
+          <div style="font-size: 17px; font-weight: 900; color: #f8fafc; letter-spacing: -0.3px; display: flex; align-items: center; gap: 8px;">
+            Painel Master • Centro de Comando
+            <span style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 6px;">ACESSO PRIVILEGIADO</span>
+          </div>
+          <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">
+            Gestão unificada de alunos, planos (Vitalício/Teste), senhas e disciplinas/aulas cadastradas
+          </div>
+        </div>
+      </div>
+      <button type="button" onclick="closeMasterDashboard()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #f8fafc; width: 34px; height: 34px; border-radius: 8px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✕</button>
+    </div>
+
+    <!-- Quick Metrics Top Banner -->
+    <div style="background: var(--surface2); padding: 14px 24px; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px;" id="masterMetricsCards">
+      <div style="background: var(--surface); padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border);">
+        <div style="font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase;">👥 Total Alunos</div>
+        <div style="font-size: 20px; font-weight: 900; color: var(--text); margin-top: 2px;" id="mStatTotalUsers">--</div>
+      </div>
+      <div style="background: var(--surface); padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.3);">
+        <div style="font-size: 11px; font-weight: 700; color: #10b981; text-transform: uppercase;">⚡ Vitalícios</div>
+        <div style="font-size: 20px; font-weight: 900; color: #10b981; margin-top: 2px;" id="mStatVitalicioUsers">--</div>
+      </div>
+      <div style="background: var(--surface); padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.3);">
+        <div style="font-size: 11px; font-weight: 700; color: #f59e0b; text-transform: uppercase;">⏳ Teste 7 Dias</div>
+        <div style="font-size: 20px; font-weight: 900; color: #f59e0b; margin-top: 2px;" id="mStatTrialUsers">--</div>
+      </div>
+      <div style="background: var(--surface); padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border);">
+        <div style="font-size: 11px; font-weight: 700; color: var(--accent-blue); text-transform: uppercase;">📚 Matérias / Tópicos</div>
+        <div style="font-size: 20px; font-weight: 900; color: var(--text); margin-top: 2px;" id="mStatDiscsAulas">--</div>
+      </div>
+      <div style="background: var(--surface); padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border);">
+        <div style="font-size: 11px; font-weight: 700; color: #a855f7; text-transform: uppercase;">🃏 Flashcards IA</div>
+        <div style="font-size: 20px; font-weight: 900; color: var(--text); margin-top: 2px;" id="mStatTotalCards">--</div>
+      </div>
+      <div style="background: var(--surface); padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border);">
+        <div style="font-size: 11px; font-weight: 700; color: #38bdf8; text-transform: uppercase;">🎯 Questões Simulado</div>
+        <div style="font-size: 20px; font-weight: 900; color: var(--text); margin-top: 2px;" id="mStatTotalQuiz">--</div>
+      </div>
+    </div>
+
+    <!-- Master Navigation Tabs -->
+    <div style="display: flex; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; gap: 6px; flex-wrap: wrap;">
+      <button type="button" class="auth-tab-btn active" id="mTabBtnUsers" onclick="switchMasterTab('users')" style="padding: 12px 18px; font-size: 13.5px; font-weight: 700; border-bottom: 2px solid #f59e0b; color: var(--text); background: transparent; border-top: none; border-left: none; border-right: none; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+        👥 Gestão de Alunos & Contas
+      </button>
+      <button type="button" class="auth-tab-btn" id="mTabBtnAulas" onclick="switchMasterTab('aulas')" style="padding: 12px 18px; font-size: 13.5px; font-weight: 700; border-bottom: 2px solid transparent; color: var(--text2); background: transparent; border-top: none; border-left: none; border-right: none; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+        📚 Disciplinas & Aulas de Todos os Alunos
+      </button>
+      <button type="button" class="auth-tab-btn" id="mTabBtnMetrics" onclick="switchMasterTab('metrics')" style="padding: 12px 18px; font-size: 13.5px; font-weight: 700; border-bottom: 2px solid transparent; color: var(--text2); background: transparent; border-top: none; border-left: none; border-right: none; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+        📊 Métricas Globais
+      </button>
+      <button type="button" class="auth-tab-btn" id="mTabBtnBackup" onclick="switchMasterTab('backup')" style="padding: 12px 18px; font-size: 13.5px; font-weight: 700; border-bottom: 2px solid transparent; color: var(--text2); background: transparent; border-top: none; border-left: none; border-right: none; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+        ☁️ Sincronização & Backup
+      </button>
+    </div>
+
+    <!-- Scrollable Content Body -->
+    <div style="flex: 1; overflow-y: auto; padding: 20px 24px; background: var(--bg);">
+      
+      <!-- ABA 1: ALUNOS & CONTAS -->
+      <div id="mViewUsers" style="display: block;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+          <div style="display: flex; align-items: center; gap: 10px; flex: 1; max-width: 480px;">
+            <input type="text" id="mUsersSearchInput" placeholder="🔍 Filtrar por nome ou e-mail de aluno..." oninput="filterMasterUsersTable(this.value)" style="width: 100%; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 13px;">
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn btn-green" onclick="openMasterCreateUserModal()" style="font-size: 12.5px; font-weight: 700; padding: 8px 14px; display: inline-flex; align-items: center; gap: 6px;">
+              ➕ Novo Aluno
+            </button>
+            <button type="button" class="btn" onclick="loadMasterUsersData()" style="font-size: 12.5px; padding: 8px 12px;" title="Atualizar lista de alunos">
+              🔄 Atualizar
+            </button>
+          </div>
+        </div>
+
+        <!-- Formulário Rápido para Criar Novo Aluno (Inline) -->
+        <div id="mCreateUserBox" style="display: none; background: var(--surface); border: 1.5px solid var(--accent-blue); border-radius: 10px; padding: 16px; margin-bottom: 16px;">
+          <div style="font-size: 13.5px; font-weight: 800; color: var(--text); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+            <span>➕ Cadastrar Novo Aluno pelo Master</span>
+            <span style="cursor: pointer; color: var(--text3); font-size: 16px;" onclick="document.getElementById('mCreateUserBox').style.display='none'">✕</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 12px;">
+            <input type="text" id="mNewUserName" placeholder="Nome Completo" style="padding: 8px 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface2); color: var(--text); font-size: 12.5px;">
+            <input type="email" id="mNewUserEmail" placeholder="E-mail ou Usuário" style="padding: 8px 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface2); color: var(--text); font-size: 12.5px;">
+            <input type="password" id="mNewUserPass" placeholder="Senha Inicial (mín. 4 dígitos)" style="padding: 8px 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface2); color: var(--text); font-size: 12.5px;">
+            <select id="mNewUserPlan" style="padding: 8px 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface2); color: var(--text); font-size: 12.5px;">
+              <option value="vitalicio">⚡ Plano Vitalício (Liberado)</option>
+              <option value="trial">⏳ Teste Grátis (7 Dias)</option>
+            </select>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 8px;">
+            <button type="button" class="btn" onclick="document.getElementById('mCreateUserBox').style.display='none'" style="font-size: 12px;">Cancelar</button>
+            <button type="button" class="btn btn-primary" onclick="submitMasterCreateUser()" style="font-size: 12px; font-weight: 700;">💾 Salvar Aluno</button>
+          </div>
+        </div>
+
+        <!-- Tabela de Alunos -->
+        <div style="overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 10px;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 12.5px; text-align: left;" id="mUsersTable">
+            <thead>
+              <tr style="background: var(--surface2); border-bottom: 1px solid var(--border); color: var(--text2); font-size: 11px; text-transform: uppercase;">
+                <th style="padding: 10px 14px;">Aluno</th>
+                <th style="padding: 10px 14px;">Plano Atual</th>
+                <th style="padding: 10px 14px;">Data Cadastro</th>
+                <th style="padding: 10px 14px;">Último Acesso</th>
+                <th style="padding: 10px 14px; text-align: center;">Aulas Importadas</th>
+                <th style="padding: 10px 14px; text-align: center;">Status</th>
+                <th style="padding: 10px 14px; text-align: right;">Ações do Master</th>
+              </tr>
+            </thead>
+            <tbody id="mUsersTableBody">
+              <tr><td colspan="7" style="padding: 24px; text-align: center; color: var(--text3);">Carregando contas de alunos...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ABA 2: DISCIPLINAS & AULAS -->
+      <div id="mViewAulas" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+          <div style="display: flex; align-items: center; gap: 10px; flex: 1; max-width: 480px;">
+            <input type="text" id="mAulasSearchInput" placeholder="🔍 Filtrar por matéria, tópico ou título..." oninput="filterMasterAulasTable(this.value)" style="width: 100%; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 13px;">
+          </div>
+          <button type="button" class="btn" onclick="loadMasterAulasData()" style="font-size: 12.5px; padding: 8px 12px;" title="Atualizar matérias">
+            🔄 Atualizar
+          </button>
+        </div>
+
+        <div style="overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 10px;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 12.5px; text-align: left;" id="mAulasTable">
+            <thead>
+              <tr style="background: var(--surface2); border-bottom: 1px solid var(--border); color: var(--text2); font-size: 11px; text-transform: uppercase;">
+                <th style="padding: 10px 14px;">Disciplina & Tópico</th>
+                <th style="padding: 10px 14px;">Título da Aula</th>
+                <th style="padding: 10px 14px;">Origem / Autor</th>
+                <th style="padding: 10px 14px; text-align: center;">Flashcards</th>
+                <th style="padding: 10px 14px; text-align: center;">Simulado</th>
+                <th style="padding: 10px 14px; text-align: center;">Recursos</th>
+                <th style="padding: 10px 14px; text-align: right;">Ações Privilegiadas</th>
+              </tr>
+            </thead>
+            <tbody id="mAulasTableBody">
+              <tr><td colspan="7" style="padding: 24px; text-align: center; color: var(--text3);">Carregando catálogo de aulas...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ABA 3: MÉTRICAS GLOBAIS -->
+      <div id="mViewMetrics" style="display: none;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+          <div style="background: var(--surface); padding: 18px; border-radius: 10px; border: 1px solid var(--border);">
+            <div style="font-size: 13px; font-weight: 800; color: var(--text); margin-bottom: 12px;">📊 Distribuição de Alunos</div>
+            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: var(--surface2); border-radius: 6px;">
+                <span>⚡ Alunos Vitalícios (Pagantes / Aprovados)</span>
+                <strong style="color: #10b981;" id="mMetricVitalicioCount">--</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: var(--surface2); border-radius: 6px;">
+                <span>⏳ Alunos no Teste Grátis (7 Dias)</span>
+                <strong style="color: #f59e0b;" id="mMetricTrialCount">--</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: var(--surface2); border-radius: 6px;">
+                <span>👑 Administradores Master</span>
+                <strong style="color: #fbbf24;" id="mMetricMasterCount">--</strong>
+              </div>
+            </div>
+          </div>
+
+          <div style="background: var(--surface); padding: 18px; border-radius: 10px; border: 1px solid var(--border);">
+            <div style="font-size: 13px; font-weight: 800; color: var(--text); margin-bottom: 12px;">📚 Conteúdo dos 4 Pilares</div>
+            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: var(--surface2); border-radius: 6px;">
+                <span>📚 Total de Disciplinas Ativas</span>
+                <strong id="mMetricDiscs">--</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: var(--surface2); border-radius: 6px;">
+                <span>📖 Total de Aulas & Tópicos</span>
+                <strong id="mMetricSubs">--</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: var(--surface2); border-radius: 6px;">
+                <span>🃏 Flashcards do Anki no Sistema</span>
+                <strong style="color: #a855f7;" id="mMetricCards">--</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: var(--surface2); border-radius: 6px;">
+                <span>🎯 Questões de Simulado Cebraspe</span>
+                <strong style="color: #38bdf8;" id="mMetricQuiz">--</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABA 4: SUPABASE & BACKUP -->
+      <div id="mViewBackup" style="display: none;">
+        <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; max-width: 680px; margin: 0 auto;">
+          <div style="font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 10px;">☁️ Backup Geral e Sincronização em Nuvem</div>
+          <p style="font-size: 13px; color: var(--text2); line-height: 1.5; margin-bottom: 18px;">
+            A Conta Master pode executar a sincronização global de todas as contas e matérias do computador local diretamente para a nuvem Supabase, bem como exportar um backup de segurança em arquivo JSON.
+          </p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-green" onclick="syncAllToSupabase()" style="padding: 10px 18px; font-weight: 800; display: inline-flex; align-items: center; gap: 8px;">
+              <span>🔄</span> <span>Sincronizar Todas as Contas & Aulas com Supabase</span>
+            </button>
+            <button type="button" class="btn btn-primary" onclick="exportMasterBackupJson()" style="padding: 10px 18px; font-weight: 800; display: inline-flex; align-items: center; gap: 8px;">
+              <span>📥</span> <span>Baixar Backup Completo (.JSON)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -8301,7 +8538,12 @@
         setAuthAlert(data.message || 'Login efetuado com sucesso!', 'success');
         currentUser = data.user;
         localStorage.setItem('projeto_aprovacao_user', JSON.stringify(data.user));
+        if (data.user.role) localStorage.setItem('concursos_user_role', data.user.role);
+        if (data.user.plano) localStorage.setItem('concursos_user_plan', data.user.plano);
+        if (data.user.email) localStorage.setItem('concursos_user_email', data.user.email);
+        if (data.user.nome) localStorage.setItem('concursos_user_nome', data.user.nome);
         updateUserBadgeUI();
+        if (typeof checkMasterRole === 'function') checkMasterRole();
         if (typeof showToast === 'function') {
           showToast(`Bem-vindo de volta ao Projeto Aprovação, ${data.user.nome}!`, '🎯');
         }
@@ -8386,7 +8628,10 @@
   function logoutUser() {
     currentUser = null;
     localStorage.removeItem('projeto_aprovacao_user');
+    localStorage.removeItem('concursos_user_role');
+    localStorage.removeItem('concursos_user_plan');
     updateUserBadgeUI();
+    if (typeof checkMasterRole === 'function') checkMasterRole();
     if (typeof showToast === 'function') {
       showToast('Sessão encerrada com sucesso.', '👋');
     }
@@ -8412,10 +8657,47 @@
     }
   }
 
+  function isMasterUser() {
+    const role = localStorage.getItem('concursos_user_role');
+    const email = currentUser?.email || localStorage.getItem('concursos_user_email') || '';
+    const urlParams = new URLSearchParams(window.location.search);
+    return role === 'master' || currentUser?.role === 'master' || email === 'master@aprovacao.com' || email === 'henriquerosa2019' || urlParams.get('admin') === 'master' || urlParams.get('master') === '1';
+  }
+
+  function checkMasterRole() {
+    const masterBadge = document.getElementById('masterControlBadge');
+    const trialBar = document.getElementById('trialNoticeBar');
+    if (isMasterUser()) {
+      if (masterBadge) masterBadge.style.display = 'inline-flex';
+      if (trialBar) trialBar.style.display = 'none';
+      localStorage.setItem('concursos_user_plan', 'vitalicio');
+    } else {
+      if (masterBadge) masterBadge.style.display = 'none';
+    }
+  }
+
   function checkStoredAuth() {
     try {
       const urlParams = new URLSearchParams(window.location.search);
       const isTrial = urlParams.get('trial') === '7dias' || !!localStorage.getItem('concursos_trial_start');
+      const isAdminParam = urlParams.get('admin') === 'master' || urlParams.get('master') === '1';
+      
+      if (isAdminParam) {
+        localStorage.setItem('concursos_user_role', 'master');
+        localStorage.setItem('concursos_user_plan', 'vitalicio');
+        if (!currentUser) {
+          currentUser = {
+            id: 'master_account_001',
+            nome: 'Administrador Master',
+            email: 'master@aprovacao.com',
+            role: 'master',
+            plano: 'vitalicio',
+            status: 'ativo'
+          };
+          localStorage.setItem('projeto_aprovacao_user', JSON.stringify(currentUser));
+        }
+      }
+
       const saved = localStorage.getItem('projeto_aprovacao_user');
       if (saved) {
         currentUser = JSON.parse(saved);
@@ -8427,8 +8709,500 @@
         // Visitante padrão que não iniciou teste ainda
         openAuthModal('login');
       }
+
+      checkMasterRole();
     } catch(e) {
       // Falha silenciosa para não travar a experiência
+    }
+  }
+
+  // ==============================================================================
+  // GESTÃO PRIVILEGIADA DA CONTA MASTER (FRONTEND)
+  // ==============================================================================
+  let masterCachedUsers = [];
+  let masterCachedAulas = [];
+
+  function openMasterDashboard() {
+    if (!isMasterUser()) {
+      alert("Acesso restrito à Conta Master.");
+      return;
+    }
+    const modal = document.getElementById('modalMasterDashboard');
+    if (modal) {
+      modal.style.display = 'flex';
+      loadMasterStats();
+      loadMasterUsersData();
+      loadMasterAulasData();
+    }
+  }
+
+  function closeMasterDashboard() {
+    const modal = document.getElementById('modalMasterDashboard');
+    if (modal) modal.style.display = 'none';
+  }
+
+  function switchMasterTab(tab) {
+    const tabs = ['users', 'aulas', 'metrics', 'backup'];
+    tabs.forEach(t => {
+      const btn = document.getElementById('mTabBtn' + t.charAt(0).toUpperCase() + t.slice(1));
+      const view = document.getElementById('mView' + t.charAt(0).toUpperCase() + t.slice(1));
+      if (btn) {
+        if (t === tab) {
+          btn.style.borderBottom = '2px solid #f59e0b';
+          btn.style.color = 'var(--text)';
+        } else {
+          btn.style.borderBottom = '2px solid transparent';
+          btn.style.color = 'var(--text2)';
+        }
+      }
+      if (view) {
+        view.style.display = (t === tab) ? 'block' : 'none';
+      }
+    });
+  }
+
+  async function loadMasterStats() {
+    try {
+      const resp = await fetch('/api/master/stats');
+      const data = await resp.json();
+      if (data.success) {
+        const u = data.users || {};
+        const c = data.content || {};
+        const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+        setTxt('mStatTotalUsers', u.total ?? '--');
+        setTxt('mStatVitalicioUsers', u.vitalicio ?? '--');
+        setTxt('mStatTrialUsers', u.trial ?? '--');
+        setTxt('mStatDiscsAulas', `${c.disciplines_count || 0} mat. / ${c.subareas_count || 0} tóp.`);
+        setTxt('mStatTotalCards', c.cards_count ?? '--');
+        setTxt('mStatTotalQuiz', c.quiz_count ?? '--');
+
+        setTxt('mMetricVitalicioCount', u.vitalicio ?? 0);
+        setTxt('mMetricTrialCount', u.trial ?? 0);
+        setTxt('mMetricMasterCount', u.master ?? 0);
+        setTxt('mMetricDiscs', c.disciplines_count ?? 0);
+        setTxt('mMetricSubs', c.subareas_count ?? 0);
+        setTxt('mMetricCards', c.cards_count ?? 0);
+        setTxt('mMetricQuiz', c.quiz_count ?? 0);
+      }
+    } catch(e) {
+      console.warn("Erro ao carregar stats master:", e);
+    }
+  }
+
+  async function loadMasterUsersData() {
+    const tbody = document.getElementById('mUsersTableBody');
+    if (!tbody) return;
+    try {
+      const resp = await fetch('/api/master/users');
+      const data = await resp.json();
+      if (data.success && Array.isArray(data.users)) {
+        masterCachedUsers = data.users;
+        renderMasterUsersTable(masterCachedUsers);
+      }
+    } catch(e) {
+      tbody.innerHTML = `<tr><td colspan="7" style="padding: 16px; color: #ef4444; text-align: center;">Erro ao carregar usuários: ${e.message}</td></tr>`;
+    }
+  }
+
+  function renderMasterUsersTable(users) {
+    const tbody = document.getElementById('mUsersTableBody');
+    if (!tbody) return;
+    if (!users || users.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="padding: 24px; text-align: center; color: var(--text3);">Nenhum aluno encontrado.</td></tr>`;
+      return;
+    }
+
+    let html = '';
+    users.forEach(u => {
+      const isMaster = u.role === 'master';
+      const isVitalicio = u.plano === 'vitalicio';
+      const isBloqueado = u.status === 'bloqueado';
+      
+      const planBadge = isMaster 
+        ? `<span style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 11px;">👑 MASTER</span>`
+        : (isVitalicio 
+            ? `<span style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 11px;">⚡ VITALÍCIO</span>`
+            : `<span style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); padding: 3px 8px; border-radius: 6px; font-weight: 700; font-size: 11px;">⏳ TESTE 7 DIAS</span>`);
+
+      const statusBadge = isBloqueado
+        ? `<span style="color: #ef4444; font-weight: 700;">🚫 Bloqueado</span>`
+        : `<span style="color: #10b981; font-weight: 700;">✅ Ativo</span>`;
+
+      const formatDate = d => {
+        if (!d) return '--';
+        try { return new Date(d).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }); }
+        catch(e) { return d.slice(0, 10); }
+      };
+
+      html += `
+        <tr style="border-bottom: 1px solid var(--border); transition: background 0.15s;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='transparent'">
+          <td style="padding: 12px 14px;">
+            <div style="font-weight: 700; color: var(--text);">${u.nome || 'Sem nome'}</div>
+            <div style="font-size: 11.5px; color: var(--text2);">${u.email}</div>
+          </td>
+          <td style="padding: 12px 14px;">${planBadge}</td>
+          <td style="padding: 12px 14px; font-size: 11.5px; color: var(--text2);">${formatDate(u.created_at)}</td>
+          <td style="padding: 12px 14px; font-size: 11.5px; color: var(--text2);">${formatDate(u.ultimo_login)}</td>
+          <td style="padding: 12px 14px; text-align: center; font-weight: 700;">${u.trial_imported_count || u.aulas_criadas || 0}</td>
+          <td style="padding: 12px 14px; text-align: center;">${statusBadge}</td>
+          <td style="padding: 12px 14px; text-align: right; white-space: nowrap;">
+            ${!isMaster ? `
+              <button type="button" class="btn" onclick="masterTogglePlan('${u.email}', '${u.plano}')" style="font-size: 11px; padding: 4px 8px; margin-right: 4px;" title="Alternar plano">
+                ${isVitalicio ? '⏳ Mudar p/ Teste' : '⚡ Tornar Vitalício'}
+              </button>
+              ${!isVitalicio ? `
+                <button type="button" class="btn" onclick="masterResetUserTrial('${u.email}')" style="font-size: 11px; padding: 4px 8px; margin-right: 4px;" title="Dar +7 dias de teste">
+                  🔄 +7 Dias
+                </button>
+              ` : ''}
+              <button type="button" class="btn" onclick="masterChangeUserPassword('${u.email}', '${u.nome}')" style="font-size: 11px; padding: 4px 8px; margin-right: 4px;" title="Redefinir senha">
+                🔑 Senha
+              </button>
+              <button type="button" class="btn" onclick="masterToggleStatus('${u.email}', '${u.status}')" style="font-size: 11px; padding: 4px 8px; margin-right: 4px; color: ${isBloqueado ? '#10b981' : '#ef4444'};" title="${isBloqueado ? 'Reativar' : 'Bloquear'}">
+                ${isBloqueado ? '✅ Desbloquear' : '🚫 Bloquear'}
+              </button>
+              <button type="button" class="btn" onclick="masterDeleteUser('${u.email}', '${u.nome}')" style="font-size: 11px; padding: 4px 8px; color: #ef4444;" title="Excluir aluno">
+                🗑️
+              </button>
+            ` : `<span style="font-size: 11px; color: #fbbf24; font-weight: 700;">Conta Master Protegida</span>`}
+          </td>
+        </tr>
+      `;
+    });
+
+    tbody.innerHTML = html;
+  }
+
+  function filterMasterUsersTable(query) {
+    const q = (query || '').toLowerCase().trim();
+    if (!q) {
+      renderMasterUsersTable(masterCachedUsers);
+      return;
+    }
+    const filtered = masterCachedUsers.filter(u => 
+      (u.nome || '').toLowerCase().includes(q) || (u.email || '').toLowerCase().includes(q)
+    );
+    renderMasterUsersTable(filtered);
+  }
+
+  async function masterTogglePlan(email, currentPlan) {
+    const newPlan = currentPlan === 'vitalicio' ? 'trial' : 'vitalicio';
+    const conf = confirm(`Deseja alterar o plano do aluno ${email} para "${newPlan.toUpperCase()}"?`);
+    if (!conf) return;
+
+    try {
+      const resp = await fetch('/api/master/user/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, updates: { plano: newPlan } })
+      });
+      const data = await resp.json();
+      if (data.success) {
+        if (typeof showToast === 'function') showToast(`Plano de ${email} alterado para ${newPlan}!`, '⚡');
+        loadMasterUsersData();
+        loadMasterStats();
+      } else {
+        alert(data.error || 'Erro ao alterar plano.');
+      }
+    } catch(e) {
+      alert('Erro de conexão: ' + e.message);
+    }
+  }
+
+  async function masterResetUserTrial(email) {
+    if (!confirm(`Deseja renovar o Teste Grátis do aluno ${email} por mais 7 dias?`)) return;
+    try {
+      const resp = await fetch('/api/master/user/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, updates: { reset_trial: true } })
+      });
+      const data = await resp.json();
+      if (data.success) {
+        if (typeof showToast === 'function') showToast(`Teste Grátis renovado por +7 dias para ${email}!`, '🔄');
+        loadMasterUsersData();
+      }
+    } catch(e) {
+      alert('Erro: ' + e.message);
+    }
+  }
+
+  async function masterChangeUserPassword(email, nome) {
+    const newPass = prompt(`Digite a nova senha para o aluno ${nome || email} (mínimo 4 caracteres):`);
+    if (!newPass) return;
+    if (newPass.length < 4) {
+      alert("A nova senha deve ter no mínimo 4 caracteres.");
+      return;
+    }
+
+    try {
+      const resp = await fetch('/api/master/user/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, updates: { nova_senha: newPass } })
+      });
+      const data = await resp.json();
+      if (data.success) {
+        alert(`Senha do aluno ${email} alterada com sucesso!`);
+      } else {
+        alert(data.error || 'Erro ao alterar senha.');
+      }
+    } catch(e) {
+      alert('Erro: ' + e.message);
+    }
+  }
+
+  async function masterToggleStatus(email, currentStatus) {
+    const newStatus = currentStatus === 'bloqueado' ? 'ativo' : 'bloqueado';
+    const conf = confirm(`Deseja ${newStatus === 'bloqueado' ? 'BLOQUEAR' : 'DESBLOQUEAR'} o acesso do aluno ${email}?`);
+    if (!conf) return;
+
+    try {
+      const resp = await fetch('/api/master/user/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, updates: { status: newStatus } })
+      });
+      const data = await resp.json();
+      if (data.success) {
+        if (typeof showToast === 'function') showToast(`Status de ${email} alterado para ${newStatus}!`, '🛡️');
+        loadMasterUsersData();
+        loadMasterStats();
+      }
+    } catch(e) {
+      alert('Erro: ' + e.message);
+    }
+  }
+
+  async function masterDeleteUser(email, nome) {
+    const conf = confirm(`ATENÇÃO: Tem certeza que deseja EXCLUIR DEFINITIVAMENTE o cadastro do aluno "${nome || email}"?\n\nEsta ação não poderá ser desfeita.`);
+    if (!conf) return;
+
+    try {
+      const resp = await fetch('/api/master/user/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email })
+      });
+      const data = await resp.json();
+      if (data.success) {
+        if (typeof showToast === 'function') showToast(`Conta de ${email} excluída com sucesso!`, '🗑️');
+        loadMasterUsersData();
+        loadMasterStats();
+      } else {
+        alert(data.error || 'Erro ao excluir usuário.');
+      }
+    } catch(e) {
+      alert('Erro: ' + e.message);
+    }
+  }
+
+  function openMasterCreateUserModal() {
+    const box = document.getElementById('mCreateUserBox');
+    if (box) {
+      box.style.display = 'block';
+      setTimeout(() => document.getElementById('mNewUserName')?.focus(), 50);
+    }
+  }
+
+  async function submitMasterCreateUser() {
+    const nome = document.getElementById('mNewUserName').value.trim();
+    const email = document.getElementById('mNewUserEmail').value.trim();
+    const password = document.getElementById('mNewUserPass').value;
+    const plano = document.getElementById('mNewUserPlan').value;
+
+    if (!nome || !email || !password) {
+      alert('Preencha nome, e-mail e senha inicial.');
+      return;
+    }
+
+    try {
+      const resp = await fetch('/api/master/user/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome, email, password, plano, role: 'aluno' })
+      });
+      const data = await resp.json();
+      if (data.success) {
+        alert(data.message || 'Aluno cadastrado com sucesso!');
+        document.getElementById('mNewUserName').value = '';
+        document.getElementById('mNewUserEmail').value = '';
+        document.getElementById('mNewUserPass').value = '';
+        document.getElementById('mCreateUserBox').style.display = 'none';
+        loadMasterUsersData();
+        loadMasterStats();
+      } else {
+        alert(data.error || 'Erro ao criar aluno.');
+      }
+    } catch(e) {
+      alert('Erro: ' + e.message);
+    }
+  }
+
+  async function loadMasterAulasData() {
+    const tbody = document.getElementById('mAulasTableBody');
+    if (!tbody) return;
+    try {
+      const resp = await fetch('/api/master/aulas');
+      const data = await resp.json();
+      if (data.success && Array.isArray(data.aulas)) {
+        masterCachedAulas = data.aulas;
+        renderMasterAulasTable(masterCachedAulas);
+      }
+    } catch(e) {
+      tbody.innerHTML = `<tr><td colspan="7" style="padding: 16px; color: #ef4444; text-align: center;">Erro ao carregar aulas: ${e.message}</td></tr>`;
+    }
+  }
+
+  function renderMasterAulasTable(aulas) {
+    const tbody = document.getElementById('mAulasTableBody');
+    if (!tbody) return;
+    if (!aulas || aulas.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="padding: 24px; text-align: center; color: var(--text3);">Nenhuma disciplina ou aula encontrada.</td></tr>`;
+      return;
+    }
+
+    let html = '';
+    aulas.forEach(a => {
+      const discPretty = a.discipline.replace(/_/g, ' ');
+      const subPretty = a.subarea.replace(/_/g, ' ');
+      
+      const badgeOrigem = a.is_global 
+        ? `<span style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 11px;">🌟 OFICIAL (GLOBAL)</span>`
+        : `<span style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 3px 8px; border-radius: 6px; font-weight: 700; font-size: 11px;">👤 ALUNO / LOCAL</span>`;
+
+      html += `
+        <tr style="border-bottom: 1px solid var(--border); transition: background 0.15s;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='transparent'">
+          <td style="padding: 12px 14px;">
+            <div style="font-weight: 700; color: var(--text);">${discPretty}</div>
+            <div style="font-size: 12px; color: var(--accent-blue);">${subPretty}</div>
+          </td>
+          <td style="padding: 12px 14px;">
+            <div style="font-weight: 600; color: var(--text);">${a.title}</div>
+            <div style="font-size: 11px; color: var(--text3);">${a.professor}</div>
+          </td>
+          <td style="padding: 12px 14px;">${badgeOrigem}</td>
+          <td style="padding: 12px 14px; text-align: center; font-weight: 800; color: #a855f7;">${a.cards_count || 0}</td>
+          <td style="padding: 12px 14px; text-align: center; font-weight: 800; color: #38bdf8;">${a.quiz_count || 0}</td>
+          <td style="padding: 12px 14px; text-align: center; font-size: 13px;">
+            ${a.youtube_url ? '🎥' : ''} ${a.has_transcript ? '📄' : ''}
+          </td>
+          <td style="padding: 12px 14px; text-align: right; white-space: nowrap;">
+            <button type="button" class="btn btn-primary" onclick="masterStudyAula('${a.discipline}', '${a.subarea}')" style="font-size: 11px; padding: 4px 8px; margin-right: 4px;" title="Abrir esta aula na plataforma">
+              👁️ Abrir
+            </button>
+            ${!a.is_global ? `
+              <button type="button" class="btn btn-green" onclick="masterPromoteAula('${a.discipline}', '${a.subarea}')" style="font-size: 11px; padding: 4px 8px; margin-right: 4px;" title="Disponibilizar para TODOS os alunos no catálogo oficial">
+                🌟 Promover p/ Global
+              </button>
+            ` : ''}
+            <button type="button" class="btn" onclick="masterDeleteAula('${a.discipline}', '${a.subarea}')" style="font-size: 11px; padding: 4px 8px; color: #ef4444;" title="Excluir aula">
+              🗑️
+            </button>
+          </td>
+        </tr>
+      `;
+    });
+
+    tbody.innerHTML = html;
+  }
+
+  function filterMasterAulasTable(query) {
+    const q = (query || '').toLowerCase().trim();
+    if (!q) {
+      renderMasterAulasTable(masterCachedAulas);
+      return;
+    }
+    const filtered = masterCachedAulas.filter(a =>
+      a.discipline.toLowerCase().includes(q) || a.subarea.toLowerCase().includes(q) || (a.title || '').toLowerCase().includes(q)
+    );
+    renderMasterAulasTable(filtered);
+  }
+
+  function masterStudyAula(disc, sub) {
+    closeMasterDashboard();
+    if (typeof selectSubarea === 'function') {
+      selectSubarea(disc, sub);
+    }
+  }
+
+  async function masterPromoteAula(disc, sub) {
+    if (!confirm(`Deseja promover a aula "${sub}" da matéria "${disc}" para o Catálogo Global de TODOS os alunos da plataforma?`)) return;
+    try {
+      const resp = await fetch('/api/master/aula/promote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ discipline: disc, subarea: sub })
+      });
+      const data = await resp.json();
+      if (data.success) {
+        alert(data.message || 'Aula promovida para o Catálogo Global com sucesso!');
+        loadMasterAulasData();
+        loadMasterStats();
+      } else {
+        alert(data.error || 'Erro ao promover aula.');
+      }
+    } catch(e) {
+      alert('Erro: ' + e.message);
+    }
+  }
+
+  async function masterDeleteAula(disc, sub) {
+    if (!confirm(`ATENÇÃO: Deseja realmente excluir a aula "${sub}" da matéria "${disc}" do disco?`)) return;
+    try {
+      const resp = await fetch('/api/master/aula/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ discipline: disc, subarea: sub })
+      });
+      const data = await resp.json();
+      if (data.success) {
+        if (typeof showToast === 'function') showToast(`Aula "${sub}" excluída com sucesso!`, '🗑️');
+        loadMasterAulasData();
+        loadMasterStats();
+        if (typeof loadTree === 'function') loadTree();
+      } else {
+        alert(data.error || 'Erro ao excluir aula.');
+      }
+    } catch(e) {
+      alert('Erro: ' + e.message);
+    }
+  }
+
+  async function exportMasterBackupJson() {
+    try {
+      const respUsers = await fetch('/api/master/users');
+      const dataUsers = await respUsers.json();
+      const respAulas = await fetch('/api/master/aulas');
+      const dataAulas = await respAulas.json();
+      
+      const backupData = {
+        export_date: new Date().toISOString(),
+        platform: "Projeto Aprovação",
+        users: dataUsers.users || [],
+        aulas: dataAulas.aulas || []
+      };
+
+      const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `backup_master_projeto_aprovacao_${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      if (typeof showToast === 'function') showToast('Backup exportado com sucesso!', '📥');
+    } catch(e) {
+      alert('Erro ao gerar backup: ' + e.message);
+    }
+  }
+
+  function quickFillMasterLogin() {
+    const userInput = document.getElementById('authLoginUser');
+    const passInput = document.getElementById('authLoginPassword');
+    if (userInput) userInput.value = 'master@aprovacao.com';
+    if (passInput) passInput.value = 'Master2026!';
+    if (typeof submitAuthLogin === 'function') {
+      submitAuthLogin();
     }
   }
 
@@ -8444,6 +9218,31 @@
   window.checkStoredAuth = checkStoredAuth;
   window.togglePasswordVisibility = togglePasswordVisibility;
 
+  // Master Global Exports
+  window.isMasterUser = isMasterUser;
+  window.checkMasterRole = checkMasterRole;
+  window.openMasterDashboard = openMasterDashboard;
+  window.closeMasterDashboard = closeMasterDashboard;
+  window.switchMasterTab = switchMasterTab;
+  window.loadMasterStats = loadMasterStats;
+  window.loadMasterUsersData = loadMasterUsersData;
+  window.renderMasterUsersTable = renderMasterUsersTable;
+  window.filterMasterUsersTable = filterMasterUsersTable;
+  window.masterTogglePlan = masterTogglePlan;
+  window.masterResetUserTrial = masterResetUserTrial;
+  window.masterChangeUserPassword = masterChangeUserPassword;
+  window.masterToggleStatus = masterToggleStatus;
+  window.masterDeleteUser = masterDeleteUser;
+  window.openMasterCreateUserModal = openMasterCreateUserModal;
+  window.submitMasterCreateUser = submitMasterCreateUser;
+  window.loadMasterAulasData = loadMasterAulasData;
+  window.renderMasterAulasTable = renderMasterAulasTable;
+  window.filterMasterAulasTable = filterMasterAulasTable;
+  window.masterStudyAula = masterStudyAula;
+  window.masterPromoteAula = masterPromoteAula;
+  window.masterDeleteAula = masterDeleteAula;
+  window.exportMasterBackupJson = exportMasterBackupJson;
+  window.quickFillMasterLogin = quickFillMasterLogin;
 
   // Inicializar tema armazenado imediatamente
   applyAppTheme(getStoredTheme());

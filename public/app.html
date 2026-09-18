@@ -6623,8 +6623,11 @@
     }
   }
 
+  let currentTab = 0;
+
   // Tabs Switcher
   function switchTab(index, keepCardPosition = false) {
+    currentTab = index;
     const tabs = document.querySelectorAll('.nav-tab');
     const panes = document.querySelectorAll('.tab-pane');
     tabs.forEach((t, i) => {
@@ -6702,10 +6705,17 @@
     }
   }
 
-  function toggleGroup(id) {
+  function toggleGroup(id, disc) {
     const el = document.getElementById(id);
     if (el) {
-      el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+      const isClosed = (el.style.display === 'none' || getComputedStyle(el).display === 'none');
+      el.style.display = isClosed ? 'block' : 'none';
+      if (isClosed && disc && globalTreeCache && globalTreeCache[disc]) {
+        const subs = Object.keys(globalTreeCache[disc]);
+        if (subs.length > 0 && disc !== currentDiscipline) {
+          selectSubarea(disc, subs[0]);
+        }
+      }
     }
   }
 
@@ -7540,7 +7550,7 @@
 
       html += `
         <div class="discipline-group" id="group-${disc}">
-          <div class="discipline-title" onclick="toggleGroup('${grpId}')" title="${discName}">
+          <div class="discipline-title" onclick="toggleGroup('${grpId}', '${disc}')" title="${discName}">
             <div style="display: flex; align-items: center; gap: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0;">
               <span class="discipline-icon">${icon}</span>
               <span style="overflow: hidden; text-overflow: ellipsis; font-weight: 700;">${discName}</span>
@@ -7877,6 +7887,13 @@
       ratedHard: 0
     };
 
+    // REGRA DE OURO: Ao abrir qualquer matéria/tópico, levar o aluno direto para o Pilar 1 (Resumo & Sintaxe), SEMPRE!
+    switchTab(0);
+
+    const contentBox = document.getElementById('contentArea');
+    if (contentBox) contentBox.scrollTop = 0;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     // No celular, ao tocar no tópico, encolhe a sidebar automaticamente para liberar 100% da tela para os 4 Pilares
     if (window.innerWidth <= 900 && typeof closeSidebar === 'function') {
       closeSidebar();
@@ -7934,6 +7951,9 @@
 
       renderDynamicLessonTabs(meta.markdown_content, disc, sub);
       renderKeyMoments(disc, sub, meta);
+
+      // Reafirma a ativação do Pilar 1 (Resumo & Sintaxe)
+      switchTab(0);
     } catch(e) {
       console.warn("Erro ao selecionar subárea:", e);
     }
@@ -7952,6 +7972,9 @@
     } catch(err) {
       console.warn("Erro ao carregar recursos secundários da subárea:", err);
     }
+
+    // Foco final garantido no Pilar 1 (Resumo & Sintaxe)
+    switchTab(0);
 
     showToast(`Tópico ativo: ${sub.replace(/_/g, ' ')}`, "📚");
   }

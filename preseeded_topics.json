@@ -1718,7 +1718,13 @@
           "gabarito": "E",
           "justificativa": "ERRADO. A determinação judicial só pode ser executada durante o dia (Art. 5º, XI, CF/88). Durante a noite, somente em flagrante delito, desastre ou socorro.",
           "banca": "Cebraspe",
-          "ano": 2024
+          "ano": 2024,
+          "options": [
+            "CERTO",
+            "ERRADO"
+          ],
+          "correct_index": 1,
+          "comentario": "ERRADO. A determinação judicial só pode ser executada durante o dia (Art. 5º, XI, CF/88). Durante a noite, somente em flagrante delito, desastre ou socorro."
         },
         {
           "id": 2,
@@ -1726,7 +1732,13 @@
           "gabarito": "C",
           "justificativa": "CERTO. Art. 5º, LXXII, 'a' da CF/88: conceder-se-á habeas data para assegurar o conhecimento de informações relativas à pessoa do impetrante.",
           "banca": "Cebraspe",
-          "ano": 2024
+          "ano": 2024,
+          "options": [
+            "CERTO",
+            "ERRADO"
+          ],
+          "correct_index": 0,
+          "comentario": "CERTO. Art. 5º, LXXII, 'a' da CF/88: conceder-se-á habeas data para assegurar o conhecimento de informações relativas à pessoa do impetrante."
         },
         {
           "id": 3,
@@ -1734,7 +1746,13 @@
           "gabarito": "E",
           "justificativa": "ERRADO. Não se exige autorização, apenas PRÉVIO AVISO (Art. 5º, XVI, CF/88).",
           "banca": "Cebraspe",
-          "ano": 2023
+          "ano": 2023,
+          "options": [
+            "CERTO",
+            "ERRADO"
+          ],
+          "correct_index": 1,
+          "comentario": "ERRADO. Não se exige autorização, apenas PRÉVIO AVISO (Art. 5º, XVI, CF/88)."
         },
         {
           "id": 4,
@@ -1742,7 +1760,13 @@
           "gabarito": "E",
           "justificativa": "ERRADO. Pessoa jurídica NÃO pode propor ação popular (Súmula 365 do STF). Apenas o cidadão (eleitor).",
           "banca": "Cebraspe",
-          "ano": 2024
+          "ano": 2024,
+          "options": [
+            "CERTO",
+            "ERRADO"
+          ],
+          "correct_index": 1,
+          "comentario": "ERRADO. Pessoa jurídica NÃO pode propor ação popular (Súmula 365 do STF). Apenas o cidadão (eleitor)."
         },
         {
           "id": 5,
@@ -1750,7 +1774,13 @@
           "gabarito": "C",
           "justificativa": "CERTO. Art. 5º, LXXVII da CF/88: são gratuitas as ações de 'habeas-corpus' e 'habeas-data'.",
           "banca": "Cebraspe",
-          "ano": 2023
+          "ano": 2023,
+          "options": [
+            "CERTO",
+            "ERRADO"
+          ],
+          "correct_index": 0,
+          "comentario": "CERTO. Art. 5º, LXXVII da CF/88: são gratuitas as ações de 'habeas-corpus' e 'habeas-data'."
         }
       ],
       "transcript": {
@@ -1801,7 +1831,13 @@
           "gabarito": "C",
           "justificativa": "CERTO. A inferência textual é a dedução legítima a partir de indícios textuais fornecidos pelo autor.",
           "banca": "Cebraspe",
-          "ano": 2024
+          "ano": 2024,
+          "options": [
+            "CERTO",
+            "ERRADO"
+          ],
+          "correct_index": 0,
+          "comentario": "CERTO. A inferência textual é a dedução legítima a partir de indícios textuais fornecidos pelo autor."
         },
         {
           "id": 2,
@@ -1809,7 +1845,13 @@
           "gabarito": "E",
           "justificativa": "ERRADO. Textos que orientam, instruem ou prescrevem passos são tipologicamente INJUNTIVOS (ou instrucionais).",
           "banca": "Cebraspe",
-          "ano": 2023
+          "ano": 2023,
+          "options": [
+            "CERTO",
+            "ERRADO"
+          ],
+          "correct_index": 1,
+          "comentario": "ERRADO. Textos que orientam, instruem ou prescrevem passos são tipologicamente INJUNTIVOS (ou instrucionais)."
         },
         {
           "id": 3,
@@ -1817,7 +1859,13 @@
           "gabarito": "E",
           "justificativa": "ERRADO. A referência ao que ainda será dito é CATAFÓRICA. A anafórica retoma o que já foi dito anteriormente.",
           "banca": "Cebraspe",
-          "ano": 2024
+          "ano": 2024,
+          "options": [
+            "CERTO",
+            "ERRADO"
+          ],
+          "correct_index": 1,
+          "comentario": "ERRADO. A referência ao que ainda será dito é CATAFÓRICA. A anafórica retoma o que já foi dito anteriormente."
         },
         {
           "id": 4,
@@ -1825,7 +1873,13 @@
           "gabarito": "C",
           "justificativa": "CERTO. Ambas são conjunções subordinativas concessivas e preservam o valor semântico.",
           "banca": "Cebraspe",
-          "ano": 2023
+          "ano": 2023,
+          "options": [
+            "CERTO",
+            "ERRADO"
+          ],
+          "correct_index": 0,
+          "comentario": "CERTO. Ambas são conjunções subordinativas concessivas e preservam o valor semântico."
         }
       ],
       "transcript": {
@@ -1876,7 +1930,13 @@
           "gabarito": "E",
           "justificativa": "ERRADO. Frases imperativas (que expressam ordem ou pedido) não possuem valor de verdade, portanto não são proposições lógicas.",
           "banca": "Cebraspe",
-          "ano": 2024
+          "ano": 2024,
+          "options": [
+            "CERTO",
+            "ERRADO"
+          ],
+          "correct_index": 1,
+          "comentario": "ERRADO. Frases imperativas (que expressam ordem ou pedido) não possuem valor de verdade, portanto não são proposições lógicas."
         },
         {
           "id": 2,
@@ -1884,7 +1944,13 @@
           "gabarito": "C",
           "justificativa": "CERTO. A condicional (P → Q) só é falsa no caso V → F.",
           "banca": "Cebraspe",
-          "ano": 2024
+          "ano": 2024,
+          "options": [
+            "CERTO",
+            "ERRADO"
+          ],
+          "correct_index": 0,
+          "comentario": "CERTO. A condicional (P → Q) só é falsa no caso V → F."
         },
         {
           "id": 3,
@@ -1892,7 +1958,13 @@
           "gabarito": "C",
           "justificativa": "CERTO. Lei de De Morgan: ~(A ∧ B) ≡ ~A ∨ ~B.",
           "banca": "Cebraspe",
-          "ano": 2023
+          "ano": 2023,
+          "options": [
+            "CERTO",
+            "ERRADO"
+          ],
+          "correct_index": 0,
+          "comentario": "CERTO. Lei de De Morgan: ~(A ∧ B) ≡ ~A ∨ ~B."
         },
         {
           "id": 4,
@@ -1900,7 +1972,13 @@
           "gabarito": "C",
           "justificativa": "CERTO. Na disjunção inclusiva (OU), basta uma proposição verdadeira para que o todo seja verdadeiro.",
           "banca": "Cebraspe",
-          "ano": 2023
+          "ano": 2023,
+          "options": [
+            "CERTO",
+            "ERRADO"
+          ],
+          "correct_index": 0,
+          "comentario": "CERTO. Na disjunção inclusiva (OU), basta uma proposição verdadeira para que o todo seja verdadeiro."
         }
       ],
       "transcript": {

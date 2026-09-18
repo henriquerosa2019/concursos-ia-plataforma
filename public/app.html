@@ -5404,6 +5404,29 @@
     }
   }
 
+  // Helper para garantir integridade das opções e gabarito em qualquer questão (especialmente bancas estilo Cebraspe C/E)
+  function normalizeQuizItem(q) {
+    if (!q || typeof q !== 'object') {
+      return { enunciado: 'Questão sem enunciado', options: ['(C) CERTO', '(E) ERRADO'], correct_index: 0, comentario: '' };
+    }
+    if (!Array.isArray(q.options) || q.options.length === 0) {
+      if (q.gabarito === 'E') {
+        q.options = ['(C) CERTO', '(E) ERRADO'];
+        q.correct_index = 1;
+      } else {
+        q.options = ['(C) CERTO', '(E) ERRADO'];
+        q.correct_index = 0;
+      }
+    }
+    if (typeof q.correct_index !== 'number' || q.correct_index < 0 || q.correct_index >= q.options.length) {
+      q.correct_index = (q.gabarito === 'E') ? 1 : 0;
+    }
+    if (!q.comentario && q.justificativa) {
+      q.comentario = q.justificativa;
+    }
+    return q;
+  }
+
   async function finishCebraspeExam() {
     if (!quizData || !quizData.length) return;
     if (cebraspeTimerInterval) clearInterval(cebraspeTimerInterval);
@@ -5413,7 +5436,8 @@
     let erradas = 0;
     let emBranco = 0;
 
-    quizData.forEach((q, idx) => {
+    quizData.forEach((rawQ, idx) => {
+      const q = normalizeQuizItem(rawQ);
       const ans = cebraspeAnswers[idx];
       let correctChoice = 'C';
       if (q.options && q.options.length === 2) {
@@ -5477,7 +5501,8 @@
   }
 
   function revealCebraspeAnswers() {
-    quizData.forEach((q, idx) => {
+    quizData.forEach((rawQ, idx) => {
+      const q = normalizeQuizItem(rawQ);
       const fb = document.getElementById(`quiz-fb-${idx}`);
       const parent = document.getElementById(`quiz-opts-${idx}`);
       if (!fb || !parent) return;
@@ -5547,15 +5572,17 @@
 
     if (currentQuizMode === 'cebraspe') {
       updateCebraspeCounter();
-      quizData.forEach((q, qIndex) => {
+      quizData.forEach((rawQ, qIndex) => {
+        const q = normalizeQuizItem(rawQ);
         const div = document.createElement('div');
         div.className = 'quiz-item';
 
-        let cleanEnunciado = q.enunciado.replace(/^\d+\.\s*/, '');
+        let cleanEnunciado = (q.enunciado || '').replace(/^\d+\.\s*/, '');
         let displayEnunciado = `${qIndex + 1}. ${cleanEnunciado}`;
 
         let currentChoice = cebraspeAnswers[qIndex];
-        let isCebraspeBinary = (q.options && q.options.length === 2);
+        const safeOptions = (Array.isArray(q.options) && q.options.length) ? q.options : ['(C) CERTO', '(E) ERRADO'];
+        let isCebraspeBinary = (safeOptions.length === 2);
 
         let optsHtml = `<div class="quiz-opts" id="quiz-opts-${qIndex}">`;
         if (isCebraspeBinary) {
@@ -5571,9 +5598,9 @@
           `;
         } else {
           const letters = ['A', 'B', 'C', 'D', 'E'];
-          q.options.forEach((opt, optIdx) => {
+          safeOptions.forEach((opt, optIdx) => {
             const letter = letters[optIdx] || String(optIdx);
-            const cleanOpt = opt.replace(/^[A-E]\)\s*/, '');
+            const cleanOpt = String(opt).replace(/^[A-E]\)\s*/, '');
             optsHtml += `
               <div class="quiz-opt ${currentChoice === letter ? 'cebraspe-opt-selected' : ''}" data-choice="${letter}" onclick="selectCebraspeOpt(${qIndex}, '${letter}')">
                 <span class="cebraspe-radio">${currentChoice === letter ? '🔘' : '⚪'}</span>
@@ -5622,15 +5649,17 @@
 
     } else {
       // Treino convencional (gabarito imediato)
-      quizData.forEach((q, qIndex) => {
+      quizData.forEach((rawQ, qIndex) => {
+        const q = normalizeQuizItem(rawQ);
         const div = document.createElement('div');
         div.className = 'quiz-item';
 
-        let cleanEnunciado = q.enunciado.replace(/^\d+\.\s*/, '');
+        let cleanEnunciado = (q.enunciado || '').replace(/^\d+\.\s*/, '');
         let displayEnunciado = `${qIndex + 1}. ${cleanEnunciado}`;
 
+        const safeOptions = (Array.isArray(q.options) && q.options.length) ? q.options : ['(C) CERTO', '(E) ERRADO'];
         let optsHtml = `<div class="quiz-opts" id="quiz-opts-${qIndex}">`;
-        q.options.forEach((opt, optIndex) => {
+        safeOptions.forEach((opt, optIndex) => {
           const isCorrect = (optIndex === q.correct_index);
           optsHtml += `<div class="quiz-opt" onclick="checkQuizItem(${qIndex}, ${optIndex}, ${isCorrect}, this)">${opt}</div>`;
         });
@@ -7085,16 +7114,16 @@
         } else {
           showToast(`⚡ Raio-X & Pegadinhas (${banca}) gerado com sucesso!`, '🎯');
         }
-        if (isTrial && data.markdown) {
+        if (data.markdown) {
           const tab1Box = document.getElementById('tab1Content');
           if (tab1Box && typeof parseMarkdownPegadinhas === 'function') {
             tab1Box.innerHTML = parseMarkdownPegadinhas(data.markdown);
           }
-          switchTab(1);
-        } else {
-          await selectSubarea(currentDiscipline, currentSubarea);
-          switchTab(1); // Alternar diretamente para a aba Raio-X
+          if (currentLessonMeta) {
+            currentLessonMeta.markdown_content = (currentLessonMeta.markdown_content || '') + '\n\n' + data.markdown;
+          }
         }
+        switchTab(1); // Alternar diretamente para a aba Raio-X
       } else {
         alert("Erro ao gerar Raio-X: " + (data.error || "Tente novamente."));
       }
@@ -7912,13 +7941,17 @@
     const trFilter = document.getElementById('transcriptFilter');
     if (trFilter) trFilter.value = '';
 
-    await Promise.all([
-      loadProgress(),
-      loadExistingFlashcards(),
-      loadExistingQuiz(),
-      loadFullTranscript(),
-      fetchReviews()
-    ]);
+    try {
+      await Promise.all([
+        loadProgress(),
+        loadExistingFlashcards(),
+        loadExistingQuiz(),
+        loadFullTranscript(),
+        fetchReviews()
+      ]);
+    } catch(err) {
+      console.warn("Erro ao carregar recursos secundários da subárea:", err);
+    }
 
     showToast(`Tópico ativo: ${sub.replace(/_/g, ' ')}`, "📚");
   }
@@ -8154,7 +8187,7 @@
     }
 
     if (questions && questions.length > 0) {
-      quizData = questions;
+      quizData = questions.map(normalizeQuizItem);
       renderQuiz();
     } else {
       quizData = [];

@@ -1243,15 +1243,40 @@ def save_reviews(discipline, subarea, data, email=None):
 
 def load_quiz_questions(discipline, subarea):
     folder = find_subarea_folder(discipline, subarea)
+    questions = []
     if os.path.exists(folder):
         for f in os.listdir(folder):
             if "simulado" in f.lower() and f.endswith(".json"):
                 try:
                     with open(os.path.join(folder, f), "r", encoding="utf-8") as fq:
-                        return json.load(fq)
+                        questions = json.load(fq)
+                        break
                 except Exception:
                     pass
-    return []
+
+    # Fallback para preseeded_topics se não houver arquivo local
+    if not questions:
+        try:
+            with open("preseeded_topics.json", "r", encoding="utf-8") as fp:
+                cat = json.load(fp)
+                questions = cat.get(discipline, {}).get(subarea, {}).get("quiz", [])
+        except Exception:
+            pass
+
+    # Normalizar opções e gabarito Cebraspe
+    normalized = []
+    for q in questions:
+        if not isinstance(q, dict):
+            continue
+        opts = q.get("options")
+        if not opts or not isinstance(opts, list) or len(opts) == 0:
+            q["options"] = ["CERTO", "ERRADO"]
+        if "correct_index" not in q or q["correct_index"] is None:
+            q["correct_index"] = 1 if q.get("gabarito") == "E" else 0
+        if not q.get("comentario") and q.get("justificativa"):
+            q["comentario"] = q.get("justificativa")
+        normalized.append(q)
+    return normalized
 
 def save_quiz_questions(discipline, subarea, questions):
     folder = find_subarea_folder(discipline, subarea)

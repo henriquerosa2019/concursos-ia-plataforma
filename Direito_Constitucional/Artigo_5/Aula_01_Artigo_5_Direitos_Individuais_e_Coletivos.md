@@ -12,38 +12,36 @@ O **Artigo 5º da Constituição Federal de 1988** consagra os Direitos e Devere
 - **Estrangeiros residentes no país** e também **estrangeiros em trânsito (turistas)** (jurisprudência pacífica do STF).
 - **Pessoas jurídicas** (no que for compatível com sua natureza, ex: honra objetiva, inviolabilidade de domicílio em locais reservados).
 
-#### 2. Inviolabilidade do Domicílio (Art. 5º, XI)
-Regra: A casa é asilo inviolável do indivíduo, ninguém nela podendo penetrar sem consentimento do morador.
-- **Exceções a qualquer hora (dia ou noite):**
-  1. Flagrante delito.
-  2. Desastre.
-  3. Prestar socorro.
-- **Exceção APENAS DURANTE O DIA:**
-  - Por determinação judicial (mandado de busca e apreensão).
 
-#### 3. Remédios Constitucionais (Garantias Fundamentais)
-- **Habeas Corpus (HC):** Protege a **liberdade de locomoção** (ir, vir e permanecer) contra ilegalidade ou abuso de poder. Gratuito.
-- **Habeas Data (HD):** Assegura o conhecimento de informações relativas à **pessoa do impetrante** ou retificação de dados. Gratuito.
-- **Mandado de Segurança (MS):** Protege **direito líquido e certo** não amparado por HC ou HD.
-- **Mandado de Injunção (MI):** Combate a **falta de norma regulamentadora** que inviabilize o exercício de direitos constitucionais.
-- **Ação Popular (AP):** Qualquer **cidadão** no gozo dos direitos políticos pode anular ato lesivo ao patrimônio público, moralidade, meio ambiente. Isenta de custas salvo comprovada má-fé.
+## 2. Raio-X de Banca & Pegadinhas Mais Frequentes
 
----
+### 🚨 Pegadinha 1: Invasão Noturna de Domicílio
+- **O que a banca afirma para induzir ao erro:** Afirmar que um mandado judicial pode autorizar a invasão de domicílio à noite.
+- **Pegadinha desmascarada (Onde está o erro):** O Art. 5º, XI, da Constituição estabelece que a invasão do domicílio só é permitida durante o dia por mandado judicial. À noite, a entrada é permitida apenas em caso de flagrante delito, desastre ou para prestar socorro.
+- **💡 Regra de Ouro / Mnemônico:** **Mandado Judicial = Sol** (somente durante o dia).
 
-### Pilar 2: Raio-X de Banca & Pegadinhas
+### 🚨 Pegadinha 2: Direitos dos Estrangeiros em Trânsito
+- **O que a banca afirma para induzir ao erro:** Afirmar que estrangeiros em trânsito não têm direitos garantidos pelo Art. 5º da Constituição.
+- **Pegadinha desmascarada (Onde está o erro):** O STF reconhece que os direitos fundamentais são extensíveis a estrangeiros residentes e em trânsito no Brasil. Portanto, essa afirmativa é incorreta.
+- **💡 Regra de Ouro / Mnemônico:** **Estrangeiro em Trânsito = Direitos Garantidos**.
 
-- **Cebraspe / Cespe:**
-  - *Pegadinha 1:* Afirmar que Mandado Judicial autoriza invasão de domicílio à noite. **FALSO.** Mandado judicial somente durante o dia! À noite, apenas flagrante, desastre ou socorro.
-  - *Pegadinha 2:* Afirmar que Habeas Data pode ser impetrado para obter dados de terceiros. **FALSO.** Habeas Data é ação personalizada (personalíssima). Para dados de terceiros, utiliza-se Mandado de Segurança.
-  - *Pegadinha 3:* Afirmar que estrangeiro sem residência não tem direitos do Art. 5º. **FALSO.** O STF estende garantias básicas inclusive a estrangeiros em trânsito.
+### 🚨 Pegadinha 3: Uso do Habeas Data
+- **O que a banca afirma para induzir ao erro:** Afirmar que o Habeas Data pode ser utilizado para obter dados de terceiros.
+- **Pegadinha desmascarada (Onde está o erro):** O Habeas Data é uma ação personalíssima, ou seja, serve apenas para assegurar o conhecimento de informações relativas à pessoa do próprio impetrante. Para dados de terceiros, deve-se utilizar o Mandado de Segurança.
+- **💡 Regra de Ouro / Mnemônico:** **Habeas Data = Dados Próprios**.
 
----
+### 🚨 Pegadinha 4: Limitação da Ação Popular
+- **O que a banca afirma para induzir ao erro:** Afirmar que apenas cidadãos com título de eleitor podem propor Ação Popular.
+- **Pegadinha desmascarada (Onde está o erro):** Embora seja verdade que a Ação Popular é proposta por qualquer cidadão, a exigência do título de eleitor pode ser confundida. Qualquer cidadão no gozo dos direitos políticos pode propor, independentemente da posse do título.
+- **💡 Regra de Ouro / Mnemônico:** **Ação Popular = Qualquer Cidadão**.
 
-### Pilar 3: Esquematização & Flashcards (Anki SM-2)
-- Mnemônico dos Remédios: **HC** (Locomoção), **HD** (Dados próprios), **MS** (Direito Líquido e Certo), **MI** (Omissão Legislativa), **AP** (Cidadão / Patrimônio Público).
-- Mnemônico do Domicílio: **F-D-S** (Flagrante, Desastre, Socorro) a qualquer hora. **Mandado Judicial** = Apenas com Sol (dia).
+### 🚨 Pegadinha 5: Regulação do Direito de Reunião
+- **O que a banca afirma para induzir ao erro:** Afirmar que o direito de reunião em locais abertos ao público exige autorização prévia da autoridade competente.
+- **Pegadinha desmascarada (Onde está o erro):** O Art. 5º, XVI, garante o direito de reunião, que apenas requer um prévio aviso à autoridade, e não autorização.
+- **💡 Regra de Ouro / Mnemônico:** **Direito de Reunião = Prévio Aviso**.
 
----
+### 🚨 Pegadinha 6: Mandado de Injunção e Omissão Legislativa
+- **O que a banca afirma para induzir ao erro:** Afirmar que o Mandado de Injunção pode ser usado para qualquer falta de norma regulamentadora.
+- **Pegadinha desmascarada (Onde está o erro):** O Mandado de Injunção é cabível apenas quando a falta de norma inviabiliza o exercício de direitos constitucionais, não para qualquer omissão legislativa.
+- **💡 Regra de Ouro / Mnemônico:** **Mandado de Injunção = Falta que Impede Direitos**.
 
-### Pilar 4: Mini-Simulado de Fixação Cebraspe (+1 / -1)
-Veja as questões no simulador oficial integrado da plataforma.

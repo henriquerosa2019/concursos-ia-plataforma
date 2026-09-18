@@ -596,7 +596,22 @@ export default async function handler(req, res) {
     const disc = url.searchParams.get('discipline') || 'Informatica';
     const sub = url.searchParams.get('subarea') || 'Excel';
     const topic = findTopicData(disc, sub);
-    return res.status(200).json(topic?.quiz || []);
+    const rawQuiz = topic?.quiz || [];
+    const normalized = rawQuiz.map(q => {
+      if (!q) return q;
+      const opts = (Array.isArray(q.options) && q.options.length > 0) ? q.options : ["CERTO", "ERRADO"];
+      let cIdx = q.correct_index;
+      if (typeof cIdx === 'undefined' || cIdx === null) {
+        cIdx = (q.gabarito === 'E') ? 1 : 0;
+      }
+      return {
+        ...q,
+        options: opts,
+        correct_index: cIdx,
+        comentario: q.comentario || q.justificativa || ''
+      };
+    });
+    return res.status(200).json(normalized);
   }
 
   // 11. Transcrição e Leitura

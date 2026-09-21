@@ -1,0 +1,47 @@
+[
+  {
+    "title": "Definição e Conceitos Centrais",
+    "category": "RESUMO & CONCEITO",
+    "sec": 55,
+    "time_str": "00:55",
+    "page": 1,
+    "quote": "Vamos começar pelos Princípios Básicos da Segurança da Informação. Guardem o mnemônico sagrado: D-I-C-A-A.",
+    "importance": "Conceito explicado pelo professor aos 00:55 de aula com alta incidência na banca Cebraspe."
+  },
+  {
+    "title": "Regras Gerais e Estrutura",
+    "category": "RESUMO & CONCEITO",
+    "sec": 1660,
+    "time_str": "27:40",
+    "page": 27,
+    "quote": "Regra de ouro que você nunca mais vai esquecer: a Assinatura Digital garante Autenticidade, Integridade e Não-Repúdio.",
+    "importance": "Conceito explicado pelo professor aos 27:40 de aula com alta incidência na banca Cebraspe."
+  },
+  {
+    "title": "Pegadinhas e Armadilhas de Banca",
+    "category": "PEGADINHA DE BANCA",
+    "sec": 315,
+    "time_str": "05:15",
+    "page": 5,
+    "quote": "Atenção máxima para pegadinha do Cebraspe: a banca costuma misturar Autenticidade com Confidencialidade ou dizer que Legalidade é princípio ",
+    "importance": "Conceito explicado pelo professor aos 05:15 de aula com alta incidência na banca Cebraspe."
+  },
+  {
+    "title": "Fórmulas, Classificações e Mnemônicos",
+    "category": "RESUMO & CONCEITO",
+    "sec": 1940,
+    "time_str": "32:20",
+    "page": 32,
+    "quote": "Com esses conceitos e mnemônicos fixados, vocês estão prontos para acertar 100% das questões desse tema em qualquer edital!",
+    "importance": "Conceito explicado pelo professor aos 32:20 de aula com alta incidência na banca Cebraspe."
+  },
+  {
+    "title": "Resolução de Questão de Concurso",
+    "category": "RESOLUÇÃO DE QUESTÃO",
+    "sec": 240,
+    "time_str": "04:00",
+    "page": 4,
+    "quote": "A letra A significa Autenticidade: comprovar a real identidade da pessoa ou entidade que originou a mensagem.",
+    "importance": "Conceito explicado pelo professor aos 04:00 de aula com alta incidência na banca Cebraspe."
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Pegadinhas e Armadilhas de Banca",
+    "category": "PEGADINHA DE BANCA",
+    "sec": 65,
+    "time_str": "01:05",
+    "page": 1,
+    "quote": "Primeira grande pegadinha: Atalho para Salvar. No Word em português é CTRL+B. No LibreOffice Writer é CTRL+S.",
+    "importance": "Conceito explicado pelo professor aos 01:05 de aula com alta incidência na banca Cebraspe."
+  },
+  {
+    "title": "Fórmulas, Classificações e Mnemônicos",
+    "category": "RESUMO & CONCEITO",
+    "sec": 520,
+    "time_str": "08:40",
+    "page": 8,
+    "quote": "Outro recurso fundamental: Mala Direta. Permite gerar cartas, circulares ou certificados em lote cruzando um modelo de texto com uma tabela ",
+    "importance": "Conceito explicado pelo professor aos 08:40 de aula com alta incidência na banca Cebraspe."
+  }
+]

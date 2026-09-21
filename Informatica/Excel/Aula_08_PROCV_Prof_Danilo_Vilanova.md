@@ -37,30 +37,38 @@ Quando o 4º argumento for `0` ou `FALSO` (busca exata) e o valor procurado **n�
 
 ---
 
-## 2. Pontos Críticos de Banca & Pegadinhas (Onde 95% dos Candidatos Erram)
+## 2. Raio-X de Banca & Pegadinhas Mais Frequentes
 
-1. **Inversão da Ordem dos Argumentos (Clássica Cebraspe):**
-   - *Pegadinha:* Afirmar que "o primeiro argumento da função PROCV é o índice da coluna".
-   - *Verdade:* O 1º argumento é sempre o **valor procurado**. O índice da coluna é o **3º argumento**.
+### 🚨 Pegadinha 1: O Valor da Coluna Errada
+- **O que a banca afirma para induzir ao erro:** "A função `PROCV` retorna o valor da coluna especificada no argumento de índice, mesmo que esse valor não esteja presente na tabela."
+- **Pegadinha desmascarada (Onde está o erro):** O `PROCV` só retorna um valor se o valor procurado estiver na primeira coluna da matriz. Se o valor não estiver presente, retornará `#N/D`, não o valor da coluna especificada.
+- **💡 Regra de Ouro / Mnemônico:** "Primeiro, procura; depois, retorna!"
 
-2. **Letra da Coluna no 3º Argumento:**
-   - *Pegadinha:* A questão coloca `=PROCV("SP"; A1:C10; B; 0)`.
-   - *Verdade:* Isso gera **erro de sintaxe** no Excel. O 3º argumento exige obrigatoriamente um número inteiro (`2`), jamais a letra (`B`).
+### 🚨 Pegadinha 2: Confusão entre Exato e Aproximado
+- **O que a banca afirma para induzir ao erro:** "O argumento `1` no `PROCV` realiza uma busca exata, enquanto `0` realiza uma busca aproximada."
+- **Pegadinha desmascarada (Onde está o erro):** O `0` ou `FALSO` realiza a busca exata, enquanto `1` ou `VERDADEIRO` faz a busca aproximada. Isso é frequentemente confundido por candidatos.
+- **💡 Regra de Ouro / Mnemônico:** "Zero é certeiro; um é um palpite."
 
-3. **Inversão entre Exato e Aproximado:**
-   - *Pegadinha:* Afirmar que `1` (ou `VERDADEIRO`) faz busca exata e `0` faz busca aproximada.
-   - *Verdade:* `0` = `FALSO` = **Exato**; `1` = `VERDADEIRO` = **Aproximado**.
+### 🚨 Pegadinha 3: Letra em vez de Número
+- **O que a banca afirma para induzir ao erro:** "A fórmula `=PROCV('RJ'; A1:C10; B; 0)` está correta e retorna o valor."
+- **Pegadinha desmascarada (Onde está o erro):** O terceiro argumento deve ser um número inteiro, representando a coluna, e não uma letra. Portanto, `B` gerará um erro de sintaxe.
+- **💡 Regra de Ouro / Mnemônico:** "Número é o que conta, letra não vale!"
 
-4. **"Busca em qualquer posição":**
-   - *Pegadinha:* A banca afirma que "o PROCV permite localizar itens em qualquer posição da tabela por coluna".
-   - *Verdade:* **Errado**. O PROCV busca apenas na **primeira coluna à esquerda** da matriz e retorna dados à sua direita. Para qualquer posição, usa-se `PROCX` ou `ÍNDICE + CORRESP`.
+### 🚨 Pegadinha 4: Busca na Posição Errada
+- **O que a banca afirma para induzir ao erro:** "A função `PROCV` pode buscar valores em qualquer coluna da tabela."
+- **Pegadinha desmascarada (Onde está o erro):** O `PROCV` só busca na primeira coluna da matriz especificada para encontrar o valor. Para busca em qualquer coluna, deve-se usar `PROCX`.
+- **💡 Regra de Ouro / Mnemônico:** "Primeiro à esquerda, depois à direita."
 
-5. **Função Aninhada no 1º Argumento (Nível Superior / FGV / FCC):**
-   - *Pegadinha:* Inserir outra função no 1º argumento:
-     `=PROCV(MAIOR(A1:A5; 1); A1:B5; 2; FALSO)`
-   - *Como resolver:* Resolva de dentro para fora. Primeiro calcule `MAIOR(A1:A5; 1) = 8`. Depois faça `=PROCV(8; A1:B5; 2; FALSO)`.
+### 🚨 Pegadinha 5: Uso Incorreto de Funções Aninhadas
+- **O que a banca afirma para induzir ao erro:** "A fórmula `=PROCV(MAIOR(A1:A5; 1); A1:B5; 2; FALSO)` não precisa de cálculos adicionais."
+- **Pegadinha desmascarada (Onde está o erro):** A função interna `MAIOR(A1:A5; 1)` deve ser avaliada primeiro, resultando em um valor que será então usado no `PROCV`. Ignorar isso pode levar a erros de interpretação.
+- **💡 Regra de Ouro / Mnemônico:** "Resolva de dentro para fora, como uma cebola!" 
 
----
+### 🚨 Pegadinha 6: Erro de Referência Inválida
+- **O que a banca afirma para induzir ao erro:** "Se o índice da coluna no `PROCV` for maior que o número de colunas da matriz, o Excel retornará um valor vazio."
+- **Pegadinha desmascarada (Onde está o erro):** O Excel retornará um erro `#REF!` se o índice da coluna especificado for maior que o número de colunas na matriz, e não um valor vazio.
+- **💡 Regra de Ouro / Mnemônico:** "Cuidado com o índice, o limite é real!"
+
 
 ## 3. Esquematização para Revisão Ativa
 

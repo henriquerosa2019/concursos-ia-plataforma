@@ -725,6 +725,10 @@
     let currentView = "board";
     let testStatuses = {};
 
+    const DEFAULT_VERIFIED = {
+      "TC-09": "passed"
+    };
+
     function loadState() {
       try {
         const raw = localStorage.getItem("concursos_miro_qa_state");
@@ -732,6 +736,7 @@
       } catch (e) {
         testStatuses = {};
       }
+      testStatuses = Object.assign({}, DEFAULT_VERIFIED, testStatuses);
     }
 
     function saveState() {

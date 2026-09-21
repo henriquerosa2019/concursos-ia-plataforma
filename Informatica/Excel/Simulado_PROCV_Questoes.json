@@ -95,5 +95,65 @@
     "correct_index": 0,
     "comentario": "O erro #N/D ocorre quando o valor procurado na célula B5 não está presente na primeira coluna da matriz (coluna B). Isso indica que a busca exata não encontrou correspondência.",
     "banca": "FGV"
+  },
+  {
+    "enunciado": "Em uma planilha do Excel, um usuário deseja buscar o preço de um produto com o código 'P002', que está na coluna A (código) e na coluna B (preço). A fórmula que ele está utilizando é =PROCV('P002'; A1:B10; 2; 0). Se o produto não for encontrado, o Excel retornará: ",
+    "options": [
+      "A) #N/D",
+      "B) 0"
+    ],
+    "correct_index": 0,
+    "comentario": "A função PROCV retorna #N/D quando o valor procurado não é encontrado na primeira coluna da matriz. Nesse caso, como 'P002' não está presente na coluna A, o resultado será #N/D.",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "Um analista precisa localizar a cidade correspondente ao código de cliente 'C003' na tabela de dados que vai de A1 a C100. Se a célula A1 contém o cabeçalho 'Código', A2 a A100 contém os códigos e a coluna C contém as cidades, a fórmula correta a ser utilizada é: =PROCV('C003'; A2:C100; 3; FALSO). Essa fórmula funcionará corretamente?",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 0,
+    "comentario": "A fórmula está correta, pois o PROCV está sendo utilizado para procurar o código 'C003' na primeira coluna (A) e retornar a cidade correspondente na terceira coluna (C) com busca exata, como requerido.",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "Um estudante utiliza a fórmula =PROCV(MAIOR(B2:B10; 1); A2:C10; 2; 0) para buscar um valor em uma tabela. A função MAIOR está sendo usada para encontrar o maior valor na coluna B e, em seguida, o PROCV busca esse valor na coluna A. Essa estrutura de fórmula pode resultar em erro #N/D se o maior valor não estiver na coluna A?",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 0,
+    "comentario": "Correto. Se o maior valor encontrado na coluna B não existir na coluna A, o PROCV não conseguirá localizar uma correspondência, resultando no erro #N/D.",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "Em uma planilha do Excel, um analista utiliza a função =PROCV(200; A1:B10; 2; FALSO) para buscar um valor na coluna A, onde os dados vão de A1 a B10. Se o valor 200 não estiver presente na coluna A, qual será o resultado da fórmula?",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 0,
+    "comentario": "A função PROCV com o quarto argumento definido como FALSO (ou 0) realiza uma busca exata. Se o valor procurado não estiver presente na primeira coluna do intervalo especificado, o Excel retornará o erro #N/D, que indica que o dado não foi encontrado. Portanto, a afirmação está correta.",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "Se um usuário utilizar a fórmula =PROCV(MAIOR(A2:A10; 1); A2:B10; 2; FALSO), qual será o comportamento da função caso o maior valor na coluna A não tenha um correspondente na coluna B?",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 1,
+    "comentario": "A função MAIOR(A2:A10; 1) retorna o maior valor da coluna A. Se esse valor não tiver um correspondente na coluna B, a função PROCV retornará o erro #N/D, pois não encontrará um valor correspondente para o maior valor encontrado. Portanto, a afirmação está errada.",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "Um técnico de informática precisa localizar o departamento de um funcionário a partir do seu código, que está na coluna A de uma tabela que se estende de A1 a D20. Se o código procurado for 105 e a função utilizada for =PROCV(105; A1:D20; 3; 0), qual tipo de resultado pode ser esperado se 105 não estiver na coluna A?",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 0,
+    "comentario": "Quando a função PROCV é utilizada com o argumento de tipo de correspondência definido como 0 (ou FALSO), ela busca o valor exato especificado. Se o valor 105 não estiver presente na coluna A, o resultado será o erro #N/D, indicando que o valor não foi encontrado. Portanto, a afirmação está correta.",
+    "banca": "Cebraspe"
   }
 ]

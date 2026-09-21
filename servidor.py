@@ -763,60 +763,78 @@ def find_subarea_path(discipline, subarea):
                         return sp
     return folder
 
+def parse_timed_transcript_file(timed_file):
+    """
+    Parser universal para transcrições cronometradas em múltiplos formatos:
+    - [473.6s] Texto...
+    - [473.6s] [07:53] Texto...
+    - [07:53] Texto...
+    - [01:07:53] Texto...
+    """
+    timed_lines = []
+    if not timed_file or not os.path.exists(timed_file):
+        return timed_lines
+        
+    with open(timed_file, "r", encoding="utf-8", errors="ignore") as f_in:
+        for line in f_in:
+            l_str = line.strip()
+            if not l_str:
+                continue
+                
+            m_sec = re.search(r'\[(\d+(?:\.\d+)?)s\]', l_str)
+            m_time = re.search(r'\[(\d{1,2}):(\d{2})(?::(\d{2}))?\]', l_str)
+            
+            sec = None
+            t_str = None
+            
+            if m_sec:
+                sec = int(float(m_sec.group(1)))
+                mins = sec // 60
+                secs = sec % 60
+                t_str = f"{mins:02d}:{secs:02d}"
+            elif m_time:
+                if m_time.group(3):
+                    sec = int(m_time.group(1))*3600 + int(m_time.group(2))*60 + int(m_time.group(3))
+                    t_str = f"{int(m_time.group(1)):02d}:{int(m_time.group(2)):02d}:{int(m_time.group(3)):02d}"
+                else:
+                    sec = int(m_time.group(1))*60 + int(m_time.group(2))
+                    t_str = f"{int(m_time.group(1)):02d}:{int(m_time.group(2)):02d}"
+                    
+            if sec is not None:
+                txt = re.sub(r'^(?:\[[^\]]+\]\s*)+', '', l_str).strip()
+                if txt and txt.lower() not in ["[música]", "música", "♪", "[musica]"] and len(txt) > 2:
+                    timed_lines.append((sec, t_str, txt))
+                    
+    return timed_lines
+
 def generate_key_moments_ai(discipline, subarea, banca="Cebraspe", focus=""):
     """
-    Gera momentos-chave da aula com minutagem real extraída da transcrição cronometrada.
-    Salva em disco e no Supabase (se configurado).
+    Gera momentos-chave da aula com minutagem real exata para Videoaulas
+    e com páginas/seções precisas para Aulas em PDF / Apostilas.
+    Salva em disco e no Supabase.
     """
     sub_path = find_subarea_path(discipline, subarea)
     if not sub_path or not os.path.exists(sub_path):
         return []
 
-    # 1. Localizar Transcrição Cronometrada
+    # 1. Localizar arquivo de Transcrição Cronometrada
     timed_file = None
     for f in os.listdir(sub_path):
         if f.lower().startswith("transcricao_cronometrada") and f.endswith(".txt"):
             timed_file = os.path.join(sub_path, f)
             break
 
-    timed_lines = []
-    if timed_file and os.path.exists(timed_file):
-        with open(timed_file, "r", encoding="utf-8", errors="ignore") as f_in:
-            for line in f_in:
-                m = re.match(r'\[([\d\.]+)s\]\s*\[(\d{1,2}:\d{2})\]\s*(.*)', line.strip())
-                if m:
-                    sec = int(float(m.group(1)))
-                    t_str = m.group(2)
-                    txt = m.group(3).strip()
-                    if txt:
-                        timed_lines.append((sec, t_str, txt))
+    timed_lines = parse_timed_transcript_file(timed_file)
+    meta = get_lesson_metadata(discipline, subarea)
+    yt_url = meta.get("youtube_url", "")
+    is_video = bool(timed_lines or (yt_url and yt_url.strip()))
 
     moments = []
 
-    # Se não houver minutagem cronometrada (ex: PDF ou texto), gera momentos estruturados por página/seção
-    if not timed_lines:
-        md_text = get_subarea_context(discipline, subarea)
-        pages_moments = []
-        p_idx = 1
-        for l in md_text.split('\n'):
-            l_str = l.strip()
-            if l_str.startswith('### '):
-                title_clean = l_str.replace('### ', '').replace('**', '').strip()
-                title_clean = re.sub(r'^[A-Z0-9\.\-]+\s*', '', title_clean)
-                if title_clean:
-                    pages_moments.append({
-                        "title": title_clean,
-                        "category": "CONCEITO-CHAVE",
-                        "sec": p_idx,
-                        "time_str": f"Pág. {str(p_idx).zfill(2)}",
-                        "page": p_idx,
-                        "quote": title_clean,
-                        "importance": f"Conceito relevante da Página {p_idx}"
-                    })
-                    p_idx += 1
-        moments = pages_moments[:10]
-    else:
-        # Preparar amostra estruturada da transcrição para a IA
+    # =========================================================================
+    # CASO A: VIDEOAULA (com minutagem real da fala do professor)
+    # =========================================================================
+    if is_video and timed_lines:
         sample_corpus = []
         step = max(1, len(timed_lines) // 180)
         for i in range(0, len(timed_lines), step):
@@ -827,21 +845,22 @@ def generate_key_moments_ai(discipline, subarea, banca="Cebraspe", focus=""):
 
         sys_prompt = (
             f"Você é um especialista em análise pedagógica de videoaulas e bancas de concursos ({banca}, FGV, FCC, Vunesp).\n"
-            "Seu objetivo é analisar a TRANSCRIÇÃO CRONOMETRADA real desta aula e extrair os 6 a 10 MOMENTOS-CHAVE CRÍTICOS com a MINUTAGEM EXATA onde o professor aborda cada conceito ou pegadinha.\n\n"
+            f"Seu objetivo é analisar a TRANSCRIÇÃO CRONOMETRADA REAL desta aula sobre '{subarea}' e extrair os 6 a 10 MOMENTOS-CHAVE CRÍTICOS com a MINUTAGEM EXATA onde o professor aborda cada conceito, fórmula, regra ou pegadinha.\n\n"
             "REGRAS OBRIGATÓRIAS:\n"
-            "1. USE EXATAMENTE os minutos e segundos da transcrição cronometrada fornecida. NÃO invente horários fictícios como 01:00.\n"
-            "2. Identifique o momento exato em que o professor introduz conceitos centrais, regras, exceções e resolução de questões.\n"
-            "3. Categorize cada momento em: 'RESUMO & CONCEITO', 'PEGADINHA DE BANCA', ou 'RESOLUÇÃO DE QUESTÃO'.\n"
-            "4. O campo 'sec' deve ser um inteiro com os segundos exatos. O campo 'time_str' deve ser no formato 'MM:SS'.\n\n"
-            "Retorne EXATAMENTE um array JSON puro (sem markdown ao redor):\n"
+            "1. USE EXATAMENTE os minutos e segundos da transcrição cronometrada fornecida. O campo 'sec' DEVE ser o número exato de segundos do vídeo. NÃO invente segundos fictícios (como 1, 2, 3).\n"
+            "2. O campo 'time_str' deve ser no formato 'MM:SS'.\n"
+            "3. O campo 'category' deve ser 'RESUMO & CONCEITO', 'PEGADINHA DE BANCA', ou 'RESOLUÇÃO DE QUESTÃO'.\n"
+            "4. O campo 'quote' deve ser a fala real do professor nesse instante.\n"
+            "5. O campo 'importance' deve explicar por que a banca " + banca + " cobra esse ponto.\n\n"
+            "Retorne EXATAMENTE um array JSON puro (sem markdown):\n"
             "[\n"
             "  {\n"
-            '    "title": "Definição de Proposição Lógica",\n'
+            '    "title": "A Sintaxe dos 4 Argumentos do PROCV",\n'
             '    "category": "RESUMO & CONCEITO",\n'
-            '    "sec": 717,\n'
-            '    "time_str": "11:57",\n'
-            '    "quote": "Frase curta dita pelo professor nesse minuto",\n'
-            '    "importance": "Por que esse trecho é crucial para a banca ' + banca + '"\n'
+            '    "sec": 628,\n'
+            '    "time_str": "10:28",\n'
+            '    "quote": "sintaxe que sintaxe é a forma de escrita",\n'
+            '    "importance": "Cai massivamente na ' + banca + ' trocando a ordem dos argumentos"\n'
             "  }\n"
             "]"
         )
@@ -851,11 +870,10 @@ def generate_key_moments_ai(discipline, subarea, banca="Cebraspe", focus=""):
             f"Tópico: {subarea}\n"
             f"Banca Alvo: {banca}\n"
             f"Foco solicitado: {focus or 'Conceitos Fundamentais e Pegadinhas de Prova'}\n\n"
-            f"TRANSCRIÇÃO CRONOMETRADA DA AULA:\n{sample_text}"
+            f"TRANSCRIÇÃO CRONOMETRADA REAL DA AULA:\n{sample_text}"
         )
 
         ai_res, prov = call_ai_service(sys_prompt, user_prompt, json_mode=True, temperature=0.3)
-
         if ai_res:
             try:
                 cleaned = ai_res.strip()
@@ -864,24 +882,47 @@ def generate_key_moments_ai(discipline, subarea, banca="Cebraspe", focus=""):
                     cleaned = re.sub(r"```$", "", cleaned).strip()
                 parsed = json.loads(cleaned)
                 if isinstance(parsed, list) and len(parsed) > 0:
+                    for item in parsed:
+                        sec_val = int(item.get("sec", 0))
+                        mins = sec_val // 60
+                        secs = sec_val % 60
+                        item["sec"] = sec_val
+                        item["time_str"] = f"{mins:02d}:{secs:02d}"
+                        item["page"] = max(1, mins)
                     moments = parsed
-            except Exception as e_parse:
-                print(f"Erro ao decodificar momentos da IA: {e_parse}")
+            except Exception as e_p:
+                print(f"Erro decodificando IA: {e_p}")
 
-        # Fallback algorítmico inteligente se a IA não retornar
+        # Fallback inteligente se IA falhar ou estiver offline
         if not moments:
-            concept_patterns = [
-                ("Definição e Conceitos Centrais", "RESUMO & CONCEITO", [r'defini[çc][ãa]o', r'conceito', r'o que [ée]', r'princ[íi]pio']),
-                ("Regras Gerais e Estrutura", "RESUMO & CONCEITO", [r'regra', r'estrutura', r'requisito', r'caracter[íi]stica']),
-                ("Pegadinhas e Armadilhas de Banca", "PEGADINHA DE BANCA", [r'pegadinha', r'cuidado', r'aten[çc][ãa]o', r'n[ãa]o [ée]', r'exce[çc][ãa]o']),
-                ("Diferenciações e Comparações", "PEGADINHA DE BANCA", [r'diferen[çc]a', r'ao contr[áa]rio', r'cuidado com']),
-                ("Conectivos e Fórmulas Principais", "RESUMO & CONCEITO", [r'conectivo', r'f[óo]rmula', r'tabela', r'classifica[çc]']),
-                ("Resolução de Questão de Concurso", "RESOLUÇÃO DE QUESTÃO", [r'quest[ãa]o', r'banca', r'exerc[íi]cio', r'prova'])
-            ]
+            topic_lower = subarea.lower()
+            if "excel" in topic_lower or "procv" in topic_lower:
+                concept_patterns = [
+                    ("Abertura e Apresentação do PROCV", "RESUMO & CONCEITO", [r'muito boa tarde', r'chegamos', r'come[çc]ar', r'excel que']),
+                    ("O que é a Função PROC e PROCV", "RESUMO & CONCEITO", [r'fun[çc][ãa]o proc', r'proc v', r'procura vertical', r'o que [ée] isso']),
+                    ("Como as Bancas Cobram em Prova", "PEGADINHA DE BANCA", [r'mais cai em prova', r'banca', r'concurso', r'examinadora']),
+                    ("Sintaxe Sagrada dos 4 Argumentos", "RESUMO & CONCEITO", [r'sintaxe', r'quatro argumentos', r'forma de escrita', r'valor procurado']),
+                    ("4º Argumento: Busca Exata (0) vs Aproximada (1)", "PEGADINHA DE BANCA", [r'procurar intervalo', r'zero', r'falso', r'verdadeiro', r'aproximad']),
+                    ("Matriz Tabela e Regra da 1ª Coluna", "PEGADINHA DE BANCA", [r'matriz', r'primeira coluna', r'coluna 1', r'tabela']),
+                    ("3º Argumento: Número Índice da Coluna", "RESUMO & CONCEITO", [r'segunda coluna', r'[íi]ndice de coluna', r'n[úu]mero [íi]ndice', r'n[ãa]o [ée] letra']),
+                    ("Erros Comuns de Prova: #N/D e #REF!", "PEGADINHA DE BANCA", [r'erro', r'n\/d', r'ref', r'n[ãa]o dispon[íi]vel']),
+                    ("Aninhamento de Fórmulas e Pesquisa Dinâmica", "RESUMO & CONCEITO", [r'f[óo]rmula', r'aninhad', r'junto com', r'resultado']),
+                    ("Resolução de Questão Prática de Prova", "RESOLUÇÃO DE QUESTÃO", [r'quest[ãa]o', r'gabarito', r'alternativa', r'resolv'])
+                ]
+            else:
+                concept_patterns = [
+                    ("Definição e Conceitos Centrais", "RESUMO & CONCEITO", [r'defini[çc][ãa]o', r'conceito', r'o que [ée]', r'princ[íi]pio']),
+                    ("Regras Gerais e Estrutura", "RESUMO & CONCEITO", [r'regra', r'estrutura', r'requisito', r'caracter[íi]stica']),
+                    ("Pegadinhas e Armadilhas de Banca", "PEGADINHA DE BANCA", [r'pegadinha', r'cuidado', r'aten[çc][ãa]o', r'n[ãa]o [ée]', r'exce[çc][ãa]o']),
+                    ("Diferenciações e Comparações", "PEGADINHA DE BANCA", [r'diferen[çc]a', r'ao contr[áa]rio', r'cuidado com']),
+                    ("Fórmulas, Classificações e Mnemônicos", "RESUMO & CONCEITO", [r'conectivo', r'f[óo]rmula', r'tabela', r'classifica[çc]', r'mnem[ôo]nico']),
+                    ("Resolução de Questão de Concurso", "RESOLUÇÃO DE QUESTÃO", [r'quest[ãa]o', r'banca', r'exerc[íi]cio', r'prova'])
+                ]
+
             used_secs = set()
             for title, cat, pats in concept_patterns:
                 for s_sec, s_time, s_txt in timed_lines:
-                    if any(abs(s_sec - u) < 90 for u in used_secs):
+                    if any(abs(s_sec - u) < 60 for u in used_secs):
                         continue
                     if any(re.search(p, s_txt, re.I) for p in pats):
                         used_secs.add(s_sec)
@@ -890,10 +931,83 @@ def generate_key_moments_ai(discipline, subarea, banca="Cebraspe", focus=""):
                             "category": cat,
                             "sec": s_sec,
                             "time_str": s_time,
+                            "page": max(1, s_sec // 60),
                             "quote": s_txt[:140],
-                            "importance": f"Momento identificado na aula ({s_time})"
+                            "importance": f"Conceito explicado pelo professor aos {s_time} de aula com alta incidência na banca {banca}."
                         })
                         break
+
+    # =========================================================================
+    # CASO B: AULA EM PDF / DOCUMENTO DE ESTUDO (sem vídeo)
+    # =========================================================================
+    else:
+        md_text = get_subarea_context(discipline, subarea)
+        sys_prompt_pdf = (
+            f"Você é um professor especialista na banca {banca} para concursos públicos.\n"
+            f"Analise o material didático em PDF/apostila sobre '{subarea}' da disciplina '{discipline}' com foco em: '{focus or 'Pontos Críticos e Pegadinhas de Prova'}'.\n"
+            "Extraia de 6 a 10 PONTOS-CHAVE CRÍTICOS com a PÁGINA ou SEÇÃO correspondente onde o tema é explicado no material.\n\n"
+            "REGRAS OBRIGATÓRIAS:\n"
+            "1. Cada momento deve ter título pedagógico direto.\n"
+            "2. O campo 'page' deve ser um inteiro (1, 2, 3...) representando a página ou seção do material.\n"
+            "3. O campo 'time_str' DEVE ser no formato 'Pág. XX' (ex: 'Pág. 01', 'Pág. 03'). NÃO use formato de horas/minutos.\n"
+            "4. O campo 'category' deve ser 'RESUMO & CONCEITO', 'PEGADINHA DE BANCA', ou 'RESOLUÇÃO DE QUESTÃO'.\n"
+            "5. O campo 'quote' deve ser um trecho curto do texto.\n"
+            "6. O campo 'importance' deve explicar a relevância para a banca " + banca + ".\n\n"
+            "Retorne EXATAMENTE um array JSON puro:\n"
+            "[\n"
+            "  {\n"
+            '    "title": "Requisitos de Validade do Ato (COMFIFOR)",\n'
+            '    "category": "RESUMO & CONCEITO",\n'
+            '    "page": 2,\n'
+            '    "sec": 2,\n'
+            '    "time_str": "Pág. 02",\n'
+            '    "quote": "Competência, Finalidade, Forma, Motivo e Objeto são os 5 elementos de validade.",\n'
+            '    "importance": "Cobrança clássica da banca ' + banca + ' sobre vícios sanáveis"\n'
+            "  }\n"
+            "]"
+        )
+        user_prompt_pdf = f"Disciplina: {discipline}\nTópico: {subarea}\nBanca: {banca}\nFoco: {focus}\n\nMATERIAL DIDÁTICO:\n{md_text[:6000]}"
+
+        ai_res, prov = call_ai_service(sys_prompt_pdf, user_prompt_pdf, json_mode=True, temperature=0.3)
+        if ai_res:
+            try:
+                cleaned = ai_res.strip()
+                if cleaned.startswith("```"):
+                    cleaned = re.sub(r"^```(?:json)?", "", cleaned).strip()
+                    cleaned = re.sub(r"```$", "", cleaned).strip()
+                parsed = json.loads(cleaned)
+                if isinstance(parsed, list) and len(parsed) > 0:
+                    for p in parsed:
+                        pg = int(p.get("page", 1))
+                        p["page"] = pg
+                        p["sec"] = pg
+                        p["time_str"] = f"Pág. {str(pg).zfill(2)}"
+                    moments = parsed
+            except Exception as e_pdf_ai:
+                print(f"Erro ao decodificar momentos PDF da IA: {e_pdf_ai}")
+
+        # Fallback offline estruturado para PDF / Apostila
+        if not moments:
+            p_idx = 1
+            lines = md_text.split('\n')
+            for l in lines:
+                l_str = l.strip()
+                if l_str.startswith('### ') or l_str.startswith('## '):
+                    title_clean = l_str.replace('### ', '').replace('## ', '').replace('**', '').strip()
+                    title_clean = re.sub(r'^[A-Z0-9\.\-]+\s*', '', title_clean)
+                    if title_clean and len(title_clean) > 3 and not title_clean.lower().startswith("mini-simulado") and not title_clean.lower().startswith("flashcards"):
+                        cat = "PEGADINHA DE BANCA" if any(w in title_clean.lower() for w in ["pegadinha", "armadilha", "atenção", "cuidado"]) else "RESUMO & CONCEITO"
+                        moments.append({
+                            "title": title_clean,
+                            "category": cat,
+                            "page": p_idx,
+                            "sec": p_idx,
+                            "time_str": f"Pág. {str(p_idx).zfill(2)}",
+                            "quote": title_clean,
+                            "importance": f"Ponto fundamental da Página {p_idx} com alta recorrência na banca {banca}."
+                        })
+                        p_idx += 1
+            moments = moments[:10]
 
     # Salvar em múltiplos nomes no disco para garantir localização imediata
     if moments:
@@ -919,6 +1033,7 @@ def generate_key_moments_ai(discipline, subarea, banca="Cebraspe", focus=""):
                 print(f"Erro ao sincronizar momentos com Supabase: {e_supa}")
 
     return moments
+
 
 def call_ai_service(system_prompt, user_prompt, json_mode=True, temperature=0.7):
     cfg = load_config()

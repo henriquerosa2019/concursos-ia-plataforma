@@ -3368,7 +3368,7 @@
     <div class="modal-title" style="display: flex; align-items: center; gap: 8px;">
       <span>✨</span> <span>Gerar Momentos-Chave com IA</span>
     </div>
-    <p style="font-size: 13px; color: var(--text2); margin-bottom: 16px; line-height: 1.5;">
+    <p id="aiMomentsDesc" style="font-size: 13px; color: var(--text2); margin-bottom: 16px; line-height: 1.5;">
       A inteligência artificial analisará a transcrição cronometrada da aula para mapear o <strong>minuto e segundo exatos</strong> em que o professor ensina cada conceito e pegadinha.
     </p>
 
@@ -5998,6 +5998,17 @@
   // ==============================================================================
 
   function openAiMomentsModal() {
+    const isVid = Boolean(currentYoutubeUrl && currentYoutubeUrl.trim().length > 0);
+    const modalDesc = document.getElementById('aiMomentsDesc');
+    const modalBtnText = document.getElementById('aiMomentsBtnText');
+    if (modalDesc) {
+      modalDesc.innerHTML = isVid
+        ? 'A inteligência artificial analisará a <strong>transcrição cronometrada</strong> da aula para mapear o <strong>minuto e segundo exatos</strong> em que o professor ensina cada conceito e pegadinha.'
+        : 'A inteligência artificial analisará o <strong>material didático em PDF / apostila</strong> para mapear os <strong>conceitos críticos e pegadinhas</strong> diretamente nas <strong>páginas correspondentes</strong>.';
+    }
+    if (modalBtnText) {
+      modalBtnText.textContent = isVid ? '⚡ Mapear Minutagem com IA' : '⚡ Mapear Páginas com IA';
+    }
     document.getElementById('modalAiMoments').style.display = 'flex';
   }
 
@@ -6112,30 +6123,43 @@
       const card = document.createElement(isVideo ? 'a' : 'div');
       card.className = 'key-moment-card';
 
-      const secVal = item.sec || 0;
-      const timeFmtVal = item.time_str || item.timeFmt || `${Math.floor(secVal/60)}:${String(secVal%60).padStart(2, '0')}`;
+      const secVal = parseInt(item.sec) || 0;
+      let timeFmtVal = item.time_str || item.timeFmt;
+      if (isVideo) {
+        if (!timeFmtVal || timeFmtVal.startsWith('Pág') || !timeFmtVal.includes(':')) {
+          const mins = Math.floor(secVal / 60);
+          const secs = secVal % 60;
+          timeFmtVal = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+      } else {
+        if (!timeFmtVal || !timeFmtVal.startsWith('Pág')) {
+          const pg = item.page || secVal || 1;
+          timeFmtVal = `Pág. ${String(pg).padStart(2, '0')}`;
+        }
+      }
 
       if (isVideo) {
         card.href = `${ytUrl}&t=${secVal}s`;
         card.target = '_blank';
         card.title = `Clique para assistir aos ${timeFmtVal} no YouTube`;
       } else {
-        card.title = `Clique para localizar "${item.title}" na página ${item.page || 1}`;
-        card.onclick = () => focusMomentInReading(item.title, item.page || 1, item.quote);
+        const pageNum = item.page || secVal || 1;
+        card.title = `Clique para localizar "${item.title}" na página ${pageNum}`;
+        card.onclick = () => focusMomentInReading(item.title, pageNum, item.quote);
       }
 
       // Badge de tempo real ou página
       const badgeContent = isVideo
-        ? `▶ ${timeFmtVal} (${secVal}s)`
-        : `📄 ${item.pageFmt || ('Pág. ' + String(item.page || 1).padStart(2, '0'))}`;
+        ? `▶ ${timeFmtVal}`
+        : `📄 ${timeFmtVal}`;
 
       const footerAction = isVideo
         ? `<div class="key-moment-footer">
-             <span class="key-moment-link">Abrir aula neste minuto exato</span>
+             <span class="key-moment-link">Abrir aula aos ${timeFmtVal}</span>
              <span class="key-moment-yt">🎬 YouTube ↗</span>
            </div>`
         : `<div class="key-moment-footer">
-             <span class="key-moment-link">🔍 Localizar na página</span>
+             <span class="key-moment-link">Localizar na ${timeFmtVal}</span>
              <span class="key-moment-yt">📄 Leitura ➔</span>
            </div>`;
 

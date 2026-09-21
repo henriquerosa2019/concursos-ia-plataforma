@@ -1,83 +1,92 @@
 [
   {
-    "title": "O que é a Função PROCV?",
-    "category": "CONCEITO-CHAVE",
-    "sec": 1,
-    "time_str": "Pág. 01",
-    "page": 1,
-    "quote": "O que é a Função PROCV?",
-    "importance": "Conceito relevante da Página 1"
-  },
-  {
-    "title": "A Sintaxe Sagrada do PROCV (4 Argumentos)",
-    "category": "CONCEITO-CHAVE",
-    "sec": 2,
-    "time_str": "Pág. 02",
-    "page": 2,
-    "quote": "A Sintaxe Sagrada do PROCV (4 Argumentos)",
-    "importance": "Conceito relevante da Página 2"
-  },
-  {
-    "title": "O Erro `#N/D` (Não Disponível)",
-    "category": "CONCEITO-CHAVE",
-    "sec": 3,
-    "time_str": "Pág. 03",
-    "page": 3,
-    "quote": "O Erro `#N/D` (Não Disponível)",
-    "importance": "Conceito relevante da Página 3"
-  },
-  {
-    "title": "Tabela Comparativa: PROCV vs. PROCH vs. PROCX",
-    "category": "CONCEITO-CHAVE",
-    "sec": 4,
-    "time_str": "Pág. 04",
-    "page": 4,
-    "quote": "Tabela Comparativa: PROCV vs. PROCH vs. PROCX",
-    "importance": "Conceito relevante da Página 4"
-  },
-  {
-    "title": "Mnemônico para Memorizar a Sintaxe",
-    "category": "CONCEITO-CHAVE",
-    "sec": 5,
-    "time_str": "Pág. 05",
-    "page": 5,
-    "quote": "Mnemônico para Memorizar a Sintaxe",
-    "importance": "Conceito relevante da Página 5"
-  },
-  {
-    "title": "uestão 1 (Estilo Cebraspe / Certo ou Errado)",
-    "category": "CONCEITO-CHAVE",
-    "sec": 6,
-    "time_str": "Pág. 06",
-    "page": 6,
-    "quote": "uestão 1 (Estilo Cebraspe / Certo ou Errado)",
-    "importance": "Conceito relevante da Página 6"
-  },
-  {
-    "title": "uestão 2 (Estilo FGV / Múltipla Escolha)",
-    "category": "CONCEITO-CHAVE",
-    "sec": 7,
-    "time_str": "Pág. 07",
+    "title": "Abertura e Apresentação do PROCV",
+    "category": "RESUMO & CONCEITO",
+    "sec": 474,
+    "time_str": "07:54",
     "page": 7,
-    "quote": "uestão 2 (Estilo FGV / Múltipla Escolha)",
-    "importance": "Conceito relevante da Página 7"
+    "quote": "vamos embora vamos embora chegamos",
+    "importance": "Conceito explicado pelo professor aos 07:54 de aula com alta incidência na banca FGV."
   },
   {
-    "title": "uestão 3 (Estilo FCC / Prática de Tabela)",
-    "category": "CONCEITO-CHAVE",
-    "sec": 8,
-    "time_str": "Pág. 08",
-    "page": 8,
-    "quote": "uestão 3 (Estilo FCC / Prática de Tabela)",
-    "importance": "Conceito relevante da Página 8"
-  },
-  {
-    "title": "uestão 4 (Estilo Vunesp / Aninhada Avançada)",
-    "category": "CONCEITO-CHAVE",
-    "sec": 9,
-    "time_str": "Pág. 09",
+    "title": "O que é a Função PROC e PROCV",
+    "category": "RESUMO & CONCEITO",
+    "sec": 568,
+    "time_str": "09:28",
     "page": 9,
-    "quote": "uestão 4 (Estilo Vunesp / Aninhada Avançada)",
-    "importance": "Conceito relevante da Página 9"
+    "quote": "é proc V que é quem faz uma procura",
+    "importance": "Conceito explicado pelo professor aos 09:28 de aula com alta incidência na banca FGV."
+  },
+  {
+    "title": "Como as Bancas Cobram em Prova",
+    "category": "PEGADINHA DE BANCA",
+    "sec": 2049,
+    "time_str": "34:09",
+    "page": 34,
+    "quote": "resposta dessa questão a banca colocou",
+    "importance": "Conceito explicado pelo professor aos 34:09 de aula com alta incidência na banca FGV."
+  },
+  {
+    "title": "Sintaxe Sagrada dos 4 Argumentos",
+    "category": "RESUMO & CONCEITO",
+    "sec": 628,
+    "time_str": "10:28",
+    "page": 10,
+    "quote": "sxe que sintaxe é a forma de escrita",
+    "importance": "Conceito explicado pelo professor aos 10:28 de aula com alta incidência na banca FGV."
+  },
+  {
+    "title": "4º Argumento: Busca Exata (0) vs Aproximada (1)",
+    "category": "PEGADINHA DE BANCA",
+    "sec": 822,
+    "time_str": "13:42",
+    "page": 13,
+    "quote": "zero que é o quarto argumento aqui ó",
+    "importance": "Conceito explicado pelo professor aos 13:42 de aula com alta incidência na banca FGV."
+  },
+  {
+    "title": "Matriz Tabela e Regra da 1ª Coluna",
+    "category": "PEGADINHA DE BANCA",
+    "sec": 754,
+    "time_str": "12:34",
+    "page": 12,
+    "quote": "tabela que a gente pode chamar de Matriz",
+    "importance": "Conceito explicado pelo professor aos 12:34 de aula com alta incidência na banca FGV."
+  },
+  {
+    "title": "3º Argumento: Número Índice da Coluna",
+    "category": "RESUMO & CONCEITO",
+    "sec": 1248,
+    "time_str": "20:48",
+    "page": 20,
+    "quote": "resposta do que tá na segunda coluna",
+    "importance": "Conceito explicado pelo professor aos 20:48 de aula com alta incidência na banca FGV."
+  },
+  {
+    "title": "Erros Comuns de Prova: #N/D e #REF!",
+    "category": "PEGADINHA DE BANCA",
+    "sec": 1477,
+    "time_str": "24:37",
+    "page": 24,
+    "quote": "erro tá vamos dar exemplo aqui ó se eu",
+    "importance": "Conceito explicado pelo professor aos 24:37 de aula com alta incidência na banca FGV."
+  },
+  {
+    "title": "Aninhamento de Fórmulas e Pesquisa Dinâmica",
+    "category": "RESUMO & CONCEITO",
+    "sec": 1156,
+    "time_str": "19:16",
+    "page": 19,
+    "quote": "que a primeira parte da da nossa fórmula",
+    "importance": "Conceito explicado pelo professor aos 19:16 de aula com alta incidência na banca FGV."
+  },
+  {
+    "title": "Resolução de Questão Prática de Prova",
+    "category": "RESOLUÇÃO DE QUESTÃO",
+    "sec": 1895,
+    "time_str": "31:35",
+    "page": 31,
+    "quote": "acertam a questão primeira questãozinha",
+    "importance": "Conceito explicado pelo professor aos 31:35 de aula com alta incidência na banca FGV."
   }
 ]

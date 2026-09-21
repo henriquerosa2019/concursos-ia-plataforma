@@ -2501,6 +2501,110 @@
     }
   }
 
+
+  /* ========================================================================= */
+  /* TOOLTIP INTERATIVO "COMO USAR" (HELP ON-LINE FLUTUANTE)                   */
+  /* ========================================================================= */
+  .app-help-tooltip {
+    position: fixed;
+    z-index: 999999;
+    max-width: 340px;
+    background: rgba(13, 17, 26, 0.98);
+    border: 1.5px solid rgba(245, 197, 66, 0.5);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(245, 197, 66, 0.22);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 12px;
+    padding: 14px 16px;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px);
+    transition: opacity 0.15s cubic-bezier(0.16, 1, 0.3, 1), transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.15s;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #f1f5f9;
+    line-height: 1.5;
+  }
+  .app-help-tooltip.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .aht-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 7px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .aht-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: -0.2px;
+  }
+  .aht-pill {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, #f5c542, #d4af37);
+    color: #070a0f;
+    padding: 2px 7px;
+    border-radius: 9999px;
+    white-space: nowrap;
+  }
+  .aht-how-lbl {
+    font-size: 10.5px;
+    font-weight: 800;
+    color: #f5c542;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .aht-body {
+    font-size: 12px;
+    color: #cbd5e1;
+    line-height: 1.55;
+  }
+  .aht-benefit {
+    margin-top: 8px;
+    padding-top: 7px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    font-size: 11.5px;
+    color: #34d399;
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+    line-height: 1.45;
+  }
+  .aht-arrow {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: rgba(13, 17, 26, 0.98);
+    border: 1.5px solid rgba(245, 197, 66, 0.5);
+    transform: rotate(45deg);
+  }
+  .aht-arrow.arrow-bottom {
+    bottom: -6px;
+    border-top: none;
+    border-left: none;
+  }
+  .aht-arrow.arrow-top {
+    top: -6px;
+    border-bottom: none;
+    border-right: none;
+  }
+
 </style>
 </head>
 <body>
@@ -2538,7 +2642,7 @@
 
   <div class="search-box">
     <span class="search-icon">🔍</span>
-    <input type="text" id="globalSearch" name="search_estudos_livre" autocomplete="off" spellcheck="false" placeholder="Pesquisar em toda a aula..." oninput="handleGlobalSearch(this.value)">
+    <input type="text" id="globalSearch" name="search_estudos_livre" data-help-title="Pesquisa Global Instantânea" data-help-body="Digite palavras-chave (ex: 'excel', 'artigo 5', 'crase', 'atos') para filtrar tópicos, matérias e conteúdos em menos de 100ms." data-help-benefit="Localização relâmpago de conceitos e fórmulas sem precisar navegar de pasta em pasta." autocomplete="off" spellcheck="false" placeholder="Pesquisar em toda a aula..." oninput="handleGlobalSearch(this.value)">
   </div>
 
   <div class="topbar-actions">
@@ -2559,19 +2663,19 @@
     <div class="ai-status-badge" id="userAuthBadge" onclick="handleAuthBadgeClick()" title="Minha Conta no Projeto Aprovação" style="border-color: rgba(88, 166, 255, 0.4); color: var(--accent-blue); font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; flex-shrink: 0;">
       <span id="userAuthIcon">👤</span> <span id="userAuthText" style="display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;">Entrar</span>
     </div>
-    <div class="ai-status-badge" id="supabaseStatusBadge" onclick="openSupabaseModal()" title="Sincronizar PC ➔ Nuvem: Salva com segurança seus estudos, acertos de questões, flashcards e progresso diário na nuvem para que você nunca perca seu progresso e possa estudar em qualquer dispositivo." style="border-color: rgba(16, 185, 129, 0.4); color: var(--accent-green, #10b981); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; padding: 6px 12px;">
+    <div class="ai-status-badge" id="supabaseStatusBadge" onclick="openSupabaseModal()" data-help-title="Sincronizar PC ➔ Nuvem" data-help-body="Salva seus estudos, acertos, revisões espaçadas e dados com segurança na nuvem (Supabase) para você continuar em qualquer dispositivo." data-help-benefit="Backup automático à prova de perdas para estudar no PC, celular ou tablet." title="Sincronizar PC ➔ Nuvem: Salva com segurança seus estudos, acertos de questões, flashcards e progresso diário na nuvem para que você nunca perca seu progresso e possa estudar em qualquer dispositivo." style="border-color: rgba(16, 185, 129, 0.4); color: var(--accent-green, #10b981); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-weight: 700; padding: 6px 12px;">
       <span id="supabaseSyncIcon">🔄</span> <span id="supabaseStatusText">Sincronizar PC ➔ Nuvem</span>
     </div>
-    <button class="btn btn-purple" onclick="openAiFlashcardModal()">
+    <button class="btn btn-purple" onclick="openAiFlashcardModal()" data-help-title="Gerar Novos Flashcards com IA" data-help-body="A IA analisa o conteúdo didático da aula e gera cartões inéditos focados nas armadilhas da matéria, adicionando direto à sua sessão." data-help-benefit="Cartões inteligentes sem repetições e sem esforço manual de digitação.">
       ✨ Novo Flashcard (IA)
     </button>
-    <button class="btn btn-primary" onclick="openAiQuizModal()">
+    <button class="btn btn-primary" onclick="openAiQuizModal()" data-help-title="Gerar Novo Simulado com IA" data-help-body="Cria questões inéditas com gabarito comentado filtrando pela banca examinadora desejada (Cebraspe ou FGV) com deduplicação semântica." data-help-benefit="Treino infinito com questões no formato exato da sua banca examinadora.">
       ⚡ Novo Simulado (IA)
     </button>
-    <button class="btn" onclick="openImportLessonModal()" title="Importar nova aula com conteúdo para gerar flashcards e simulados">
+    <button class="btn" onclick="openImportLessonModal()" data-help-title="Nova Aula: Importação Multimodal" data-help-body="Cole o link do YouTube ou anexe um PDF de prova/apostila para o sistema estruturar automaticamente os 4 Pilares de estudo." data-help-benefit="Transforma qualquer aula passiva em material ativo de alta retenção em segundos.">
       📥 Nova Aula
     </button>
-    <button class="btn btn-green" onclick="downloadAnkiDeck()" title="Exportar Deck para o Anki (atual ou consolidado)">
+    <button class="btn btn-green" onclick="downloadAnkiDeck()" data-help-title="Exportar Deck para o Anki" data-help-body="Gera um arquivo de texto (.txt) tab-separated pronto para importação direta no Anki Desktop ou no aplicativo AnkiMobile." data-help-benefit="Total portabilidade para você revisar seus cards no ecossistema Anki oficial.">
       📥 Exportar Anki
     </button>
     <!-- Botão de Pasta Local ocultado para os alunos -->
@@ -2678,7 +2782,7 @@
       <!-- Navigation Tabs: Linha dos 4 Pilares de Alta Retenção & Ferramentas -->
       <div class="nav-tabs-container">
         <div class="nav-tabs" role="tablist" aria-label="Método 4 Pilares de Alta Retenção">
-          <div class="nav-tab active" onclick="switchTab(0)" role="tab" aria-selected="true" tabindex="0" data-pillar="1" title="Pilar 1: Resumo Estruturado, Teoria e Sintaxe">
+          <div class="nav-tab active" onclick="switchTab(0)" role="tab" aria-selected="true" tabindex="0" data-pillar="1" data-help-title="1. Resumo & Sintaxe (Pilar 1)" data-help-body="Acesse a síntese direta ao ponto da matéria com fórmulas, sintaxes formais, mnemônicos e tabelas comparativas prontas para fixação imediata." data-help-benefit="Resumo esquematizado para absorver 90% do conteúdo no menor tempo de leitura.">
             <div class="nav-tab-header">
               <span class="nav-tab-tag tag-pilar1">PILAR 1</span>
             </div>
@@ -2689,7 +2793,7 @@
             <div class="nav-tab-indicator"></div>
           </div>
 
-          <div class="nav-tab" onclick="switchTab(1)" role="tab" aria-selected="false" tabindex="0" data-pillar="2" title="Pilar 2: Raio-X de Banca e Análise de Pegadinhas">
+          <div class="nav-tab" onclick="switchTab(1)" role="tab" aria-selected="false" tabindex="0" data-pillar="2" data-help-title="2. Raio-X & Bancas (Pilar 2)" data-help-body="Dissecação cirúrgica das armadilhas mais eliminatórias de bancas como Cebraspe, FGV e FCC (inversões conceituais, palavras restritivas e regras gerais vs. exceções)." data-help-benefit="Evita cair nas pegadinhas clássicas que eliminam mais de 90% dos candidatos.">
             <div class="nav-tab-header">
               <span class="nav-tab-tag tag-pilar2">PILAR 2</span>
             </div>
@@ -2700,7 +2804,7 @@
             <div class="nav-tab-indicator"></div>
           </div>
 
-          <div class="nav-tab" onclick="switchTab(2)" role="tab" aria-selected="false" tabindex="0" data-pillar="3" title="Pilar 3: Flashcards Anki com Repetição Espaçada SM-2">
+          <div class="nav-tab" onclick="switchTab(2)" role="tab" aria-selected="false" tabindex="0" data-pillar="3" data-help-title="3. Flashcards Anki (Pilar 3)" data-help-body="Memorização ativa: leia a pergunta na frente, clique para virar e marque Difícil (1d), Bom (3d) ou Fácil (7d) para alimentar o motor de repetição espaçada SM-2." data-help-benefit="Grava o conteúdo na memória de longo prazo vencendo a Curva do Esquecimento.">
             <div class="nav-tab-header">
               <span class="nav-tab-tag tag-pilar3">PILAR 3</span>
               <span id="tabCardCount" class="nav-tab-badge badge-cards">7</span>
@@ -2712,7 +2816,7 @@
             <div class="nav-tab-indicator"></div>
           </div>
 
-          <div class="nav-tab" onclick="switchTab(3)" role="tab" aria-selected="false" tabindex="0" data-pillar="4" title="Pilar 4: Mini-Simulado de Fixação estilo Cebraspe / FGV">
+          <div class="nav-tab" onclick="switchTab(3)" role="tab" aria-selected="false" tabindex="0" data-pillar="4" data-help-title="4. Mini-Simulado de Fixação (Pilar 4)" data-help-body="Resolva questões inéditas C/E ou múltipla escolha com correção visual instantânea e fundamentação comentada passo a passo." data-help-benefit="Simula o estilo real da sua banca com cálculo de score e nota líquida.">
             <div class="nav-tab-header">
               <span class="nav-tab-tag tag-pilar4">PILAR 4</span>
               <span id="tabQuizCount" class="nav-tab-badge badge-quiz">4</span>
@@ -2724,7 +2828,7 @@
             <div class="nav-tab-indicator"></div>
           </div>
 
-          <div class="nav-tab" onclick="switchTab(4)" role="tab" aria-selected="false" tabindex="0" data-pillar="5" title="Multimídia: Momentos-Chave e Transcrição Completa da Aula">
+          <div class="nav-tab" onclick="switchTab(4)" role="tab" aria-selected="false" tabindex="0" data-pillar="5" data-help-title="5. Transcrição & Multimídia" data-help-body="Acompanhe o texto integral da videoaula com marcadores de tempo por minuto para navegar direto aos trechos cruciais da explicação do professor." data-help-benefit="Economiza horas de vídeo indo direto ao minuto exato do conceito cobrado.">
             <div class="nav-tab-header">
               <span class="nav-tab-tag tag-pilar5">MULTIMÍDIA</span>
             </div>
@@ -2735,7 +2839,7 @@
             <div class="nav-tab-indicator"></div>
           </div>
 
-          <div class="nav-tab" id="navTabReviews" onclick="switchTab(5)" role="tab" aria-selected="false" tabindex="0" data-pillar="6" title="Recuperação Espaçada: Caderno de Erros e Questões Pendentes">
+          <div class="nav-tab" id="navTabReviews" onclick="switchTab(5)" role="tab" aria-selected="false" tabindex="0" data-pillar="6" data-help-title="6. Caderno de Erros Inteligente" data-help-body="Questões que você errou ou flashcards marcados como Difícil entram aqui automaticamente para re-treino focado até atingir a Meta Status (0)." data-help-benefit="Garante que você nunca mais erre na prova oficial uma questão que já errou em casa.">
             <div class="nav-tab-header">
               <span class="nav-tab-tag tag-pilar6">RECUPERAÇÃO</span>
               <span id="tabReviewsBadge" class="review-badge badge-zero">0</span>
@@ -2838,7 +2942,7 @@
             <span id="raioxTopicBadge" class="badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; font-size: 11px; padding: 3px 8px; border-radius: 12px; border: 1px solid rgba(245, 158, 11, 0.3);">Pilar 2</span>
           </div>
           <div style="display: flex; gap: 8px;">
-            <button class="btn btn-warning" onclick="openAiRaioXModal()" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; font-weight: 600; border: none; box-shadow: 0 2px 8px rgba(217, 119, 6, 0.25);">
+            <button class="btn btn-warning" onclick="openAiRaioXModal()" data-help-title="Gerar Raio-X & Pegadinhas com IA" data-help-body="Gera um raio-x sob demanda analisando o histórico da banca escolhida, pontos cegos e armadilhas conceituais sobre o tema estudado." data-help-benefit="Mapeamento estratégico antecipado para não ser surpreendido na prova." style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; font-weight: 600; border: none; box-shadow: 0 2px 8px rgba(217, 119, 6, 0.25);">
               ⚡ Gerar Raio-X & Pegadinhas com IA
             </button>
           </div>
@@ -2885,10 +2989,10 @@
             <button class="btn" onclick="resetFlashcards(true)" title="Reiniciar do primeiro card">
               🔄 Reiniciar
             </button>
-            <button class="btn btn-purple" onclick="openAiFlashcardModal()">
+            <button class="btn btn-purple" onclick="openAiFlashcardModal()" data-help-title="Gerar Flashcards com IA no Pilar" data-help-body="A IA analisa o conteúdo da aula e cria novos cartões inéditos específicos para aprofundar tópicos difíceis desta disciplina." data-help-benefit="Aumenta o volume de fixação nos temas de maior incidência.">
               ✨ Gerar Novos com IA
             </button>
-            <button class="btn" onclick="openManualCardModal()">
+            <button class="btn" onclick="openManualCardModal()" data-help-title="Criar Flashcard Manual" data-help-body="Abra o formulário para escrever sua própria pergunta e resposta personalizada a partir da lei seca ou de anotações de cursinho." data-help-benefit="Autoria e personalização máxima para focar nas suas dificuldades individuais.">
               ➕ Criar Manual
             </button>
           </div>
@@ -2928,13 +3032,13 @@
               🧠 Avaliação SM-2 (Repetição Espaçada)
             </div>
             <div class="sm2-rating-group">
-              <button class="sm2-btn sm2-btn-hard" onclick="rateCardSM2(1)" title="Errei ou achei difícil. Repetir amanhã (salva no Caderno de Erros).">
+              <button class="sm2-btn sm2-btn-hard" onclick="rateCardSM2(1)" data-help-title="Revisão em 1 Dia (Difícil)" data-help-body="Errou ou achou difícil? O sistema agenda a repetição para amanhã e envia para o Caderno de Erros." data-help-benefit="Garante re-treino prioritário das suas maiores dificuldades." title="Errei ou achei difícil. Repetir amanhã (salva no Caderno de Erros).">
                 <span>🔴 Difícil</span> <span class="sm2-btn-badge">(1d)</span>
               </button>
-              <button class="sm2-btn sm2-btn-good" onclick="rateCardSM2(3)" title="Acertei com esforço médio. Repetir em 3 dias.">
+              <button class="sm2-btn sm2-btn-good" onclick="rateCardSM2(3)" data-help-title="Revisão em 3 Dias (Bom)" data-help-body="Acertou com esforço moderado? O sistema agenda a consolidação para daqui a 3 dias." data-help-benefit="Espaçamento ideal para fixar a resposta na memória de médio prazo." title="Acertei com esforço médio. Repetir em 3 dias.">
                 <span>🟡 Bom</span> <span class="sm2-btn-badge">(3d)</span>
               </button>
-              <button class="sm2-btn sm2-btn-easy" onclick="rateCardSM2(5)" title="Acertei com segurança! Repetir em 7 dias.">
+              <button class="sm2-btn sm2-btn-easy" onclick="rateCardSM2(5)" data-help-title="Revisão em 7 Dias (Fácil)" data-help-body="Acertou com segurança total! O cartão é fixado e reprogramado para daqui a 7+ dias." data-help-benefit="Confirma a retenção permanente na memória de longo prazo." title="Acertei com segurança! Repetir em 7 dias.">
                 <span>🟢 Fácil</span> <span class="sm2-btn-badge">(7d)</span>
               </button>
             </div>
@@ -2963,7 +3067,7 @@
               <button class="quiz-mode-btn active" id="btnModeTraining" onclick="setQuizMode('training')">
                 ⚡ Treino (Gabarito Imediato)
               </button>
-              <button class="quiz-mode-btn" id="btnModeCebraspe" onclick="setQuizMode('cebraspe')">
+              <button class="quiz-mode-btn" id="btnModeCebraspe" onclick="setQuizMode('cebraspe')" data-help-title="Modo Prova Oficial Cebraspe" data-help-body="Ativa o cronômetro decrescente com a regra líquida Cebraspe (1 questão errada anula 1 certa) e diagnóstico final pós-prova." data-help-benefit="Treina o gerenciamento de tempo e o controle emocional para saber a hora certa de chutar ou deixar em branco.">
                 ⏱️ Prova Oficial Cebraspe (Líquida)
               </button>
             </div>
@@ -2978,7 +3082,7 @@
             <button class="btn" onclick="resetQuiz(true)" title="Limpar respostas e reiniciar simulado">
               🔄 Limpar / Reiniciar
             </button>
-            <button class="btn btn-primary" onclick="openAiQuizModal()">
+            <button class="btn btn-primary" onclick="openAiQuizModal()" data-help-title="Novo Simulado com IA no Pilar" data-help-body="Adiciona novas questões comentadas de fixação no padrão Cebraspe (C/E) ou FGV/FCC (Múltipla Escolha) diretamente a este tópico." data-help-benefit="Amplia seu banco de questões resolvendo dúvidas na prática.">
               ⚡ Gerar Novo Simulado com IA
             </button>
           </div>
@@ -10649,6 +10753,126 @@
   // Inicializar tema armazenado imediatamente
   applyAppTheme(getStoredTheme());
   document.addEventListener('DOMContentLoaded', () => { applyAppTheme(getStoredTheme()); checkStoredAuth(); });
+
+
+    // =========================================================================
+    // SISTEMA OFICIAL DE HELP ON-LINE INTERATIVO (COMO USAR EM CADA RECURSO)
+    // =========================================================================
+    function initHelpTooltipSystem() {
+      let tooltip = document.getElementById('appHelpTooltip');
+      if (!tooltip) {
+        tooltip = document.createElement('div');
+        tooltip.id = 'appHelpTooltip';
+        tooltip.className = 'app-help-tooltip';
+        tooltip.innerHTML = `
+          <div class="aht-header">
+            <span class="aht-title" id="ahtTitle">💡 Ajuda</span>
+            <span class="aht-pill" id="ahtPill">Como Usar</span>
+          </div>
+          <div class="aht-how-lbl">💡 Como Usar na Prática:</div>
+          <div class="aht-body" id="ahtBody">...</div>
+          <div class="aht-benefit" id="ahtBenefit" style="display: none;">
+            <span>🎯</span> <span id="ahtBenefitText"></span>
+          </div>
+          <div class="aht-arrow arrow-bottom" id="ahtArrow"></div>
+        `;
+        document.body.appendChild(tooltip);
+      }
+
+      let activeEl = null;
+      let hideTimeout = null;
+
+      function showHelp(el) {
+        clearTimeout(hideTimeout);
+        activeEl = el;
+
+        const title = el.getAttribute('data-help-title') || 'Ajuda';
+        const body = el.getAttribute('data-help-body') || el.getAttribute('title') || '';
+        const benefit = el.getAttribute('data-help-benefit') || '';
+        const pill = el.getAttribute('data-help-pill') || 'Como Usar';
+
+        if (!body) return;
+
+        document.getElementById('ahtTitle').innerHTML = `<span>💡</span> ${title}`;
+        document.getElementById('ahtBody').innerText = body;
+        document.getElementById('ahtPill').innerText = pill;
+
+        const bBox = document.getElementById('ahtBenefit');
+        if (benefit) {
+          document.getElementById('ahtBenefitText').innerText = benefit;
+          bBox.style.display = 'flex';
+        } else {
+          bBox.style.display = 'none';
+        }
+
+        tooltip.style.display = 'block';
+        const rect = el.getBoundingClientRect();
+        const tWidth = tooltip.offsetWidth || 320;
+        const tHeight = tooltip.offsetHeight || 130;
+
+        let left = rect.left + (rect.width / 2) - (tWidth / 2);
+        let top = rect.top - tHeight - 12;
+        let arrowClass = 'arrow-bottom';
+
+        if (top < 10) {
+          top = rect.bottom + 12;
+          arrowClass = 'arrow-top';
+        }
+
+        if (left < 10) left = 10;
+        if (left + tWidth > window.innerWidth - 10) {
+          left = window.innerWidth - tWidth - 10;
+        }
+
+        tooltip.style.left = `${left}px`;
+        tooltip.style.top = `${top}px`;
+
+        const arrow = document.getElementById('ahtArrow');
+        arrow.className = `aht-arrow ${arrowClass}`;
+        const arrowLeft = rect.left + (rect.width / 2) - left - 5;
+        arrow.style.left = `${Math.max(14, Math.min(tWidth - 20, arrowLeft))}px`;
+
+        tooltip.classList.add('visible');
+      }
+
+      function hideHelp() {
+        clearTimeout(hideTimeout);
+        hideTimeout = setTimeout(() => {
+          tooltip.classList.remove('visible');
+          activeEl = null;
+        }, 100);
+      }
+
+      document.addEventListener('mouseover', (e) => {
+        const target = e.target.closest('[data-help-body], [data-help-title]');
+        if (target && target !== activeEl) {
+          showHelp(target);
+        }
+      });
+
+      document.addEventListener('mouseout', (e) => {
+        const target = e.target.closest('[data-help-body], [data-help-title]');
+        if (target && (!e.relatedTarget || !target.contains(e.relatedTarget))) {
+          hideHelp();
+        }
+      });
+
+      document.addEventListener('touchstart', (e) => {
+        const target = e.target.closest('[data-help-body], [data-help-title]');
+        if (target) {
+          showHelp(target);
+          setTimeout(hideHelp, 4500);
+        } else {
+          hideHelp();
+        }
+      }, { passive: true });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initHelpTooltipSystem);
+    } else {
+      initHelpTooltipSystem();
+    }
 
 </script>
 </body>

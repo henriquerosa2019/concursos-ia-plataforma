@@ -92,32 +92,33 @@ Esse resumo estruturado e os conceitos-chave abordam os principais aspectos dos 
 
 ## 2. Raio-X de Banca & Pegadinhas Mais Frequentes
 
-### 🚨 Pegadinha 1: O Ato Administrativo é Sempre Válido
-- **O que a banca afirma para induzir ao erro:** "Todo ato administrativo praticado pela Administração Pública é considerado válido e produz efeitos instantâneos."
-- **Pegadinha desmascarada (Onde está o erro):** A afirmação ignora os vícios que podem tornar o ato administrativo nulo ou anulável, como incompetência, vício de forma e ilegalidade do objeto, conforme o Art. 2º da Lei 4.717/1965.
-- **💡 Regra de Ouro / Mnemônico:** "Ato nulo, ato sem valor" – lembre-se que a validade depende da conformidade legal.
+### 🚨 Pegadinha 1: A Presunção de Legitimidade é Irreversível
+- **O que a banca afirma para induzir ao erro:** "A presunção de legitimidade dos atos administrativos significa que nunca podem ser considerados inválidos."
+- **Pegadinha desmascarada (Onde está o erro):** Embora a presunção de legitimidade exista, isso não impede que atos administrativos sejam anulados ou considerados nulos em virtude de vícios como incompetência ou ilegalidade. A presunção é uma ficção legal que pode ser desfeita com prova em contrário.
+- **💡 Regra de Ouro / Mnemônico:** "Presunção é ficção, mas vício é contradição."
 
-### 🚨 Pegadinha 2: Confundindo Ato Vinculado com Ato Discricionário
-- **O que a banca afirma para induzir ao erro:** "Todo ato administrativo é vinculado, ou seja, a Administração Pública não possui margem de escolha."
-- **Pegadinha desmascarada (Onde está o erro):** Embora existam atos vinculados, a Administração também pratica atos discricionários, onde há liberdade para decidir sobre a conveniência e oportunidade, conforme o contexto.
-- **💡 Regra de Ouro / Mnemônico:** "Vinculado é sem escolha, discricionário é liberdade."
+### 🚨 Pegadinha 2: Nulidade e Anulação São Sinônimos
+- **O que a banca afirma para induzir ao erro:** "A nulidade e a anulação de atos administrativos têm o mesmo significado e efeitos."
+- **Pegadinha desmascarada (Onde está o erro):** Nulidade se refere a atos que são considerados inválidos desde sua origem (ex tunc), enquanto a anulação se refere a atos válidos que são posteriormente considerados ilegais e perdendo sua validade (com efeitos retroativos). 
+- **💡 Regra de Ouro / Mnemônico:** "Nulo é desde o início, anulado é só depois."
 
-### 🚨 Pegadinha 3: Confusão Entre Motivo e Motivação
-- **O que a banca afirma para induzir ao erro:** "O motivo é a mesma coisa que a motivação do ato administrativo."
-- **Pegadinha desmascarada (Onde está o erro):** O motivo é o pressuposto que leva à prática do ato, enquanto a motivação é a explicação dos motivos apresentados. A falta de um motivo pode invalidar o ato, mas a ausência de motivação não o anula, apenas gera possibilidade de controle judicial.
-- **💡 Regra de Ouro / Mnemônico:** "Motivo é razão, motivação é a explicação."
+### 🚨 Pegadinha 3: Ato Nulo Pode Ser Convalidado
+- **O que a banca afirma para induzir ao erro:** "Todos os atos administrativos podem ser convalidados, mesmo aqueles que são considerados nulos."
+- **Pegadinha desmascarada (Onde está o erro):** Apenas atos que apresentam vícios sanáveis podem ser convalidados. Atos nulos, por definição, não podem ser convalidados, pois são inválidos desde a sua origem.
+- **💡 Regra de Ouro / Mnemônico:** "Nulo não tem volta, só sanável é convalidável."
 
-### 🚨 Pegadinha 4: Ignorando a Anulação e Revogação
-- **O que a banca afirma para induzir ao erro:** "A revogação de um ato administrativo é sempre retroativa e pode ser feita pelo Judiciário."
-- **Pegadinha desmascarada (Onde está o erro):** A revogação é uma decisão administrativa e não é retroativa (ex nunc), e o Judiciário não pode revogar atos administrativos, apenas anular.
-- **💡 Regra de Ouro / Mnemônico:** "Revogar é ex nunc, anular é ex tunc."
+### 🚨 Pegadinha 4: Vícios do Ato Não Afetam sua Validade
+- **O que a banca afirma para induzir ao erro:** "Um ato administrativo pode ter vícios, mas isso não afeta sua validade até que seja declarado nulo."
+- **Pegadinha desmascarada (Onde está o erro):** A presença de vícios pode afetar a validade do ato, mesmo que não tenha sido declarado nulo ainda. A validade pode ser contestada a qualquer momento, e o vício pode gerar consequências legais.
+- **💡 Regra de Ouro / Mnemônico:** "Vício é como doença, pode afetar a validade."
 
-### 🚨 Pegadinha 5: Ato Administrativo Sempre Tem Forma Escrita
-- **O que a banca afirma para induzir ao erro:** "Todos os atos administrativos devem obrigatoriamente ser formalizados por escrito."
-- **Pegadinha desmascarada (Onde está o erro):** Alguns atos administrativos podem ser verbais ou até mesmo tácitos, dependendo da legislação específica ou da natureza do ato, como em casos de emergência.
-- **💡 Regra de Ouro / Mnemônico:** "Forma não é sempre escrita, depende do ato e da lei."
+### 🚨 Pegadinha 5: O Motivo é Irrelevante para a Validade do Ato
+- **O que a banca afirma para induzir ao erro:** "A falta de um motivo não compromete a validade do ato administrativo."
+- **Pegadinha desmascarada (Onde está o erro):** A ausência de motivo pode sim levar à nulidade do ato administrativo, pois o motivo é um dos elementos essenciais que fundamentam a prática do ato. Sem motivo, o ato pode ser considerado inválido.
+- **💡 Regra de Ouro / Mnemônico:** "Motivo é essencial, sem ele, ato é potencial."
 
-### 🚨 Pegadinha 6: Tipicidade é Opcional nos Atos Administrativos
-- **O que a banca afirma para induzir ao erro:** "Os atos administrativos podem não seguir tipicidade, pois a Administração pode criar novos tipos de atos conforme sua conveniência."
-- **Pegadinha desmascarada (Onde está o erro):** A tipicidade é um atributo essencial, e os atos administrativos devem sempre corresponder a figuras previamente definidas pela lei, conforme o princípio da legalidade.
-- **💡 Regra de Ouro / Mnemônico:** "Tipicidade é obrigatória, a lei deve ser respeitada."
+### 🚨 Pegadinha 6: Ato Administrativo Sempre Produz Efeitos Imediatos
+- **O que a banca afirma para induzir ao erro:** "Todo ato administrativo gera efeitos imediatos, independentemente de sua natureza."
+- **Pegadinha desmascarada (Onde está o erro):** A natureza do ato pode determinar se seus efeitos são imediatos ou não. Por exemplo, atos que dependem de regulamentação ou de outros procedimentos administrativos podem ter efeitos diferidos.
+- **💡 Regra de Ouro / Mnemônico:** "Efeito imediato não é regra, depende do ato e da lei."
+

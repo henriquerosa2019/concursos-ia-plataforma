@@ -1,5 +1,10 @@
 {
-  "cards": [],
+  "cards": [
+    {
+      "q": "No Excel, a quais categorias pertencem as funções PROCV e PROCH?",
+      "a": "Pertencem à categoria Pesquisa e Referência (localizada na guia Fórmulas)."
+    }
+  ],
   "quiz": [
     {
       "enunciado": "1. (CESPE / Adaptada) Na função =PROCV do Microsoft Excel, o primeiro argumento define o número de índice da coluna que contém a resposta desejada, enquanto o segundo define a matriz da tabela.",

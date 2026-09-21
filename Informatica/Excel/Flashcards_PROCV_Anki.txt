@@ -15,3 +15,7 @@ O que acontece se a função PROCV for utilizada com uma matriz onde o valor pro
 Na fórmula PROCV, como a ausência de um argumento pode alterar o resultado da busca?	Se o quarto argumento for omitido, o Excel considera uma busca aproximada (1 ou VERDADEIRO) por padrão, que pode levar a resultados inesperados se a matriz não estiver ordenada.
 Qual é a consequência de usar um índice de coluna (3º argumento) que é igual ao número de colunas da matriz na função PROCV?	O Excel retornará o valor da última coluna da matriz, mas se o índice for maior que o número de colunas, resultará em um erro #REF!.
 Como a função PROCV se comporta quando o valor procurado é um texto que contém espaços adicionais ou caracteres invisíveis?	Se o texto não corresponder exatamente ao valor na primeira coluna da matriz, mesmo com espaços adicionais, o PROCV não encontrará o valor e retornará #N/D.
+O que é o Princípio da Impessoalidade?	A atuação administrativa visa exclusivamente ao interesse público.
+O que é o Princípio da Impessoalidade?	A atuação administrativa visa exclusivamente ao interesse público.
+O que é o Princípio da Impessoalidade?	A atuação administrativa visa exclusivamente ao interesse público.
+O que é o Princípio da Impessoalidade?	A atuação administrativa visa exclusivamente ao interesse público.

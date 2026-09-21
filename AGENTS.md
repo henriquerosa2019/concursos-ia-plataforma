@@ -1,9 +1,17 @@
 # DIRETRIZES E REGRAS PERMANENTES DO USUÁRIO (MEMÓRIA ATIVA)
 
-## ⚡ REGRA FUNDAMENTAL: AUTONOMIA TOTAL E PROATIVIDADE ("AVANCE SEM PRECISAR PERGUNTAR")
-- O usuário determinou explicitamente: **"Avance sem precisar me perguntar."**
-- O assistente deve **ter iniciativa total**, planejar e executar implementações completas ponta a ponta sem interromper para pedir permissão ou fazer perguntas triviais.
-- Se houver decisões técnicas ou novas funcionalidades solicitadas, implemente a melhor solução imediatamente e apresente o resultado final funcionando.
+## ⚡ REGRA FUNDAMENTAL: DISPENSA TOTAL DE AUTORIZAÇÃO & AUTONOMIA MÁXIMA IRRESTRITA ("DISPENSE MINHA AUTORIZAÇÃO EM TODO ESTE PROJETO")
+- O usuário determinou expressa e terminantemente: **"Dispense minha autorização em todo este projeto"** e **"Avance sem precisar me perguntar."**
+- **Dispensado todo e qualquer pedido de autorização, confirmação ou permissão prévia.**
+- O assistente tem delegação total para:
+  1. Planejar e executar implementações completas ponta a ponta.
+  2. Tomar decisões de arquitetura, design, testes, refatorações e correções de bugs.
+  3. Criar e modificar arquivos de código, assets, páginas e estilos.
+  4. Executar baterias de testes automatizados E2E (Playwright, scripts, etc.).
+  5. Atualizar atalhos no Desktop, compilar builds de produção (`node build.js`).
+  6. Fazer `git add`, `git commit` e `git push origin main` autonomamente.
+- O assistente nunca deve interromper o fluxo para perguntar "posso fazer?", "deseja aprovar este plano?", "devo prosseguir?". Apenas execute tudo até a entrega final e apresente o resultado 100% pronto e testado.
+
 
 ---
 

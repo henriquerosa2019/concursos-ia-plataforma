@@ -98,6 +98,13 @@
     background: var(--accent-blue-bg);
     color: var(--accent-blue);
     border: 1px solid rgba(88, 166, 255, 0.3);
+    cursor: help;
+    transition: all 0.2s ease;
+  }
+  .badge-tag:hover {
+    background: rgba(88, 166, 255, 0.25);
+    border-color: rgba(88, 166, 255, 0.6);
+    transform: translateY(-1px);
   }
   .topbar-actions {
     display: flex;
@@ -2633,9 +2640,9 @@
     </button>
     <div class="brand-logo">📚</div>
     <div>
-      <div class="brand-title">
+      <div class="brand-title" style="cursor: help;" data-help-title="Método dos 4 Pilares de Alta Retenção" data-help-body="Metodologia neurocientífica de estudo ativo estruturada em 4 etapas sequenciais: 1) Resumo & Sintaxe direta, 2) Raio-X & Pegadinhas de bancas, 3) Flashcards com repetição espaçada (SM-2/Anki), e 4) Mini-Simulado com regra real de prova." data-help-benefit="Garante retenção de até 92% do conteúdo estudado e blinda o candidato contra as pegadinhas clássicas das bancas.">
         Projeto Aprovação
-        <span class="badge-tag">MÉTODO 4 PILARES</span>
+        <span class="badge-tag" data-help-title="Método dos 4 Pilares de Alta Retenção" data-help-body="Metodologia neurocientífica de estudo ativo estruturada em 4 etapas sequenciais: 1) Resumo & Sintaxe direta, 2) Raio-X & Pegadinhas de bancas, 3) Flashcards com repetição espaçada (SM-2/Anki), e 4) Mini-Simulado com regra real de prova." data-help-benefit="Garante retenção de até 92% do conteúdo estudado e blinda o candidato contra as pegadinhas clássicas das bancas.">MÉTODO 4 PILARES</span>
       </div>
     </div>
   </div>
@@ -2650,7 +2657,7 @@
     <a href="/landing" class="btn" id="btnLandingPageLink" style="display: none; border-color: rgba(245, 197, 66, 0.4); color: #f5c542; font-weight: 700; text-decoration: none; align-items: center; gap: 6px; padding: 6px 12px;" title="Ver Landing Page Oficial do Projeto Aprovação">
       🌐 Landing Page
     </a>
-    <button class="btn" id="globalThemeBtn" onclick="toggleAppTheme()" title="Alternar entre Fundo Branco (Claro) e Fundo Escuro em todo o Aplicativo" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600; padding: 6px 12px;">
+    <button class="btn" id="globalThemeBtn" onclick="toggleAppTheme()" data-help-title="Alternar Modo Claro / Modo Escuro" data-help-body="Alterne instantaneamente a visualização entre o Modo Escuro (foco profundo e descanso visual) e o Modo Claro (fundo branco em alto contraste, ideal para leitura contínua estilo folha de papel ou livro)." data-help-benefit="Adapta a tela à iluminação do seu ambiente para evitar o cansaço visual em longas sessões de estudo." title="Alternar entre Fundo Branco (Claro) e Fundo Escuro em todo o Aplicativo" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600; padding: 6px 12px;">
       <span id="globalThemeIcon">☀️</span> <span id="globalThemeText">Modo Claro</span>
     </button>
     <!-- Badge técnico de IA ocultado para alunos -->

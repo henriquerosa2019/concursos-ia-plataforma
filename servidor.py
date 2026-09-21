@@ -1366,6 +1366,16 @@ def get_lesson_metadata(discipline, subarea):
     clean_title = title_m.group(1).strip() if title_m else f"{discipline} • {subarea}"
     has_full_lesson = bool(prof_m and link_m)
     
+    moments_file = os.path.join(folder, f"Momentos_Chave_{subarea}.json")
+    moments_list = []
+    if os.path.exists(moments_file):
+        try:
+            with open(moments_file, "r", encoding="utf-8") as mf:
+                m_raw = json.load(mf)
+                moments_list = m_raw if isinstance(m_raw, list) else m_raw.get("moments", [])
+        except Exception:
+            pass
+
     return {
         "discipline": discipline,
         "subarea": subarea,
@@ -1375,8 +1385,10 @@ def get_lesson_metadata(discipline, subarea):
         "category": cat_m.group(1).strip() if cat_m else "Edital de Concursos",
         "youtube_url": link_m.group(1).strip() if link_m else "",
         "markdown_content": content,
-        "has_lesson": has_full_lesson
+        "has_lesson": has_full_lesson,
+        "moments": moments_list
     }
+
 
 def load_reviews(discipline, subarea, email=None):
     clean_email = email.lower().strip() if email else ""
@@ -1839,7 +1851,7 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 return
 
         # 1. Página Inicial SPA / Plataforma de Estudos (/app ou /)
-        if path in ("/", "/index.html", "/app", "/plataforma"):
+        if path in ("/", "/index.html", "/app", "/app.html", "/plataforma", "/plataforma.html"):
             if os.path.exists(HTML_FILE):
                 self.send_response(200)
                 self.send_header("Content-type", "text/html; charset=utf-8")

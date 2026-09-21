@@ -3145,9 +3145,9 @@
             <div style="font-size: 13px; color: var(--text2);" id="keyMomentsHint">
               💡 <strong>Momentos-Chave da Aula:</strong> Clique no cartão para abrir o YouTube no minuto exato onde o professor explica o conceito:
             </div>
-            <button class="btn btn-sm btn-purple" onclick="openAiMomentsModal()" style="font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
-              ✨ Gerar Momentos-Chave com IA
-            </button>
+            <div style="font-size: 12px; color: var(--text2); background: var(--surface2); padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 6px;">
+              <span>⏱️ Minutagens & Páginas Oficiais Mapeadas</span>
+            </div>
           </div>
           <div class="key-moments-grid" id="keyMomentsGrid">
             <!-- Populated by JS -->
@@ -3357,52 +3357,6 @@
     <div style="text-align: center; margin-top: 18px; border-top: 1px solid var(--border); padding-top: 14px;">
       <button type="button" onclick="closeAuthModal()" style="background: transparent; border: none; color: var(--text3); font-size: 12px; cursor: pointer; text-decoration: underline;">
         Continuar como Visitante (Estudos Locais) ➔
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal 0: Gerar Momentos-Chave com IA -->
-<div class="modal-overlay" id="modalAiMoments" style="display:none;">
-  <div class="modal-box" style="width: 520px; max-width: 95%;">
-    <div class="modal-title" style="display: flex; align-items: center; gap: 8px;">
-      <span>✨</span> <span>Gerar Momentos-Chave com IA</span>
-    </div>
-    <p id="aiMomentsDesc" style="font-size: 13px; color: var(--text2); margin-bottom: 16px; line-height: 1.5;">
-      A inteligência artificial analisará a transcrição cronometrada da aula para mapear o <strong>minuto e segundo exatos</strong> em que o professor ensina cada conceito e pegadinha.
-    </p>
-
-    <div class="modal-input-group">
-      <label>Banca Examinadora Alvo</label>
-      <select id="aiMomentsBanca">
-        <option value="Cebraspe" selected>Cebraspe / Cespe (Foco em Itens e Pegadinhas)</option>
-        <option value="FGV">FGV (Fundação Getulio Vargas)</option>
-        <option value="FCC">FCC (Fundação Carlos Chagas)</option>
-        <option value="Vunesp">Vunesp</option>
-        <option value="Geral">Todas as Bancas / Concursos Gerais</option>
-      </select>
-    </div>
-
-    <div class="modal-input-group">
-      <label>Foco do Mapeamento</label>
-      <select id="aiMomentsFocus">
-        <option value="Conceitos Fundamentais e Pegadinhas" selected>Conceitos Fundamentais & Pegadinhas de Prova</option>
-        <option value="Apenas Pegadinhas e Armadilhas">🚨 Apenas Pegadinhas e Armadilhas Clássicas</option>
-        <option value="Resolução de Questões em Vídeo">📝 Resolução de Questões e Exemplos Práticos</option>
-        <option value="Todos os Momentos Críticos da Aula">⭐ Todos os Momentos Críticos (Completo)</option>
-      </select>
-    </div>
-
-    <div style="background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; font-size: 12px; color: var(--text2); display: flex; align-items: center; gap: 8px;">
-      <span>💡</span>
-      <span>Os momentos gerados substituem estimativas e vinculam diretamente o minuto exato da fala do professor ao link do YouTube.</span>
-    </div>
-
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal('modalAiMoments')">Cancelar</button>
-      <button class="btn btn-primary" id="btnRunAiMoments" onclick="generateAiMoments()" style="font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
-        <span class="spinner" id="aiMomentsSpinner" style="display:none; width: 14px; height: 14px;"></span>
-        <span id="aiMomentsBtnText">⚡ Mapear Minutagem com IA</span>
       </button>
     </div>
   </div>
@@ -5998,57 +5952,7 @@
   // ==============================================================================
 
   function openAiMomentsModal() {
-    const isVid = Boolean(currentYoutubeUrl && currentYoutubeUrl.trim().length > 0);
-    const modalDesc = document.getElementById('aiMomentsDesc');
-    const modalBtnText = document.getElementById('aiMomentsBtnText');
-    if (modalDesc) {
-      modalDesc.innerHTML = isVid
-        ? 'A inteligência artificial analisará a <strong>transcrição cronometrada</strong> da aula para mapear o <strong>minuto e segundo exatos</strong> em que o professor ensina cada conceito e pegadinha.'
-        : 'A inteligência artificial analisará o <strong>material didático em PDF / apostila</strong> para mapear os <strong>conceitos críticos e pegadinhas</strong> diretamente nas <strong>páginas correspondentes</strong>.';
-    }
-    if (modalBtnText) {
-      modalBtnText.textContent = isVid ? '⚡ Mapear Minutagem com IA' : '⚡ Mapear Páginas com IA';
-    }
-    document.getElementById('modalAiMoments').style.display = 'flex';
-  }
-
-  async function generateAiMoments() {
-    const banca = document.getElementById('aiMomentsBanca').value;
-    const focus = document.getElementById('aiMomentsFocus').value;
-    const btn = document.getElementById('btnRunAiMoments');
-    const spinner = document.getElementById('aiMomentsSpinner');
-    const btnText = document.getElementById('aiMomentsBtnText');
-
-    btn.disabled = true;
-    spinner.style.display = 'inline-block';
-    btnText.textContent = "Analisando Transcrição e Minutagens...";
-
-    try {
-      const resp = await fetch('/api/generate-moments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          discipline: currentDiscipline,
-          subarea: currentSubarea,
-          banca: banca,
-          focus: focus
-        })
-      });
-      const data = await resp.json();
-      if (data.success) {
-        closeModal('modalAiMoments');
-        showToast(`🎉 ${data.count} momentos-chave gerados com minutagem real!`, "⏱️");
-        await renderKeyMoments(currentDiscipline, currentSubarea, currentLessonMeta, data.moments);
-      } else {
-        alert("Erro ao gerar momentos-chave: " + (data.error || "Tente novamente."));
-      }
-    } catch(e) {
-      alert("Erro na requisição: " + e.message);
-    } finally {
-      btn.disabled = false;
-      spinner.style.display = 'none';
-      btnText.textContent = "⚡ Mapear Minutagem com IA";
-    }
+    // Opção descontinuada: momentos 100% pré-gerados e embutidos na plataforma
   }
 
   async function renderKeyMoments(disc, sub, meta, preloadedMoments) {
@@ -6063,25 +5967,43 @@
 
     let moments = [];
 
-    // 0. Usar momentos pré-carregados se fornecidos (ex: pós-geração por IA)
+    // 0. Usar momentos pré-carregados se fornecidos (ex: renderização direta)
     if (Array.isArray(preloadedMoments) && preloadedMoments.length > 0) {
       moments = preloadedMoments;
     } else {
-      // 1. Tentar buscar momentos salvos na API (/api/moments)
-      try {
-        const resp = await fetch(`/api/moments?discipline=${encodeURIComponent(d)}&subarea=${encodeURIComponent(s)}`);
-        const data = await resp.json();
-        if (data && data.success && Array.isArray(data.moments) && data.moments.length > 0) {
-          moments = data.moments;
+      // 1. Tentar ler de meta.moments (fornecido na chamada da aula pelo servidor)
+      if (meta && Array.isArray(meta.moments) && meta.moments.length > 0) {
+        moments = meta.moments;
+      }
+
+      // 2. Se não achou, tentar ler do catálogo estático preseeded (100% offline & Vercel)
+      if (!moments.length) {
+        if (!globalPreseededCatalog) await loadPreseededCatalog();
+        const catMoments = globalPreseededCatalog?.[d]?.[s]?.moments || globalPreseededCatalog?.[d]?.[s]?.meta?.moments;
+        if (Array.isArray(catMoments) && catMoments.length > 0) {
+          moments = catMoments;
         }
-      } catch(e) {
-        console.warn("Falha ao buscar momentos da API:", e);
+      }
+
+      // 3. Tentar buscar momentos salvos na API local (/api/moments) se ainda não encontrou
+      if (!moments.length) {
+        try {
+          const resp = await fetch(`/api/moments?discipline=${encodeURIComponent(d)}&subarea=${encodeURIComponent(s)}`);
+          if (resp.ok) {
+            const data = await resp.json();
+            if (data && data.success && Array.isArray(data.moments) && data.moments.length > 0) {
+              moments = data.moments;
+            }
+          }
+        } catch(e) {
+          console.warn("Falha ao buscar momentos da API:", e);
+        }
       }
     }
 
-    // 2. Se não houver momentos salvos e não for vídeo (ou seja, for PDF/documento)
-    if (!moments.length && !isVideo && meta && meta.markdown_content) {
-      moments = extractKeyMomentsFromMarkdown(meta.markdown_content, false);
+    // 4. Fallback: extração estruturada do markdown
+    if (!moments.length && meta && meta.markdown_content) {
+      moments = extractKeyMomentsFromMarkdown(meta.markdown_content, isVideo);
     }
 
     const hintEl = document.getElementById('keyMomentsHint');
@@ -6101,18 +6023,15 @@
         : `⭐ Pontos-Chave & Conceitos (${moments.length})`;
     }
 
-    // Se ainda não houver momentos gerados para o vídeo, mostra o Banner convidativo para gerar pela IA
+    // Se não houver momentos registrados para o tópico
     if (!moments.length) {
       grid.innerHTML = `
-        <div style="grid-column: 1 / -1; background: var(--surface); border: 2px dashed var(--accent-blue); border-radius: 12px; padding: 36px 24px; text-align: center;">
-          <div style="font-size: 40px; margin-bottom: 10px;">🎬 ➔ ⏱️</div>
-          <div style="font-weight: 700; font-size: 16px; color: var(--text);">Momentos-Chave com Minutagem Real</div>
-          <p style="font-size: 13px; color: var(--text2); max-width: 580px; margin: 8px auto 18px auto; line-height: 1.5;">
-            Os pontos-chave desta aula ainda não foram mapeados na transcrição do vídeo. Para garantir que os cartões abram o YouTube <strong>no minuto exato</strong> da fala do professor (sem chutes ou estimativas), clique abaixo para gerar com a IA:
+        <div style="grid-column: 1 / -1; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 36px 24px; text-align: center;">
+          <div style="font-size: 36px; margin-bottom: 8px;">📚</div>
+          <div style="font-weight: 600; font-size: 15px; color: var(--text);">Nenhum momento-chave adicional para este tópico.</div>
+          <p style="font-size: 13px; color: var(--text2); max-width: 500px; margin: 8px auto 0 auto; line-height: 1.5;">
+            Os conceitos essenciais e pontos de atenção estão disponíveis nas abas Resumo, Raio-X de Banca e Flashcards.
           </p>
-          <button class="btn btn-primary" onclick="openAiMomentsModal()" style="font-weight: 700; font-size: 14px; padding: 10px 24px; box-shadow: 0 4px 14px rgba(9, 105, 218, 0.3);">
-            ✨ Gerar Momentos-Chave com IA
-          </button>
         </div>
       `;
       return;

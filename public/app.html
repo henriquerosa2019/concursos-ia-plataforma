@@ -4932,17 +4932,25 @@
       const resp = await fetch(`/api/progress?email=${encodeURIComponent(userKey)}`);
       if (resp.ok) {
         const remoteProg = await resp.json();
-        if (remoteProg && remoteProg.cards_details && typeof remoteProg.cards_details === 'object') {
-          progressData.cards_details = {
-            ...(progressData.cards_details || {}),
-            ...remoteProg.cards_details
-          };
-          if (Array.isArray(remoteProg.cebraspe_history)) {
-            progressData.cebraspe_history = remoteProg.cebraspe_history;
+        if (remoteProg && typeof remoteProg === 'object') {
+          const remoteDetails = remoteProg.cards_details || {};
+          if (remoteProg.total_studied_cards === 0 || Object.keys(remoteDetails).length === 0) {
+            progressData = {
+              cards_details: {},
+              cebraspe_history: Array.isArray(remoteProg.cebraspe_history) ? remoteProg.cebraspe_history : []
+            };
+          } else {
+            progressData.cards_details = {
+              ...remoteDetails
+            };
+            if (Array.isArray(remoteProg.cebraspe_history)) {
+              progressData.cebraspe_history = remoteProg.cebraspe_history;
+            }
           }
           saveLocalProgress();
           updateSm2DashboardCounters();
           updateFlashcardFilterCounts();
+          updateCard();
         }
       }
     } catch(e) {}
@@ -8335,20 +8343,15 @@
       const resp = await fetch(`/api/reviews?discipline=${encodeURIComponent(currentDiscipline)}&subarea=${encodeURIComponent(currentSubarea)}&email=${encodeURIComponent(userKey)}`);
       if (resp.ok) {
         const data = await resp.json();
-        if (data && (Array.isArray(data.cards) || Array.isArray(data.quiz))) {
-          const mergedCards = [...(reviewsData.cards || [])];
-          (data.cards || []).forEach(rc => {
-            if (rc && rc.q && !mergedCards.some(c => c.q.trim() === rc.q.trim())) {
-              mergedCards.push(rc);
-            }
-          });
-          const mergedQuiz = [...(reviewsData.quiz || [])];
-          (data.quiz || []).forEach(rq => {
-            if (rq && rq.enunciado && !mergedQuiz.some(q => q.enunciado.trim() === rq.enunciado.trim())) {
-              mergedQuiz.push(rq);
-            }
-          });
-          reviewsData = { cards: mergedCards, quiz: mergedQuiz };
+        if (data && typeof data === 'object') {
+          if ((!data.cards || data.cards.length === 0) && (!data.quiz || data.quiz.length === 0)) {
+            reviewsData = { cards: [], quiz: [] };
+          } else {
+            reviewsData = {
+              cards: Array.isArray(data.cards) ? data.cards : [],
+              quiz: Array.isArray(data.quiz) ? data.quiz : []
+            };
+          }
           saveLocalReviews();
           updateReviewBadges();
           renderReviews();
@@ -10425,24 +10428,58 @@
       });
       const data = await resp.json();
 
-      // Limpar chaves locais do aluno
-      localStorage.removeItem('concursos_progress_' + cleanEmail);
-      localStorage.removeItem('concursos_trial_features_' + cleanEmail);
+      // Limpeza profunda de todas as chaves associadas ao usuário no localStorage (HTML)
+      const safeEmail = cleanEmail.replace(/[^a-zA-Z0-9_\-]/g, '_');
       for (let i = localStorage.length - 1; i >= 0; i--) {
         const k = localStorage.key(i);
-        if (k && (k.startsWith('concursos_reviews_' + cleanEmail) || k.startsWith('concursos_cards_' + cleanEmail))) {
+        if (!k) continue;
+        const kl = k.toLowerCase();
+        if (
+          kl.includes(cleanEmail) ||
+          kl.includes(safeEmail) ||
+          kl.startsWith('concursos_progress_' + cleanEmail) ||
+          kl.startsWith('concursos_trial_features_' + cleanEmail) ||
+          kl.startsWith('concursos_reviews_' + cleanEmail) ||
+          kl.startsWith('concursos_cards_' + cleanEmail) ||
+          kl.startsWith('concursos_raiox_' + cleanEmail) ||
+          kl.startsWith('concursos_simulado_' + cleanEmail) ||
+          kl.startsWith('concursos_cebraspe_' + cleanEmail)
+        ) {
           localStorage.removeItem(k);
         }
       }
+      localStorage.removeItem('concursos_progress_' + cleanEmail);
+      localStorage.removeItem('concursos_trial_features_' + cleanEmail);
 
-      // Se o usuário logado for o alvo do reset, resetar imediatamente em memória
+      // Se o usuário logado for o alvo do reset, resetar imediatamente em memória e DOM do HTML
       if (currentUser && (currentUser.email || '').toLowerCase().trim() === cleanEmail) {
         progressData = { cards_details: {}, cebraspe_history: [] };
+        reviewsData = { cards: [], quiz: [] };
+        flashcardsSessionStats = { studied: new Set(), ratedEasy: 0, ratedGood: 0, ratedHard: 0 };
+        currentFlashcardTierFilter = 'all';
         saveLocalProgress();
+        saveLocalReviews();
+        
+        // Atualizar contadores SM-2, badges de filtros e cartão na tela
+        document.querySelectorAll('.sm2-filter-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('filterCardAll')?.classList.add('active');
         updateSm2DashboardCounters();
         updateFlashcardFilterCounts();
         updateCard();
-        fetchReviews();
+        updateReviewBadges();
+        renderReviews();
+
+        // Limpar seleções ativas no simulado
+        document.querySelectorAll('.quiz-opt').forEach(opt => {
+          opt.classList.remove('selected', 'correct', 'wrong');
+          opt.style.pointerEvents = 'auto';
+        });
+        document.querySelectorAll('.feedback-box').forEach(fb => {
+          fb.style.display = 'none';
+        });
+
+        if (typeof initTrialSystem === 'function') initTrialSystem();
+        if (typeof updateUserBadgeUI === 'function') updateUserBadgeUI();
       }
 
       // Atualizar contador de aulas/importações na tabela se masterCachedUsers existir
@@ -10457,24 +10494,33 @@
       }
 
       if (typeof showToast === 'function') {
-        showToast(data.message || `Dados de ${cleanEmail} zerados com sucesso!`, '🧹');
+        showToast(data.message || `Dados de ${cleanEmail} zerados no HTML, Servidor e Supabase!`, '🧹');
       }
       if (typeof fetchMasterUsers === 'function') {
         fetchMasterUsers();
       }
     } catch(e) {
       console.warn("Fallback offline de reset:", e);
-      localStorage.removeItem('concursos_progress_' + cleanEmail);
-      localStorage.removeItem('concursos_trial_features_' + cleanEmail);
+      const safeEmail = cleanEmail.replace(/[^a-zA-Z0-9_\-]/g, '_');
       for (let i = localStorage.length - 1; i >= 0; i--) {
         const k = localStorage.key(i);
-        if (k && (k.startsWith('concursos_reviews_' + cleanEmail) || k.startsWith('concursos_cards_' + cleanEmail))) {
+        if (!k) continue;
+        const kl = k.toLowerCase();
+        if (kl.includes(cleanEmail) || kl.includes(safeEmail)) {
           localStorage.removeItem(k);
         }
       }
-      if (typeof showToast === 'function') showToast(`Dados locais de ${cleanEmail} zerados com sucesso!`, '🧹');
+      if (typeof showToast === 'function') showToast(`Dados locais de ${cleanEmail} zerados no HTML com sucesso!`, '🧹');
       if (typeof fetchMasterUsers === 'function') fetchMasterUsers();
     }
+  }
+
+  async function resetMyStudyData() {
+    if (!currentUser || !currentUser.email) {
+      alert("Nenhum usuário conectado para zerar dados.");
+      return;
+    }
+    await masterResetUserData(currentUser.email, currentUser.nome);
   }
 
   function openMasterCreateUserModal() {
@@ -10713,6 +10759,7 @@
   window.masterChangeUserPassword = masterChangeUserPassword;
   window.masterToggleStatus = masterToggleStatus;
   window.masterResetUserData = masterResetUserData;
+  window.resetMyStudyData = resetMyStudyData;
   window.masterDeleteUser = masterDeleteUser;
   window.openMasterCreateUserModal = openMasterCreateUserModal;
   window.submitMasterCreateUser = submitMasterCreateUser;

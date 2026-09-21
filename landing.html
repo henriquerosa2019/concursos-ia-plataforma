@@ -1092,7 +1092,281 @@
         display: none;
       }
     }
-  </style>
+  
+    /* ========================================================================= */
+    /* ESTILOS DA SEÇÃO OFICIAL: RAIO-X DE FUNCIONALIDADES & COMO USAR          */
+    /* ========================================================================= */
+    .qa-advantage-banner {
+      background: linear-gradient(135deg, rgba(31, 111, 235, 0.16) 0%, rgba(14, 19, 29, 0.95) 50%, rgba(245, 197, 66, 0.14) 100%);
+      border: 1.5px solid rgba(245, 197, 66, 0.4);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      margin-bottom: 40px;
+      display: flex;
+      gap: 28px;
+      align-items: center;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 35px rgba(245, 197, 66, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .qa-adv-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      min-width: 140px;
+      text-align: center;
+    }
+    .qa-adv-icon {
+      font-size: 48px;
+      filter: drop-shadow(0 0 15px rgba(245, 197, 66, 0.6));
+      animation: pulseAdvIcon 3s ease-in-out infinite;
+    }
+    @keyframes pulseAdvIcon {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    .qa-adv-pill {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      background: var(--gold-gradient);
+      color: #070a0f;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .qa-adv-body {
+      flex: 1;
+    }
+    .qa-adv-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(20px, 3vw, 26px);
+      font-weight: 700;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      line-height: 1.25;
+    }
+    .qa-adv-desc {
+      font-size: 14.5px;
+      color: #d1d5db;
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+    .qa-adv-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .qa-adv-tag {
+      font-size: 12px;
+      font-weight: 700;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+    }
+    @media (max-width: 768px) {
+      .qa-advantage-banner {
+        flex-direction: column;
+        padding: 20px;
+        text-align: center;
+        gap: 16px;
+      }
+      .qa-adv-left {
+        min-width: unset;
+      }
+      .qa-adv-tags {
+        justify-content: center;
+      }
+    }
+
+    /* Filter Bar */
+    .qa-filter-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 34px;
+    }
+    .qa-filter-btn {
+      padding: 10px 18px;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-gray);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+    }
+    .qa-filter-btn:hover {
+      background: rgba(245, 197, 66, 0.1);
+      color: var(--gold-primary);
+      border-color: rgba(245, 197, 66, 0.3);
+    }
+    .qa-filter-btn.active {
+      background: var(--gold-gradient);
+      color: #070a0f;
+      border-color: transparent;
+      font-weight: 800;
+      box-shadow: 0 4px 15px rgba(245, 197, 66, 0.35);
+    }
+
+    /* Grid & Cards */
+    .qa-feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    @media (max-width: 640px) {
+      .qa-feature-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .qa-card {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-radius: var(--radius-lg);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .qa-card:hover {
+      transform: translateY(-5px);
+    }
+    .qa-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .qa-card-tags {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .qa-code-badge {
+      font-family: monospace;
+      font-size: 11.5px;
+      font-weight: 900;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(245, 197, 66, 0.15);
+      color: var(--gold-primary);
+      border: 1px solid rgba(245, 197, 66, 0.35);
+    }
+    .qa-tag-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .qa-status-pill {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+    }
+    .qa-card-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 20px;
+      line-height: 1.28;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: 16px;
+    }
+    .qa-box {
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .qa-box-how {
+      background: rgba(31, 111, 235, 0.08);
+      border: 1px solid rgba(31, 111, 235, 0.22);
+    }
+    .qa-box-success {
+      background: rgba(16, 185, 129, 0.07);
+      border: 1px solid rgba(16, 185, 129, 0.22);
+    }
+    .qa-box-title {
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .qa-box-text {
+      color: #d1d5db;
+    }
+    .qa-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .qa-role-badge {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .qa-card-btn {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--gold-primary);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .qa-card-btn:hover {
+      color: #fff;
+      transform: translateX(3px);
+    }
+    .qa-cta-banner {
+      background: rgba(14, 19, 29, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+    @media (max-width: 860px) {
+      .qa-cta-banner {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+</style>
 </head>
 <body>
 
@@ -1123,6 +1397,7 @@
       <ul class="nav-links">
         <li><a href="#metodo">O Método</a></li>
         <li><a href="#cebraspe">Simulado Cebraspe</a></li>
+        <li><a href="#funcionalidades">Como Usar (Raio-X)</a></li>
         <li><a href="#erros">Caderno de Erros</a></li>
         <li><a href="#planos">Planos</a></li>
         <li><a href="#depoimentos">Depoimentos</a></li>
@@ -1386,6 +1661,740 @@
       </div>
     </div>
   </section>
+
+  
+  <!-- ========================================================================= -->
+  <!-- SEÇÃO OFICIAL DE MARKETING: RAIO-X DE FUNCIONALIDADES & COMO USAR         -->
+  <!-- CONTEÚDO EXTRAÍDO DA MATRIZ DE HOMOLOGAÇÃO (19 RECURSOS AUDITADOS)       -->
+  <!-- ========================================================================= -->
+  <section id="funcionalidades" class="section-padding" style="background: radial-gradient(circle at 50% 25%, rgba(31, 111, 235, 0.08) 0%, rgba(7, 10, 15, 0.98) 75%); border-top: 1px solid rgba(255, 255, 255, 0.05); border-bottom: 1px solid rgba(255, 255, 255, 0.05); position: relative;">
+    <div class="container">
+      <div class="section-header">
+        <div class="hero-badge" style="background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.35); color: #34d399; font-weight: 800; margin-bottom: 16px;">
+          ✓ HOMOLOGADO 100% · AUDITORIA DE RECURSOS REAIS
+        </div>
+        <h2 class="section-title">
+          Raio-X de Funcionalidades: <span class="gold-gradient-text">Como Usar & O Que Você Recebe</span>
+        </h2>
+        <p class="section-sub">
+          Transparência total antes de você se matricular: conheça em detalhes o funcionamento prático de cada recurso da plataforma e o <strong>critério de sucesso garantido</strong> para a sua aprovação.
+        </p>
+      </div>
+
+      <!-- BANNER DE DESTAQUE: TC-09 (A GRANDE VANTAGEM COMPETITIVA) -->
+      <div class="qa-advantage-banner">
+        <div class="qa-adv-left">
+          <div class="qa-adv-icon">🛡️</div>
+          <span class="qa-adv-pill">VANTAGEM EXCLUSIVA · TC-09</span>
+        </div>
+        <div class="qa-adv-body">
+          <h3 class="qa-adv-title">Modo Offline Resiliente & Modo Curado: Estudo sem Travamentos e com Custo ZERO de API!</h3>
+          <p class="qa-adv-desc">
+            Enquanto outras ferramentas cobram assinaturas exorbitantes de créditos de IA ou ficam fora do ar quando os servidores externos oscilam, o <strong>Projeto Aprovação</strong> foi projetado com <strong>tolerância a falhas de nível institucional</strong>. Se a IA estiver indisponível ou sua conexão cair, o sistema aciona instantaneamente nosso <strong>banco de dados curado offline</strong> com dezenas de simulados e flashcards pré-validados.
+          </p>
+          <div class="qa-adv-tags">
+            <span class="qa-adv-tag">✓ O aluno não precisa pagar por chave Gemini/OpenAI</span>
+            <span class="qa-adv-tag">✓ Continuidade total dos estudos offline</span>
+            <span class="qa-adv-tag">✓ Zero risco de tela branca ou respostas travadas</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILTROS INTERATIVOS POR CATEGORIA -->
+      <div class="qa-filter-bar">
+        <button class="qa-filter-btn active" onclick="filterQaFeatures('all')">
+          📁 Todos os Recursos (19)
+        </button>
+        <button class="qa-filter-btn" onclick="filterQaFeatures('pilares')">
+          🏛️ Os 4 Pilares (TC-01 a TC-04)
+        </button>
+        <button class="qa-filter-btn" onclick="filterQaFeatures('ia')">
+          🤖 IA & Resiliência (TC-06 a TC-09)
+        </button>
+        <button class="qa-filter-btn" onclick="filterQaFeatures('revisoes')">
+          🧠 SM-2 & Caderno de Erros (TC-16 a TC-19)
+        </button>
+        <button class="qa-filter-btn" onclick="filterQaFeatures('importacao')">
+          🚀 Importação & Autoria (TC-20 a TC-23)
+        </button>
+        <button class="qa-filter-btn" onclick="filterQaFeatures('performance')">
+          ⚡ Performance & Modo Prova (TC-26, 29, 30)
+        </button>
+      </div>
+
+      <!-- GRID DE CARDS DAS FUNCIONALIDADES -->
+      <div class="qa-feature-grid" id="qaFeatureGrid">
+
+        <!-- CARD TC-01 -->
+        <div class="glass-card qa-card" data-category="pilares" style="">
+          <div class="qa-card-header">
+            <div class="qa-card-tags">
+              <span class="qa-code-badge">TC-01</span>
+              <span class="qa-tag-badge">Pilar 1 · Conteúdo</span>
+            </div>
+            <span class="qa-status-pill">✓ Testado & Aprovado</span>
+          </div>
+
+          <h3 class="qa-card-title">Pilar 1 - Resumo Estruturado & Conceitos-Chave</h3>
+
+          <div class="qa-box qa-box-how">
+            <div class="qa-box-title text-gold">
+              <span>💡 Como Usar na Prática:</span>
+            </div>
+            <p class="qa-box-text">Acesse qualquer disciplina no menu lateral (ex: Informática > Excel). Na Aba 1, estude a síntese direta ao ponto com fórmulas, sintaxes formais, mnemônicos e tabelas comparativas prontas para fixação imediata.</p>
+          </div>
+
+          <div class="qa-box qa-box-success">
+            <div class="qa-box-title" style="color: #34d399;">
+              <span>🎯 Critério de Sucesso & O Que Você Recebe:</span>
+            </div>
+            <p class="qa-box-text">Diagramação limpa em Markdown profissional, caixas de fórmulas em destaque e leitura fluida e rápida tanto no computador quanto na tela do celular.</p>
+          </div>
+
+          <div class="qa-card-footer">
+            <span class="qa-role-badge">👤 Foco: Aluno</span>
+            <a href="/app?trial=7dias" class="qa-card-btn" title="Experimentar este recurso no app">
+              Testar no App &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD TC-02 -->
+        <div class="glass-card qa-card" data-category="pilares" style="">
+          <div class="qa-card-header">
+            <div class="qa-card-tags">
+              <span class="qa-code-badge">TC-02</span>
+              <span class="qa-tag-badge">Pilar 2 · Raio-X</span>
+            </div>
+            <span class="qa-status-pill">✓ Testado & Aprovado</span>
+          </div>
+
+          <h3 class="qa-card-title">Pilar 2 - Raio-X de Banca & Pegadinhas Clássicas</h3>
+
+          <div class="qa-box qa-box-how">
+            <div class="qa-box-title text-gold">
+              <span>💡 Como Usar na Prática:</span>
+            </div>
+            <p class="qa-box-text">Abra a Aba 2 (Raio-X de Banca). Acesse a dissecação cirúrgica das armadilhas mais eliminatórias das principais bancas do país: Cebraspe, FGV, FCC e Vunesp.</p>
+          </div>
+
+          <div class="qa-box qa-box-success">
+            <div class="qa-box-title" style="color: #34d399;">
+              <span>🎯 Critério de Sucesso & O Que Você Recebe:</span>
+            </div>
+            <p class="qa-box-text">Exibição clara de 'Pegadinha de Prova vs. Verdade', apontando inversões conceituais, palavras restritivas ('sempre', 'apenas', 'nunca') e regras gerais vs. exceções que derrubam 90% dos candidatos.</p>
+          </div>
+
+          <div class="qa-card-footer">
+            <span class="qa-role-badge">👤 Foco: Aluno</span>
+            <a href="/app?trial=7dias" class="qa-card-btn" title="Experimentar este recurso no app">
+              Testar no App &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD TC-03 -->
+        <div class="glass-card qa-card" data-category="pilares" style="">
+          <div class="qa-card-header">
+            <div class="qa-card-tags">
+              <span class="qa-code-badge">TC-03</span>
+              <span class="qa-tag-badge">Pilar 3 · Flashcards</span>
+            </div>
+            <span class="qa-status-pill">✓ Testado & Aprovado</span>
+          </div>
+
+          <h3 class="qa-card-title">Pilar 3 - Flashcards Anki & Memorização Ativa</h3>
+
+          <div class="qa-box qa-box-how">
+            <div class="qa-box-title text-gold">
+              <span>💡 Como Usar na Prática:</span>
+            </div>
+            <p class="qa-box-text">Na Aba 3, pratique memorização ativa: leia a pergunta na frente do cartão, clique para virar e veja a resposta explicada. Ao final, use as reações Difícil, Bom ou Fácil e exporte tudo para o Anki com 1 clique se desejar.</p>
+          </div>
+
+          <div class="qa-box qa-box-success">
+            <div class="qa-box-title" style="color: #34d399;">
+              <span>🎯 Critério de Sucesso & O Que Você Recebe:</span>
+            </div>
+            <p class="qa-box-text">Efeito 3D dinâmico ao virar; agendamento automático de repetição espaçada na memória de longo prazo; arquivos exportados no padrão internacional tab-separated compatível com Anki Desktop e AnkiMobile.</p>
+          </div>
+
+          <div class="qa-card-footer">
+            <span class="qa-role-badge">👤 Foco: Aluno</span>
+            <a href="/app?trial=7dias" class="qa-card-btn" title="Experimentar este recurso no app">
+              Testar no App &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD TC-04 -->
+        <div class="glass-card qa-card" data-category="pilares" style="">
+          <div class="qa-card-header">
+            <div class="qa-card-tags">
+              <span class="qa-code-badge">TC-04</span>
+              <span class="qa-tag-badge">Pilar 4 · Simulado</span>
+            </div>
+            <span class="qa-status-pill">✓ Testado & Aprovado</span>
+          </div>
+
+          <h3 class="qa-card-title">Pilar 4 - Mini-Simulado de Fixação & Gabarito Comentado</h3>
+
+          <div class="qa-box qa-box-how">
+            <div class="qa-box-title text-gold">
+              <span>💡 Como Usar na Prática:</span>
+            </div>
+            <p class="qa-box-text">Na Aba 4, resolva questões inéditas de Certo/Errado ou Múltipla Escolha. Clique na sua alternativa para receber correção instantânea com fundamentação passo a passo da banca.</p>
+          </div>
+
+          <div class="qa-box qa-box-success">
+            <div class="qa-box-title" style="color: #34d399;">
+              <span>🎯 Critério de Sucesso & O Que Você Recebe:</span>
+            </div>
+            <p class="qa-box-text">Feedback visual instantâneo (verde/vermelho), justificativa aprofundada alternativa por alternativa e acertos computados automaticamente no seu score de preparação.</p>
+          </div>
+
+          <div class="qa-card-footer">
+            <span class="qa-role-badge">👤 Foco: Aluno</span>
+            <a href="/app?trial=7dias" class="qa-card-btn" title="Experimentar este recurso no app">
+              Testar no App &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD TC-06 -->
+        <div class="glass-card qa-card" data-category="ia" style="">
+          <div class="qa-card-header">
+            <div class="qa-card-tags">
+              <span class="qa-code-badge">TC-06</span>
+              <span class="qa-tag-badge">IA Generativa</span>
+            </div>
+            <span class="qa-status-pill">✓ Testado & Aprovado</span>
+          </div>
+
+          <h3 class="qa-card-title">Geração de Novos Flashcards com Inteligência Artificial</h3>
+
+          <div class="qa-box qa-box-how">
+            <div class="qa-box-title text-gold">
+              <span>💡 Como Usar na Prática:</span>
+            </div>
+            <p class="qa-box-text">Clique no botão '✨ Gerar Novos com IA' dentro de qualquer disciplina, escolha o foco desejado (ex: pegadinhas de PROCV ou exceções do Artigo 5º) e solicite cartões inéditos em segundos.</p>
+          </div>
+
+          <div class="qa-box qa-box-success">
+            <div class="qa-box-title" style="color: #34d399;">
+              <span>🎯 Critério de Sucesso & O Que Você Recebe:</span>
+            </div>
+            <p class="qa-box-text">A IA analisa o conteúdo didático da aula e gera perguntas cirúrgicas e sem repetições, integrando os novos cards instantaneamente à sua pilha de estudo diária.</p>
+          </div>
+
+          <div class="qa-card-footer">
+            <span class="qa-role-badge">👤 Foco: Aluno / Master</span>
+            <a href="/app?trial=7dias" class="qa-card-btn" title="Experimentar este recurso no app">
+              Testar no App &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD TC-07 -->
+        <div class="glass-card qa-card" data-category="ia" style="">
+          <div class="qa-card-header">
+            <div class="qa-card-tags">
+              <span class="qa-code-badge">TC-07</span>
+              <span class="qa-tag-badge">IA Generativa</span>
+            </div>
+            <span class="qa-status-pill">✓ Testado & Aprovado</span>
+          </div>
+
+          <h3 class="qa-card-title">Geração de Novo Simulado com IA & Deduplicação Semântica</h3>
+
+          <div class="qa-box qa-box-how">
+            <div class="qa-box-title text-gold">
+              <span>💡 Como Usar na Prática:</span>
+            </div>
+            <p class="qa-box-text">Clique no botão '⚡ Gerar Novo Simulado com IA', filtre pelo perfil da banca que você vai prestar (Cebraspe ou FGV) e gere novas questões com gabarito fundamentado.</p>
+          </div>
+
+          <div class="qa-box qa-box-success">
+            <div class="qa-box-title" style="color: #34d399;">
+              <span>🎯 Critério de Sucesso & O Que Você Recebe:</span>
+            </div>
+            <p class="qa-box-text">Questões estritamente inéditas no padrão de exigência da banca examinadora, com sistema anti-duplicidade semântica para você nunca responder questões repetidas.</p>
+          </div>
+
+          <div class="qa-card-footer">
+            <span class="qa-role-badge">👤 Foco: Aluno / Master</span>
+            <a href="/app?trial=7dias" class="qa-card-btn" title="Experimentar este recurso no app">
+              Testar no App &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD TC-08 -->
+        <div class="glass-card qa-card" data-category="ia" style="">
+          <div class="qa-card-header">
+            <div class="qa-card-tags">
+              <span class="qa-code-badge">TC-08</span>
+              <span class="qa-tag-badge">IA Generativa</span>
+            </div>
+            <span class="qa-status-pill">✓ Testado & Aprovado</span>
+          </div>
+
+          <h3 class="qa-card-title">Geração de Raio-X & Pegadinhas com IA</h3>
+
+          <div class="qa-box qa-box-how">
+            <div class="qa-box-title text-gold">
+              <span>💡 Como Usar na Prática:</span>
+            </div>
+            <p class="qa-box-text">Clique em '⚡ Gerar Raio-X & Pegadinhas com IA' em qualquer assunto para criar um raio-x estratégico sob medida para o concurso que você deseja disputar.</p>
+          </div>
+
+          <div class="qa-box qa-box-success">
+            <div class="qa-box-title" style="color: #34d399;">
+              <span>🎯 Critério de Sucesso & O Que Você Recebe:</span>
+            </div>
+            <p class="qa-box-text">Relatório estratégico gerado em segundos destacando o histórico de cobrança da banca, os pontos cegos dos concorrentes e o mapa das pegadinhas mais recorrentes.</p>
+          </div>
+
+          <div class="qa-card-footer">
+            <span class="qa-role-badge">👤 Foco: Aluno / Master</span>
+            <a href="/app?trial=7dias" class="qa-card-btn" title="Experimentar este recurso no app">
+              Testar no App &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD TC-09 -->
+        <div class="glass-card qa-card" data-category="ia" style="border: 1px solid rgba(245, 197, 66, 0.45); box-shadow: 0 0 25px rgba(245, 197, 66, 0.12);">
+          <div class="qa-card-header">
+            <div class="qa-card-tags">
+              <span class="qa-code-badge">TC-09</span>
+              <span class="qa-tag-badge">Resiliência & Vantagem Exclusiva</span>
+            </div>
+            <span class="qa-status-pill">✓ Testado & Aprovado</span>
+          </div>
+
+          <h3 class="qa-card-title">Fallback Offline Resiliente & Modo Curado (Zero Custo de API)</h3>
+
+          <div class="qa-box qa-box-how">
+            <div class="qa-box-title text-gold">
+              <span>💡 Como Usar na Prática:</span>
+            </div>
+            <p class="qa-box-text">Estude tranquilamente a qualquer hora do dia ou da noite, em casa, no trabalho ou em locais com sinal fraco ou sem internet no celular.</p>
+          </div>
+
+          <div class="qa-box qa-box-success">
+            <div class="qa-box-title" style="color: #34d399;">
+              <span>🎯 Critério de Sucesso & O Que Você Recebe:</span>
+            </div>
+            <p class="qa-box-text">O sistema ativa o acervo curado offline sem erros de tela ou travamentos. Você estuda 100% livre, sem pagar nada por tokens ou chaves de IA e com garantia de disponibilidade perpétua.</p>
+          </div>
+
+          <div class="qa-card-footer">
+            <span class="qa-role-badge">👤 Foco: Sistema</span>
+            <a href="/app?trial=7dias" class="qa-card-btn" title="Experimentar este recurso no app">
+              Testar no App &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD TC-16 -->
+        <div class="glass-card qa-card" data-category="revisoes" style="">
+          <div class="qa-card-header">
+            <div class="qa-card-tags">
+              <span class="qa-code-badge">TC-16</span>
+              <span class="qa-tag-badge">Repetição Espaçada SM-2</span>
+            </div>
+            <span class="qa-status-pill">✓ Testado & Aprovado</span>
+          </div>
+
+          <h3 class="qa-card-title">Agendamento de Revisões Espaçadas (1, 3 e 7 Dias)</h3>
+
+          <div class="qa-box qa-box-how">
+            <div class="qa-box-title text-gold">
+              <span>💡 Como Usar na Prática:</span>
+            </div>
+            <p class="qa-box-text">Ao virar qualquer flashcard, avalie seu domínio marcando: Difícil (1d), Bom (3d) ou Fácil (7d). O sistema agenda as próximas rodadas na ordem cronológica exata.</p>
+          </div>
+
+          <div class="qa-box qa-box-success">
+            <div class="qa-box-title" style="color: #34d399;">
+              <span>🎯 Critério de Sucesso & O Que Você Recebe:</span>
+            </div>
+            <p class="qa-box-text">O motor mnemônico SM-2 recalcula seu intervalo ideal de memória e programa automaticamente a data exata da próxima revisão para vencer a Curva do Esquecimento de Ebbinghaus.</p>
+          </div>
+
+          <div class="qa-card-footer">
+            <span class="qa-role-badge">👤 Foco: Aluno</span>
+            <a href="/app?trial=7dias" class="qa-card-btn" title="Experimentar este recurso no app">
+              Testar no App &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD TC-17 -->
+        <div class="glass-card qa-card" data-category="revisoes" style="">
+          <div class="qa-card-header">
+            <div class="qa-card-tags">
+              <span class="qa-code-badge">TC-17</span>
+              <span class="qa-tag-badge">Continuidade de Dados</span>
+            </div>
+            <span class="qa-status-pill">✓ Testado & Aprovado</span>
+          </div>
+
+          <h3 class="qa-card-title">Migração e Retenção de Revisões do Teste para o Vitalício</h3>
+
+          <div class="qa-box qa-box-how">
+            <div class="qa-box-title text-gold">
+              <span>💡 Como Usar na Prática:</span>
+            </div>
+            <p class="qa-box-text">Comece estudando no Teste Grátis de 7 Dias. Ao assinar o plano Vitalício, faça o login normalmente na plataforma.</p>
+          </div>
+
+          <div class="qa-box qa-box-success">
+            <div class="qa-box-title" style="color: #34d399;">
+              <span>🎯 Critério de Sucesso & O Que Você Recebe:</span>
+            </div>
+            <p class="qa-box-text">Todos os seus dados, histórico de acertos, cards agendados e matérias estudadas migram com 100% de integridade, sem você perder um único segundo de progresso.</p>
+          </div>
+
+          <div class="qa-card-footer">
+            <span class="qa-role-badge">👤 Foco: Aluno Teste ➔ Vitalício</span>
+            <a href="/app?trial=7dias" class="qa-card-btn" title="Experimentar este recurso no app">
+              Testar no App &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD TC-18 -->
+        <div class="glass-card qa-card" data-category="revisoes" style="border: 1px solid rgba(245, 197, 66, 0.45); box-shadow: 0 0 25px rgba(245, 197, 66, 0.12);">
+          <div class="qa-card-header">
+            <div class="qa-card-tags">
+              <span class="qa-code-badge">TC-18</span>
+              <span class="qa-tag-badge">Caderno de Erros</span>
+            </div>
+            <span class="qa-status-pill">✓ Testado & Aprovado</span>
+          </div>
+
+          <h3 class="qa-card-title">Caderno de Erros Inteligente & Re-treino Focado</h3>
+
+          <div class="qa-box qa-box-how">
+            <div class="qa-box-title text-gold">
+              <span>💡 Como Usar na Prática:</span>
+            </div>
+            <p class="qa-box-text">Ao errar qualquer questão no simulado ou classificar um card como 'Difícil', o item é enviado imediatamente para o seu Caderno de Erros Ativo.</p>
+          </div>
+
+          <div class="qa-box qa-box-success">
+            <div class="qa-box-title" style="color: #34d399;">
+              <span>🎯 Critério de Sucesso & O Que Você Recebe:</span>
+            </div>
+            <p class="qa-box-text">Fila inteligente de re-treino focado até a fixação total. O item só deixa o caderno quando você comprovar domínio absoluto no re-teste.</p>
+          </div>
+
+          <div class="qa-card-footer">
+            <span class="qa-role-badge">👤 Foco: Aluno</span>
+            <a href="/app?trial=7dias" class="qa-card-btn" title="Experimentar este recurso no app">
+              Testar no App &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD TC-19 -->
+        <div class="glass-card qa-card" data-category="revisoes" style="">
+          <div class="qa-card-header">
+            <div class="qa-card-tags">
+              <span class="qa-code-badge">TC-19</span>
+              <span class="qa-tag-badge">Métricas & Gamificação</span>
+            </div>
+            <span class="qa-status-pill">✓ Testado & Aprovado</span>
+          </div>
+
+          <h3 class="qa-card-title">Dashboard de Retenção & Estatísticas em Tempo Real</h3>
+
+          <div class="qa-box qa-box-how">
+            <div class="qa-box-title text-gold">
+              <span>💡 Como Usar na Prática:</span>
+            </div>
+            <p class="qa-box-text">Acompanhe seu painel de métricas no topo da plataforma para visualizar cards revisados no dia, volume de acertos em simulados e índice de erros pendentes.</p>
+          </div>
+
+          <div class="qa-box qa-box-success">
+            <div class="qa-box-title" style="color: #34d399;">
+              <span>🎯 Critério de Sucesso & O Que Você Recebe:</span>
+            </div>
+            <p class="qa-box-text">Painel atualizado em tempo real com barra de retenção de memória e contadores dinâmicos para manter sua consistência e motivação em alta.</p>
+          </div>
+
+          <div class="qa-card-footer">
+            <span class="qa-role-badge">👤 Foco: Aluno</span>
+            <a href="/app?trial=7dias" class="qa-card-btn" title="Experimentar este recurso no app">
+              Testar no App &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD TC-20 -->
+        <div class="glass-card qa-card" data-category="importacao" style="">
+          <div class="qa-card-header">
+            <div class="qa-card-tags">
+              <span class="qa-code-badge">TC-20</span>
+              <span class="qa-tag-badge">YouTube & Multimídia</span>
+            </div>
+            <span class="qa-status-pill">✓ Testado & Aprovado</span>
+          </div>
+
+          <h3 class="qa-card-title">Extração de Videoaulas do YouTube com Áudio e Timestamps</h3>
+
+          <div class="qa-box qa-box-how">
+            <div class="qa-box-title text-gold">
+              <span>💡 Como Usar na Prática:</span>
+            </div>
+            <p class="qa-box-text">Na função 'Nova Aula', cole o link de qualquer videoaula do YouTube (ou aula do seu cursinho) e selecione a disciplina correspondente.</p>
+          </div>
+
+          <div class="qa-box qa-box-success">
+            <div class="qa-box-title" style="color: #34d399;">
+              <span>🎯 Critério de Sucesso & O Que Você Recebe:</span>
+            </div>
+            <p class="qa-box-text">O sistema processa o vídeo e gera a transcrição cronometrada com marcações de tempo e o resumo estruturado completo nos 4 Pilares de Alta Retenção.</p>
+          </div>
+
+          <div class="qa-card-footer">
+            <span class="qa-role-badge">👤 Foco: Professor / Aluno</span>
+            <a href="/app?trial=7dias" class="qa-card-btn" title="Experimentar este recurso no app">
+              Testar no App &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD TC-21 -->
+        <div class="glass-card qa-card" data-category="importacao" style="">
+          <div class="qa-card-header">
+            <div class="qa-card-tags">
+              <span class="qa-code-badge">TC-21</span>
+              <span class="qa-tag-badge">PDF / Editais</span>
+            </div>
+            <span class="qa-status-pill">✓ Testado & Aprovado</span>
+          </div>
+
+          <h3 class="qa-card-title">Importação de Provas e Aulas em PDF com Sanitização Windows</h3>
+
+          <div class="qa-box qa-box-how">
+            <div class="qa-box-title text-gold">
+              <span>💡 Como Usar na Prática:</span>
+            </div>
+            <p class="qa-box-text">Anexe arquivos em PDF de editais, provas anteriores ou apostilas para alimentar seu repositório de estudos de forma automatizada.</p>
+          </div>
+
+          <div class="qa-box qa-box-success">
+            <div class="qa-box-title" style="color: #34d399;">
+              <span>🎯 Critério de Sucesso & O Que Você Recebe:</span>
+            </div>
+            <p class="qa-box-text">Extração rápida de texto com limpeza automática de caracteres inválidos (NTFS) e geração dos materiais de estudo sem conflitos de formatação.</p>
+          </div>
+
+          <div class="qa-card-footer">
+            <span class="qa-role-badge">👤 Foco: Professor / Aluno</span>
+            <a href="/app?trial=7dias" class="qa-card-btn" title="Experimentar este recurso no app">
+              Testar no App &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD TC-22 -->
+        <div class="glass-card qa-card" data-category="importacao" style="">
+          <div class="qa-card-header">
+            <div class="qa-card-tags">
+              <span class="qa-code-badge">TC-22</span>
+              <span class="qa-tag-badge">Gestão do Filesystem</span>
+            </div>
+            <span class="qa-status-pill">✓ Testado & Aprovado</span>
+          </div>
+
+          <h3 class="qa-card-title">Criação de Pastas e Disciplinas no Filesystem</h3>
+
+          <div class="qa-box qa-box-how">
+            <div class="qa-box-title text-gold">
+              <span>💡 Como Usar na Prática:</span>
+            </div>
+            <p class="qa-box-text">Crie novas disciplinas e assuntos com 1 clique (ex: Direito Administrativo > Poderes) para customizar a plataforma para qualquer edital de concurso.</p>
+          </div>
+
+          <div class="qa-box qa-box-success">
+            <div class="qa-box-title" style="color: #34d399;">
+              <span>🎯 Critério de Sucesso & O Que Você Recebe:</span>
+            </div>
+            <p class="qa-box-text">Criação estruturada na árvore lateral de matérias com total liberdade de organização para personalizar todo o seu plano de estudos.</p>
+          </div>
+
+          <div class="qa-card-footer">
+            <span class="qa-role-badge">👤 Foco: Aluno / Professor</span>
+            <a href="/app?trial=7dias" class="qa-card-btn" title="Experimentar este recurso no app">
+              Testar no App &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD TC-23 -->
+        <div class="glass-card qa-card" data-category="importacao" style="">
+          <div class="qa-card-header">
+            <div class="qa-card-tags">
+              <span class="qa-code-badge">TC-23</span>
+              <span class="qa-tag-badge">Autoria Própria</span>
+            </div>
+            <span class="qa-status-pill">✓ Testado & Aprovado</span>
+          </div>
+
+          <h3 class="qa-card-title">Criação Manual de Flashcard Individual</h3>
+
+          <div class="qa-box qa-box-how">
+            <div class="qa-box-title text-gold">
+              <span>💡 Como Usar na Prática:</span>
+            </div>
+            <p class="qa-box-text">Encontrou uma pegadinha durante a leitura da lei seca ou em uma questão externa? Abra o modal '➕ Criar Manual', digite a pergunta e a resposta e salve.</p>
+          </div>
+
+          <div class="qa-box qa-box-success">
+            <div class="qa-box-title" style="color: #34d399;">
+              <span>🎯 Critério de Sucesso & O Que Você Recebe:</span>
+            </div>
+            <p class="qa-box-text">O cartão é inserido imediatamente no seu deck com suporte ao Anki e já entra no cronograma de revisões espaçadas.</p>
+          </div>
+
+          <div class="qa-card-footer">
+            <span class="qa-role-badge">👤 Foco: Aluno</span>
+            <a href="/app?trial=7dias" class="qa-card-btn" title="Experimentar este recurso no app">
+              Testar no App &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD TC-26 -->
+        <div class="glass-card qa-card" data-category="performance" style="">
+          <div class="qa-card-header">
+            <div class="qa-card-tags">
+              <span class="qa-code-badge">TC-26</span>
+              <span class="qa-tag-badge">Cloud Sync & Backup</span>
+            </div>
+            <span class="qa-status-pill">✓ Testado & Aprovado</span>
+          </div>
+
+          <h3 class="qa-card-title">Sincronização Cloud / Supabase & Backup Multi-Dispositivos</h3>
+
+          <div class="qa-box qa-box-how">
+            <div class="qa-box-title text-gold">
+              <span>💡 Como Usar na Prática:</span>
+            </div>
+            <p class="qa-box-text">Clique no botão '🔄 Sincronizar' para salvar seu progresso no computador e continuar revisando exatamente de onde parou no smartphone ou tablet.</p>
+          </div>
+
+          <div class="qa-box qa-box-success">
+            <div class="qa-box-title" style="color: #34d399;">
+              <span>🎯 Critério de Sucesso & O Que Você Recebe:</span>
+            </div>
+            <p class="qa-box-text">Conexão segura em nuvem que protege seu histórico de estudos contra perdas de dados e mantém todos os seus aparelhos alinhados.</p>
+          </div>
+
+          <div class="qa-card-footer">
+            <span class="qa-role-badge">👤 Foco: Aluno</span>
+            <a href="/app?trial=7dias" class="qa-card-btn" title="Experimentar este recurso no app">
+              Testar no App &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD TC-29 -->
+        <div class="glass-card qa-card" data-category="performance" style="">
+          <div class="qa-card-header">
+            <div class="qa-card-tags">
+              <span class="qa-code-badge">TC-29</span>
+              <span class="qa-tag-badge">Busca Global</span>
+            </div>
+            <span class="qa-status-pill">✓ Testado & Aprovado</span>
+          </div>
+
+          <h3 class="qa-card-title">Pesquisa Global Instantânea (#globalSearch)</h3>
+
+          <div class="qa-box qa-box-how">
+            <div class="qa-box-title text-gold">
+              <span>💡 Como Usar na Prática:</span>
+            </div>
+            <p class="qa-box-text">Digite qualquer termo na barra de busca superior (ex: 'excel', 'artigo 5', 'crase', 'atos') para localizar tópicos e pilares em menos de 100 milissegundos.</p>
+          </div>
+
+          <div class="qa-box qa-box-success">
+            <div class="qa-box-title" style="color: #34d399;">
+              <span>🎯 Critério de Sucesso & O Que Você Recebe:</span>
+            </div>
+            <p class="qa-box-text">Filtro em tempo real sem travamentos, destacando as matérias e subáreas relevantes instantaneamente na tela.</p>
+          </div>
+
+          <div class="qa-card-footer">
+            <span class="qa-role-badge">👤 Foco: Aluno</span>
+            <a href="/app?trial=7dias" class="qa-card-btn" title="Experimentar este recurso no app">
+              Testar no App &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD TC-30 -->
+        <div class="glass-card qa-card" data-category="performance" style="border: 1px solid rgba(245, 197, 66, 0.45); box-shadow: 0 0 25px rgba(245, 197, 66, 0.12);">
+          <div class="qa-card-header">
+            <div class="qa-card-tags">
+              <span class="qa-code-badge">TC-30</span>
+              <span class="qa-tag-badge">Modo Prova Oficial</span>
+            </div>
+            <span class="qa-status-pill">✓ Testado & Aprovado</span>
+          </div>
+
+          <h3 class="qa-card-title">Modo Prova com Cronômetro e Diagnóstico Final Cebraspe</h3>
+
+          <div class="qa-box qa-box-how">
+            <div class="qa-box-title text-gold">
+              <span>💡 Como Usar na Prática:</span>
+            </div>
+            <p class="qa-box-text">No Mini-Simulado, ative o botão '⏱️ Modo Prova Oficial Cebraspe'. Responda os itens com o cronômetro decrescente ativo simulando a tensão real da prova.</p>
+          </div>
+
+          <div class="qa-box qa-box-success">
+            <div class="qa-box-title" style="color: #34d399;">
+              <span>🎯 Critério de Sucesso & O Que Você Recebe:</span>
+            </div>
+            <p class="qa-box-text">Cálculo fiel da Nota Líquida (1 erro anula 1 acerto), cronômetro visual em tempo real e relatório de diagnóstico final com recomendação estratégica.</p>
+          </div>
+
+          <div class="qa-card-footer">
+            <span class="qa-role-badge">👤 Foco: Aluno</span>
+            <a href="/app?trial=7dias" class="qa-card-btn" title="Experimentar este recurso no app">
+              Testar no App &rarr;
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CTA DA SEÇÃO DE FUNCIONALIDADES -->
+      <div class="qa-cta-banner">
+        <div>
+          <h3 style="font-size: clamp(20px, 3vw, 26px); font-family: 'Oswald', sans-serif; text-transform: uppercase; color: #fff;">
+            Quer experimentar todas essas 19 funcionalidades na prática?
+          </h3>
+          <p style="color: var(--text-gray); font-size: 14px; margin-top: 4px;">
+            Acesse agora mesmo com o plano <strong>Teste 7 Dias Grátis</strong> e comprove a eficácia do método no seu ritmo!
+          </p>
+        </div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+          <a href="/app?trial=7dias" class="btn btn-gold btn-lg">
+            ✨ Ativar 7 Dias Grátis sem Cartão
+          </a>
+          <a href="https://mpago.la/2wLuWDh" target="_blank" class="btn btn-outline btn-lg" style="border-color: rgba(245, 197, 66, 0.4); color: var(--gold-primary);">
+            💎 Garantir Vitalício por R$ 97
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
 
   <!-- SEÇÃO 5: DEPOIMENTOS -->
   <section id="depoimentos" class="section-padding">
@@ -1757,6 +2766,25 @@
         item.classList.add('active');
       }
     }
-  </script>
+  
+    // FILTRO INTERATIVO DA SEÇÃO DE FUNCIONALIDADES & COMO USAR
+    function filterQaFeatures(category) {
+      const cards = document.querySelectorAll('.qa-card');
+      const btns = document.querySelectorAll('.qa-filter-btn');
+      btns.forEach(b => {
+        const isActive = b.getAttribute('onclick').includes("'" + category + "'");
+        b.classList.toggle('active', isActive);
+      });
+
+      cards.forEach(card => {
+        if (category === 'all' || card.getAttribute('data-category') === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+</script>
 </body>
 </html>

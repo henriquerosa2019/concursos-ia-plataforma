@@ -4807,38 +4807,8 @@
   }
 
   function migrateTrialDataToUser(targetEmail) {
-    if (!targetEmail) return;
-    const cleanEmail = targetEmail.toLowerCase().trim();
-    const trialId = localStorage.getItem('concursos_trial_user_id');
-    if (trialId && trialId !== cleanEmail) {
-      try {
-        const trialProgRaw = localStorage.getItem('concursos_progress_' + trialId);
-        if (trialProgRaw) {
-          const trialProg = JSON.parse(trialProgRaw);
-          const userProgRaw = localStorage.getItem('concursos_progress_' + cleanEmail);
-          const userProg = userProgRaw ? JSON.parse(userProgRaw) : { cards_details: {}, cebraspe_history: [] };
-          userProg.cards_details = { ...(trialProg.cards_details || {}), ...(userProg.cards_details || {}) };
-          if (trialProg.cebraspe_history && (!userProg.cebraspe_history || userProg.cebraspe_history.length === 0)) {
-            userProg.cebraspe_history = trialProg.cebraspe_history;
-          }
-          localStorage.setItem('concursos_progress_' + cleanEmail, JSON.stringify(userProg));
-          progressData = userProg;
-        }
-      } catch(e) {}
-
-      try {
-        for (let i = 0; i < localStorage.length; i++) {
-          const k = localStorage.key(i);
-          if (k && k.startsWith('concursos_reviews_' + trialId)) {
-            const newK = k.replace('concursos_reviews_' + trialId, 'concursos_reviews_' + cleanEmail);
-            const val = localStorage.getItem(k);
-            if (val && !localStorage.getItem(newK)) {
-              localStorage.setItem(newK, val);
-            }
-          }
-        }
-      } catch(e) {}
-    }
+    // Isolamento estrito de contas: todo novo usuário inicia 100% limpo com zero revisões residuais
+    return;
   }
 
   function saveLocalProgress() {
@@ -4856,13 +4826,18 @@
         const parsed = JSON.parse(raw);
         if (parsed && typeof parsed === 'object') {
           progressData = {
-            ...progressData,
-            ...parsed,
-            cards_details: { ...(progressData.cards_details || {}), ...(parsed.cards_details || {}) }
+            cards_details: parsed.cards_details || {},
+            cebraspe_history: Array.isArray(parsed.cebraspe_history) ? parsed.cebraspe_history : []
           };
+        } else {
+          progressData = { cards_details: {}, cebraspe_history: [] };
         }
+      } else {
+        progressData = { cards_details: {}, cebraspe_history: [] };
       }
-    } catch(e) {}
+    } catch(e) {
+      progressData = { cards_details: {}, cebraspe_history: [] };
+    }
   }
 
   function computeLocalSM2(cardKey, quality, cardA, discipline, subarea) {
@@ -7028,16 +7003,20 @@
       let trimmed = blk.trim();
       if (!trimmed || trimmed.toLowerCase().startsWith('## 2')) return;
 
-      let isCritical = (idx % 2 === 0);
+      let isCritical = (idx % 2 === 1 || idx === 0);
       let title = `⚠️ Pegadinha ${idx}`;
       let body = trimmed;
 
       let firstLine = trimmed.split('\n')[0];
-      if (firstLine.includes('**')) {
+      if (firstLine.startsWith('###')) {
+        let cleanTitle = firstLine.replace(/^###\s*/, '').replace(/^[🚨⚠️]\s*/, '').trim();
+        title = (isCritical ? '🚨 ' : '⚠️ ') + cleanTitle;
+        body = trimmed.substring(firstLine.length).trim();
+      } else if (firstLine.includes('**')) {
         let m = firstLine.match(/\*\*(.*?)\*\*/);
         if (m) {
           title = (isCritical ? '🚨 ' : '⚠️ ') + m[1];
-          body = trimmed.replace(firstLine, '').trim();
+          body = trimmed.substring(firstLine.length).trim();
         }
       }
 
@@ -7147,13 +7126,30 @@
       }
     } catch(e) {
       console.warn("Conexão indisponível, ativando Raio-X curado offline:", e);
-      const fallbackMd = `## 2. Pontos Críticos de Banca & Pegadinhas (${banca})\n\n1. **Inversão de Conceitos Centrais:**\n   - *Pegadinha:* A banca ${banca} costuma alterar o sentido ou a ordem dos requisitos fundamentais de ${(currentSubarea || 'Conteúdo').replace(/_/g, ' ')}.\n   - *Como não errar:* Memorize a definição exata e os mnemônicos do Pilar 1.\n\n2. **Exceções Ocultas:**\n   - *Pegadinha:* Afirmar que uma regra geral não possui ressalvas no contexto prático.\n   - *Verdade:* Aplique a fundamentação consolidada e atente-se às palavras restritivas (sempre, jamais, unicamente).`;
+      let fallbackMd = '';
+      if (currentLessonMeta && currentLessonMeta.markdown_content) {
+        const p2Match = currentLessonMeta.markdown_content.match(/(##\s*2\.\s*(?:Raio|Pontos|Pegadinha)[^\n]*\n)([\s\S]*?)(?=\n##\s*3\.|\Z)/i);
+        if (p2Match && p2Match[0].length > 150 && p2Match[0].includes('Pegadinha')) {
+          fallbackMd = p2Match[0].trim();
+        }
+      }
+      if (!fallbackMd) {
+        const subLow = (currentSubarea || '').toLowerCase();
+        const discLow = (currentDiscipline || '').toLowerCase();
+        if (subLow.includes('excel') || discLow.includes('excel') || subLow.includes('procv')) {
+          fallbackMd = `## 2. Raio-X de Banca & Pegadinhas Mais Frequentes (${banca})\n\n### 🚨 Pegadinha 1: O 3º Argumento do PROCV (Letra vs Número da Coluna)\n- **O que a banca afirma para induzir ao erro:** "A fórmula =PROCV(A1; A1:D10; C; 0) retorna com sucesso o valor da terceira coluna da matriz."\n- **Pegadinha desmascarada (Onde está o erro):** O 3º argumento (núm_índice_coluna) exige estritamente um NÚMERO INTEIRO (ex: 3), jamais a letra da coluna. A fórmula com letra gerará erro #NOME?.\n- **💡 Regra de Ouro / Mnemônico:** "Número é o que conta, letra não entra!"\n\n### 🚨 Pegadinha 2: O 4º Argumento Omitido (Busca Aproximada 1 vs Exata 0)\n- **O que a banca afirma para induzir ao erro:** "Se o quarto argumento for omitido em =PROCV(A1; A1:B10; 2), o Excel buscará o valor exato correspondente."\n- **Pegadinha desmascarada (Onde está o erro):** Ao omitir o 4º argumento, o Excel assume por padrão 1 (ou VERDADEIRO), que é a busca APROXIMADA. Para busca exata deve ser expressamente 0 ou FALSO.\n- **💡 Regra de Ouro / Mnemônico:** "Zero é certeiro; um é um palpite!"\n\n### 🚨 Pegadinha 3: Diferença Crítica entre Erros #N/D e #REF!\n- **O que a banca afirma para induzir ao erro:** "Caso a matriz possua 3 colunas e o índice solicitado seja 5, a função retornará erro #N/D."\n- **Pegadinha desmascarada (Onde está o erro):** Quando o índice excede as colunas da matriz, o erro é #REF! (Referência Inválida). O erro #N/D ocorre apenas quando o valor procurado não é achado na 1ª coluna em busca exata.\n- **💡 Regra de Ouro / Mnemônico:** "Não Achou = #N/D; Passou do Limite = #REF!"`;
+        } else if (subLow.includes('artigo') || discLow.includes('constitucional')) {
+          fallbackMd = `## 2. Raio-X de Banca & Pegadinhas Mais Frequentes (${banca})\n\n### 🚨 Pegadinha 1: Crimes Inafiançáveis vs Imprescritíveis (Mnemônico RAÇÃO)\n- **O que a banca afirma para induzir ao erro:** "O crime de tortura é inafiançável e imprescritível segundo a Constituição Federal."\n- **Pegadinha desmascarada (Onde está o erro):** Pela CF/88, APENAS dois crimes são imprescritíveis: Racismo e Ação de grupos armados (RAÇÃO). A Tortura (3T+H) é inafiançável e insuscetível de graça/anistia, mas É PRESCRITÍVEL.\n- **💡 Regra de Ouro / Mnemônico:** "Imprescritível só tem RAÇÃO: RAcismo e AÇÃO de grupos armados!"\n\n### 🚨 Pegadinha 2: Inviolabilidade de Domicílio Durante a NOITE\n- **O que a banca afirma para induzir ao erro:** "A autoridade com mandado judicial poderá ingressar no domicílio a qualquer hora do dia ou da noite."\n- **Pegadinha desmascarada (Onde está o erro):** Mandado judicial autoriza ingresso APENAS DURANTE O DIA. À NOITE, só sem consentimento em flagrante, desastre ou socorro.\n- **💡 Regra de Ouro / Mnemônico:** "Mandado judicial dorme à noite: só entra com a luz do sol (DIA)!"`;
+        } else {
+          fallbackMd = `## 2. Raio-X de Banca & Pegadinhas Mais Frequentes (${banca})\n\n### 🚨 Pegadinha 1: Inversão Conceitual e Termos Restritivos em ${(currentSubarea || 'Conteúdo').replace(/_/g, ' ')}\n- **O que a banca afirma para induzir ao erro:** A banca ${banca} afirma que as regras são absolutas usando termos como 'sempre', 'exclusivamente' ou 'vedado'.\n- **Pegadinha desmascarada (Onde está o erro):** A regra geral quase sempre possui ressalvas e exceções expressas.\n- **💡 Regra de Ouro / Mnemônico:** "Palavra restritiva (sempre/nunca/jamais) em ${banca} exige alerta vermelho dobrado!"`;
+        }
+      }
       const tab1Box = document.getElementById('tab1Content');
       if (tab1Box && typeof parseMarkdownPegadinhas === 'function') {
         tab1Box.innerHTML = parseMarkdownPegadinhas(fallbackMd);
       }
       switchTab(1);
-      showToast(`🛡️ Banco Curado Offline: Raio-X (${banca}) ativado!`, "📚");
+      showToast(`🛡️ Banco Curado: Raio-X & Pegadinhas (${banca}) ativado!`, "📚");
     } finally {
       btn.disabled = false;
       spinner.style.display = 'none';
@@ -9716,10 +9712,10 @@
         if (currentUser.plano) localStorage.setItem('concursos_user_plan', currentUser.plano);
         if (currentUser.email) localStorage.setItem('concursos_user_email', currentUser.email);
         if (currentUser.nome) localStorage.setItem('concursos_user_nome', currentUser.nome);
-        if (typeof migrateTrialDataToUser === 'function') migrateTrialDataToUser(currentUser.email);
         updateUserBadgeUI();
         if (typeof initTrialSystem === 'function') initTrialSystem();
         if (typeof checkMasterRole === 'function') checkMasterRole();
+        loadLocalProgress();
         loadProgress();
         fetchReviews();
         if (typeof showToast === 'function') {
@@ -9776,9 +9772,30 @@
         setAuthAlert('Conta criada e salva no Supabase com sucesso!', 'success');
         currentUser = data.user;
         localStorage.setItem('projeto_aprovacao_user', JSON.stringify(data.user));
-        if (typeof migrateTrialDataToUser === 'function') migrateTrialDataToUser(data.user.email);
+        if (currentUser.role) localStorage.setItem('concursos_user_role', currentUser.role);
+        if (currentUser.plano) localStorage.setItem('concursos_user_plan', currentUser.plano);
+        if (currentUser.email) localStorage.setItem('concursos_user_email', currentUser.email);
+        if (currentUser.nome) localStorage.setItem('concursos_user_nome', currentUser.nome);
+
+        // NOVO USUÁRIO: Inicialização 100% virgem e isolada (zero resíduos ou dados de teste)
+        const cleanEmail = (data.user.email || '').toLowerCase().trim();
+        localStorage.setItem('concursos_progress_' + cleanEmail, JSON.stringify({ cards_details: {}, cebraspe_history: [] }));
+        progressData = { cards_details: {}, cebraspe_history: [] };
+
+        // Limpar resíduos de revisões para esta conta
+        for (let i = localStorage.length - 1; i >= 0; i--) {
+          const k = localStorage.key(i);
+          if (k && (k.startsWith('concursos_reviews_' + cleanEmail) || k.startsWith('concursos_cards_' + cleanEmail))) {
+            localStorage.removeItem(k);
+          }
+        }
+
         updateUserBadgeUI();
-        loadProgress();
+        if (typeof checkMasterRole === 'function') checkMasterRole();
+        loadLocalProgress();
+        updateSm2DashboardCounters();
+        updateFlashcardFilterCounts();
+        updateCard();
         fetchReviews();
         if (typeof showToast === 'function') {
           showToast(`Conta criada com sucesso! Seja bem-vindo, ${data.user.nome}!`, '🎉');
@@ -9808,9 +9825,15 @@
 
   function logoutUser() {
     currentUser = null;
+    progressData = { cards_details: {}, cebraspe_history: [] };
+    rawFlashcardsData = [];
+    flashcardsData = [];
+    quizData = [];
     localStorage.removeItem('projeto_aprovacao_user');
     localStorage.removeItem('concursos_user_role');
     localStorage.removeItem('concursos_user_plan');
+    localStorage.removeItem('concursos_user_email');
+    localStorage.removeItem('concursos_user_nome');
     updateUserBadgeUI();
     if (typeof checkMasterRole === 'function') checkMasterRole();
     if (typeof showToast === 'function') {
@@ -10149,6 +10172,9 @@
               <button type="button" class="btn" onclick="masterToggleStatus('${u.email}', '${u.status}')" style="font-size: 11px; padding: 4px 8px; margin-right: 4px; color: ${isBloqueado ? '#10b981' : '#ef4444'};" title="${isBloqueado ? 'Reativar' : 'Bloquear'}">
                 ${isBloqueado ? '✅ Desbloquear' : '🚫 Bloquear'}
               </button>
+              <button type="button" class="btn" onclick="masterResetUserData('${u.email}', '${u.nome}')" style="font-size: 11px; padding: 4px 8px; margin-right: 4px; border-color: rgba(245, 158, 11, 0.45); color: #f59e0b;" title="Zerar flashcards, raio-x, simulados, caderno de erros e quotas do aluno">
+                🧹 Zerar Dados
+              </button>
               <button type="button" class="btn" onclick="masterDeleteUser('${u.email}', '${u.nome}')" style="font-size: 11px; padding: 4px 8px; color: #ef4444;" title="Excluir aluno">
                 🗑️
               </button>
@@ -10372,6 +10398,82 @@
       }
     } catch(e) {
       console.warn("Falha ao excluir no servidor (removido localmente):", e);
+    }
+  }
+
+  async function masterResetUserData(email, nome) {
+    if (!email) return;
+    const cleanEmail = email.toLowerCase().trim();
+    const confirmed = confirm(
+      `Deseja realmente ZERAR todos os dados de estudo do aluno "${nome || cleanEmail}" (${cleanEmail})?\n\n` +
+      `Isso apagará:\n` +
+      `• Flashcards gerados pelo aluno e histórico de repetições SM-2\n` +
+      `• Caderno de erros e revisões pendentes\n` +
+      `• Simulados realizados e histórico Cebraspe\n` +
+      `• Quotas e limites do plano (permitindo novo ciclo de testes completo)\n` +
+      `• Dados locais e registros no Supabase\n\n` +
+      `Esta ação é ideal para realizar novos testes com a mesma conta.`
+    );
+    if (!confirmed) return;
+
+    try {
+      if (typeof showToast === 'function') showToast(`Zerando dados de ${cleanEmail}...`, '⏳');
+      const resp = await fetch('/api/master/user/reset-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: cleanEmail })
+      });
+      const data = await resp.json();
+
+      // Limpar chaves locais do aluno
+      localStorage.removeItem('concursos_progress_' + cleanEmail);
+      localStorage.removeItem('concursos_trial_features_' + cleanEmail);
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const k = localStorage.key(i);
+        if (k && (k.startsWith('concursos_reviews_' + cleanEmail) || k.startsWith('concursos_cards_' + cleanEmail))) {
+          localStorage.removeItem(k);
+        }
+      }
+
+      // Se o usuário logado for o alvo do reset, resetar imediatamente em memória
+      if (currentUser && (currentUser.email || '').toLowerCase().trim() === cleanEmail) {
+        progressData = { cards_details: {}, cebraspe_history: [] };
+        saveLocalProgress();
+        updateSm2DashboardCounters();
+        updateFlashcardFilterCounts();
+        updateCard();
+        fetchReviews();
+      }
+
+      // Atualizar contador de aulas/importações na tabela se masterCachedUsers existir
+      if (Array.isArray(masterCachedUsers)) {
+        const u = masterCachedUsers.find(x => (x.email || '').toLowerCase().trim() === cleanEmail);
+        if (u) {
+          u.trial_imported_count = 0;
+          u.aulas_criadas = 0;
+          u._justUpdated = true;
+          renderMasterUsersTable(masterCachedUsers);
+        }
+      }
+
+      if (typeof showToast === 'function') {
+        showToast(data.message || `Dados de ${cleanEmail} zerados com sucesso!`, '🧹');
+      }
+      if (typeof fetchMasterUsers === 'function') {
+        fetchMasterUsers();
+      }
+    } catch(e) {
+      console.warn("Fallback offline de reset:", e);
+      localStorage.removeItem('concursos_progress_' + cleanEmail);
+      localStorage.removeItem('concursos_trial_features_' + cleanEmail);
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const k = localStorage.key(i);
+        if (k && (k.startsWith('concursos_reviews_' + cleanEmail) || k.startsWith('concursos_cards_' + cleanEmail))) {
+          localStorage.removeItem(k);
+        }
+      }
+      if (typeof showToast === 'function') showToast(`Dados locais de ${cleanEmail} zerados com sucesso!`, '🧹');
+      if (typeof fetchMasterUsers === 'function') fetchMasterUsers();
     }
   }
 
@@ -10610,6 +10712,7 @@
   window.masterResetUserTrial = masterResetUserTrial;
   window.masterChangeUserPassword = masterChangeUserPassword;
   window.masterToggleStatus = masterToggleStatus;
+  window.masterResetUserData = masterResetUserData;
   window.masterDeleteUser = masterDeleteUser;
   window.openMasterCreateUserModal = openMasterCreateUserModal;
   window.submitMasterCreateUser = submitMasterCreateUser;

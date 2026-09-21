@@ -73,4 +73,33 @@ Para qualquer aula em vídeo (YouTube ou arquivo) fornecida pelo usuário para e
   1. O assistente deve **responder diretamente à pergunta em primeiro lugar**, com clareza e objetividade, antes de apresentar ações, execuções ou códigos.
   2. Priorizar sempre a resposta explicativa imediata à dúvida colocada pelo usuário.
 
+---
+
+## 7. Isolamento Absoluto de Dados de Novos Usuários (Zero Resíduos)
+- Todo novo usuário cadastrado na plataforma deve iniciar com a conta 100% virgem e estritamente isolada:
+  1. **Proibição de Migração Resíduo:** É terminantemente proibido migrar dados de sessões de teste ou sessões anônimas (`migrateTrialDataToUser`) para contas recém-criadas. Novos alunos iniciam com `cards_details: {}`, `cebraspe_history: []` e quotas zeradas.
+  2. **Zero Contaminação de Caderno de Erros:** O Caderno de Erros e revisões nunca deve carregar resíduos de outros usuários gravados em pastas compartilhadas (`revisoes_erros.json`). Cada aluno possui seu isolamento em `userdata/reviews_{user}_...` ou Supabase.
+  3. **Preservação dos Arquivos Oficiais de Aula:** Flashcards gerados por IA sob demanda do aluno devem ser associados ao perfil do usuário (`userdata/cards_{user}_...`) e nunca sobrescrever ou poluir os arquivos originais da disciplina (`Flashcards_*.txt`).
+
+---
+
+## 8. Ferramenta Master de Zerar Dados do Usuário (Reset Master no Painel e Supabase)
+- O painel Master conta com o botão oficial **"🧹 Zerar Dados"** na tabela de alunos (endpoint `/api/master/user/reset-data`):
+  1. Zera instantaneamente todo o progresso de repetição espaçada SM-2 (`progresso_estudos.json` e `progresso_usuario` no Supabase).
+  2. Limpa o Caderno de Erros e revisões pendentes (`revisoes_usuario` no Supabase e `userdata/reviews_*`).
+  3. Zera os simulados realizados e o histórico de pontuação Cebraspe.
+  4. Redefine quotas e limites de importação em `usuarios.json`.
+  5. Limpa as chaves no `localStorage` do navegador do aluno.
+  6. Finalidade: permitir testes contínuos, limpos e fidedignos com o mesmo e-mail de usuário.
+
+---
+
+## 9. Padrão de Raio-X com Pegadinhas Reais e Aprofundadas da Banca (Pilar 2)
+- O botão **"⚡ Gerar Raio-X & Pegadinhas com IA"** deve sempre entregar pegadinhas reais, detalhadas e técnicas da disciplina e banca específica:
+  1. **Excel / PROCV:** Regra do 3º argumento (número de índice vs letra), omissão do 4º argumento (aproximada 1 vs exata 0), erro `#N/D` vs `#REF!`, busca estritamente para a direita (impossível para a esquerda, exigindo PROCX), maiúsculas/minúsculas indiferentes e aninhamento de funções (`MAIOR`/`SE`).
+  2. **Direito Constitucional (Art. 5º):** Mnemônico RAÇÃO (apenas Racismo e Grupos Armados são imprescritíveis), 3T+H (inafiançáveis e insuscetíveis de graça/anistia, mas prescritíveis), Inviolabilidade de domicílio durante a NOITE (ordem judicial NUNCA à noite, apenas durante o DIA).
+  3. **Direito Administrativo (Atos):** Mnemônico COFIFOMOB, Convalidação restrita a Forma não essencial e Competência não exclusiva (FO-CO), Anulação (ilegalidade, Ex Tunc) vs Revogação (conveniência/oportunidade, Ex Nunc).
+  4. **Redes e Informática:** TCP (orientado à conexão, handshake em 3 vias) vs UDP (não orientado, sem confirmação, veloz), Portas padrão (HTTP 80 vs HTTPS 443, SSH 22, DNS 53).
+  5. **Proibição de Templates Genéricos:** Nunca exibir textos ou fallbacks genéricos de direito administrativo em tópicos de informática ou exatas. Priorizar sempre a Seção 2 da aula existente ou o banco curado específico da matéria.
+
 

@@ -563,6 +563,80 @@ def delete_master_user(user_id_or_email):
     save_users(users)
     return {"success": True, "message": "Conta de aluno excluída com sucesso."}
 
+def reset_master_user_data(user_id_or_email):
+    """
+    Zera completamente os dados de estudos (flashcards, raio-x, simulados, caderno de erros e progresso SM-2)
+    do usuário tanto nos arquivos locais quanto no Supabase, permitindo novos testes com a mesma conta.
+    """
+    users = load_users()
+    target_key = None
+    target_email = ""
+    clean_id = str(user_id_or_email).strip().lower()
+    for k, u in users.items():
+        if k.lower() == clean_id or u.get("id", "").lower() == clean_id or u.get("email", "").lower() == clean_id:
+            target_key = k
+            target_email = u.get("email", k).lower().strip()
+            break
+            
+    if not target_email:
+        target_email = clean_id
+        
+    # 1. Resetar quotas no usuarios.json se existir
+    if target_key and target_key in users:
+        users[target_key]["trial_imported_count"] = 0
+        users[target_key]["aulas_criadas"] = 0
+        users[target_key]["trial_start"] = datetime.datetime.now().isoformat()
+        save_users(users)
+        
+    # 2. Resetar progresso no progresso_estudos.json
+    if os.path.exists(PROGRESS_FILE):
+        try:
+            with open(PROGRESS_FILE, "r", encoding="utf-8") as f:
+                prog_data = json.load(f)
+            if not isinstance(prog_data, dict):
+                prog_data = {}
+            prog_data.setdefault("users", {})[target_email] = {
+                "cards": {},
+                "cebraspe_history": [],
+                "last_sync": datetime.datetime.now().isoformat()
+            }
+            with open(PROGRESS_FILE, "w", encoding="utf-8") as f:
+                json.dump(prog_data, f, indent=2, ensure_ascii=False)
+        except Exception as e_prog:
+            print(f"Aviso ao zerar progresso no arquivo local: {e_prog}")
+            
+    # 3. Remover arquivos do caderno de erros em userdata/
+    user_safe = re.sub(r'[^a-zA-Z0-9_\-]', '_', target_email)
+    userdata_dir = os.path.join(BASE_DIR, "userdata")
+    deleted_files = 0
+    if os.path.exists(userdata_dir):
+        try:
+            for fname in os.listdir(userdata_dir):
+                if user_safe in fname or target_email in fname:
+                    try:
+                        os.remove(os.path.join(userdata_dir, fname))
+                        deleted_files += 1
+                    except Exception:
+                        pass
+        except Exception as e_ud:
+            print(f"Aviso ao remover revisões locais: {e_ud}")
+            
+    # 4. Zerar dados no Supabase se configurado
+    sb_msg = "não configurado"
+    if supabase_client and supabase_client.is_supabase_configured():
+        try:
+            supabase_client.supabase_request("progresso_usuario", method="DELETE", params={"email": f"eq.{target_email}"})
+            supabase_client.supabase_request("revisoes_usuario", method="DELETE", params={"email": f"eq.{target_email}"})
+            sb_msg = "zerado no Supabase"
+        except Exception as e_sb:
+            sb_msg = f"erro Supabase: {str(e_sb)}"
+            
+    return {
+        "success": True,
+        "message": f"Dados de estudos de {target_email} foram 100% zerados com sucesso ({deleted_files} arquivos de revisão limpos, {sb_msg})!",
+        "email": target_email
+    }
+
 def get_master_aulas_list():
     tree_data = scan_concursos_tree()
     tree = tree_data.get("tree", {})
@@ -1175,6 +1249,114 @@ OFFLINE_CURATED_QUIZ = {
     ]
 }
 
+OFFLINE_CURATED_RAIOX = {
+    "Excel": (
+        "## 2. Raio-X de Banca & Pegadinhas Mais Frequentes\n\n"
+        "### 🚨 Pegadinha 1: O 3º Argumento do PROCV (Letra vs Número da Coluna)\n"
+        "- **O que a banca afirma para induzir ao erro:** \"A fórmula `=PROCV(A1; A1:D10; C; 0)` retorna com sucesso o valor da terceira coluna da matriz.\"\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** O terceiro argumento (`núm_índice_coluna`) exige estritamente um NÚMERO INTEIRO positivo (ex: 3), jamais a letra da coluna. A fórmula com letra gerará erro `#NOME?` ou erro de sintaxe.\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"Número é o que conta, letra não entra!\"\n\n"
+        "### 🚨 Pegadinha 2: O 4º Argumento Omitido (Busca Aproximada 1 vs Exata 0)\n"
+        "- **O que a banca afirma para induzir ao erro:** \"Se o quarto argumento for omitido em `=PROCV(A1; A1:B10; 2)`, o Excel buscará o valor exato correspondente.\"\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** Ao omitir o 4º argumento, o Excel assume por padrão `1` (ou `VERDADEIRO`), que é a busca APROXIMADA. Para a busca exata funcionar sem risco, o 4º argumento deve ser expressamente `0` ou `FALSO`.\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"Zero é certeiro; um é um palpite!\"\n\n"
+        "### 🚨 Pegadinha 3: Diferença Crítica entre Erros `#N/D` e `#REF!`\n"
+        "- **O que a banca afirma para induzir ao erro:** \"Caso a matriz possua 3 colunas e o índice solicitado seja 5, a função retornará erro `#N/D`.\"\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** O erro gerado quando o índice da coluna excede a matriz é `#REF!` (Referência Inválida). O erro `#N/D` (Não Disponível) ocorre apenas quando o valor procurado não existe na primeira coluna em busca exata.\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"Não Achou = `#N/D`; Passou do Limite = `#REF!`\"\n\n"
+        "### 🚨 Pegadinha 4: A Impossibilidade da Busca para a Esquerda\n"
+        "- **O que a banca afirma para induzir ao erro:** \"A função PROCV pesquisa valores em qualquer coluna e pode retornar dados situados à esquerda da coluna de pesquisa.\"\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** O `PROCV` só pesquisa obrigatoriamente na PRIMEIRA coluna da matriz (mais à esquerda) e só retorna dados para a direita. Para buscar à esquerda, a banca exige `PROCX` ou a combinação `ÍNDICE` + `CORRESP`.\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"PROCV só olha para a direita; para a esquerda, use PROCX!\"\n\n"
+        "### 🚨 Pegadinha 5: Funções Aninhadas (`PROCV` com `MAIOR` ou `SE`)\n"
+        "- **O que a banca afirma para induzir ao erro:** Coloca uma fórmula complexa como `=PROCV(MAIOR(A1:A5; 2); A1:C10; 3; 0)` e afirma que ela busca o maior valor da planilha sem resolver a função interna.\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** Primeiro resolve-se a função mais interna (`MAIOR(A1:A5; 2)` descobre o segundo maior valor). O resultado numérico obtido torna-se o `valor_procurado` do PROCV.\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"Resolva de dentro para fora, como descascar uma cebola!\""
+    ),
+    "Artigo_5": (
+        "## 2. Raio-X de Banca & Pegadinhas Mais Frequentes\n\n"
+        "### 🚨 Pegadinha 1: Crimes Inafiançáveis vs Imprescritíveis (Mnemônico RAÇÃO)\n"
+        "- **O que a banca afirma para induzir ao erro:** \"O crime de tortura é inafiançável e imprescritível segundo a Constituição Federal.\"\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** Pela CF/88, APENAS dois crimes são imprescritíveis: Racismo e Ação de grupos armados (mnemônico RAÇÃO). A Tortura (junto com Tráfico, Terrorismo e Hediondos - 3T+H) é inafiançável e insuscetível de graça ou anistia, mas É PRESCRITÍVEL.\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"Imprescritível só tem RAÇÃO: RAcismo e AÇÃO de grupos armados!\"\n\n"
+        "### 🚨 Pegadinha 2: Inviolabilidade de Domicílio Durante a NOITE\n"
+        "- **O que a banca afirma para induzir ao erro:** \"A autoridade policial munida de mandado judicial poderá ingressar na residência do indivíduo a qualquer hora do dia ou da noite.\"\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** A determinação judicial autoriza o ingresso APENAS DURANTE O DIA. Durante a NOITE, só é permitido sem consentimento em 3 casos: flagrante delito, desastre ou prestar socorro.\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"Mandado judicial dorme à noite: só entra com a luz do sol (durante o DIA)!\"\n\n"
+        "### 🚨 Pegadinha 3: Gratuidade das Ações Constitucionais\n"
+        "- **O que a banca afirma para induzir ao erro:** \"São gratuitas as ações de Habeas Corpus, Habeas Data e Mandado de Segurança.\"\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** Apenas o Habeas Corpus e o Habeas Data (e os atos necessários ao exercício da cidadania) são expressamente gratuitos na CF/88. O Mandado de Segurança NÃO é gratuito (exige custas, ressalvada a gratuidade de justiça comprovada).\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"Gratuitos são os 'H's: Habeas Corpus e Habeas Data! Mandado de Segurança paga custas.\"\n\n"
+        "### 🚨 Pegadinha 4: Tribunal do Júri e o Princípio da Soberania dos Veredictos\n"
+        "- **O que a banca afirma para induzir ao erro:** \"O Tribunal do Júri possui competência para julgar todos os crimes dolosos contra a vida e contra o patrimônio com resultado morte (latrocínio).\"\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** O Júri julga APENAS crimes dolosos contra a VIDA (homicídio, induzimento ao suicídio, infanticídio e aborto). O Latrocínio (art. 157, §3º) é crime contra o PATRIMÔNIO (Súmula 603 do STF) e julgado por juiz singular.\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"Latrocínio não vai ao Júri: é crime de patrimônio julgado por juiz togado!\""
+    ),
+    "Atos_Administrativos": (
+        "## 2. Raio-X de Banca & Pegadinhas Mais Frequentes\n\n"
+        "### 🚨 Pegadinha 1: Vícios Sanáveis e Convalidação (Mnemônico COFIFOMOB)\n"
+        "- **O que a banca afirma para induzir ao erro:** \"Qualquer vício em ato administrativo pode ser convalidado pela administração pública para preservação do interesse público.\"\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** Apenas os vícios de COMPETÊNCIA (desde que não exclusiva) e de FORMA (desde que a lei não a exija como essencial para a validade do ato) admitem convalidação (FO-CO). Vícios de Finalidade, Motivo e Objeto são SEMPRE insanáveis e exigem anulação.\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"Convalidação só tem FO-CO: FOrma não essencial e COmpetência não exclusiva!\"\n\n"
+        "### 🚨 Pegadinha 2: Efeitos da Anulação vs Revogação\n"
+        "- **O que a banca afirma para induzir ao erro:** \"A revogação de um ato administrativo tem efeitos retroativos à data de sua edição (Ex Tunc).\"\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** Revogação incide sobre ato VÁLIDO por motivo de conveniência e oportunidade, produzindo efeitos prospectivos (Ex Nunc - não retroage). Quem retroage (Ex Tunc) é a ANULAÇÃO de ato ILEGAL.\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"Anulação bate na testa e joga pra trás (Ex Tunc); Revogação bate na nuca e joga pra frente (Ex Nunc)!\"\n\n"
+        "### 🚨 Pegadinha 3: Limites da Autoexecutoriedade\n"
+        "- **O que a banca afirma para induzir ao erro:** \"Em virtude do atributo da autoexecutoriedade, a administração pública pode executar direta e coercitivamente as multas administrativas impostas.\"\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** A cobrança de MULTA pecuniária NÃO é autoexecutória. Se o particular não pagar voluntariamente, a administração é obrigada a ingressar com Execução Fiscal no Poder Judiciário.\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"Ato com dinheiro no meio (multa) não se autoexecuta: vai pro Judiciário!\""
+    ),
+    "Redes_de_Computadores": (
+        "## 2. Raio-X de Banca & Pegadinhas Mais Frequentes\n\n"
+        "### 🚨 Pegadinha 1: Protocolo TCP vs Protocolo UDP na Camada de Transporte\n"
+        "- **O que a banca afirma para induzir ao erro:** \"O protocolo UDP realiza o handshake em três vias (SYN, SYN-ACK, ACK) para garantir a integridade dos pacotes transmitidos.\"\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** Quem realiza o handshake em 3 etapas e garante entrega e controle de fluxo é o TCP (Transmission Control Protocol). O UDP (User Datagram Protocol) é não orientado à conexão (connectionless), não garante entrega e não reordena pacotes, priorizando velocidade.\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"TCP = Três Contatos Prévios (confiável); UDP = Um Disparo e Pronto (veloz, sem confirmação)!\"\n\n"
+        "### 🚨 Pegadinha 2: Portas Padrão e Criptografia em Protocolos de Rede\n"
+        "- **O que a banca afirma para induzir ao erro:** \"O protocolo HTTPS utiliza a porta TCP 80 por padrão, incorporando uma camada TLS para autenticação.\"\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** A porta TCP 80 é do HTTP puro (inseguro). O HTTPS utiliza a porta TCP 443. A banca inverte com frequência: SSH (22), Telnet (23), DNS (53) e SMTP (25 ou 587).\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"HTTP = 80; HTTPS = 443; SSH = 22; DNS = 53!\"\n\n"
+        "### 🚨 Pegadinha 3: Switch (Camada 2) vs Roteador (Camada 3)\n"
+        "- **O que a banca afirma para induzir ao erro:** \"Um switch padrão opera na camada de rede (camada 3 do modelo OSI), roteando pacotes com base nos endereços IP dos hosts.\"\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** O switch tradicional opera na Camada 2 (Enlace de Dados) e encaminha quadros com base no endereço físico MAC. Quem opera na Camada 3 (Rede) com endereçamento lógico IP é o ROTEADOR.\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"Switch lê MAC (Enlace - C2); Roteador lê IP (Rede - C3)!\""
+    ),
+    "Seguranca_da_Informacao": (
+        "## 2. Raio-X de Banca & Pegadinhas Mais Frequentes\n\n"
+        "### 🚨 Pegadinha 1: Vírus vs Worm (Mecanismo de Propagação)\n"
+        "- **O que a banca afirma para induzir ao erro:** \"Um worm necessita da execução explícita de um arquivo hospedeiro pelo usuário para infectar o computador.\"\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** Quem precisa de arquivo hospedeiro e ação do usuário para se propagar é o VÍRUS. O WORM é um programa autônomo e propaga-se automaticamente explorando vulnerabilidades na rede, sem precisar de hospedeiro.\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"Vírus precisa de hospedeiro (biológico); Worm anda sozinho pela rede (verme autônomo)!\"\n\n"
+        "### 🚨 Pegadinha 2: Criptografia Assimétrica (Chave Pública vs Privada)\n"
+        "- **O que a banca afirma para induzir ao erro:** \"Para enviar uma mensagem confidencial a Maria, João deve cifrá-la utilizando a sua própria chave privada.\"\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** Para sigilo/confidencialidade, João cifra com a CHAVE PÚBLICA DE MARIA (destinatária), para que apenas a chave privada de Maria consiga decifrar. Cifrar com a própria chave privada serve para ASSINATURA DIGITAL (garantir autenticidade e não-repúdio), não para sigilo.\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"Sigilo: tranca com a Pública do destinatário; Assinatura: assina com a sua Privada!\""
+    ),
+    "Morfologia_e_Sintaxe": (
+        "## 2. Raio-X de Banca & Pegadinhas Mais Frequentes\n\n"
+        "### 🚨 Pegadinha 1: Adjunto Adnominal vs Complemento Nominal\n"
+        "- **O que a banca afirma para induzir ao erro:** \"Na oração 'A crítica do professor foi elogiada', o termo 'do professor' exerce função de complemento nominal.\"\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** O professor praticou a ação de criticar (sentido ATIVO). Quando o termo preposicionado junto a substantivo abstrato pratica a ação, trata-se de ADJUNTO ADNOMINAL. Se sofresse a ação (ex: 'A crítica AO professor', sentido PASSIVO), seria COMPLEMENTO NOMINAL.\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"Sentido Ativo = Adjunto Adnominal; Sentido Passivo = Complemento Nominal!\"\n\n"
+        "### 🚨 Pegadinha 2: Casos em que a Crase é Expressamente Proibida\n"
+        "- **O que a banca afirma para induzir ao erro:** \"O candidato compareceu à pé e começou à responder as questões com caneta à azul.\"\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** É proibida a crase: 1) Antes de palavras masculinas ('a pé'); 2) Antes de verbos ('a responder'); 3) Antes de pronomes que não admitem artigo.\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"Diante de homem ou de ação (verbo), crase é uma aberração!\""
+    ),
+    "Tabela_Verdade_e_Proposicoes": (
+        "## 2. Raio-X de Banca & Pegadinhas Mais Frequentes\n\n"
+        "### 🚨 Pegadinha 1: Negação da Proposição Condicional (Se... então)\n"
+        "- **O que a banca afirma para induzir ao erro:** \"A negação lógica de 'Se chove, então a rua molha' é 'Se não chove, então a rua não molha'.\"\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** A negação de uma condicional NUNCA é outra condicional. Aplica-se a regra do MANÉ: Mantém a primeira (p) E Nega a segunda (~q). Portanto: 'Chove E a rua NÃO molha' (`p ^ ~q`).\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"Negação do 'Se... então' é o MANÉ: MAntém a primeira E NEga a segunda!\"\n\n"
+        "### 🚨 Pegadinha 2: Equivalência da Condicional vs Contrapositiva\n"
+        "- **O que a banca afirma para induzir ao erro:** \"A proposição 'Se trabalho, ganho dinheiro' é logicamente equivalente a 'Se não trabalho, não ganho dinheiro'.\"\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** A equivalência correta exige inverter e negar ambas (contrapositiva): 'Se NÃO ganho dinheiro, então NÃO trabalho' (`~q -> ~p`), ou pela regra da disjunção (`~p v q`): 'NÃO trabalho OU ganho dinheiro'.\n"
+        "- **💡 Regra de Ouro / Mnemônico:** \"Equivalência do 'Se': Inverte e Nega tudo (~q -> ~p) ou faz o SILVALDO (~p v q)!\""
+    )
+}
+
 # ==============================================================================
 # MANIPULAÇÃO E VARREDURA DO SISTEMA DE ARQUIVOS
 # ==============================================================================
@@ -1401,14 +1583,9 @@ def load_reviews(discipline, subarea, email=None):
                     return json.load(f)
             except Exception:
                 pass
-    folder = find_subarea_folder(discipline, subarea)
-    rfile = os.path.join(folder, "revisoes_erros.json")
-    if os.path.exists(rfile):
-        try:
-            with open(rfile, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception:
-            pass
+        # Aluno autenticado: se não tem revisões salvas para ele, NUNCA herdar resíduos de outros usuários!
+        return {"cards": [], "quiz": []}
+        
     return {"cards": [], "quiz": []}
 
 def save_reviews(discipline, subarea, data, email=None):
@@ -1422,11 +1599,7 @@ def save_reviews(discipline, subarea, data, email=None):
                 json.dump(data, f, indent=2, ensure_ascii=False)
         except Exception:
             pass
-    folder = find_subarea_folder(discipline, subarea)
-    os.makedirs(folder, exist_ok=True)
-    rfile = os.path.join(folder, "revisoes_erros.json")
-    with open(rfile, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+
 
 def load_quiz_questions(discipline, subarea):
     folder = find_subarea_folder(discipline, subarea)
@@ -1505,6 +1678,7 @@ def extract_text_from_pdf_bytes(pdf_bytes):
 def generate_raiox_content(discipline, subarea, context_text, banca="Cebraspe", focus=""):
     """
     Pilar 2: Raio-X de Banca & Pegadinhas Mais Frequentes (Cebraspe, FGV, FCC, Vunesp).
+    Gera via IA se disponível, ou extrai as pegadinhas reais da aula existente, ou consulta o banco curado.
     """
     sys_prompt = (
         f"Você é um especialista sênior em bancas examinadoras de concursos públicos ({banca}, FGV, FCC, Vunesp).\n"
@@ -1527,24 +1701,61 @@ def generate_raiox_content(discipline, subarea, context_text, banca="Cebraspe", 
     )
     
     raw_md, prov = call_ai_service(sys_prompt, user_prompt, json_mode=False, temperature=0.7)
-    if raw_md and "## 2." in raw_md:
+    if raw_md and "## 2." in raw_md and "Pegadinha" in raw_md:
         return raw_md.strip(), prov
-        
+
+    # 1. Se IA indisponível, extrai prioritariamente as pegadinhas reais da aula markdown já salva
+    folder = find_subarea_folder(discipline, subarea)
+    if os.path.exists(folder):
+        for f in os.listdir(folder):
+            if f.startswith("Aula_") and f.endswith(".md"):
+                try:
+                    with open(os.path.join(folder, f), "r", encoding="utf-8", errors="ignore") as lf:
+                        full_txt = lf.read()
+                    p2_match = re.search(r'(##\s*2\.\s*(?:Raio|Pontos|Pegadinha)[^\n]*\n)([\s\S]*?)(?=\n##\s*3\.|\Z)', full_txt, re.IGNORECASE)
+                    if p2_match:
+                        extracted = p2_match.group(0).strip()
+                        if len(extracted) > 150 and "Pegadinha" in extracted:
+                            return extracted, "offline_curated"
+                except Exception:
+                    pass
+
+    # 2. Se não houver arquivo markdown ou a seção estiver vazia, consulta o catálogo curado de alta retenção
+    clean_sub = subarea.lower()
+    clean_disc = discipline.lower()
+    
+    key = None
+    if "excel" in clean_sub or "excel" in clean_disc or "procv" in clean_sub:
+        key = "Excel"
+    elif "artigo" in clean_sub or "art_5" in clean_sub or "constitucional" in clean_disc:
+        key = "Artigo_5"
+    elif "ato" in clean_sub or "administrativo" in clean_disc:
+        key = "Atos_Administrativos"
+    elif "rede" in clean_sub or "redes" in clean_disc:
+        key = "Redes_de_Computadores"
+    elif "seguran" in clean_sub or "seguranca" in clean_disc:
+        key = "Seguranca_da_Informacao"
+    elif "portugues" in clean_disc or "morfologia" in clean_sub or "sintaxe" in clean_sub or "interpretacao" in clean_sub:
+        key = "Morfologia_e_Sintaxe"
+    elif "raciocinio" in clean_disc or "tabela" in clean_sub or "proposic" in clean_sub:
+        key = "Tabela_Verdade_e_Proposicoes"
+
+    if key and key in OFFLINE_CURATED_RAIOX:
+        return OFFLINE_CURATED_RAIOX[key], "banco_curado"
+
+    # 3. Fallback inteligente e específico para a matéria
     topic_clean = subarea.replace('_', ' ')
+    disc_clean = discipline.replace('_', ' ')
     fallback_md = (
         f"## 2. Raio-X de Banca & Pegadinhas Mais Frequentes ({banca})\n\n"
-        f"### 🚨 Pegadinha 1: Inversão Conceitual em {topic_clean}\n"
-        f"- **O que a banca afirma para induzir ao erro:** A banca troca termos essenciais ou inverte a regra geral com a exceção.\n"
-        f"- **Pegadinha desmascarada (Onde está o erro):** Atenção a termos restritivos como 'apenas', 'sempre', 'exclusivamente' ou 'vedado'. As bancas criam afirmativas aparentemente perfeitas com uma restrição indevida.\n"
-        f"- **💡 Regra de Ouro / Mnemônico:** Memorize os requisitos essenciais e desconfie de generalizações sem amparo expresso.\n\n"
-        f"### 🚨 Pegadinha 2: Troca de Prazos e Competências\n"
-        f"- **O que a banca afirma para induzir ao erro:** Afirma que prazos legais ou competências vinculadas podem ser prorrogados por simples ato administrativo discricionário.\n"
-        f"- **Pegadinha desmascarada (Onde está o erro):** Prazos formais e competências vinculadas exigem expressa autorização legal.\n"
-        f"- **💡 Regra de Ouro / Mnemônico:** Competência vinculada é irrenunciável e intransferível, salvo expressa delegação legal.\n\n"
-        f"### 🚨 Pegadinha 3: Questão de Caso Concreto Extenso\n"
-        f"- **O que a banca afirma para induzir ao erro:** Traz uma historinha longa para cansar o candidato e insere a pegadinha na última linha.\n"
-        f"- **Pegadinha desmascarada (Onde está o erro):** Isole o comando do item e verifique a conformidade direta com a lei ou edital.\n"
-        f"- **💡 Regra de Ouro / Mnemônico:** Sublinhe os conectivos e o verbo principal da assertiva antes de assinalar.\n"
+        f"### 🚨 Pegadinha 1: Inversão Conceitual e Termos Restritivos em {topic_clean}\n"
+        f"- **O que a banca afirma para induzir ao erro:** A banca {banca} cria assertivas afirmando que as regras de {topic_clean} são absolutas, inserindo termos como 'sempre', 'exclusivamente' ou 'vedado'.\n"
+        f"- **Pegadinha desmascarada (Onde está o erro):** Em {disc_clean}, a regra geral quase sempre possui exceções expressas na doutrina e no edital.\n"
+        f"- **💡 Regra de Ouro / Mnemônico:** \"Palavra restritiva (sempre/nunca/jamais) em {banca} exige alerta vermelho dobrado!\"\n\n"
+        f"### 🚨 Pegadinha 2: Troca de Conceitos Próximos em {topic_clean}\n"
+        f"- **O que a banca afirma para induzir ao erro:** Troca a definição ou o campo de aplicação prática dos conceitos fundamentais da matéria.\n"
+        f"- **Pegadinha desmascarada (Onde está o erro):** A banca usa a redação correta de um conceito, mas atribui o nome de outro conceito correlato.\n"
+        f"- **💡 Regra de Ouro / Mnemônico:** \"Isole o sujeito e o predicado da questão antes de validar a assertiva!\"\n"
     )
     return fallback_md, "offline_curated"
 
@@ -2030,7 +2241,23 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                                             cards.append({"q": q, "a": a})
                         except Exception:
                             pass
-                            
+
+            email = query.get("email", [""])[0].strip().lower()
+            if email:
+                user_safe = re.sub(r'[^a-zA-Z0-9_\-]', '_', email)
+                user_cards_file = os.path.join(BASE_DIR, "userdata", f"cards_{user_safe}_{disc}_{sub}.json")
+                if os.path.exists(user_cards_file):
+                    try:
+                        with open(user_cards_file, "r", encoding="utf-8") as ucf:
+                            extra_cards = json.load(ucf)
+                            for ec in extra_cards:
+                                norm_q = ec.get("q", "").lower().replace("?", "").strip()
+                                if norm_q and norm_q not in seen:
+                                    seen.add(norm_q)
+                                    cards.append(ec)
+                    except Exception:
+                        pass
+                             
             if not cards:
                 key = "Excel" if "excel" in sub.lower() else ("Artigo_5" if "artigo" in sub.lower() else "")
                 if key and key in OFFLINE_CURATED_CARDS:
@@ -2699,6 +2926,16 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps(res, ensure_ascii=False).encode("utf-8"))
             return
 
+        elif path == "/api/master/user/reset-data":
+            user_id = payload.get("email") or payload.get("id") or ""
+            res = reset_master_user_data(user_id)
+            status_code = 200 if res.get("success") else 400
+            self.send_response(status_code)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps(res, ensure_ascii=False).encode("utf-8"))
+            return
+
         elif path == "/api/master/aula/promote":
             disc = payload.get("discipline", "").strip()
             sub = payload.get("subarea", "").strip()
@@ -2922,19 +3159,19 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                     ]
                 provider_used = "banco_curado"
 
-            is_trial = bool(payload.get("is_trial", False) or not payload.get("save_to_db", True))
-            if cards_to_save and os.path.exists(folder) and not is_trial:
-                anki_target = None
-                for f in os.listdir(folder):
-                    if "anki" in f.lower() and f.endswith(".txt"):
-                        anki_target = os.path.join(folder, f)
-                        break
-                if not anki_target:
-                    anki_target = os.path.join(folder, f"Flashcards_{sub}_Anki.txt")
+            email = payload.get("email", "").strip().lower()
+            if cards_to_save and email:
                 try:
-                    with open(anki_target, "a", encoding="utf-8") as fa:
-                        for c in cards_to_save:
-                            fa.write(f"\n{c['q']}\t{c['a']}")
+                    os.makedirs(os.path.join(BASE_DIR, "userdata"), exist_ok=True)
+                    user_safe = re.sub(r'[^a-zA-Z0-9_\-]', '_', email)
+                    user_cards_file = os.path.join(BASE_DIR, "userdata", f"cards_{user_safe}_{disc}_{sub}.json")
+                    user_cards = []
+                    if os.path.exists(user_cards_file):
+                        with open(user_cards_file, "r", encoding="utf-8") as ucf:
+                            user_cards = json.load(ucf)
+                    user_cards.extend(cards_to_save)
+                    with open(user_cards_file, "w", encoding="utf-8") as ucf:
+                        json.dump(user_cards, ucf, indent=2, ensure_ascii=False)
                 except Exception:
                     pass
                     
@@ -3311,7 +3548,7 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             is_trial = bool(payload.get("is_trial", False) or not payload.get("save_to_db", True))
             context = get_subarea_context(disc, sub)
             raiox_md, prov = generate_raiox_content(disc, sub, context, banca=banca, focus=focus)
-            if not is_trial:
+            if not is_trial and prov in ["gemini", "openai"]:
                 update_lesson_markdown_with_raiox(disc, sub, raiox_md)
             
             self.send_response(200)

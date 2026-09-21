@@ -2758,7 +2758,7 @@
           <div class="metric-lbl">Questões no Simulado</div>
         </div>
       </div>
-      <div class="metric-card" onclick="switchTab(5)" style="cursor: pointer;" title="Clique para ver o Caderno de Erros">
+      <div class="metric-card" onclick="switchTab(4)" style="cursor: pointer;" title="Clique para ver o Caderno de Erros">
         <div class="metric-icon-wrap" style="background: var(--accent-red-bg); color: var(--accent-red);">🎯</div>
         <div>
           <div class="metric-val" id="metricReviews">0</div>
@@ -2835,25 +2835,14 @@
             <div class="nav-tab-indicator"></div>
           </div>
 
-          <div class="nav-tab" onclick="switchTab(4)" role="tab" aria-selected="false" tabindex="0" data-pillar="5" data-help-title="5. Transcrição & Multimídia" data-help-body="Acompanhe o texto integral da videoaula com marcadores de tempo por minuto para navegar direto aos trechos cruciais da explicação do professor." data-help-benefit="Economiza horas de vídeo indo direto ao minuto exato do conceito cobrado.">
-            <div class="nav-tab-header">
-              <span class="nav-tab-tag tag-pilar5">MULTIMÍDIA</span>
-            </div>
-            <div class="nav-tab-main">
-              <span class="nav-tab-icon">🎙️</span>
-              <span class="nav-tab-title">5. Transcrição</span>
-            </div>
-            <div class="nav-tab-indicator"></div>
-          </div>
-
-          <div class="nav-tab" id="navTabReviews" onclick="switchTab(5)" role="tab" aria-selected="false" tabindex="0" data-pillar="6" data-help-title="6. Caderno de Erros Inteligente" data-help-body="Questões que você errou ou flashcards marcados como Difícil entram aqui automaticamente para re-treino focado até atingir a Meta Status (0)." data-help-benefit="Garante que você nunca mais erre na prova oficial uma questão que já errou em casa.">
+          <div class="nav-tab" id="navTabReviews" onclick="switchTab(4)" role="tab" aria-selected="false" tabindex="0" data-pillar="6" data-help-title="Caderno de Erros Inteligente" data-help-body="Questões que você errou ou flashcards marcados como Difícil entram aqui automaticamente para re-treino focado até atingir a Meta Status (0)." data-help-benefit="Garante que você nunca mais erre na prova oficial uma questão que já errou em casa.">
             <div class="nav-tab-header">
               <span class="nav-tab-tag tag-pilar6">RECUPERAÇÃO</span>
               <span id="tabReviewsBadge" class="review-badge badge-zero">0</span>
             </div>
             <div class="nav-tab-main">
               <span class="nav-tab-icon">🎯</span>
-              <span class="nav-tab-title">6. Caderno de Erros</span>
+              <span class="nav-tab-title">Caderno de Erros</span>
             </div>
             <div class="nav-tab-indicator"></div>
           </div>
@@ -3124,63 +3113,8 @@
         </div>
       </div>
 
-      <!-- Tab 5: Momentos-Chave e Transcrição -->
+      <!-- Caderno de Erros & Revisões Ativas -->
       <div class="tab-pane" id="tab4">
-        <!-- Sub Navigation Pills -->
-        <div class="sub-nav-pills">
-          <div class="sub-pill active" id="pillMoments" onclick="switchTranscriptSubTab('moments')">
-            ⭐ Momentos-Chave & Conceitos Críticos
-          </div>
-          <div class="sub-pill" id="pillTimed" onclick="switchTranscriptSubTab('timed')">
-            🎙️ Transcrição Detalhada da Aula
-          </div>
-          <div class="sub-pill" id="pillCont" onclick="switchTranscriptSubTab('cont')">
-            📖 Modo Leitura (Word / Apostila)
-          </div>
-        </div>
-
-        <!-- SubTab 1: Pontos Importantes (Key Moments Cards) -->
-        <div id="viewKeyMoments">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
-            <div style="font-size: 13px; color: var(--text2);" id="keyMomentsHint">
-              💡 <strong>Momentos-Chave da Aula:</strong> Clique no cartão para abrir o YouTube no minuto exato onde o professor explica o conceito:
-            </div>
-            <div style="font-size: 12px; color: var(--text2); background: var(--surface2); padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 6px;">
-              <span>⏱️ Minutagens & Páginas Oficiais Mapeadas</span>
-            </div>
-          </div>
-          <div class="key-moments-grid" id="keyMomentsGrid">
-            <!-- Populated by JS -->
-          </div>
-        </div>
-
-        <!-- SubTab 2: Transcrição Completa -->
-        <div id="viewTimedTranscript" style="display:none;">
-          <div class="transcript-search-bar">
-            <input type="text" id="transcriptFilter" placeholder="Pesquisar na transcrição e conceitos (ex: ransomware, worm, procv, princípios)..." oninput="filterTranscript(this.value)">
-          </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 12px; color: var(--text2);">
-            <span id="transcriptCountLbl">Mostrando falas da aula...</span>
-            <span id="transcriptActionHint">💡 Minutagem cronometrada com os conceitos de prova</span>
-          </div>
-          <div class="transcript-box">
-            <div id="transcriptList">
-              <!-- Populated by JS with all lines -->
-            </div>
-          </div>
-        </div>
-
-        <!-- SubTab 3: Modo Leitura Contínua (Apostila Formatada) -->
-        <div id="viewContinuousText" style="display:none;">
-          <div class="reader-wrapper" id="continuousTextContent">
-            Carregando modo leitura contínua...
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Tab 6: Caderno de Erros & Revisões -->
-      <div class="tab-pane" id="tab5">
         <div class="tab-action-bar">
           <div>
             <div style="font-size: 17px; font-weight: 700; color: var(--text);">
@@ -4058,7 +3992,7 @@
     <div class="modal-actions">
       <button class="btn" onclick="closeModal('modalCebraspeResult')">Rever Gabarito Comentado</button>
       <button class="btn" onclick="closeModal('modalCebraspeResult'); resetQuiz(true);">🔄 Refazer Prova</button>
-      <button class="btn btn-primary" onclick="closeModal('modalCebraspeResult'); switchTab(5);">🎯 Ir para Caderno de Erros</button>
+      <button class="btn btn-primary" onclick="closeModal('modalCebraspeResult'); switchTab(4);">🎯 Ir para Caderno de Erros</button>
     </div>
   </div>
 </div>
@@ -4122,7 +4056,7 @@
     <div class="modal-actions">
       <button class="btn" onclick="closeModal('modalFlashcardsResult')">Fechar</button>
       <button class="btn" onclick="closeModal('modalFlashcardsResult'); resetFlashcards(true);">🔄 Reiniciar Deck</button>
-      <button class="btn btn-primary" onclick="closeModal('modalFlashcardsResult'); switchTab(5);">🎯 Ir para Caderno de Erros</button>
+      <button class="btn btn-primary" onclick="closeModal('modalFlashcardsResult'); switchTab(4);">🎯 Ir para Caderno de Erros</button>
     </div>
   </div>
 </div>
@@ -4169,7 +4103,7 @@
     <div class="modal-actions">
       <button class="btn" onclick="closeModal('modalTrainingResult')">Rever Questões</button>
       <button class="btn" onclick="closeModal('modalTrainingResult'); resetQuiz(true);">🔄 Reiniciar Simulado</button>
-      <button class="btn btn-primary" onclick="closeModal('modalTrainingResult'); switchTab(5);">🎯 Ir para Caderno de Erros</button>
+      <button class="btn btn-primary" onclick="closeModal('modalTrainingResult'); switchTab(4);">🎯 Ir para Caderno de Erros</button>
     </div>
   </div>
 </div>
@@ -6308,13 +6242,6 @@
   function handleGlobalSearch(query) {
     const q = (query || '').toLowerCase().trim();
 
-    // 1. Aba Transcrição (Tab 4)
-    if (typeof currentTab !== 'undefined' && currentTab === 4) {
-      if (typeof filterTranscript === 'function') {
-        filterTranscript(q);
-      }
-      return;
-    }
 
     // 2. Aba Flashcards (Tab 2)
     if (typeof currentTab !== 'undefined' && currentTab === 2) {
@@ -6731,8 +6658,8 @@
       resetQuiz(false);
     }
 
-    // 3. Ao entrar nas Revisões (Tab 5), recarrega as revisões do servidor
-    if (index === 5) {
+    // 3. Ao entrar no Caderno de Erros (Tab 4), recarrega as revisões do servidor
+    if (index === 4) {
       renderReviews();
     }
 
@@ -8038,7 +7965,6 @@
       }
 
       renderDynamicLessonTabs(meta.markdown_content, disc, sub);
-      renderKeyMoments(disc, sub, meta);
 
       // Reafirma a ativação do Pilar 1 (Resumo & Sintaxe)
       switchTab(0);
@@ -8046,15 +7972,11 @@
       console.warn("Erro ao selecionar subárea:", e);
     }
 
-    const trFilter = document.getElementById('transcriptFilter');
-    if (trFilter) trFilter.value = '';
-
     try {
       await Promise.all([
         loadProgress(),
         loadExistingFlashcards(),
         loadExistingQuiz(),
-        loadFullTranscript(),
         fetchReviews()
       ]);
     } catch(err) {

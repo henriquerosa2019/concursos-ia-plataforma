@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Estúdio de Teste • Vídeo & Momentos da Aula</title>
+  <title>Estúdio de Teste • Ponto Exato da Videoaula</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -619,9 +619,9 @@
     <div class="header-inner">
       <div class="header-title">
         <h1 class="font-serif-heading">
-          <span>🎬</span> Transcrições Vídeo <span style="color:var(--text2); font-weight:400;">/</span> Momentos do Vídeo
+          <span>🎯</span> Localizar Trechos da Aula <span style="color:var(--text2); font-weight:400;">/</span> Ponto Exato no Vídeo
         </h1>
-        <p>Importe qualquer videoaula do YouTube — transcrição real e pelo menos 10 momentos gerados automaticamente.</p>
+        <p>Importe qualquer videoaula do YouTube e encontre diretamente o minuto exato de cada explicação e pegadinha da banca.</p>
       </div>
       <div class="header-actions">
         <button class="btn btn-sm" onclick="toggleTheme()" id="btnTheme">🌓 Tema</button>
@@ -671,7 +671,7 @@
 
         <div style="display: flex; gap: 10px; align-items: center;">
           <button class="btn btn-primary" id="btnSubmitImport" onclick="processarImportacaoNovaAula()">
-            <span id="btnSubmitTxt">Importar e gerar momentos</span>
+            <span id="btnSubmitTxt">Importar Videoaula</span>
           </button>
           <button class="btn" id="btnCancelForm" onclick="cancelarFormulario()">
             Cancelar
@@ -747,19 +747,7 @@
           </div>
         </section>
 
-        <!-- Grade de Momentos do Vídeo (Mínimo de 10 momentos) -->
-        <section class="moments-section">
-          <div class="moments-section-title">
-            <h2 class="font-serif-heading" id="momentosHeading">Momentos do Vídeo</h2>
-            <button class="btn btn-sm" onclick="copiarMomentosJson()" title="Copiar JSON dos momentos">
-              📋 Copiar JSON
-            </button>
-          </div>
-
-          <div class="moments-grid" id="momentosGridContainer">
-            <!-- Momentos renderizados dinamicamente -->
-          </div>
-        </section>
+        
 
         <!-- Transcrição Completa da Aula com Busca e Salto Linha a Linha -->
         <section class="transcript-box" id="transcriptDrawer" style="display: none;">
@@ -1059,37 +1047,17 @@
           errBox.style.display = 'block';
           document.getElementById('fallbackManualSection').style.display = 'block';
           btn.disabled = false;
-          btnTxt.textContent = "Importar e gerar momentos";
+          btnTxt.textContent = "Importar Videoaula";
           return;
         }
 
-        // 2. Chamar IA para gerar pelo menos 10 momentos didáticos
-        btnTxt.innerHTML = `<span class="spinner"></span> IA gerando momentos didáticos...`;
-        const aiResp = await fetch(`${API_BASE}/api/youtube/generate-moments`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            videoId: videoId,
-            title: tituloFinal,
-            segmentos: segmentos
-          })
-        });
-        const aiData = await aiResp.json();
-
-        if (!aiData.success || !aiData.momentos || aiData.momentos.length === 0) {
-          throw new Error(aiData.error || "A IA não conseguiu gerar os momentos.");
-        }
-
-        // 3. Normalizar e validar momentos contra a minutagem real da transcrição
-        const momentosValidados = normalizarMomentos(aiData.momentos, segmentos);
-
+        // 2. Salvar videoaula indexada diretamente com a transcrição oficial
         const aulaId = `aula_${Date.now()}`;
         const novaAula = {
           id: aulaId,
           titulo: tituloFinal,
           videoId: videoId,
           transcricao: segmentos,
-          momentos: momentosValidados,
           criadoEm: new Date().toISOString()
         };
 
@@ -1098,7 +1066,7 @@
 
         renderizarSidebarAulas();
         selecionarAula(aulaId);
-        showToast(`🎉 Aula importada com sucesso! ${aiData.momentos.length} momentos prontos!`, "✅");
+        showToast(`🎉 Videoaula importada! ${segmentos.length} trechos indexados para busca instantânea!`, "✅");
 
       } catch(e) {
         const msg = e.message || "";
@@ -1118,7 +1086,7 @@
         document.getElementById('fallbackManualSection').style.display = 'block';
       } finally {
         btn.disabled = false;
-        btnTxt.textContent = "Importar e gerar momentos";
+        btnTxt.textContent = "Importar Videoaula";
       }
     }
 
@@ -1192,14 +1160,7 @@
       atualizarChipsSugestoes(aula.titulo);
       limparBuscaAula();
 
-      // Título dos momentos
-      const headElem = document.getElementById('momentosHeading');
-      if (headElem) {
-        headElem.innerHTML = `Momentos do Vídeo <span style="font-size:13px; font-weight:600; color:var(--accent); background:var(--accent-light); padding:2px 8px; border-radius:12px; margin-left:8px;">${aula.momentos.length} tópicos</span>`;
-      }
 
-      // Renderizar Grade de Momentos
-      renderizarGradeMomentos(aula.momentos);
 
       // Renderizar Transcrição se houver
       if (aula.transcricao && aula.transcricao.length > 0) {
@@ -1211,33 +1172,6 @@
 
       // Inicializar player do vídeo
       iniciarPlayerVideo(aula.videoId);
-    }
-
-    function renderizarGradeMomentos(momentos) {
-      const container = document.getElementById('momentosGridContainer');
-      if (!container) return;
-
-      if (!momentos || momentos.length === 0) {
-        container.innerHTML = `<div style="grid-column: 1/-1; padding:20px; text-align:center; color:var(--text2);">Nenhum momento gerado para esta aula.</div>`;
-        return;
-      }
-
-      let html = '';
-      momentos.forEach((m, idx) => {
-        const safeTitle = escapeHtml(m.titulo);
-        const safeDesc = escapeHtml(m.descricao);
-        html += `
-          <button class="momento-card" data-id="${m.id}" onclick="irParaPontoExato(${m.tempoSegundos}, '${escapeJs(m.titulo)}', this)">
-            <div class="momento-top">
-              <span class="momento-timestamp">⏱️ ${m.tempoLabel}</span>
-              <span class="momento-icon">▶ Pular ao Ponto</span>
-            </div>
-            <div class="momento-title">${safeTitle}</div>
-            <div class="momento-desc">${safeDesc}</div>
-          </button>
-        `;
-      });
-      container.innerHTML = html;
     }
 
     function renderizarTranscricaoCompleta(segmentos) {
@@ -1722,16 +1656,6 @@
         html += `<button class="search-chip" onclick="buscarPontoExatoNaAula('${escapeJs(c.q)}')">${escapeHtml(c.label)}</button>`;
       });
       container.innerHTML = html;
-    }
-
-    function copiarMomentosJson() {
-      if (!aulaAtivaId || !aulasState[aulaAtivaId]) return;
-      const jsonStr = JSON.stringify(aulasState[aulaAtivaId].momentos, null, 2);
-      navigator.clipboard.writeText(jsonStr).then(() => {
-        showToast("JSON dos momentos copiado com sucesso!", "📋");
-      }).catch(() => {
-        prompt("Copie o JSON abaixo:", jsonStr);
-      });
     }
 
     // =========================================================================

@@ -3634,16 +3634,19 @@
       <div class="tab-pane" id="tab5">
         <div class="tab-action-bar">
           <div>
-            <div style="font-size: 17px; font-weight: 700; color: var(--text);">
-              🎯 Ponto Exato da Videoaula • Busca Inteligente
+            <div style="font-size: 17px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 8px;">
+              <span>🎯</span> Ponto Exato da Videoaula • Busca Inteligente
             </div>
             <div style="font-size: 13px; color: var(--text2); margin-top: 3px;" id="pontoExatoAulaSubtitulo">
-              Localize o segundo exato de qualquer explicação ou dúvida na aula do professor com base na transcrição cronometrada.
+              Aula selecionada: <strong id="pontoExatoNomeAulaLabel">Redes de Computadores</strong>
             </div>
           </div>
-          <div style="display: flex; gap: 8px;">
-            <button class="btn btn-sm" onclick="abrirModalTrocarVideoAula()" title="Trocar ou informar novo link do YouTube">
-              🎬 Trocar Vídeo da Aula
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <button class="btn btn-primary" id="btnCarregarAulaAtiva" onclick="carregarAulaAtivaPontoExato()" style="font-weight: 700; font-size: 13.5px; padding: 8px 18px; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);">
+              <span>▶</span> <span id="btnCarregarAulaTxt">Carregar Aula: Redes de Computadores</span>
+            </button>
+            <button class="btn btn-sm" onclick="abrirModalTrocarVideoAula()" title="Trocar ou informar link personalizado" style="font-size: 12px; color: var(--text2);">
+              ⚙️ Outro Vídeo
             </button>
           </div>
         </div>
@@ -8517,6 +8520,7 @@
       currentLessonMeta = meta;
       currentYoutubeUrl = meta.youtube_url || (disc === 'Informatica' && sub === 'Excel' ? "https://www.youtube.com/watch?v=2tCnNcz5fqw" : "");
       if (typeof currentTab !== "undefined" && currentTab === 5 && typeof sincronizarVideoComAulaAtual === "function") { sincronizarVideoComAulaAtual(); }
+      if (typeof atualizarNomeBotaoCarregarAula === "function") { atualizarNomeBotaoCarregarAula(); }
       
       const titleEl = document.getElementById('lessonTitle');
       if (titleEl) titleEl.textContent = meta.title || (TOPIC_DISPLAY_NAMES[sub] || `${disc} • ${sub}`);
@@ -11565,12 +11569,15 @@
       iniciarPlayerVideo(window._pendingVideoId);
       window._pendingVideoId = null;
     } else if (typeof currentTab !== 'undefined' && currentTab === 5) {
-      sincronizarVideoComAulaAtual();
+      carregarAulaAtivaPontoExato();
     }
   };
 
   function iniciarPlayerVideo(videoId) {
     if (!videoId) return;
+
+    const container = document.getElementById('yt-player-box');
+    if (!container) return;
 
     if (ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
       try {
@@ -11581,31 +11588,62 @@
     }
 
     if (window.YT && window.YT.Player) {
-      ytPlayer = new window.YT.Player('yt-player-box', {
-        videoId: videoId,
-        width: '100%',
-        height: '100%',
-        playerVars: {
-          playsinline: 1,
-          rel: 0,
-          modestbranding: 1
-        },
-        events: {
-          'onReady': () => {
-            isPlayerReady = true;
-            iniciarMonitorDeTempo();
+      try {
+        ytPlayer = new window.YT.Player('yt-player-box', {
+          videoId: videoId,
+          width: '100%',
+          height: '100%',
+          playerVars: {
+            playsinline: 1,
+            rel: 0,
+            modestbranding: 1
           },
-          'onStateChange': onPlayerStateChange
-        }
-      });
-    } else {
-      window._pendingVideoId = videoId;
-      setTimeout(() => {
-        if (window.YT && window.YT.Player && !ytPlayer) {
-          iniciarPlayerVideo(videoId);
-        }
-      }, 700);
+          events: {
+            'onReady': () => {
+              isPlayerReady = true;
+              iniciarMonitorDeTempo();
+            },
+            'onStateChange': onPlayerStateChange
+          }
+        });
+        return;
+      } catch(e) {
+        console.warn("Falha ao instanciar YT.Player, usando fallback iframe:", e);
+      }
     }
+
+    // Fallback garantido: Iframe direto para NUNCA ficar tela preta
+    container.innerHTML = `
+      <iframe id="yt-iframe-fallback" 
+              width="100%" 
+              height="100%" 
+              src="https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=0&rel=0" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen 
+              style="width: 100%; height: 100%; border: none; border-radius: 10px;">
+      </iframe>
+    `;
+
+    // Agenda conexão com a API assim que estiver disponível
+    window._pendingVideoId = videoId;
+    setTimeout(() => {
+      if (window.YT && window.YT.Player && (!ytPlayer || typeof ytPlayer.seekTo !== 'function')) {
+        try {
+          container.innerHTML = '';
+          ytPlayer = new window.YT.Player('yt-player-box', {
+            videoId: videoId,
+            width: '100%',
+            height: '100%',
+            playerVars: { playsinline: 1, rel: 0, modestbranding: 1 },
+            events: {
+              'onReady': () => { isPlayerReady = true; iniciarMonitorDeTempo(); },
+              'onStateChange': onPlayerStateChange
+            }
+          });
+        } catch(err) {}
+      }
+    }, 1000);
   }
 
   function onPlayerStateChange(event) {
@@ -11619,12 +11657,26 @@
   }
 
   function irParaPontoExato(segundos, titulo, cardElem) {
-    if (!ytPlayer || !isPlayerReady) {
-      if (typeof showToast === 'function') showToast("Carregando player do YouTube...", "⏳");
-      return;
+    if (ytPlayer && typeof ytPlayer.seekTo === 'function') {
+      try {
+        ytPlayer.seekTo(segundos, true);
+        ytPlayer.playVideo();
+      } catch(e) {}
+    } else {
+      const iframe = document.getElementById('yt-iframe-fallback') || document.querySelector('#yt-player-box iframe');
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage(JSON.stringify({
+          event: 'command',
+          func: 'seekTo',
+          args: [segundos, true]
+        }), '*');
+        iframe.contentWindow.postMessage(JSON.stringify({
+          event: 'command',
+          func: 'playVideo',
+          args: []
+        }), '*');
+      }
     }
-    ytPlayer.seekTo(segundos, true);
-    ytPlayer.playVideo();
 
     document.querySelectorAll('.search-result-card').forEach(el => el.classList.remove('active-seek'));
     if (cardElem) cardElem.classList.add('active-seek');
@@ -11635,20 +11687,32 @@
   }
 
   function playerTogglePlayPause() {
-    if (!ytPlayer || !isPlayerReady || !window.YT) return;
-    const s = ytPlayer.getPlayerState();
-    if (s === window.YT.PlayerState.PLAYING) {
-      ytPlayer.pauseVideo();
+    if (ytPlayer && typeof ytPlayer.getPlayerState === 'function') {
+      const s = ytPlayer.getPlayerState();
+      if (s === window.YT?.PlayerState?.PLAYING) {
+        ytPlayer.pauseVideo();
+      } else {
+        ytPlayer.playVideo();
+      }
     } else {
-      ytPlayer.playVideo();
+      const iframe = document.getElementById('yt-iframe-fallback') || document.querySelector('#yt-player-box iframe');
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage(JSON.stringify({
+          event: 'command',
+          func: 'playVideo',
+          args: []
+        }), '*');
+      }
     }
   }
 
   function playerSkipSeconds(delta) {
-    if (!ytPlayer || !isPlayerReady) return;
-    const curr = ytPlayer.getCurrentTime() || 0;
+    let curr = 0;
+    if (ytPlayer && typeof ytPlayer.getCurrentTime === 'function') {
+      curr = ytPlayer.getCurrentTime() || 0;
+    }
     const target = Math.max(0, curr + delta);
-    ytPlayer.seekTo(target, true);
+    irParaPontoExato(target, delta > 0 ? '+10s' : '-10s', null);
     if (typeof showToast === 'function') {
       showToast(`${delta > 0 ? '⏩ +10s' : '⏪ -10s'} (${segundosParaTempo(target)})`, "⏱️");
     }
@@ -11826,8 +11890,7 @@
 
   async function buscarPontoExatoNaAula(queryOpcional) {
     if (!aulaAtivaId || !aulasState[aulaAtivaId]) {
-      if (typeof showToast === 'function') showToast("Sincronizando aula para pesquisa...", "⚠️");
-      await sincronizarVideoComAulaAtual();
+      await carregarAulaAtivaPontoExato();
       if (!aulaAtivaId || !aulasState[aulaAtivaId]) return;
     }
     const aula = aulasState[aulaAtivaId];
@@ -12093,11 +12156,33 @@
   }
 
   // =========================================================================
-  // INTELIGÊNCIA DE RECONHECIMENTO AUTOMÁTICO DA AULA ATIVA DO ALUNO
+  // INTELIGÊNCIA DE RECONHECIMENTO E CARREGAMENTO DA AULA ATIVA DO ALUNO
   // =========================================================================
-  async function sincronizarVideoComAulaAtual(forceReload = false) {
+  function atualizarNomeBotaoCarregarAula() {
     const disc = (typeof currentDiscipline !== 'undefined' && currentDiscipline) ? currentDiscipline : 'Informatica';
-    const sub = (typeof currentSubarea !== 'undefined' && currentSubarea) ? currentSubarea : 'Excel';
+    const sub = (typeof currentSubarea !== 'undefined' && currentSubarea) ? currentSubarea : 'Redes_de_Computadores';
+    const chave = `${disc}/${sub}`;
+
+    let videoInfo = AULAS_YOUTUBE_OFICIAIS[chave];
+    const tituloAula = (videoInfo && videoInfo.titulo) 
+      || (currentLessonMeta && currentLessonMeta.title) 
+      || (typeof TOPIC_DISPLAY_NAMES !== 'undefined' && TOPIC_DISPLAY_NAMES[sub]) 
+      || sub.replace(/_/g, ' ');
+
+    const cleanTitle = tituloAula.replace(/^Informática\s*•\s*(?:Aula\s*\d+:\s*)?/i, '');
+    const btnTxt = document.getElementById('btnCarregarAulaTxt');
+    if (btnTxt) {
+      btnTxt.textContent = `Carregar Aula: ${cleanTitle}`;
+    }
+    const lbl = document.getElementById('pontoExatoNomeAulaLabel');
+    if (lbl) {
+      lbl.textContent = `${tituloAula} (${disc} • ${sub.replace(/_/g, ' ')})`;
+    }
+  }
+
+  async function carregarAulaAtivaPontoExato(forceReload = false) {
+    const disc = (typeof currentDiscipline !== 'undefined' && currentDiscipline) ? currentDiscipline : 'Informatica';
+    const sub = (typeof currentSubarea !== 'undefined' && currentSubarea) ? currentSubarea : 'Redes_de_Computadores';
     const chave = `${disc}/${sub}`;
 
     let videoInfo = AULAS_YOUTUBE_OFICIAIS[chave];
@@ -12105,7 +12190,7 @@
     let vid = extrairVideoId(url);
 
     if (!vid && disc === 'Informatica') {
-      videoInfo = AULAS_YOUTUBE_OFICIAIS["Informatica/Excel"];
+      videoInfo = AULAS_YOUTUBE_OFICIAIS["Informatica/Redes_de_Computadores"] || AULAS_YOUTUBE_OFICIAIS["Informatica/Excel"];
       url = videoInfo.url;
       vid = videoInfo.videoId;
     }
@@ -12117,10 +12202,12 @@
 
     const aulaId = `aula_${disc}_${sub}`;
 
-    const subEl = document.getElementById('pontoExatoAulaSubtitulo');
-    if (subEl) {
-      subEl.innerHTML = `Aula: <strong>${escapeHtml(tituloAula)}</strong> (${escapeHtml(disc)} • ${escapeHtml(sub.replace(/_/g, ' '))})`;
-    }
+    const btn = document.getElementById('btnCarregarAulaAtiva');
+    const btnTxt = document.getElementById('btnCarregarAulaTxt');
+    if (btnTxt) btnTxt.innerHTML = `<span class="spinner" style="border-top-color:#fff; border-color:rgba(255,255,255,0.3); width:14px; height:14px;"></span> Carregando aula...`;
+    if (btn) btn.disabled = true;
+
+    atualizarNomeBotaoCarregarAula();
 
     const boxAtivo = document.getElementById('aulaAtivaBox');
     const boxVazio = document.getElementById('emptyStateBox');
@@ -12128,50 +12215,77 @@
     if (!vid) {
       if (boxAtivo) boxAtivo.style.display = 'none';
       if (boxVazio) boxVazio.style.display = 'block';
+      if (btn) btn.disabled = false;
+      atualizarNomeBotaoCarregarAula();
       return;
     }
 
     if (boxVazio) boxVazio.style.display = 'none';
     if (boxAtivo) boxAtivo.style.display = 'block';
 
-    if (!forceReload && aulasState[aulaId] && aulasState[aulaId].videoId === vid && aulasState[aulaId].transcricao?.length > 0) {
-      aulaAtivaId = aulaId;
-      atualizarChipsSugestoes(tituloAula);
-      limparBuscaAula();
-      renderizarTranscricaoCompleta(aulasState[aulaId].transcricao);
-      iniciarPlayerVideo(vid);
-      return;
+    // 1. Obter segmentos da transcrição (Prioridade 1: catálogo pré-carregado instantâneo)
+    let segmentos = [];
+    try {
+      if (typeof globalPreseededCatalog !== 'undefined' && globalPreseededCatalog?.[disc]?.[sub]?.transcript?.timed?.length) {
+        segmentos = globalPreseededCatalog[disc][sub].transcript.timed;
+      }
+    } catch(e) {}
+
+    if (!segmentos.length && aulasState[aulaId]?.transcricao?.length) {
+      segmentos = aulasState[aulaId].transcricao;
+    }
+
+    if (!segmentos.length) {
+      try {
+        const trResp = await fetch(`${PONTO_EXATO_API_BASE}/api/youtube/transcript?videoId=${encodeURIComponent(vid)}`);
+        if (trResp.ok) {
+          const trData = await trResp.json();
+          if (trData.success && Array.isArray(trData.segmentos) && trData.segmentos.length > 0) {
+            segmentos = trData.segmentos;
+          }
+        }
+      } catch(e) {
+        console.warn("Falha na busca remota de transcrição:", e);
+      }
     }
 
     aulasState[aulaId] = {
       id: aulaId,
       titulo: tituloAula,
       videoId: vid,
-      transcricao: aulasState[aulaId]?.transcricao || [],
+      transcricao: segmentos,
       criadoEm: new Date().toISOString()
     };
     aulaAtivaId = aulaId;
     salvarAulasStorage(aulasState);
 
+    // 2. Atualizar chips de sugestões da aula
     atualizarChipsSugestoes(tituloAula);
     limparBuscaAula();
+
+    // 3. Renderizar transcrição completa
+    renderizarTranscricaoCompleta(segmentos);
+    const trDrawer = document.getElementById('transcriptDrawer');
+    if (trDrawer) trDrawer.style.display = 'block';
+
+    // 4. Inicializar Player Oficial do YouTube
     iniciarPlayerVideo(vid);
 
-    if (!aulasState[aulaId].transcricao || aulasState[aulaId].transcricao.length === 0) {
-      try {
-        const trResp = await fetch(`${PONTO_EXATO_API_BASE}/api/youtube/transcript?videoId=${encodeURIComponent(vid)}`);
-        const trData = await trResp.json();
-        if (trData.success && Array.isArray(trData.segmentos) && trData.segmentos.length > 0) {
-          aulasState[aulaId].transcricao = trData.segmentos;
-          salvarAulasStorage(aulasState);
-          renderizarTranscricaoCompleta(trData.segmentos);
-        }
-      } catch(e) {
-        console.warn("Falha ao carregar transcrição:", e);
-      }
-    } else {
-      renderizarTranscricaoCompleta(aulasState[aulaId].transcricao);
+    // 5. Restaura botão com estado de sucesso
+    if (btn) btn.disabled = false;
+    if (btnTxt) {
+      const cleanTitle = tituloAula.replace(/^Informática\s*•\s*(?:Aula\s*\d+:\s*)?/i, '');
+      btnTxt.innerHTML = `✅ ${cleanTitle} (Carregada)`;
     }
+
+    if (typeof showToast === 'function') {
+      showToast(`🎬 Videoaula de ${tituloAula} pronta com ${segmentos.length} trechos indexados!`, "🎯");
+    }
+  }
+
+  function sincronizarVideoComAulaAtual() {
+    atualizarNomeBotaoCarregarAula();
+    carregarAulaAtivaPontoExato();
   }
 
   function abrirModalTrocarVideoAula() {
@@ -12179,7 +12293,7 @@
     if (!modal) return;
     const input = document.getElementById('trocarVideoUrlInput');
     const disc = (typeof currentDiscipline !== 'undefined' && currentDiscipline) ? currentDiscipline : 'Informatica';
-    const sub = (typeof currentSubarea !== 'undefined' && currentSubarea) ? currentSubarea : 'Excel';
+    const sub = (typeof currentSubarea !== 'undefined' && currentSubarea) ? currentSubarea : 'Redes_de_Computadores';
     const chave = `${disc}/${sub}`;
     const vidInfo = AULAS_YOUTUBE_OFICIAIS[chave];
     if (input) input.value = (vidInfo && vidInfo.url) || currentYoutubeUrl || '';
@@ -12195,7 +12309,7 @@
       return;
     }
     const disc = (typeof currentDiscipline !== 'undefined' && currentDiscipline) ? currentDiscipline : 'Informatica';
-    const sub = (typeof currentSubarea !== 'undefined' && currentSubarea) ? currentSubarea : 'Excel';
+    const sub = (typeof currentSubarea !== 'undefined' && currentSubarea) ? currentSubarea : 'Redes_de_Computadores';
     const chave = `${disc}/${sub}`;
     AULAS_YOUTUBE_OFICIAIS[chave] = {
       url: `https://www.youtube.com/watch?v=${vid}`,
@@ -12205,7 +12319,7 @@
     currentYoutubeUrl = `https://www.youtube.com/watch?v=${vid}`;
     closeModal('modalTrocarVideoAula');
     if (typeof showToast === 'function') showToast("Nova videoaula vinculada com sucesso!", "🎬");
-    await sincronizarVideoComAulaAtual(true);
+    await carregarAulaAtivaPontoExato(true);
   }
 
   // Exportar para escopo global (window)
@@ -12218,7 +12332,9 @@
   window.toggleTranscriptDrawer = toggleTranscriptDrawer;
   window.abrirModalTrocarVideoAula = abrirModalTrocarVideoAula;
   window.salvarNovoVideoParaAulaAtual = salvarNovoVideoParaAulaAtual;
+  window.carregarAulaAtivaPontoExato = carregarAulaAtivaPontoExato;
   window.sincronizarVideoComAulaAtual = sincronizarVideoComAulaAtual;
+  window.atualizarNomeBotaoCarregarAula = atualizarNomeBotaoCarregarAula;
 
 </script>
 </body>

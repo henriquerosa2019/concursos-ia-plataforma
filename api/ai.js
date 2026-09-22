@@ -1019,6 +1019,107 @@ export default async function handler(req, res) {
     });
   }
 
+  
+  // 18. API YouTube - Transcrição de Videoaulas (Vercel Serverless)
+  if (pathname === '/api/youtube/transcript') {
+    const videoInput = url.searchParams.get('url') || url.searchParams.get('videoId') || '';
+    const m_yt = videoInput.match(/(?:v=|youtu\.be\/|embed\/|^)([0-9A-Za-z_-]{11})/);
+    const vid_id = m_yt ? m_yt[1] : videoInput;
+
+    const cat = getCatalog();
+    let foundSegments = [];
+
+    // Busca segmentos pré-carregados no catálogo
+    for (const [disc, subs] of Object.entries(cat)) {
+      for (const [sub, data] of Object.entries(subs)) {
+        const yt = data?.meta?.youtube_url || '';
+        if (yt.includes(vid_id) && Array.isArray(data?.transcript?.timed) && data.transcript.timed.length > 0) {
+          foundSegments = data.transcript.timed;
+          break;
+        }
+      }
+      if (foundSegments.length) break;
+    }
+
+    if (foundSegments.length) {
+      return res.status(200).json({
+        success: true,
+        videoId: vid_id,
+        total_segmentos: foundSegments.length,
+        segmentos: foundSegments
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      videoId: vid_id,
+      total_segmentos: 0,
+      segmentos: []
+    });
+  }
+
+  // 19. API YouTube - Busca Inteligente Semântica na Transcrição (Vercel Serverless)
+  if (pathname === '/api/youtube/search-in-transcript' && req.method === 'POST') {
+    const body = req.body || {};
+    const vid_id = body.videoId || '';
+    const query = (body.query || body.pergunta || '').trim();
+    let segmentos = Array.isArray(body.segmentos) ? body.segmentos : [];
+
+    if (!segmentos.length) {
+      const cat = getCatalog();
+      for (const [disc, subs] of Object.entries(cat)) {
+        for (const [sub, data] of Object.entries(subs)) {
+          const yt = data?.meta?.youtube_url || '';
+          if (yt.includes(vid_id) && Array.isArray(data?.transcript?.timed)) {
+            segmentos = data.transcript.timed;
+            break;
+          }
+        }
+        if (segmentos.length) break;
+      }
+    }
+
+    // Busca local instantânea
+    const norm = s => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+    const qNorm = norm(query);
+    const tokens = qNorm.split(' ').filter(t => t.length >= 3 && !['onde','como','qual','quais','aula','video','professor','explica'].includes(t));
+
+    const scored = (segmentos || []).map((seg, idx) => {
+      const txt = seg.texto || seg.text || '';
+      const txtNorm = norm(txt);
+      let score = 0;
+      if (qNorm.length >= 5 && txtNorm.includes(qNorm)) score += 15;
+      tokens.forEach(tok => {
+        if (txtNorm.includes(tok)) score += 4;
+      });
+      return {
+        segmentoId: seg.id || `seg_${idx}`,
+        tempoSegundos: Number(seg.tempoSegundos || 0),
+        tempoLabel: seg.tempoLabel || '00:00',
+        texto: txt,
+        score
+      };
+    }).filter(s => s.score > 0).sort((a,b) => b.score - a.score);
+
+    const resultados = scored.slice(0, 4).map(s => ({
+      segmentoId: s.segmentoId,
+      tempoSegundos: s.tempoSegundos,
+      tempoLabel: s.tempoLabel,
+      tempoFimSegundos: s.tempoSegundos + 60,
+      tempoFimLabel: s.tempoLabel,
+      titulo: `Trecho aos ${s.tempoLabel} referente a "${query.slice(0, 35)}"`,
+      explicacao: s.texto,
+      trechoCitado: s.texto,
+      relevancia: Math.min(95, Math.round(50 + s.score * 5)),
+      fonte: 'Transcrição Oficial'
+    }));
+
+    return res.status(200).json({
+      success: true,
+      resultados: resultados
+    });
+  }
+
   // Default fallback
   return res.status(200).json({
     success: true,

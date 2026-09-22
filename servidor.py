@@ -926,6 +926,10 @@ def parse_manual_transcript_text(text):
     return segmentos
 
 def generate_youtube_moments_ai(title, video_id, segments=None, manual_text=""):
+    """
+    Gera pelo menos 10 momentos didáticos da videoaula a partir da transcrição real.
+    Totalmente dinâmico, sem mockups.
+    """
     if not segments and manual_text:
         segments = parse_manual_transcript_text(manual_text)
 
@@ -938,62 +942,41 @@ def generate_youtube_moments_ai(title, video_id, segments=None, manual_text=""):
     if not segments:
         raise Exception("Nenhuma transcrição ou minutagem disponível para gerar momentos.")
 
-    # Se for o vídeo clássico de Excel PROCV (2tCnNcz5fqw) ou se existir Momentos_Chave_Excel.json
-    excel_curated_path = os.path.join(BASE_DIR, "Informatica", "Excel", "Momentos_Chave_Excel.json")
-    if (video_id == "2tCnNcz5fqw" or "procv" in (title or "").lower()) and os.path.exists(excel_curated_path):
-        try:
-            with open(excel_curated_path, "r", encoding="utf-8") as f_ex:
-                raw_ex = json.load(f_ex)
-                if isinstance(raw_ex, list) and len(raw_ex) > 0:
-                    moments_curated = []
-                    for idx, m in enumerate(raw_ex):
-                        s = m.get("sec", 0)
-                        moments_curated.append({
-                            "id": f"momento_{idx+1}",
-                            "tempoSegundos": s,
-                            "tempoLabel": m.get("time_str", segundos_para_tempo(s)),
-                            "titulo": m.get("title", ""),
-                            "descricao": m.get("importance", m.get("quote", ""))
-                        })
-                    return moments_curated
-        except Exception:
-            pass
-
-    # Amostrar transcrição de forma compacta
+    # Amostrar a transcrição cronometrada
     sampled_lines = []
     last_sec = -999
     for s in segments:
         sec = s.get("tempoSegundos", 0)
         lbl = s.get("tempoLabel", "00:00")
         txt = s.get("texto", "").strip()
-        if sec - last_sec >= 15 or len(sampled_lines) < 6:
+        if sec - last_sec >= 12 or len(sampled_lines) < 12:
             sampled_lines.append(f"[{lbl}] {txt}")
             last_sec = sec
         elif sampled_lines:
             sampled_lines[-1] += " " + txt
 
-    transcript_sample = "\n".join(sampled_lines[:350])
+    transcript_sample = "\n".join(sampled_lines[:400])
 
     system_prompt = (
-        "Você é um pedagogo especialista em concursos públicos e sintetização de videoaulas.\n"
-        "Seu objetivo é extrair os principais MOMENTOS DIDÁTICOS do vídeo a partir da transcrição cronometrada.\n"
-        "Regras estritas:\n"
-        "1. Gere entre 5 e 10 momentos específicos onde o professor ensina regras, conceitos, fórmulas, resoluções ou pegadinhas.\n"
-        "2. O campo 'tempo' DEVE ser um dos timestamps reais existentes na transcrição (formato mm:ss ou h:mm:ss).\n"
-        "3. O campo 'titulo' deve ser curto e didático (ex: 'Sintaxe e os 4 Argumentos do PROCV').\n"
-        "4. O campo 'descricao' deve ser uma frase explicando com clareza o que o aluno aprende neste trecho.\n"
-        "5. Responda APENAS com um array JSON válido, sem texto explicativo antes ou depois."
+        "Você é um pedagogo especialista em concursos públicos e análise didática de videoaulas.\n"
+        "Seu objetivo é analisar a transcrição real com timestamps e identificar OBRIGATORIAMENTE PELO MENOS 10 MOMENTOS DIDÁTICOS cruciais (entre 10 e 15 momentos).\n"
+        "Regras obrigatórias:\n"
+        "1. Gere no mínimo 10 momentos cobrindo todo o vídeo (início, meio e fim).\n"
+        "2. O campo 'tempo' DEVE ser estritamente um timestamp real existente na transcrição (formato mm:ss ou h:mm:ss).\n"
+        "3. O campo 'titulo' deve ser curto, específico e focado no conteúdo (ex: 'Sintaxe e os 4 Argumentos do PROCV', 'Exceção à Regra Geral', 'Pegadinha Clássica da Banca').\n"
+        "4. O campo 'descricao' deve ser 1 frase clara explicando o que o aluno aprende neste momento exato.\n"
+        "5. Responda EXCLUSIVAMENTE com o array JSON válido, sem nenhum texto antes ou depois."
     )
 
     user_prompt = (
-        f"Título da Aula: \"{title}\"\n\n"
-        f"Transcrição Cronometrada:\n\"\"\"\n{transcript_sample}\n\"\"\"\n\n"
-        f"Responda EXCLUSIVAMENTE com o array JSON no formato:\n"
-        f'[{{\"tempo\": \"01:23\", \"titulo\": \"...\", \"descricao\": \"...\"}}]'
+        f'Título da Videoaula: "{title}"\n\n'
+        f'Transcrição Cronometrada Real:\n"""\n{transcript_sample}\n"""\n\n'
+        f'Gere entre 10 e 15 momentos didáticos no formato JSON:\n'
+        f'[{{"tempo": "01:23", "titulo": "...", "descricao": "..."}}]'
     )
 
     moments_raw = []
-    ai_resp, provider = call_ai_service(system_prompt, user_prompt, json_mode=True, temperature=0.5)
+    ai_resp, provider = call_ai_service(system_prompt, user_prompt, json_mode=True, temperature=0.4)
     if ai_resp and isinstance(ai_resp, str):
         try:
             clean_json = re.sub(r"^```json\s*|^```\s*|```$", "", ai_resp.strip(), flags=re.MULTILINE).strip()
@@ -1005,19 +988,27 @@ def generate_youtube_moments_ai(title, video_id, segments=None, manual_text=""):
         except Exception as e_json:
             print(f"Aviso ao decodificar JSON da IA: {e_json}")
 
-    # Fallback heurístico inteligente se IA indisponível
-    if not moments_raw:
-        total_duration = segments[-1].get("tempoSegundos", 0) if segments else 600
-        step = max(60, total_duration // 7)
-        target_secs = list(range(0, total_duration, step))[:8]
-        moments_raw = []
-        for i, t_target in enumerate(target_secs):
-            closest = min(segments, key=lambda s: abs(s.get("tempoSegundos", 0) - t_target))
-            moments_raw.append({
-                "tempo": closest.get("tempoLabel", "00:00"),
-                "titulo": f"Tópico {i+1}: " + (closest.get("texto", "")[:45] + "..."),
-                "descricao": f"Explicação do professor aos {closest.get('tempoLabel')}: {closest.get('texto', '')[:110]}."
+    # Fallback inteligente se IA offline: divide os segmentos reais em pelo menos 10 blocos didáticos
+    if not moments_raw or len(moments_raw) < 10:
+        total_segs = len(segments)
+        target_count = max(10, min(15, total_segs))
+        step = max(1, total_segs // target_count)
+        fallback_list = []
+        for i in range(0, total_segs, step):
+            if len(fallback_list) >= 12:
+                break
+            seg = segments[i]
+            t_lbl = seg.get("tempoLabel", "00:00")
+            raw_t = seg.get("texto", "").strip()
+            clean_t = re.sub(r'^[\s\.,;:!\?]+', '', raw_t)
+            title_part = (clean_t[:45] + "...") if len(clean_t) > 45 else (clean_t or f"Tópico {len(fallback_list)+1}")
+            fallback_list.append({
+                "tempo": t_lbl,
+                "titulo": f"{title_part.capitalize()}",
+                "descricao": f"Explicação do professor aos {t_lbl}: {raw_t[:120]}."
             })
+        if not moments_raw or len(fallback_list) > len(moments_raw):
+            moments_raw = fallback_list
 
     result = []
     for idx, m in enumerate(moments_raw):
@@ -1027,8 +1018,8 @@ def generate_youtube_moments_ai(title, video_id, segments=None, manual_text=""):
             "id": f"momento_{idx+1}",
             "tempoSegundos": sec,
             "tempoLabel": segundos_para_tempo(sec),
-            "titulo": m.get("titulo", f"Momento {idx+1}").strip(),
-            "descricao": m.get("descricao", "").strip()
+            "titulo": str(m.get("titulo", f"Momento {idx+1}")).strip(),
+            "descricao": str(m.get("descricao", "")).strip()
         })
 
     result.sort(key=lambda x: x["tempoSegundos"])
@@ -2582,6 +2573,39 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 "url": url,
                 "masked_key": masked_key
             }, ensure_ascii=False).encode("utf-8"))
+
+        # 1.0 API YouTube - Informações do Vídeo (oEmbed título automático)
+        elif path == "/api/youtube/info":
+            video_input = query.get("url", [""])[0] or query.get("videoId", [""])[0]
+            m_yt = re.search(r'(?:v=|youtu\.be\/|embed\/|^)([0-9A-Za-z_-]{11})', video_input)
+            if not m_yt:
+                self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": "ID ou link inválido"}, ensure_ascii=False).encode("utf-8"))
+                return
+            vid = m_yt.group(1)
+            title = ""
+            author = ""
+            try:
+                oe_url = f"https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={vid}&format=json"
+                req_oe = urllib.request.Request(oe_url, headers={"User-Agent": "Mozilla/5.0"})
+                with urllib.request.urlopen(req_oe, timeout=4) as resp_oe:
+                    oe_data = json.loads(resp_oe.read().decode("utf-8"))
+                    title = oe_data.get("title", "")
+                    author = oe_data.get("author_name", "")
+            except Exception:
+                pass
+            self.send_response(200)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "success": True,
+                "videoId": vid,
+                "title": title,
+                "author": author
+            }, ensure_ascii=False).encode("utf-8"))
+            return
 
         # 1.1 API YouTube - Buscar Transcrição Automática por Link ou ID
         elif path == "/api/youtube/transcript":

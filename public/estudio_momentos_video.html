@@ -432,7 +432,177 @@
       animation: spin 0.7s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* =========================================================================
+       BUSCA INTELIGENTE DO PONTO EXATO DA AULA (IA Semântica)
+       ========================================================================= */
+    .search-aula-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin-top: 18px;
+      box-shadow: var(--shadow);
+      transition: border-color 0.2s;
+    }
+    .search-aula-box:focus-within {
+      border-color: var(--accent);
+    }
+    .search-aula-header {
+      margin-bottom: 12px;
+    }
+    .search-aula-header h3 {
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
+    }
+    .search-aula-header p {
+      font-size: 12.5px;
+      color: var(--text2);
+      margin-top: 2px;
+    }
+    .search-bar-wrap {
+      display: flex;
+      gap: 8px;
+      position: relative;
+    }
+    .search-bar-wrap input {
+      flex: 1;
+      background: var(--surface2);
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 13.5px;
+      color: var(--text);
+      font-family: inherit;
+      outline: none;
+      transition: all 0.15s;
+    }
+    .search-bar-wrap input:focus {
+      border-color: var(--accent);
+      background: var(--surface);
+      box-shadow: 0 0 0 2px var(--accent-light);
+    }
+    .search-chips-wrap {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      align-items: center;
+    }
+    .search-chip {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 11.5px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.12s;
+      user-select: none;
+    }
+    .search-chip:hover {
+      background: var(--accent-light);
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
+    .search-results-box {
+      margin-top: 16px;
+      border-top: 1px dashed var(--border);
+      padding-top: 14px;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+    .search-result-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .search-result-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(15, 107, 92, 0.12);
+    }
+    .search-result-card.active-seek {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      box-shadow: 0 0 0 2px rgba(15, 107, 92, 0.25);
+    }
+    .search-result-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .interval-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .rel-badge {
+      font-size: 11px;
+      font-weight: 600;
+      color: #D97706;
+      background: rgba(217, 119, 6, 0.1);
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+    [data-theme="dark"] .rel-badge {
+      color: #FBBF24;
+      background: rgba(251, 191, 36, 0.15);
+    }
+    .search-result-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .search-result-exp {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.45;
+    }
+    .search-result-quote {
+      font-size: 12.5px;
+      font-style: italic;
+      color: var(--text2);
+      border-left: 3px solid var(--accent);
+      padding: 4px 12px;
+      background: rgba(0,0,0,0.02);
+      border-radius: 0 4px 4px 0;
+    }
+    [data-theme="dark"] .search-result-quote {
+      background: rgba(255,255,255,0.03);
+    }
+    .search-result-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 4px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
+
 </head>
 <body>
 
@@ -534,6 +704,40 @@
             <button class="btn btn-sm" onclick="playerSkipSeconds(10)">⏩ +10s</button>
           </div>
         </div>
+
+        <!-- Busca Inteligente do Ponto Exato da Aula (ChatGPT / IA) -->
+        <section class="search-aula-box" id="searchAulaSection">
+          <div class="search-aula-header">
+            <h3><span>🔎</span> O que você quer encontrar nesta aula?</h3>
+            <p>Digite uma dúvida ou conceito para a IA localizar o minuto exato e o trecho falado pelo professor.</p>
+          </div>
+
+          <div class="search-bar-wrap">
+            <input type="text" id="aulaSearchInput" placeholder="Ex: Onde o professor explica o 3º argumento? Qual a pegadinha da banca?" />
+            <button class="btn btn-primary" id="btnBuscarNaAula" onclick="buscarPontoExatoNaAula()">
+              <span id="btnBuscarTxt">🔍 Localizar no Vídeo</span>
+            </button>
+            <button class="btn btn-sm" id="btnLimparBusca" onclick="limparBuscaAula()" style="display:none;" title="Limpar busca">
+              ✕
+            </button>
+          </div>
+
+          <!-- Sugestões Rápidas de Perguntas (Chips dinâmicos) -->
+          <div class="search-chips-wrap" id="searchChipsContainer">
+            <!-- Renderizado dinamicamente via JS -->
+          </div>
+
+          <!-- Área de Resultados da Busca Semântica -->
+          <div class="search-results-box" id="aulaSearchResults" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h4 class="font-serif-heading" id="searchResultsHeader" style="font-size: 15px; display: flex; align-items: center; gap: 8px;">
+                <span>🎯</span> Trechos Exatos Encontrados
+              </h4>
+              <button class="btn btn-sm" onclick="limparBuscaAula()">✕ Fechar Busca</button>
+            </div>
+            <div id="searchResultCards"></div>
+          </div>
+        </section>
 
         <!-- Grade de Momentos do Vídeo (Mínimo de 10 momentos) -->
         <section class="moments-section">
@@ -787,6 +991,17 @@
     }
 
     function cancelarFormulario() {
+      // Tecla Enter no input de busca da aula
+      const inputBusca = document.getElementById('aulaSearchInput');
+      if (inputBusca) {
+        inputBusca.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            buscarPontoExatoNaAula();
+          }
+        });
+      }
+
       const ids = Object.keys(aulasState);
       if (ids.length > 0) {
         document.getElementById('formNovaAulaBox').style.display = 'none';
@@ -948,6 +1163,10 @@
         el.classList.toggle('active', el.getAttribute('data-id') === aulaId);
       });
 
+      // Atualizar sugestões da busca e limpar busca anterior
+      atualizarChipsSugestoes(aula.titulo);
+      limparBuscaAula();
+
       // Título dos momentos
       const headElem = document.getElementById('momentosHeading');
       if (headElem) {
@@ -1028,6 +1247,17 @@
       salvarAulasStorage(aulasState);
       renderizarSidebarAulas();
 
+      // Tecla Enter no input de busca da aula
+      const inputBusca = document.getElementById('aulaSearchInput');
+      if (inputBusca) {
+        inputBusca.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            buscarPontoExatoNaAula();
+          }
+        });
+      }
+
       const ids = Object.keys(aulasState);
       if (ids.length > 0) {
         selecionarAula(ids[0]);
@@ -1042,6 +1272,17 @@
     function renderizarSidebarAulas() {
       const container = document.getElementById('listaAulasContainer');
       if (!container) return;
+      // Tecla Enter no input de busca da aula
+      const inputBusca = document.getElementById('aulaSearchInput');
+      if (inputBusca) {
+        inputBusca.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            buscarPontoExatoNaAula();
+          }
+        });
+      }
+
       const ids = Object.keys(aulasState);
 
       if (ids.length === 0) {
@@ -1059,6 +1300,169 @@
             <button class="btn-del" onclick="excluirAula('${id}', event)" title="Excluir aula">×</button>
           </div>
         `;
+      });
+      container.innerHTML = html;
+    }
+
+
+    // =========================================================================
+    // BUSCA INTELIGENTE DO PONTO EXATO DA AULA (IA Semântica)
+    // =========================================================================
+    async function buscarPontoExatoNaAula(queryOpcional) {
+      if (!aulaAtivaId || !aulasState[aulaAtivaId]) {
+        showToast("Nenhuma aula selecionada para pesquisar.", "⚠️");
+        return;
+      }
+      const aula = aulasState[aulaAtivaId];
+      const inputElem = document.getElementById('aulaSearchInput');
+      const query = (queryOpcional !== undefined ? queryOpcional : (inputElem ? inputElem.value : '')).trim();
+
+      if (!query) {
+        if (inputElem) inputElem.focus();
+        showToast("Digite o que você deseja encontrar na aula.", "ℹ️");
+        return;
+      }
+      if (inputElem) inputElem.value = query;
+
+      const resContainer = document.getElementById('aulaSearchResults');
+      const resCards = document.getElementById('searchResultCards');
+      const btn = document.getElementById('btnBuscarNaAula');
+      const btnTxt = document.getElementById('btnBuscarTxt');
+      const btnLimpar = document.getElementById('btnLimparBusca');
+
+      resContainer.style.display = 'block';
+      if (btnLimpar) btnLimpar.style.display = 'inline-flex';
+      resCards.innerHTML = `
+        <div style="padding: 24px; text-align: center; color: var(--text2);">
+          <span class="spinner" style="border-top-color: var(--accent); border-color: rgba(15,107,92,0.2); width: 22px; height: 22px;"></span>
+          <p style="margin-top: 10px; font-size: 13.5px; font-weight: 500;">
+            A IA está analisando a transcrição cronometrada da aula e localizando o ponto exato...
+          </p>
+          <p style="font-size: 12px; color: var(--text2); margin-top: 4px;">Termo pesquisado: "<strong>${escapeHtml(query)}</strong>"</p>
+        </div>
+      `;
+      if (btn) btn.disabled = true;
+      if (btnTxt) btnTxt.textContent = "Pesquisando...";
+
+      try {
+        const payload = {
+          videoId: aula.videoId,
+          query: query,
+          segmentos: (aula.transcricao && aula.transcricao.length > 0) ? aula.transcricao : null
+        };
+
+        const resp = await fetch('/api/youtube/search-in-transcript', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await resp.json();
+        if (!data.success) {
+          throw new Error(data.error || "Não foi possível realizar a busca.");
+        }
+
+        const resultados = data.resultados || [];
+        if (resultados.length === 0) {
+          resCards.innerHTML = `
+            <div style="padding: 24px; text-align: center; color: var(--text2);">
+              <div style="font-size: 26px; margin-bottom: 6px;">🔍</div>
+              <p style="font-size: 13.5px; font-weight: 600; color: var(--text);">Nenhum trecho correspondente encontrado</p>
+              <p style="font-size: 12.5px; margin-top: 4px;">Não localizamos uma explicação direta para "${escapeHtml(query)}". Experimente termos sinônimos ou consulte os momentos da aula abaixo.</p>
+            </div>
+          `;
+          return;
+        }
+
+        let cardsHtml = '';
+        resultados.forEach((r, idx) => {
+          const safeTitle = escapeHtml(r.titulo);
+          const safeExp = escapeHtml(r.explicacao);
+          const safeQuote = escapeHtml(r.trechoCitado);
+          const relVal = r.relevancia > 1 ? Math.round(r.relevancia) : Math.round(r.relevancia * 100);
+
+          cardsHtml += `
+            <div class="search-result-card" onclick="irParaPontoExato(${r.tempoSegundos}, '${escapeJs(r.titulo)}', this)">
+              <div class="search-result-top">
+                <span class="interval-badge">⏱️ [${r.tempoLabel} → ${r.tempoFimLabel}]</span>
+                <span class="rel-badge">⭐ ${relVal}% Relevância</span>
+              </div>
+              <div class="search-result-title">${safeTitle}</div>
+              ${safeExp ? `<div class="search-result-exp">💡 ${safeExp}</div>` : ''}
+              ${safeQuote ? `<div class="search-result-quote">“${safeQuote}”</div>` : ''}
+              <div class="search-result-footer">
+                <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); irParaPontoExato(${r.tempoSegundos}, '${escapeJs(r.titulo)}', this.closest('.search-result-card'))">
+                  ▶ Assistir a partir de [${r.tempoLabel}]
+                </button>
+              </div>
+            </div>
+          `;
+        });
+
+        resCards.innerHTML = cardsHtml;
+        showToast(`🎯 Encontrado(s) ${resultados.length} trecho(s) com minutagem exata!`, "⚡");
+
+      } catch(err) {
+        resCards.innerHTML = `
+          <div style="padding: 16px; color: var(--danger); font-size: 13px; font-weight: 500;">
+            ⚠️ Erro na pesquisa: ${escapeHtml(err.message)}
+          </div>
+        `;
+      } finally {
+        if (btn) btn.disabled = false;
+        if (btnTxt) btnTxt.textContent = "🔍 Localizar no Vídeo";
+      }
+    }
+
+    function limparBuscaAula() {
+      const inputElem = document.getElementById('aulaSearchInput');
+      if (inputElem) inputElem.value = '';
+      const resContainer = document.getElementById('aulaSearchResults');
+      if (resContainer) resContainer.style.display = 'none';
+      const btnLimpar = document.getElementById('btnLimparBusca');
+      if (btnLimpar) btnLimpar.style.display = 'none';
+      document.querySelectorAll('.search-result-card').forEach(el => el.classList.remove('active-seek'));
+    }
+
+    function atualizarChipsSugestoes(tituloAula) {
+      const container = document.getElementById('searchChipsContainer');
+      if (!container) return;
+      const t = (tituloAula || '').toLowerCase();
+
+      let chips = [];
+      if (t.includes('procv') || t.includes('excel') || t.includes('planilha')) {
+        chips = [
+          { label: '📌 3º Argumento (Índice vs Letra)', q: 'Onde fala do terceiro argumento ou número da coluna no PROCV?' },
+          { label: '⚠️ Pegadinha da Banca', q: 'Qual a pegadinha da banca com o quarto argumento 0 e 1?' },
+          { label: '🎯 Exemplo Prático de Resolução', q: 'Exemplo prático de resolução passo a passo de exercício' },
+          { label: '❌ Erro #N/D vs #REF!', q: 'Onde o professor explica a diferença de erro N/D e REF?' }
+        ];
+      } else if (t.includes('artigo 5') || t.includes('constitucional')) {
+        chips = [
+          { label: '⚠️ Pegadinha: Crimes Inafiançáveis', q: 'Crimes inafiançáveis e imprescritíveis mnemônico RAÇÃO' },
+          { label: '🏠 Inviolabilidade do Domicílio', q: 'Inviolabilidade do domicílio durante a noite e durante o dia' },
+          { label: '📜 Remédios Constitucionais', q: 'Habeas corpus mandado de segurança e remédios constitucionais' },
+          { label: '🎯 Resolução de Questões da Banca', q: 'Resolução de questões de prova de concurso' }
+        ];
+      } else if (t.includes('administrativo') || t.includes('atos')) {
+        chips = [
+          { label: '⚠️ Requisitos do Ato (COFIFOMOB)', q: 'Requisitos e elementos do ato administrativo competência finalidade forma' },
+          { label: '🔄 Convalidação (FO-CO)', q: 'Convalidação forma e competência não exclusiva' },
+          { label: '⚖️ Anulação vs Revogação', q: 'Diferença de anulação ex tunc e revogação ex nunc' },
+          { label: '🎯 Pegadinhas de Prova', q: 'Pegadinha de banca sobre atos administrativos' }
+        ];
+      } else {
+        chips = [
+          { label: '⚠️ Pegadinha da Banca', q: 'Qual a principal pegadinha que a banca costuma cobrar sobre este assunto?' },
+          { label: '📌 Conceito-Chave & Regra Geral', q: 'Onde o professor explica a regra geral e a definição formal?' },
+          { label: '🎯 Exemplo Prático de Resolução', q: 'Exemplo prático de aplicação ou resolução de questão' },
+          { label: '⚖️ Exceções & Casos Especiais', q: 'Quais são as exceções à regra explicadas na aula?' }
+        ];
+      }
+
+      let html = '<span style="font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase;">Sugestões:</span>';
+      chips.forEach(c => {
+        html += `<button class="search-chip" onclick="buscarPontoExatoNaAula('${escapeJs(c.q)}')">${escapeHtml(c.label)}</button>`;
       });
       container.innerHTML = html;
     }
@@ -1110,6 +1514,17 @@
       document.documentElement.setAttribute('data-theme', savedTheme);
 
       renderizarSidebarAulas();
+
+      // Tecla Enter no input de busca da aula
+      const inputBusca = document.getElementById('aulaSearchInput');
+      if (inputBusca) {
+        inputBusca.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            buscarPontoExatoNaAula();
+          }
+        });
+      }
 
       const ids = Object.keys(aulasState);
       if (ids.length > 0) {

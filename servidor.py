@@ -1041,6 +1041,161 @@ def generate_youtube_moments_ai(title, video_id, segments=None, manual_text=""):
 
     return result
 
+def search_in_transcript_ai(query, video_id, segments=None):
+    """
+    Busca semântica inteligente do ponto exato da aula com base na pergunta/termo do aluno.
+    Retorna os trechos exatos com início e fim (tempoSegundos e tempoFimSegundos).
+    """
+    if not segments and video_id:
+        try:
+            segments = fetch_youtube_transcript_data(video_id)
+        except Exception:
+            pass
+
+    if not segments:
+        # Tentar carregar de userdata
+        ud_dir = os.path.join(BASE_DIR, "userdata")
+        safe_v = re.sub(r'[^a-zA-Z0-9_-]', '_', video_id or "")
+        f_tr = os.path.join(ud_dir, f"transcricao_{safe_v}.json")
+        if os.path.exists(f_tr):
+            try:
+                with open(f_tr, "r", encoding="utf-8") as ft:
+                    segments = json.load(ft)
+            except Exception:
+                pass
+
+    if not segments:
+        raise Exception("Nenhuma transcrição disponível para pesquisar nesta aula.")
+
+    clean_query = query.strip()
+    if not clean_query:
+        return []
+
+    # 1. Busca lexical preparatória: ranquear trechos candidatos por termos
+    q_words = [w.lower() for w in re.findall(r'\w+', clean_query) if len(w) > 2 and w.lower() not in ["onde", "como", "qual", "quando", "quem", "porque", "sobre", "fala", "explica", "aula", "video", "professor"]]
+    candidates = []
+    
+    for idx, seg in enumerate(segments):
+        txt = seg.get("texto", "").lower()
+        score = sum(1 for w in q_words if w in txt)
+        if score > 0:
+            # Pegar contexto de 3 segmentos antes e depois
+            start_i = max(0, idx - 2)
+            end_i = min(len(segments), idx + 5)
+            block_segs = segments[start_i:end_i]
+            block_txt = " ".join(s.get("texto", "") for s in block_segs)
+            t_inicio = block_segs[0].get("tempoSegundos", seg.get("tempoSegundos", 0))
+            t_fim = block_segs[-1].get("tempoSegundos", t_inicio + 60)
+            candidates.append({
+                "segmentoIndex": idx,
+                "score": score,
+                "tempoSegundos": t_inicio,
+                "tempoLabel": segundos_para_tempo(t_inicio),
+                "tempoFimSegundos": t_fim,
+                "tempoFimLabel": segundos_para_tempo(t_fim),
+                "trecho": block_txt[:280]
+            })
+
+    # Ordenar candidatos por score e selecionar os melhores
+    candidates.sort(key=lambda c: c["score"], reverse=True)
+    top_candidates = candidates[:6]
+
+    # 2. Chamada de IA para sintetizar a resposta com timestamps precisos
+    # Amostrar trechos da aula para a IA
+    sampled_context = []
+    if top_candidates:
+        for c in top_candidates:
+            sampled_context.append(f"[{c['tempoLabel']} -> {c['tempoFimLabel']}] {c['trecho']}")
+    else:
+        # Se não houve match de palavra exata (busca puramente semântica), enviar amostra geral
+        step = max(1, len(segments) // 30)
+        for i in range(0, len(segments), step):
+            s = segments[i]
+            sampled_context.append(f"[{s.get('tempoLabel')}] {s.get('texto')}")
+
+    context_str = "\n".join(sampled_context[:25])
+
+    system_prompt = (
+        "Você é um tutor assistente de alta precisão para estudantes de concursos públicos.\n"
+        "O aluno fez uma pergunta para encontrar o ponto exato da videoaula onde um conceito ou dúvida é explicado.\n"
+        "Seu objetivo é indicar até 3 trechos EXATOS onde o professor aborda esse assunto.\n"
+        "REGRAS OBRIGATÓRIAS:\n"
+        "1. O campo 'tempoSegundos' DEVE ser o timestamp exato do início da explicação presente nos trechos fornecidos.\n"
+        "2. Indique também 'tempoFimSegundos' (duração aproximada de 1 a 3 minutos do conceito).\n"
+        "3. Em 'titulo', dê um título direto e claro do conceito.\n"
+        "4. Em 'explicacao', escreva 1 frase explicando objetivamente o que o concurseiro vai ver nesse trecho.\n"
+        "5. Em 'trechoCitado', coloque uma frase curta do que o professor diz no início do trecho.\n"
+        "6. Responda APENAS com JSON no formato: {\"encontrado\": true, \"resultados\": [{...}]}"
+    )
+
+    user_prompt = (
+        f'Pergunta do aluno: "{clean_query}"\n\n'
+        f'Transcrição cronometrada da aula:\n"""\n{context_str}\n"""\n\n'
+        f'Encontre o ponto exato no formato JSON:\n'
+        f'{{\n'
+        f'  "encontrado": true,\n'
+        f'  "resultados": [\n'
+        f'    {{\n'
+        f'      "tempoSegundos": 1427,\n'
+        f'      "tempoLabel": "23:47",\n'
+        f'      "tempoFimSegundos": 1518,\n'
+        f'      "tempoFimLabel": "25:18",\n'
+        f'      "titulo": "...",\n'
+        f'      "relevancia": 0.95,\n'
+        f'      "explicacao": "...",\n'
+        f'      "trechoCitado": "..."\n'
+        f'    }}\n'
+        f'  ]\n'
+        f'}}'
+    )
+
+    resultados = []
+    ai_resp, provider = call_ai_service(system_prompt, user_prompt, json_mode=True, temperature=0.3)
+    if ai_resp and isinstance(ai_resp, str):
+        try:
+            clean_json = re.sub(r"^```json\s*|^```\s*|```$", "", ai_resp.strip(), flags=re.MULTILINE).strip()
+            parsed = json.loads(clean_json)
+            if isinstance(parsed, dict) and "resultados" in parsed:
+                resultados = parsed["resultados"]
+            elif isinstance(parsed, list):
+                resultados = parsed
+        except Exception as e_p:
+            print(f"Aviso decodificando busca IA: {e_p}")
+
+    # 3. Fallback inteligente baseado nos candidatos léxicos caso a IA não tenha retornado lista válida
+    if not resultados and top_candidates:
+        for idx, cand in enumerate(top_candidates[:3]):
+            resultados.append({
+                "tempoSegundos": cand["tempoSegundos"],
+                "tempoLabel": cand["tempoLabel"],
+                "tempoFimSegundos": cand["tempoFimSegundos"],
+                "tempoFimLabel": cand["tempoFimLabel"],
+                "titulo": f"Trecho aos {cand['tempoLabel']} relacionado a {clean_query[:35]}",
+                "relevancia": 0.88 - (idx * 0.05),
+                "explicacao": f"O professor aborda o tema neste ponto: {cand['trecho'][:110]}...",
+                "trechoCitado": cand["trecho"][:90] + "..."
+            })
+
+    # Normalizar resultados
+    final_res = []
+    for r in resultados:
+        sec = int(r.get("tempoSegundos", 0))
+        sec_fim = int(r.get("tempoFimSegundos", sec + 75))
+        if sec_fim <= sec:
+            sec_fim = sec + 60
+        final_res.append({
+            "tempoSegundos": sec,
+            "tempoLabel": segundos_para_tempo(sec),
+            "tempoFimSegundos": sec_fim,
+            "tempoFimLabel": segundos_para_tempo(sec_fim),
+            "titulo": str(r.get("titulo", "Trecho Identificado")).strip(),
+            "relevancia": round(float(r.get("relevancia", 0.9)) * 100) if float(r.get("relevancia", 0.9)) <= 1.0 else round(float(r.get("relevancia", 0.9))),
+            "explicacao": str(r.get("explicacao", "")).strip(),
+            "trechoCitado": str(r.get("trechoCitado", "")).strip()
+        })
+
+    return final_res
+
 def parse_timed_transcript_file(timed_file):
     """
     Parser universal para transcrições cronometradas em múltiplos formatos:
@@ -3720,6 +3875,38 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
                 self.wfile.write(json.dumps({"success": False, "error": str(e_moments)}, ensure_ascii=False).encode("utf-8"))
+            return
+
+        # 9.6 API YouTube - Busca Inteligente e Semântica no Vídeo / Ponto Exato da Aula
+        elif path == "/api/youtube/search-in-transcript":
+            vid_id = payload.get("videoId", "").strip()
+            query_str = payload.get("query", "").strip() or payload.get("pergunta", "").strip()
+            segmentos = payload.get("segmentos", [])
+
+            if not query_str:
+                self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": "Informe uma pergunta ou termo de busca."}, ensure_ascii=False).encode("utf-8"))
+                return
+
+            try:
+                resultados = search_in_transcript_ai(query_str, vid_id, segmentos)
+                self.send_response(200)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    "success": True,
+                    "encontrado": len(resultados) > 0,
+                    "query": query_str,
+                    "total_resultados": len(resultados),
+                    "resultados": resultados
+                }, ensure_ascii=False).encode("utf-8"))
+            except Exception as e_search:
+                self.send_response(500)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": str(e_search)}, ensure_ascii=False).encode("utf-8"))
             return
 
         # 10. Importar / Cadastrar Nova Aula com Extração Inteligente de YouTube e Geração dos 4 Pilares

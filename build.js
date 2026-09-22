@@ -18,6 +18,7 @@ const filesToCopy = [
   { src: 'index.html', dest: 'app.html' },
   { src: 'index.html', dest: 'plataforma.html' },
   { src: 'sucesso.html', dest: 'sucesso.html' },
+  { src: 'estudio_momentos_video.html', dest: 'estudio_momentos_video.html' },
   { src: 'mockup_projeto_aprovacao.jpg', dest: 'mockup_projeto_aprovacao.jpg' },
   { src: 'preseeded_topics.json', dest: 'preseeded_topics.json' },
   { src: path.join('MATRIZ DE TESTES', 'matriz_testes_miro.html'), dest: 'matriz_testes_miro.html' },

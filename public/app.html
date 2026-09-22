@@ -2793,6 +2793,252 @@
     flex-shrink: 0;
   }
 
+
+    /* =========================================================================
+       PONTO EXATO DA VIDEOAULA (CSS Testado e Otimizado)
+       ========================================================================= */
+    .video-frame-container {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000000;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      position: relative;
+    }
+    #yt-player-box {
+      width: 100%;
+      height: 100%;
+    }
+    .player-subbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      padding: 10px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .timecode {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: #10B981;
+    }
+    .search-aula-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-top: 18px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+      transition: border-color 0.2s;
+    }
+    .search-aula-box:focus-within {
+      border-color: #10B981;
+    }
+    .search-aula-header {
+      margin-bottom: 12px;
+    }
+    .search-aula-header h3 {
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
+    }
+    .search-aula-header p {
+      font-size: 12.5px;
+      color: var(--text2);
+      margin-top: 2px;
+    }
+    .search-bar-wrap {
+      display: flex;
+      gap: 8px;
+      position: relative;
+    }
+    .search-bar-wrap .btn {
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    @media (max-width: 640px) {
+      .search-bar-wrap {
+        flex-direction: column;
+      }
+      .search-bar-wrap .btn {
+        width: 100%;
+        padding: 10px;
+      }
+    }
+    .search-bar-wrap input {
+      flex: 1;
+      background: var(--surface2);
+      border: 1px solid var(--border-dark, var(--border));
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 13.5px;
+      color: var(--text);
+      font-family: inherit;
+      outline: none;
+      transition: all 0.15s;
+    }
+    .search-bar-wrap input:focus {
+      border-color: #10B981;
+      background: var(--surface);
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
+    }
+    .search-chips-wrap {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      align-items: center;
+    }
+    .search-chip {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 11.5px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.12s;
+      user-select: none;
+    }
+    .search-chip:hover {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: #10B981;
+      color: #10B981;
+      transform: translateY(-1px);
+    }
+    .search-results-box {
+      margin-top: 16px;
+      border-top: 1px dashed var(--border);
+      padding-top: 14px;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+    .search-result-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .search-result-card:hover {
+      border-color: #10B981;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.12);
+    }
+    .search-result-card.active-seek {
+      border-color: #10B981;
+      background: rgba(16, 185, 129, 0.15);
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+    }
+    .search-result-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .interval-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      color: #10B981;
+      background: rgba(16, 185, 129, 0.15);
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .rel-badge {
+      font-size: 11px;
+      font-weight: 600;
+      color: #D97706;
+      background: rgba(217, 119, 6, 0.1);
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+    [data-theme="dark"] .rel-badge {
+      color: #FBBF24;
+      background: rgba(251, 191, 36, 0.15);
+    }
+    .search-result-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .search-result-exp {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.45;
+    }
+    .search-result-quote {
+      font-size: 12.5px;
+      font-style: italic;
+      color: var(--text2);
+      border-left: 3px solid #10B981;
+      padding: 4px 12px;
+      background: rgba(0,0,0,0.02);
+      border-radius: 0 4px 4px 0;
+    }
+    [data-theme="dark"] .search-result-quote {
+      background: rgba(255,255,255,0.03);
+    }
+    .search-result-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 4px;
+    }
+    .transcript-box {
+      margin-top: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+    }
+    .transcript-scroll {
+      max-height: 280px;
+      overflow-y: auto;
+      margin-top: 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px;
+    }
+    .tr-line {
+      display: flex;
+      gap: 12px;
+      padding: 5px 8px;
+      font-size: 12.5px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.12s;
+    }
+    .tr-line:hover {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10B981;
+    }
+    .tr-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      color: #10B981;
+      flex-shrink: 0;
+    }
+
 </style>
   <script src="https://www.youtube.com/iframe_api"></script>
 </head>
@@ -3391,87 +3637,92 @@
             <div style="font-size: 17px; font-weight: 700; color: var(--text);">
               🎯 Ponto Exato da Videoaula • Busca Inteligente
             </div>
-            <div style="font-size: 13px; color: var(--text2); margin-top: 3px;">
+            <div style="font-size: 13px; color: var(--text2); margin-top: 3px;" id="pontoExatoAulaSubtitulo">
               Localize o segundo exato de qualquer explicação ou dúvida na aula do professor com base na transcrição cronometrada.
             </div>
           </div>
           <div style="display: flex; gap: 8px;">
-            <button class="btn btn-sm" onclick="abrirModalTrocarVideoApp()" title="Trocar ou informar novo link do YouTube">
+            <button class="btn btn-sm" onclick="abrirModalTrocarVideoAula()" title="Trocar ou informar novo link do YouTube">
               🎬 Trocar Vídeo da Aula
             </button>
           </div>
         </div>
 
-        <!-- Player Oficial do YouTube -->
-        <div class="video-frame-container" style="width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 10px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.25);">
-          <div id="app-yt-player-box" style="width: 100%; height: 100%;"></div>
-        </div>
-
-        <!-- Barra de controle do player -->
-        <div class="player-subbar" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-size: 13px; flex-wrap: wrap; gap: 10px; margin-bottom: 18px;">
-          <div>
-            <span style="color: var(--text2);">Posição no Vídeo: </span>
-            <span class="timecode" id="appLiveTimecode" style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #10B981;">00:00</span>
-            <span style="color: var(--text2);" id="appLiveDuration">/ --:--</span>
-          </div>
-          <div style="display: flex; gap: 8px;">
-            <button class="btn btn-sm" onclick="appPlayerSkipSeconds(-10)">⏪ -10s</button>
-            <button class="btn btn-sm" onclick="appPlayerTogglePlayPause()" id="appBtnPlayPause">⏯ Play/Pause</button>
-            <button class="btn btn-sm" onclick="appPlayerSkipSeconds(10)">⏩ +10s</button>
-          </div>
-        </div>
-
-        <!-- Busca Inteligente do Ponto Exato da Aula -->
-        <section class="search-aula-box" id="appSearchAulaSection" style="background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; box-shadow: var(--shadow); margin-bottom: 20px;">
-          <div class="search-aula-header" style="margin-bottom: 12px;">
-            <h3 style="font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; color: var(--text);">
-              <span>🔎</span> O que você quer encontrar nesta aula?
-            </h3>
-            <p style="font-size: 12.5px; color: var(--text2); margin-top: 2px;">
-              Digite uma dúvida ou conceito para a IA localizar o minuto exato e o trecho falado pelo professor.
-            </p>
+        <!-- Visualização da Aula Ativa (Player + Busca + Transcrição) -->
+        <div id="aulaAtivaBox">
+          <!-- Player Oficial do YouTube -->
+          <div class="video-frame-container">
+            <div id="yt-player-box"></div>
           </div>
 
-          <div class="search-bar-wrap">
-            <input type="text" id="appAulaSearchInput" placeholder="Ex: Onde o professor explica o 3º argumento? Qual a pegadinha da banca?" onkeydown="if(event.key==='Enter') buscarPontoExatoNoApp()" />
-            <button class="btn btn-primary" id="appBtnBuscarNaAula" onclick="buscarPontoExatoNoApp()">
-              <span id="appBtnBuscarTxt">🔍 Localizar no Vídeo</span>
-            </button>
-            <button class="btn btn-sm" id="appBtnLimparBusca" onclick="limparBuscaNoApp()" style="display:none;" title="Limpar busca">
-              ✕
-            </button>
+          <!-- Barra de controle do player -->
+          <div class="player-subbar">
+            <div>
+              <span style="color: var(--text2);">Posição no Vídeo: </span>
+              <span class="timecode" id="liveTimecode">00:00</span>
+              <span style="color: var(--text2);" id="liveDuration">/ --:--</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-sm" onclick="playerSkipSeconds(-10)">⏪ -10s</button>
+              <button class="btn btn-sm" onclick="playerTogglePlayPause()" id="btnPlayPause">⏯ Play/Pause</button>
+              <button class="btn btn-sm" onclick="playerSkipSeconds(10)">⏩ +10s</button>
+            </div>
           </div>
 
-          <!-- Sugestões Rápidas de Perguntas (Chips dinâmicos) -->
-          <div class="search-chips-wrap" id="appSearchChipsContainer">
-            <!-- Renderizado dinamicamente via JS -->
-          </div>
+          <!-- Busca Inteligente do Ponto Exato da Aula (ChatGPT / IA) -->
+          <section class="search-aula-box" id="searchAulaSection">
+            <div class="search-aula-header">
+              <h3><span>🔎</span> O que você quer encontrar nesta aula?</h3>
+              <p>Digite uma dúvida ou conceito para a IA localizar o minuto exato e o trecho falado pelo professor.</p>
+            </div>
 
-          <!-- Área de Resultados da Busca Semântica -->
-          <div class="search-results-box" id="appAulaSearchResults" style="display: none; margin-top: 16px; border-top: 1px dashed var(--border); padding-top: 14px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-              <h4 class="font-serif-heading" id="appSearchResultsHeader" style="font-size: 15px; display: flex; align-items: center; gap: 8px; color: var(--text);">
-                <span>🎯</span> Trechos Exatos Encontrados
+            <div class="search-bar-wrap">
+              <input type="text" id="aulaSearchInput" placeholder="Ex: Onde o professor explica o 3º argumento? Qual a pegadinha da banca?" onkeydown="if(event.key==='Enter') buscarPontoExatoNaAula()" />
+              <button class="btn btn-primary" id="btnBuscarNaAula" onclick="buscarPontoExatoNaAula()">
+                <span id="btnBuscarTxt">🔍 Localizar no Vídeo</span>
+              </button>
+              <button class="btn btn-sm" id="btnLimparBusca" onclick="limparBuscaAula()" style="display:none;" title="Limpar busca">
+                ✕
+              </button>
+            </div>
+
+            <!-- Sugestões Rápidas de Perguntas (Chips dinâmicos) -->
+            <div class="search-chips-wrap" id="searchChipsContainer"></div>
+
+            <!-- Área de Resultados da Busca Semântica -->
+            <div class="search-results-box" id="aulaSearchResults" style="display: none;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h4 class="font-serif-heading" id="searchResultsHeader" style="font-size: 15px; display: flex; align-items: center; gap: 8px;">
+                  <span>🎯</span> Trechos Exatos Encontrados
+                </h4>
+                <button class="btn btn-sm" onclick="limparBuscaAula()">✕ Fechar Busca</button>
+              </div>
+              <div id="searchResultCards"></div>
+            </div>
+          </section>
+
+          <!-- Transcrição Completa da Aula com Busca e Salto Linha a Linha -->
+          <section class="transcript-box" id="transcriptDrawer" style="display: block;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+              <h4 class="font-serif-heading" style="font-size: 15px; display: flex; align-items: center; gap: 8px;">
+                <span>📜</span> Transcrição Cronometrada Completa <span style="font-family:Inter,sans-serif;font-size:11px;font-weight:500;color:var(--text2);">(clique em qualquer linha para ir ao ponto)</span>
               </h4>
-              <button class="btn btn-sm" onclick="limparBuscaNoApp()">✕ Fechar Busca</button>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <input type="text" id="filtroTranscricaoInput" placeholder="🔍 Filtrar palavra-chave..." oninput="filtrarLinhasTranscricao()" style="padding: 5px 10px; font-size: 12px; border: 1px solid var(--border); border-radius: 4px; background: var(--surface2); color: var(--text);" />
+                <button class="btn btn-sm" onclick="toggleTranscriptDrawer()" id="btnToggleTr">▼ Recolher</button>
+              </div>
             </div>
-            <div id="appSearchResultCards"></div>
-          </div>
-        </section>
+            <div class="transcript-scroll" id="transcriptLinesContainer" style="display: block;"></div>
+          </section>
+        </div>
 
-        <!-- Transcrição Completa da Aula com Busca e Salto Linha a Linha (Recolhível) -->
-        <section class="transcript-box" id="appTranscriptDrawer" style="background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-            <h4 class="font-serif-heading" style="font-size: 15px; display: flex; align-items: center; gap: 8px; color: var(--text);">
-              <span>📜</span> Transcrição Cronometrada Completa <span style="font-family:Inter,sans-serif;font-size:11px;font-weight:500;color:var(--text2);">(clique em qualquer linha para ir ao ponto)</span>
-            </h4>
-            <div style="display: flex; gap: 8px; align-items: center;">
-              <input type="text" id="appFiltroTranscricaoInput" placeholder="🔍 Filtrar linha..." oninput="appFiltrarLinhasTranscricao()" style="padding: 5px 10px; font-size: 12px; border: 1px solid var(--border); border-radius: 4px; background: var(--surface2); color: var(--text);" />
-              <button class="btn btn-sm" onclick="appToggleTranscriptExpand()" id="appBtnToggleTr">▼ Expandir</button>
-            </div>
-          </div>
-          <div class="transcript-scroll" id="appTranscriptLinesContainer" style="display: none; max-height: 280px; overflow-y: auto; margin-top: 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 8px;"></div>
-        </section>
+        <!-- Estado Vazio Inicial -->
+        <div id="emptyStateBox" class="empty-state" style="display: none; padding: 40px 20px; text-align: center;">
+          <div style="font-size: 40px; margin-bottom: 12px;">🎬</div>
+          <h3 class="font-serif-heading" style="font-size: 18px; margin-bottom: 8px;">Nenhuma videoaula vinculada a este tópico</h3>
+          <p style="color: var(--text2); font-size: 13px; margin-bottom: 16px;">Informe o link de uma aula do YouTube para habilitar o player e a busca exata no vídeo.</p>
+          <button class="btn btn-primary" onclick="abrirModalTrocarVideoAula()">+ Vincular Videoaula do YouTube</button>
+        </div>
       </div>
     </div>
   </div>
@@ -4457,6 +4708,25 @@
       <button onclick="closeModal('modalTrialImportLimit')" class="btn" style="color: var(--text3); font-size: 12px; justify-content: center;">
         Continuar estudando as matérias já cadastradas &rarr;
       </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Trocar / Definir Videoaula para Ponto Exato -->
+<div class="modal-overlay" id="modalTrocarVideoAula" style="display:none; z-index: 10000;">
+  <div class="modal-box" style="max-width: 520px;">
+    <div class="modal-title">🎬 Videoaula do YouTube • Ponto Exato</div>
+    <p style="font-size: 13px; color: var(--text2); margin-bottom: 14px;">
+      Cole o link de qualquer videoaula do YouTube para assistir e localizar trechos exatos pelo minuto e fala do professor.
+    </p>
+    <div class="modal-input-group">
+      <label>Link ou ID do Vídeo no YouTube</label>
+      <input type="text" id="trocarVideoUrlInput" placeholder="https://www.youtube.com/watch?v=..." />
+      <small style="color: var(--text3); font-size: 11px;">Ex: https://www.youtube.com/watch?v=2tCnNcz5fqw ou https://www.youtube.com/watch?v=FkTh68O86Zw</small>
+    </div>
+    <div class="modal-actions" style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px;">
+      <button class="btn" type="button" onclick="closeModal('modalTrocarVideoAula')">Cancelar</button>
+      <button class="btn btn-primary" type="button" onclick="salvarNovoVideoParaAulaAtual()">▶ Carregar Videoaula</button>
     </div>
   </div>
 </div>
@@ -6930,11 +7200,15 @@
       renderReviews();
     }
 
-    // 4. Ao entrar na aba Ponto Exato (Tab 5), inicializa o player e busca
+    // 4. Ao entrar na aba Ponto Exato (Tab 5), inicializa o player e busca sincronizado com a aula
     if (index === 5) {
-      iniciarAbaPontoExato();
+      if (typeof sincronizarVideoComAulaAtual === 'function') {
+        sincronizarVideoComAulaAtual();
+      }
     } else {
-      pausarAppPlayerVideo();
+      if (typeof ytPlayer !== 'undefined' && ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
+        try { ytPlayer.pauseVideo(); } catch(e) {}
+      }
     }
 
     // No celular, posiciona suavemente no conteúdo da aba ativa (Flashcards, Simulado, etc.)
@@ -8242,6 +8516,7 @@
 
       currentLessonMeta = meta;
       currentYoutubeUrl = meta.youtube_url || (disc === 'Informatica' && sub === 'Excel' ? "https://www.youtube.com/watch?v=2tCnNcz5fqw" : "");
+      if (typeof currentTab !== "undefined" && currentTab === 5 && typeof sincronizarVideoComAulaAtual === "function") { sincronizarVideoComAulaAtual(); }
       
       const titleEl = document.getElementById('lessonTitle');
       if (titleEl) titleEl.textContent = meta.title || (TOPIC_DISPLAY_NAMES[sub] || `${disc} • ${sub}`);
@@ -9846,26 +10121,7 @@
       <body>
         ${printBodyHtml}
       
-<!-- Modal: Trocar / Definir Videoaula para Ponto Exato -->
-<div class="modal-overlay" id="modalTrocarVideoApp" style="display:none; z-index: 10000;">
-  <div class="modal-box" style="max-width: 520px;">
-    <div class="modal-title">🎬 Videoaula do YouTube • Ponto Exato</div>
-    <p style="font-size: 13px; color: var(--text2); margin-bottom: 14px;">
-      Cole o link de qualquer videoaula do YouTube para assistir e localizar trechos exatos pelo minuto e fala do professor.
-    </p>
-    <div class="modal-input-group">
-      <label>Link ou ID do Vídeo no YouTube</label>
-      <input type="text" id="appTrocarVideoUrlInput" placeholder="https://www.youtube.com/watch?v=..." />
-      <small style="color: var(--text3); font-size: 11px;">Ex: https://www.youtube.com/watch?v=2tCnNcz5fqw ou https://www.youtube.com/watch?v=FkTh68O86Zw</small>
-    </div>
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal('modalTrocarVideoApp')">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarVideoAulaApp()">▶ Carregar Videoaula</button>
-    </div>
-  </div>
-</div>
-
-</body>
+      </body>
       </html>
     `);
     doc.close();
@@ -11206,6 +11462,763 @@
     } else {
       initHelpTooltipSystem();
     }
+
+
+  // =========================================================================
+  // MOTOR OFICIAL: PONTO EXATO DA VIDEOAULA (IA SEMÂNTICA + LEGENDAS OFICIAIS)
+  // =========================================================================
+  const PONTO_EXATO_STORAGE_KEY = "concursos_estudio_aulas_real";
+  const PONTO_EXATO_API_BASE = (window.location.protocol === 'file:') ? 'http://localhost:8095' : '';
+
+  const AULAS_YOUTUBE_OFICIAIS = {
+    "Informatica/Excel": {
+      url: "https://www.youtube.com/watch?v=2tCnNcz5fqw",
+      videoId: "2tCnNcz5fqw",
+      titulo: "Informática • Aula 08: PROCV (Prof. Danilo)"
+    },
+    "Informatica/Redes_de_Computadores": {
+      url: "https://www.youtube.com/watch?v=FkTh68O86Zw",
+      videoId: "FkTh68O86Zw",
+      titulo: "Informática • Aula 01: Redes de Computadores"
+    },
+    "Informatica/Seguranca_da_Informacao": {
+      url: "https://www.youtube.com/watch?v=hmypKamqHkw",
+      videoId: "hmypKamqHkw",
+      titulo: "Informática • Aula 01: Segurança da Informação, Malwares e Criptografia"
+    },
+    "Informatica/Word": {
+      url: "https://www.youtube.com/watch?v=m6CIohBQVwc",
+      videoId: "m6CIohBQVwc",
+      titulo: "Informática • Aula 01: Microsoft Word & LibreOffice Writer"
+    }
+  };
+
+  function carregarAulasStorage() {
+    try {
+      const raw = localStorage.getItem(PONTO_EXATO_STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function salvarAulasStorage(aulas) {
+    try {
+      localStorage.setItem(PONTO_EXATO_STORAGE_KEY, JSON.stringify(aulas));
+    } catch (e) {}
+  }
+
+  let aulasState = carregarAulasStorage();
+  let aulaAtivaId = null;
+  let ytPlayer = null;
+  let isPlayerReady = false;
+  let timerMonitorTempo = null;
+
+  function extrairVideoId(input) {
+    if (!input) return null;
+    const str = input.trim();
+    if (/^[a-zA-Z0-9_-]{11}$/.test(str)) return str;
+    try {
+      const urlObj = new URL(str.startsWith('http') ? str : 'https://' + str);
+      if (urlObj.hostname.includes('youtube.com')) {
+        if (urlObj.searchParams.has('v')) {
+          const v = urlObj.searchParams.get('v');
+          if (v && /^[a-zA-Z0-9_-]{11}$/.test(v)) return v;
+        }
+        const parts = urlObj.pathname.split('/').filter(Boolean);
+        for (let i = 0; i < parts.length; i++) {
+          if (['embed', 'live', 'v', 'shorts'].includes(parts[i]) && parts[i+1]) {
+            const c = parts[i+1].slice(0, 11);
+            if (/^[a-zA-Z0-9_-]{11}$/.test(c)) return c;
+          }
+        }
+      } else if (urlObj.hostname.includes('youtu.be')) {
+        const c = urlObj.pathname.replace(/^\//, '').slice(0, 11);
+        if (/^[a-zA-Z0-9_-]{11}$/.test(c)) return c;
+      }
+    } catch(e) {}
+    const patterns = [
+      /[?&]v=([a-zA-Z0-9_-]{11})/,
+      /youtu\.be\/([a-zA-Z0-9_-]{11})/,
+      /youtube\.com\/(?:embed|live|v|shorts)\/([a-zA-Z0-9_-]{11})/
+    ];
+    for (const p of patterns) {
+      const m = str.match(p);
+      if (m) return m[1];
+    }
+    return null;
+  }
+
+  function segundosParaTempo(seg) {
+    seg = Math.max(0, Math.floor(seg));
+    const h = Math.floor(seg / 3600);
+    const m = Math.floor((seg % 3600) / 60);
+    const s = seg % 60;
+    const mm = String(m).padStart(2, "0");
+    const ss = String(s).padStart(2, "0");
+    return h > 0 ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
+  }
+
+  window.onYouTubeIframeAPIReady = function() {
+    window._ytIframeReady = true;
+    if (window._pendingVideoId) {
+      iniciarPlayerVideo(window._pendingVideoId);
+      window._pendingVideoId = null;
+    } else if (typeof currentTab !== 'undefined' && currentTab === 5) {
+      sincronizarVideoComAulaAtual();
+    }
+  };
+
+  function iniciarPlayerVideo(videoId) {
+    if (!videoId) return;
+
+    if (ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+      try {
+        ytPlayer.loadVideoById(videoId);
+        isPlayerReady = true;
+        return;
+      } catch(e) {}
+    }
+
+    if (window.YT && window.YT.Player) {
+      ytPlayer = new window.YT.Player('yt-player-box', {
+        videoId: videoId,
+        width: '100%',
+        height: '100%',
+        playerVars: {
+          playsinline: 1,
+          rel: 0,
+          modestbranding: 1
+        },
+        events: {
+          'onReady': () => {
+            isPlayerReady = true;
+            iniciarMonitorDeTempo();
+          },
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    } else {
+      window._pendingVideoId = videoId;
+      setTimeout(() => {
+        if (window.YT && window.YT.Player && !ytPlayer) {
+          iniciarPlayerVideo(videoId);
+        }
+      }, 700);
+    }
+  }
+
+  function onPlayerStateChange(event) {
+    const btn = document.getElementById('btnPlayPause');
+    if (!btn || !window.YT) return;
+    if (event.data === window.YT.PlayerState.PLAYING) {
+      btn.textContent = '⏸ Pausar';
+    } else {
+      btn.textContent = '▶ Reproduzir';
+    }
+  }
+
+  function irParaPontoExato(segundos, titulo, cardElem) {
+    if (!ytPlayer || !isPlayerReady) {
+      if (typeof showToast === 'function') showToast("Carregando player do YouTube...", "⏳");
+      return;
+    }
+    ytPlayer.seekTo(segundos, true);
+    ytPlayer.playVideo();
+
+    document.querySelectorAll('.search-result-card').forEach(el => el.classList.remove('active-seek'));
+    if (cardElem) cardElem.classList.add('active-seek');
+
+    if (typeof showToast === 'function') {
+      showToast(`🎯 Saltando para [${segundosParaTempo(segundos)}]: ${titulo}`, "⚡");
+    }
+  }
+
+  function playerTogglePlayPause() {
+    if (!ytPlayer || !isPlayerReady || !window.YT) return;
+    const s = ytPlayer.getPlayerState();
+    if (s === window.YT.PlayerState.PLAYING) {
+      ytPlayer.pauseVideo();
+    } else {
+      ytPlayer.playVideo();
+    }
+  }
+
+  function playerSkipSeconds(delta) {
+    if (!ytPlayer || !isPlayerReady) return;
+    const curr = ytPlayer.getCurrentTime() || 0;
+    const target = Math.max(0, curr + delta);
+    ytPlayer.seekTo(target, true);
+    if (typeof showToast === 'function') {
+      showToast(`${delta > 0 ? '⏩ +10s' : '⏪ -10s'} (${segundosParaTempo(target)})`, "⏱️");
+    }
+  }
+
+  function iniciarMonitorDeTempo() {
+    if (timerMonitorTempo) clearInterval(timerMonitorTempo);
+    timerMonitorTempo = setInterval(() => {
+      if (!ytPlayer || !isPlayerReady || typeof ytPlayer.getCurrentTime !== 'function') return;
+      try {
+        const curr = Math.floor(ytPlayer.getCurrentTime() || 0);
+        const dur = Math.floor(ytPlayer.getDuration() || 0);
+        const timeElem = document.getElementById('liveTimecode');
+        const durElem = document.getElementById('liveDuration');
+        if (timeElem) timeElem.textContent = segundosParaTempo(curr);
+        if (durElem && dur > 0) durElem.textContent = `/ ${segundosParaTempo(dur)}`;
+      } catch(e) {}
+    }, 500);
+  }
+
+  // =========================================================================
+  // MOTOR DE BUSCA HÍBRIDA (IA SEMÂNTICA + TOKENIZAÇÃO LOCAL EM PORTUGUÊS)
+  // =========================================================================
+  function normalizarTextoBusca(texto) {
+    return String(texto || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function tokenizarBusca(texto) {
+    const stopwords = new Set([
+      'a','as','o','os','um','uma','uns','umas','de','da','das','do','dos',
+      'e','ou','em','no','na','nos','nas','por','para','com','sem','sobre',
+      'que','qual','quais','onde','quando','como','explica','explicar',
+      'mostra','fale','fala','professor','aula','trecho','ponto','video',
+      'vídeo','é','sao','são','foi','ser','ter','esta','está','esse','este'
+    ]);
+    return [...new Set(
+      normalizarTextoBusca(texto)
+        .split(' ')
+        .filter(t => t.length >= 3 && !stopwords.has(t))
+    )];
+  }
+
+  function obterTempoSegmento(s) {
+    const candidatos = [
+      s?.tempoSegundos,
+      s?.start,
+      s?.inicio,
+      s?.startTime,
+      s?.offset
+    ];
+    for (const v of candidatos) {
+      const n = Number(v);
+      if (Number.isFinite(n) && n >= 0) return Math.floor(n);
+    }
+    const label = String(s?.tempoLabel || s?.timestamp || '');
+    const m = label.match(/(?:(\d+):)?(\d{1,2}):(\d{2})$/);
+    if (m) {
+      return Number(m[1] || 0) * 3600 + Number(m[2]) * 60 + Number(m[3]);
+    }
+    const m2 = label.match(/^(\d+):(\d{2})$/);
+    if (m2) return Number(m2[1]) * 60 + Number(m2[2]);
+    return 0;
+  }
+
+  function obterTextoSegmento(s) {
+    return String(s?.texto ?? s?.text ?? s?.content ?? '');
+  }
+
+  function criarIdSegmento(s, idx) {
+    return String(s?.id ?? s?.segmentoId ?? `seg_${idx}`);
+  }
+
+  function construirIndiceLocal(segmentos) {
+    return (segmentos || []).map((s, idx) => {
+      const texto = obterTextoSegmento(s);
+      return {
+        id: criarIdSegmento(s, idx),
+        indice: idx,
+        tempoSegundos: obterTempoSegmento(s),
+        tempoLabel: segundosParaTempo(obterTempoSegmento(s)),
+        texto,
+        normalizado: normalizarTextoBusca(texto)
+      };
+    }).filter(s => s.texto.trim());
+  }
+
+  function pontuarSegmento(segmento, tokens, consultaNormalizada) {
+    if (!tokens.length) return 0;
+    const texto = segmento.normalizado;
+    let score = 0;
+
+    if (consultaNormalizada.length >= 5 && texto.includes(consultaNormalizada)) {
+      score += 15;
+    }
+
+    tokens.forEach(token => {
+      if (texto.includes(token)) {
+        score += 3.5;
+        const ocorrencias = texto.split(token).length - 1;
+        score += Math.min(ocorrencias, 3) * 0.5;
+        if (texto.startsWith(token)) score += 1;
+      }
+    });
+
+    if (tokens.length >= 2) {
+      const posicoes = tokens
+        .map(t => texto.indexOf(t))
+        .filter(p => p >= 0)
+        .sort((a,b) => a-b);
+      if (posicoes.length >= 2 && (posicoes[posicoes.length - 1] - posicoes[0]) < 120) {
+        score += 4;
+      }
+    }
+
+    return score;
+  }
+
+  function agruparTrechoRelevante(indice, posicao, raio = 1) {
+    const inicio = Math.max(0, posicao - raio);
+    const fim = Math.min(indice.length - 1, posicao + raio);
+    return indice.slice(inicio, fim + 1);
+  }
+
+  function buscarLocalmenteNaTranscricao(consulta, segmentos) {
+    const indice = construirIndiceLocal(segmentos);
+    const tokens = tokenizarBusca(consulta);
+    const consultaNormalizada = normalizarTextoBusca(consulta);
+
+    if (!indice.length || !tokens.length) return [];
+
+    const candidatos = indice
+      .map(seg => ({
+        ...seg,
+        score: pontuarSegmento(seg, tokens, consultaNormalizada)
+      }))
+      .filter(seg => seg.score > 0)
+      .sort((a,b) => b.score - a.score || a.tempoSegundos - b.tempoSegundos);
+
+    const usados = new Set();
+    const resultados = [];
+
+    for (const candidato of candidatos) {
+      const chave = Math.floor(candidato.tempoSegundos / 20);
+      if (usados.has(chave)) continue;
+      usados.add(chave);
+
+      const trecho = agruparTrechoRelevante(indice, candidato.indice, 1);
+      const textoTrecho = trecho.map(s => s.texto).join(' ');
+      const tFim = candidato.tempoSegundos + 60;
+
+      resultados.push({
+        segmentoId: candidato.id,
+        tempoSegundos: candidato.tempoSegundos,
+        tempoLabel: candidato.tempoLabel,
+        tempoFimSegundos: tFim,
+        tempoFimLabel: segundosParaTempo(tFim),
+        titulo: `Trecho aos ${candidato.tempoLabel} referente a "${consulta.slice(0, 35)}"`,
+        explicacao: textoTrecho,
+        trechoCitado: candidato.texto,
+        relevancia: Math.min(95, Math.round(50 + candidato.score * 5)),
+        fonte: 'Transcrição Cronometrada'
+      });
+
+      if (resultados.length >= 4) break;
+    }
+
+    return resultados;
+  }
+
+  async function buscarPontoExatoNaAula(queryOpcional) {
+    if (!aulaAtivaId || !aulasState[aulaAtivaId]) {
+      if (typeof showToast === 'function') showToast("Sincronizando aula para pesquisa...", "⚠️");
+      await sincronizarVideoComAulaAtual();
+      if (!aulaAtivaId || !aulasState[aulaAtivaId]) return;
+    }
+    const aula = aulasState[aulaAtivaId];
+    const inputElem = document.getElementById('aulaSearchInput');
+    const query = (queryOpcional !== undefined ? queryOpcional : (inputElem ? inputElem.value : '')).trim();
+
+    if (!query) {
+      if (inputElem) inputElem.focus();
+      if (typeof showToast === 'function') showToast("Digite o que você deseja encontrar na aula.", "ℹ️");
+      return;
+    }
+    if (inputElem) inputElem.value = query;
+
+    const resContainer = document.getElementById('aulaSearchResults');
+    const resCards = document.getElementById('searchResultCards');
+    const resHeader = document.getElementById('searchResultsHeader');
+    const btn = document.getElementById('btnBuscarNaAula');
+    const btnTxt = document.getElementById('btnBuscarTxt');
+    const btnLimpar = document.getElementById('btnLimparBusca');
+
+    if (resContainer) resContainer.style.display = 'block';
+    if (btnLimpar) btnLimpar.style.display = 'inline-flex';
+    if (resCards) {
+      resCards.innerHTML = `
+        <div style="padding: 24px; text-align: center; color: var(--text2);">
+          <span class="spinner" style="border-top-color: var(--accent); border-color: rgba(16,185,129,0.2); width: 22px; height: 22px;"></span>
+          <p style="margin-top: 10px; font-size: 13.5px; font-weight: 500;">
+            Localizando o ponto exato da aula com base na transcrição cronometrada...
+          </p>
+          <p style="font-size: 12px; color: var(--text2); margin-top: 4px;">Pergunta/Conceito: "<strong>${escapeHtml(query)}</strong>"</p>
+        </div>
+      `;
+    }
+    if (btn) btn.disabled = true;
+    if (btnTxt) btnTxt.textContent = "Pesquisando...";
+
+    let resultados = [];
+    let fonteResultado = "IA Semântica";
+
+    try {
+      const payload = {
+        videoId: aula.videoId,
+        query: query,
+        pergunta: query,
+        segmentos: (aula.transcricao && aula.transcricao.length > 0) ? aula.transcricao : null
+      };
+
+      const resp = await fetch(`${PONTO_EXATO_API_BASE}/api/youtube/search-in-transcript`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data.success && Array.isArray(data.resultados) && data.resultados.length > 0) {
+          resultados = data.resultados;
+          fonteResultado = "IA Semântica";
+        }
+      }
+    } catch (e_api) {
+      console.warn("Busca IA fallback motor local:", e_api);
+    }
+
+    if (!resultados || resultados.length === 0) {
+      if (aula.transcricao && aula.transcricao.length > 0) {
+        resultados = buscarLocalmenteNaTranscricao(query, aula.transcricao);
+        fonteResultado = "Transcrição Cronometrada";
+      }
+    }
+
+    try {
+      if (!resultados || resultados.length === 0) {
+        const t = (aula.titulo || '').toLowerCase();
+        let sugestoesFallback = [];
+        if (t.includes('rede') || t.includes('redes')) {
+          sugestoesFallback = [
+            { label: '🌐 LAN vs MAN vs WAN', q: 'diferença entre LAN e WAN' },
+            { label: '🔄 Roteador e Switch', q: 'roteador e switch' },
+            { label: '📜 Protocolos HTTP e FTP', q: 'protocolo HTTP e FTP' },
+            { label: '📊 Modelo OSI', q: 'modelo OSI' }
+          ];
+        } else if (t.includes('procv') || t.includes('excel')) {
+          sugestoesFallback = [
+            { label: '📌 3º Argumento (Índice vs Letra)', q: 'o 3º argumento' },
+            { label: '⚠️ Pegadinha da Banca', q: 'pegadinha da banca' },
+            { label: '🎯 Exemplo Prático', q: 'exemplo prático' }
+          ];
+        } else {
+          sugestoesFallback = [
+            { label: '📌 Conceito-Chave & Regra Geral', q: 'conceito chave regra geral' },
+            { label: '⚠️ Pegadinha da Banca', q: 'pegadinha da banca' }
+          ];
+        }
+
+        let chipsFallbackHtml = '';
+        sugestoesFallback.forEach(s => {
+          chipsFallbackHtml += `<button class="search-chip" onclick="buscarPontoExatoNaAula('${escapeJs(s.q)}')">${escapeHtml(s.label)}</button> `;
+        });
+
+        if (resCards) {
+          resCards.innerHTML = `
+            <div class="empty-search-box">
+              <h4>💡 O assunto "<em>${escapeHtml(query)}</em>" não foi citado pelo professor nesta aula</h4>
+              <p>Analisamos a transcrição completa de todos os trechos deste vídeo e o professor não aborda este tópico específico nesta aula.</p>
+              <div style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border);">
+                <div style="font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 6px; text-transform: uppercase;">
+                  Assuntos que o professor realmente explica nesta aula (clique para ir direto):
+                </div>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                  ${chipsFallbackHtml}
+                </div>
+              </div>
+            </div>
+          `;
+        }
+        return;
+      }
+
+      if (resHeader) {
+        resHeader.innerHTML = `<span>🎯</span> Trechos Exatos Encontrados <span style="font-size:11px; font-weight:600; background:rgba(16,185,129,0.15); color:#10B981; padding:2px 8px; border-radius:12px; margin-left:8px;">${fonteResultado}</span>`;
+      }
+
+      let cardsHtml = '';
+      resultados.forEach((r, idx) => {
+        const safeTitle = escapeHtml(r.titulo || 'Trecho Identificado');
+        const safeExp = escapeHtml(r.explicacao || '');
+        const safeQuote = escapeHtml(r.trechoCitado || '');
+        const relVal = r.relevancia > 1 ? Math.round(r.relevancia) : Math.round((r.relevancia || 0.9) * 100);
+        const tLabel = r.tempoLabel || segundosParaTempo(r.tempoSegundos);
+        const tFimLabel = r.tempoFimLabel || segundosParaTempo(r.tempoFimSegundos || (r.tempoSegundos + 60));
+
+        cardsHtml += `
+          <div class="search-result-card" onclick="irParaPontoExato(${r.tempoSegundos}, '${escapeJs(r.titulo)}', this)">
+            <div class="search-result-top">
+              <span class="interval-badge">⏱️ [${tLabel} → ${tFimLabel}]</span>
+              <span class="rel-badge">⭐ ${relVal}% Relevância</span>
+            </div>
+            <div class="search-result-title">${safeTitle}</div>
+            ${safeExp ? `<div class="search-result-exp">💡 ${safeExp}</div>` : ''}
+            ${safeQuote ? `<div class="search-result-quote">“${safeQuote}”</div>` : ''}
+            <div class="search-result-footer">
+              <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); irParaPontoExato(${r.tempoSegundos}, '${escapeJs(r.titulo)}', this.closest('.search-result-card'))">
+                ▶ Assistir a partir de [${tLabel}]
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      if (resCards) resCards.innerHTML = cardsHtml;
+      if (typeof showToast === 'function') {
+        showToast(`🎯 Encontrado(s) ${resultados.length} trecho(s) com minutagem exata (${fonteResultado})!`, "⚡");
+      }
+    } catch(err) {
+      if (resCards) {
+        resCards.innerHTML = `
+          <div style="padding: 16px; color: var(--danger); font-size: 13px; font-weight: 500;">
+            ⚠️ Erro na pesquisa: ${escapeHtml(err.message)}
+          </div>
+        `;
+      }
+    } finally {
+      if (btn) btn.disabled = false;
+      if (btnTxt) btnTxt.textContent = "🔍 Localizar no Vídeo";
+    }
+  }
+
+  function limparBuscaAula() {
+    const inputElem = document.getElementById('aulaSearchInput');
+    if (inputElem) inputElem.value = '';
+    const resContainer = document.getElementById('aulaSearchResults');
+    if (resContainer) resContainer.style.display = 'none';
+    const btnLimpar = document.getElementById('btnLimparBusca');
+    if (btnLimpar) btnLimpar.style.display = 'none';
+    document.querySelectorAll('.search-result-card').forEach(el => el.classList.remove('active-seek'));
+  }
+
+  function atualizarChipsSugestoes(tituloAula) {
+    const container = document.getElementById('searchChipsContainer');
+    if (!container) return;
+    const t = (tituloAula || '').toLowerCase();
+
+    let chips = [];
+    if (t.includes('procv') || t.includes('excel') || t.includes('planilha')) {
+      chips = [
+        { label: '📌 3º Argumento (Índice vs Letra)', q: 'Onde fala do terceiro argumento ou número da coluna no PROCV?' },
+        { label: '⚠️ Pegadinha da Banca', q: 'Qual a pegadinha da banca com o quarto argumento 0 e 1?' },
+        { label: '🎯 Exemplo Prático de Resolução', q: 'Exemplo prático de resolução passo a passo de exercício' },
+        { label: '❌ Erro #N/D vs #REF!', q: 'Onde o professor explica a diferença de erro N/D e REF?' }
+      ];
+    } else if (t.includes('artigo 5') || t.includes('constitucional')) {
+      chips = [
+        { label: '⚠️ Pegadinha: Crimes Inafiançáveis', q: 'Crimes inafiançáveis e imprescritíveis mnemônico RAÇÃO' },
+        { label: '🏠 Inviolabilidade do Domicílio', q: 'Inviolabilidade do domicílio durante a noite e durante o dia' },
+        { label: '📜 Remédios Constitucionais', q: 'Habeas corpus mandado de segurança e remédios constitucionais' },
+        { label: '🎯 Resolução de Questões da Banca', q: 'Resolução de questões de prova de concurso' }
+      ];
+    } else if (t.includes('administrativo') || t.includes('atos')) {
+      chips = [
+        { label: '⚠️ Requisitos do Ato (COFIFOMOB)', q: 'Requisitos e elementos do ato administrativo competência finalidade forma' },
+        { label: '🔄 Convalidação (FO-CO)', q: 'Convalidação forma e competência não exclusiva' },
+        { label: '⚖️ Anulação vs Revogação', q: 'Diferença de anulação ex tunc e revogação ex nunc' },
+        { label: '🎯 Pegadinhas de Prova', q: 'Pegadinha de banca sobre atos administrativos' }
+      ];
+    } else if (t.includes('rede') || t.includes('redes') || t.includes('internet') || t.includes('computador')) {
+      chips = [
+        { label: '🌐 LAN vs MAN vs WAN', q: 'diferença entre LAN e WAN' },
+        { label: '🔄 Roteador e Switch', q: 'roteador e switch' },
+        { label: '📜 Protocolos HTTP, FTP e SMTP', q: 'protocolo HTTP e FTP' },
+        { label: '📊 Modelo OSI', q: 'modelo OSI' },
+        { label: '⚠️ Pegadinha da Banca', q: 'Qual a principal pegadinha de prova sobre redes de computadores?' }
+      ];
+    } else {
+      chips = [
+        { label: '⚠️ Pegadinha da Banca', q: 'Qual a principal pegadinha que a banca costuma cobrar sobre este assunto?' },
+        { label: '📌 Conceito-Chave & Regra Geral', q: 'Onde o professor explica a regra geral e a definição formal?' },
+        { label: '🎯 Exemplo Prático de Resolução', q: 'Exemplo prático de aplicação ou resolução de questão' },
+        { label: '⚖️ Exceções & Casos Especiais', q: 'Quais são as exceções à regra explicadas na aula?' }
+      ];
+    }
+
+    let html = '<span style="font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase;">Sugestões:</span>';
+    chips.forEach(c => {
+      html += `<button class="search-chip" onclick="buscarPontoExatoNaAula('${escapeJs(c.q)}')">${escapeHtml(c.label)}</button>`;
+    });
+    container.innerHTML = html;
+  }
+
+  function renderizarTranscricaoCompleta(segmentos) {
+    const container = document.getElementById('transcriptLinesContainer');
+    if (!container) return;
+    let html = '';
+    (segmentos || []).forEach((s, idx) => {
+      const tempo = obterTempoSegmento(s);
+      const label = s.tempoLabel || segundosParaTempo(tempo);
+      const texto = obterTextoSegmento(s);
+      html += `
+        <div class="tr-line" data-segment-id="${escapeHtml(criarIdSegmento(s, idx))}" onclick="irParaPontoExato(${tempo}, 'Transcrição', null)">
+          <span class="tr-time">[${escapeHtml(label)}]</span>
+          <span class="tr-text">${escapeHtml(texto)}</span>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
+  }
+
+  function filtrarLinhasTranscricao() {
+    const q = (document.getElementById('filtroTranscricaoInput')?.value || '').toLowerCase().trim();
+    const lines = document.querySelectorAll('.tr-line');
+    lines.forEach(l => {
+      l.style.display = l.textContent.toLowerCase().includes(q) ? 'flex' : 'none';
+    });
+  }
+
+  function toggleTranscriptDrawer() {
+    const container = document.getElementById('transcriptLinesContainer');
+    const btn = document.getElementById('btnToggleTr');
+    if (!container) return;
+    const isHidden = container.style.display === 'none';
+    container.style.display = isHidden ? 'block' : 'none';
+    if (btn) btn.textContent = isHidden ? '▼ Recolher' : '▼ Expandir';
+  }
+
+  // =========================================================================
+  // INTELIGÊNCIA DE RECONHECIMENTO AUTOMÁTICO DA AULA ATIVA DO ALUNO
+  // =========================================================================
+  async function sincronizarVideoComAulaAtual(forceReload = false) {
+    const disc = (typeof currentDiscipline !== 'undefined' && currentDiscipline) ? currentDiscipline : 'Informatica';
+    const sub = (typeof currentSubarea !== 'undefined' && currentSubarea) ? currentSubarea : 'Excel';
+    const chave = `${disc}/${sub}`;
+
+    let videoInfo = AULAS_YOUTUBE_OFICIAIS[chave];
+    let url = (videoInfo && videoInfo.url) || (currentLessonMeta && currentLessonMeta.youtube_url) || currentYoutubeUrl || "";
+    let vid = extrairVideoId(url);
+
+    if (!vid && disc === 'Informatica') {
+      videoInfo = AULAS_YOUTUBE_OFICIAIS["Informatica/Excel"];
+      url = videoInfo.url;
+      vid = videoInfo.videoId;
+    }
+
+    const tituloAula = (videoInfo && videoInfo.titulo) 
+      || (currentLessonMeta && currentLessonMeta.title) 
+      || (typeof TOPIC_DISPLAY_NAMES !== 'undefined' && TOPIC_DISPLAY_NAMES[sub]) 
+      || sub.replace(/_/g, ' ');
+
+    const aulaId = `aula_${disc}_${sub}`;
+
+    const subEl = document.getElementById('pontoExatoAulaSubtitulo');
+    if (subEl) {
+      subEl.innerHTML = `Aula: <strong>${escapeHtml(tituloAula)}</strong> (${escapeHtml(disc)} • ${escapeHtml(sub.replace(/_/g, ' '))})`;
+    }
+
+    const boxAtivo = document.getElementById('aulaAtivaBox');
+    const boxVazio = document.getElementById('emptyStateBox');
+
+    if (!vid) {
+      if (boxAtivo) boxAtivo.style.display = 'none';
+      if (boxVazio) boxVazio.style.display = 'block';
+      return;
+    }
+
+    if (boxVazio) boxVazio.style.display = 'none';
+    if (boxAtivo) boxAtivo.style.display = 'block';
+
+    if (!forceReload && aulasState[aulaId] && aulasState[aulaId].videoId === vid && aulasState[aulaId].transcricao?.length > 0) {
+      aulaAtivaId = aulaId;
+      atualizarChipsSugestoes(tituloAula);
+      limparBuscaAula();
+      renderizarTranscricaoCompleta(aulasState[aulaId].transcricao);
+      iniciarPlayerVideo(vid);
+      return;
+    }
+
+    aulasState[aulaId] = {
+      id: aulaId,
+      titulo: tituloAula,
+      videoId: vid,
+      transcricao: aulasState[aulaId]?.transcricao || [],
+      criadoEm: new Date().toISOString()
+    };
+    aulaAtivaId = aulaId;
+    salvarAulasStorage(aulasState);
+
+    atualizarChipsSugestoes(tituloAula);
+    limparBuscaAula();
+    iniciarPlayerVideo(vid);
+
+    if (!aulasState[aulaId].transcricao || aulasState[aulaId].transcricao.length === 0) {
+      try {
+        const trResp = await fetch(`${PONTO_EXATO_API_BASE}/api/youtube/transcript?videoId=${encodeURIComponent(vid)}`);
+        const trData = await trResp.json();
+        if (trData.success && Array.isArray(trData.segmentos) && trData.segmentos.length > 0) {
+          aulasState[aulaId].transcricao = trData.segmentos;
+          salvarAulasStorage(aulasState);
+          renderizarTranscricaoCompleta(trData.segmentos);
+        }
+      } catch(e) {
+        console.warn("Falha ao carregar transcrição:", e);
+      }
+    } else {
+      renderizarTranscricaoCompleta(aulasState[aulaId].transcricao);
+    }
+  }
+
+  function abrirModalTrocarVideoAula() {
+    const modal = document.getElementById('modalTrocarVideoAula');
+    if (!modal) return;
+    const input = document.getElementById('trocarVideoUrlInput');
+    const disc = (typeof currentDiscipline !== 'undefined' && currentDiscipline) ? currentDiscipline : 'Informatica';
+    const sub = (typeof currentSubarea !== 'undefined' && currentSubarea) ? currentSubarea : 'Excel';
+    const chave = `${disc}/${sub}`;
+    const vidInfo = AULAS_YOUTUBE_OFICIAIS[chave];
+    if (input) input.value = (vidInfo && vidInfo.url) || currentYoutubeUrl || '';
+    modal.style.display = 'flex';
+  }
+
+  async function salvarNovoVideoParaAulaAtual() {
+    const input = document.getElementById('trocarVideoUrlInput');
+    const val = input ? input.value.trim() : '';
+    const vid = extrairVideoId(val);
+    if (!vid) {
+      alert("Por favor informe um link ou ID válido do YouTube.");
+      return;
+    }
+    const disc = (typeof currentDiscipline !== 'undefined' && currentDiscipline) ? currentDiscipline : 'Informatica';
+    const sub = (typeof currentSubarea !== 'undefined' && currentSubarea) ? currentSubarea : 'Excel';
+    const chave = `${disc}/${sub}`;
+    AULAS_YOUTUBE_OFICIAIS[chave] = {
+      url: `https://www.youtube.com/watch?v=${vid}`,
+      videoId: vid,
+      titulo: (typeof TOPIC_DISPLAY_NAMES !== 'undefined' && TOPIC_DISPLAY_NAMES[sub]) || sub.replace(/_/g, ' ')
+    };
+    currentYoutubeUrl = `https://www.youtube.com/watch?v=${vid}`;
+    closeModal('modalTrocarVideoAula');
+    if (typeof showToast === 'function') showToast("Nova videoaula vinculada com sucesso!", "🎬");
+    await sincronizarVideoComAulaAtual(true);
+  }
+
+  // Exportar para escopo global (window)
+  window.irParaPontoExato = irParaPontoExato;
+  window.buscarPontoExatoNaAula = buscarPontoExatoNaAula;
+  window.limparBuscaAula = limparBuscaAula;
+  window.playerTogglePlayPause = playerTogglePlayPause;
+  window.playerSkipSeconds = playerSkipSeconds;
+  window.filtrarLinhasTranscricao = filtrarLinhasTranscricao;
+  window.toggleTranscriptDrawer = toggleTranscriptDrawer;
+  window.abrirModalTrocarVideoAula = abrirModalTrocarVideoAula;
+  window.salvarNovoVideoParaAulaAtual = salvarNovoVideoParaAulaAtual;
+  window.sincronizarVideoComAulaAtual = sincronizarVideoComAulaAtual;
 
 </script>
 </body>

@@ -837,6 +837,219 @@ def find_subarea_path(discipline, subarea):
                         return sp
     return folder
 
+def tempo_para_segundos(tempo_str):
+    if not tempo_str:
+        return 0
+    clean = str(tempo_str).replace("[", "").replace("]", "").strip()
+    partes = clean.split(":")
+    try:
+        if len(partes) == 3:
+            return int(partes[0]) * 3600 + int(partes[1]) * 60 + int(float(partes[2]))
+        elif len(partes) == 2:
+            return int(partes[0]) * 60 + int(float(partes[1]))
+        elif len(partes) == 1:
+            return int(float(partes[0]))
+    except Exception:
+        return 0
+    return 0
+
+def segundos_para_tempo(seg):
+    seg = max(0, int(round(seg)))
+    h = seg // 3600
+    m = (seg % 3600) // 60
+    s = seg % 60
+    if h > 0:
+        return f"{h}:{m:02d}:{s:02d}"
+    return f"{m:02d}:{s:02d}"
+
+def fetch_youtube_transcript_data(video_id):
+    if not YouTubeTranscriptApi:
+        raise Exception("Biblioteca youtube_transcript_api não disponível no servidor.")
+    api = YouTubeTranscriptApi()
+    snippets = None
+    try:
+        tl = api.list(video_id)
+        # Priorizar legendas em português (manual e depois automática)
+        for t in tl:
+            if t.language_code.startswith("pt") and not t.is_generated:
+                snippets = t.fetch()
+                break
+        if not snippets:
+            for t in tl:
+                if t.language_code.startswith("pt"):
+                    snippets = t.fetch()
+                    break
+        if not snippets:
+            for t in tl:
+                snippets = t.fetch()
+                break
+    except Exception as e_list:
+        try:
+            snippets = api.fetch(video_id, languages=("pt", "pt-BR", "pt-PT", "en"))
+        except Exception as e_fetch:
+            raise Exception(f"Legendas indisponíveis no YouTube para o vídeo {video_id}: {e_fetch}")
+
+    if not snippets:
+        raise Exception("Nenhuma legenda ou transcrição foi encontrada no YouTube para este vídeo.")
+
+    results = []
+    for s in snippets:
+        sec = float(getattr(s, "start", 0) if hasattr(s, "start") else s.get("start", 0))
+        txt = str(getattr(s, "text", "") if hasattr(s, "text") else s.get("text", "")).replace("\n", " ").strip()
+        if not txt:
+            continue
+        results.append({
+            "tempoSegundos": int(sec),
+            "tempoLabel": segundos_para_tempo(sec),
+            "texto": txt
+        })
+    return results
+
+def parse_manual_transcript_text(text):
+    if not text:
+        return []
+    linhas = [l.strip() for l in text.split("\n") if l.strip()]
+    regex_linha = re.compile(r"^\[?(\d{1,2}(?::\d{2}){1,2})\]?\s*[-–:]?\s*(.+)$")
+    segmentos = []
+    for l in linhas:
+        m = regex_linha.match(l)
+        if m:
+            t_str = m.group(1)
+            t_sec = tempo_para_segundos(t_str)
+            segmentos.append({
+                "tempoSegundos": t_sec,
+                "tempoLabel": segundos_para_tempo(t_sec),
+                "texto": m.group(2).strip()
+            })
+        elif segmentos:
+            segmentos[-1]["texto"] += " " + l
+    return segmentos
+
+def generate_youtube_moments_ai(title, video_id, segments=None, manual_text=""):
+    if not segments and manual_text:
+        segments = parse_manual_transcript_text(manual_text)
+
+    if not segments and video_id:
+        try:
+            segments = fetch_youtube_transcript_data(video_id)
+        except Exception:
+            pass
+
+    if not segments:
+        raise Exception("Nenhuma transcrição ou minutagem disponível para gerar momentos.")
+
+    # Se for o vídeo clássico de Excel PROCV (2tCnNcz5fqw) ou se existir Momentos_Chave_Excel.json
+    excel_curated_path = os.path.join(BASE_DIR, "Informatica", "Excel", "Momentos_Chave_Excel.json")
+    if (video_id == "2tCnNcz5fqw" or "procv" in (title or "").lower()) and os.path.exists(excel_curated_path):
+        try:
+            with open(excel_curated_path, "r", encoding="utf-8") as f_ex:
+                raw_ex = json.load(f_ex)
+                if isinstance(raw_ex, list) and len(raw_ex) > 0:
+                    moments_curated = []
+                    for idx, m in enumerate(raw_ex):
+                        s = m.get("sec", 0)
+                        moments_curated.append({
+                            "id": f"momento_{idx+1}",
+                            "tempoSegundos": s,
+                            "tempoLabel": m.get("time_str", segundos_para_tempo(s)),
+                            "titulo": m.get("title", ""),
+                            "descricao": m.get("importance", m.get("quote", ""))
+                        })
+                    return moments_curated
+        except Exception:
+            pass
+
+    # Amostrar transcrição de forma compacta
+    sampled_lines = []
+    last_sec = -999
+    for s in segments:
+        sec = s.get("tempoSegundos", 0)
+        lbl = s.get("tempoLabel", "00:00")
+        txt = s.get("texto", "").strip()
+        if sec - last_sec >= 15 or len(sampled_lines) < 6:
+            sampled_lines.append(f"[{lbl}] {txt}")
+            last_sec = sec
+        elif sampled_lines:
+            sampled_lines[-1] += " " + txt
+
+    transcript_sample = "\n".join(sampled_lines[:350])
+
+    system_prompt = (
+        "Você é um pedagogo especialista em concursos públicos e sintetização de videoaulas.\n"
+        "Seu objetivo é extrair os principais MOMENTOS DIDÁTICOS do vídeo a partir da transcrição cronometrada.\n"
+        "Regras estritas:\n"
+        "1. Gere entre 5 e 10 momentos específicos onde o professor ensina regras, conceitos, fórmulas, resoluções ou pegadinhas.\n"
+        "2. O campo 'tempo' DEVE ser um dos timestamps reais existentes na transcrição (formato mm:ss ou h:mm:ss).\n"
+        "3. O campo 'titulo' deve ser curto e didático (ex: 'Sintaxe e os 4 Argumentos do PROCV').\n"
+        "4. O campo 'descricao' deve ser uma frase explicando com clareza o que o aluno aprende neste trecho.\n"
+        "5. Responda APENAS com um array JSON válido, sem texto explicativo antes ou depois."
+    )
+
+    user_prompt = (
+        f"Título da Aula: \"{title}\"\n\n"
+        f"Transcrição Cronometrada:\n\"\"\"\n{transcript_sample}\n\"\"\"\n\n"
+        f"Responda EXCLUSIVAMENTE com o array JSON no formato:\n"
+        f'[{{\"tempo\": \"01:23\", \"titulo\": \"...\", \"descricao\": \"...\"}}]'
+    )
+
+    moments_raw = []
+    ai_resp, provider = call_ai_service(system_prompt, user_prompt, json_mode=True, temperature=0.5)
+    if ai_resp and isinstance(ai_resp, str):
+        try:
+            clean_json = re.sub(r"^```json\s*|^```\s*|```$", "", ai_resp.strip(), flags=re.MULTILINE).strip()
+            parsed = json.loads(clean_json)
+            if isinstance(parsed, list):
+                moments_raw = parsed
+            elif isinstance(parsed, dict) and "momentos" in parsed:
+                moments_raw = parsed["momentos"]
+        except Exception as e_json:
+            print(f"Aviso ao decodificar JSON da IA: {e_json}")
+
+    # Fallback heurístico inteligente se IA indisponível
+    if not moments_raw:
+        total_duration = segments[-1].get("tempoSegundos", 0) if segments else 600
+        step = max(60, total_duration // 7)
+        target_secs = list(range(0, total_duration, step))[:8]
+        moments_raw = []
+        for i, t_target in enumerate(target_secs):
+            closest = min(segments, key=lambda s: abs(s.get("tempoSegundos", 0) - t_target))
+            moments_raw.append({
+                "tempo": closest.get("tempoLabel", "00:00"),
+                "titulo": f"Tópico {i+1}: " + (closest.get("texto", "")[:45] + "..."),
+                "descricao": f"Explicação do professor aos {closest.get('tempoLabel')}: {closest.get('texto', '')[:110]}."
+            })
+
+    result = []
+    for idx, m in enumerate(moments_raw):
+        t_str = str(m.get("tempo", "00:00")).strip()
+        sec = tempo_para_segundos(t_str)
+        result.append({
+            "id": f"momento_{idx+1}",
+            "tempoSegundos": sec,
+            "tempoLabel": segundos_para_tempo(sec),
+            "titulo": m.get("titulo", f"Momento {idx+1}").strip(),
+            "descricao": m.get("descricao", "").strip()
+        })
+
+    result.sort(key=lambda x: x["tempoSegundos"])
+
+    try:
+        ud_dir = os.path.join(BASE_DIR, "userdata")
+        os.makedirs(ud_dir, exist_ok=True)
+        safe_v = re.sub(r'[^a-zA-Z0-9_-]', '_', video_id or "custom")
+        save_path = os.path.join(ud_dir, f"momentos_{safe_v}.json")
+        with open(save_path, "w", encoding="utf-8") as fs:
+            json.dump({
+                "videoId": video_id,
+                "title": title,
+                "momentos": result,
+                "updated_at": datetime.datetime.now().isoformat()
+            }, fs, indent=2, ensure_ascii=False)
+    except Exception:
+        pass
+
+    return result
+
 def parse_timed_transcript_file(timed_file):
     """
     Parser universal para transcrições cronometradas em múltiplos formatos:
@@ -2049,6 +2262,20 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                     self.wfile.write(f.read())
                 return
 
+        # 0.2.2 Estúdio Interativo de Teste: Vídeo & Momentos da Aula (Opção B)
+        if path in ("/estudio-momentos", "/estudio_momentos_video.html", "/momentos", "/momentos.html"):
+            estudio_file = os.path.join(BASE_DIR, "estudio_momentos_video.html")
+            if not os.path.exists(estudio_file):
+                estudio_file = os.path.join(BASE_DIR, "public", "estudio_momentos_video.html")
+            if os.path.exists(estudio_file):
+                self.send_response(200)
+                self.send_header("Content-type", "text/html; charset=utf-8")
+                self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+                self.end_headers()
+                with open(estudio_file, "rb") as f:
+                    self.wfile.write(f.read())
+                return
+
         # 0.3 Catálogo Pré-carregado Offline / Fallback
         if path == "/preseeded_topics.json":
             preseeded_file = os.path.join(BASE_DIR, "preseeded_topics.json")
@@ -2355,6 +2582,65 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 "url": url,
                 "masked_key": masked_key
             }, ensure_ascii=False).encode("utf-8"))
+
+        # 1.1 API YouTube - Buscar Transcrição Automática por Link ou ID
+        elif path == "/api/youtube/transcript":
+            video_input = query.get("url", [""])[0] or query.get("videoId", [""])[0]
+            m_yt = re.search(r'(?:v=|youtu\.be\/|embed\/|^)([0-9A-Za-z_-]{11})', video_input)
+            if not m_yt:
+                self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": "Link ou ID do YouTube inválido."}, ensure_ascii=False).encode("utf-8"))
+                return
+            vid_id = m_yt.group(1)
+            try:
+                segmentos = fetch_youtube_transcript_data(vid_id)
+                self.send_response(200)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    "success": True,
+                    "videoId": vid_id,
+                    "total_segmentos": len(segmentos),
+                    "segmentos": segmentos
+                }, ensure_ascii=False).encode("utf-8"))
+            except Exception as e_tr:
+                self.send_response(200)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    "success": False,
+                    "videoId": vid_id,
+                    "error": str(e_tr),
+                    "can_fallback_manual": True
+                }, ensure_ascii=False).encode("utf-8"))
+            return
+
+        # 1.2 API YouTube - Listar Momentos Salvos
+        elif path == "/api/youtube/saved-moments":
+            vid_param = query.get("videoId", [""])[0]
+            ud_dir = os.path.join(BASE_DIR, "userdata")
+            saved = []
+            if os.path.exists(ud_dir):
+                for f in os.listdir(ud_dir):
+                    if f.startswith("momentos_") and f.endswith(".json"):
+                        try:
+                            with open(os.path.join(ud_dir, f), "r", encoding="utf-8") as fs:
+                                s_data = json.load(fs)
+                                if vid_param:
+                                    if s_data.get("videoId") == vid_param:
+                                        saved = [s_data]
+                                        break
+                                else:
+                                    saved.append(s_data)
+                        except Exception:
+                            pass
+            self.send_response(200)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": True, "saved": saved}, ensure_ascii=False).encode("utf-8"))
+            return
 
         elif path == "/api/transcript":
             disc = query.get("discipline", ["Informatica"])[0]
@@ -3386,7 +3672,33 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(json.dumps({"success": True, "message": "Tópico criado com sucesso!"}).encode("utf-8"))
 
-                # 10. Importar / Cadastrar Nova Aula com Extração Inteligente de YouTube e Geração dos 4 Pilares
+        # 9.5 API YouTube - Gerar Momentos com IA a partir da Transcrição
+        elif path == "/api/youtube/generate-moments":
+            vid_id = payload.get("videoId", "").strip()
+            title = payload.get("title", "").strip() or payload.get("titulo", "Aula Preparatória").strip()
+            segmentos = payload.get("segmentos", [])
+            manual_text = payload.get("manualTranscript", "").strip() or payload.get("transcricaoManual", "").strip()
+
+            try:
+                moments = generate_youtube_moments_ai(title, vid_id, segmentos, manual_text)
+                self.send_response(200)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    "success": True,
+                    "videoId": vid_id,
+                    "title": title,
+                    "total_momentos": len(moments),
+                    "momentos": moments
+                }, ensure_ascii=False).encode("utf-8"))
+            except Exception as e_moments:
+                self.send_response(500)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": str(e_moments)}, ensure_ascii=False).encode("utf-8"))
+            return
+
+        # 10. Importar / Cadastrar Nova Aula com Extração Inteligente de YouTube e Geração dos 4 Pilares
         elif path == "/api/import-lesson":
             disc = payload.get("discipline", "").strip().replace(" ", "_")
             sub = payload.get("subarea", "").strip().replace(" ", "_")

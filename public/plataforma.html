@@ -11471,6 +11471,27 @@
   // =========================================================================
   // MOTOR OFICIAL: PONTO EXATO DA VIDEOAULA (IA SEMÂNTICA + LEGENDAS OFICIAIS)
   // =========================================================================
+  function escapeJs(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/\\/g, '\\\\')
+      .replace(/'/g, "\\'")
+      .replace(/"/g, '&quot;')
+      .replace(/\n/g, ' ')
+      .replace(/\r/g, '');
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  window.escapeJs = escapeJs;
+  window.escapeHtml = escapeHtml;
   const PONTO_EXATO_STORAGE_KEY = "concursos_estudio_aulas_real";
   const PONTO_EXATO_API_BASE = (window.location.protocol === 'file:') ? 'http://localhost:8095' : '';
 

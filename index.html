@@ -2805,6 +2805,7 @@
       overflow: hidden;
       box-shadow: 0 8px 24px rgba(0,0,0,0.25);
       position: relative;
+      scroll-margin-top: 80px;
     }
     #yt-player-box {
       width: 100%;
@@ -11677,7 +11678,7 @@
     }
   }
 
-  function irParaPontoExato(segundos, titulo, cardElem) {
+  function irParaPontoExato(segundos, titulo, cardElem, shouldScroll = true) {
     if (ytPlayer && typeof ytPlayer.seekTo === 'function') {
       try {
         ytPlayer.seekTo(segundos, true);
@@ -11701,6 +11702,16 @@
 
     document.querySelectorAll('.search-result-card').forEach(el => el.classList.remove('active-seek'));
     if (cardElem) cardElem.classList.add('active-seek');
+
+    // Rola a tela suavemente para cima até o vídeo para o aluno assistir diretamente ao ponto exato
+    if (shouldScroll) {
+      setTimeout(() => {
+        const videoTarget = document.querySelector('.video-frame-container') || document.getElementById('yt-player-box') || document.getElementById('tab5');
+        if (videoTarget) {
+          videoTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 50);
+    }
 
     if (typeof showToast === 'function') {
       showToast(`🎯 Saltando para [${segundosParaTempo(segundos)}]: ${titulo}`, "⚡");
@@ -11733,7 +11744,7 @@
       curr = ytPlayer.getCurrentTime() || 0;
     }
     const target = Math.max(0, curr + delta);
-    irParaPontoExato(target, delta > 0 ? '+10s' : '-10s', null);
+    irParaPontoExato(target, delta > 0 ? '+10s' : '-10s', null, false);
     if (typeof showToast === 'function') {
       showToast(`${delta > 0 ? '⏩ +10s' : '⏪ -10s'} (${segundosParaTempo(target)})`, "⏱️");
     }

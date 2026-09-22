@@ -469,6 +469,40 @@
       gap: 8px;
       position: relative;
     }
+    .search-bar-wrap .btn {
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    @media (max-width: 640px) {
+      .search-bar-wrap {
+        flex-direction: column;
+      }
+      .search-bar-wrap .btn {
+        width: 100%;
+        padding: 10px;
+      }
+    }
+    .empty-search-box {
+      padding: 20px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+    }
+    .empty-search-box h4 {
+      font-size: 14.5px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .empty-search-box p {
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.45;
+    }
     .search-bar-wrap input {
       flex: 1;
       background: var(--surface2);
@@ -1549,11 +1583,45 @@
 
       try {
         if (!resultados || resultados.length === 0) {
+          const t = (aula.titulo || '').toLowerCase();
+          let sugestoesFallback = [];
+          if (t.includes('rede') || t.includes('redes')) {
+            sugestoesFallback = [
+              { label: '🌐 LAN vs MAN vs WAN', q: 'diferença entre LAN e WAN' },
+              { label: '🔄 Roteador e Switch', q: 'roteador e switch' },
+              { label: '📜 Protocolos HTTP e FTP', q: 'protocolo HTTP e FTP' },
+              { label: '📊 Modelo OSI', q: 'modelo OSI' }
+            ];
+          } else if (t.includes('procv') || t.includes('excel')) {
+            sugestoesFallback = [
+              { label: '📌 3º Argumento (Índice vs Letra)', q: 'o 3º argumento' },
+              { label: '⚠️ Pegadinha da Banca', q: 'pegadinha da banca' },
+              { label: '🎯 Exemplo Prático', q: 'exemplo prático' }
+            ];
+          } else {
+            sugestoesFallback = [
+              { label: '📌 Conceito-Chave & Regra Geral', q: 'conceito chave regra geral' },
+              { label: '⚠️ Pegadinha da Banca', q: 'pegadinha da banca' }
+            ];
+          }
+
+          let chipsFallbackHtml = '';
+          sugestoesFallback.forEach(s => {
+            chipsFallbackHtml += `<button class="search-chip" onclick="buscarPontoExatoNaAula('${escapeJs(s.q)}')">${escapeHtml(s.label)}</button> `;
+          });
+
           resCards.innerHTML = `
-            <div style="padding: 24px; text-align: center; color: var(--text2);">
-              <div style="font-size: 26px; margin-bottom: 6px;">🔍</div>
-              <p style="font-size: 13.5px; font-weight: 600; color: var(--text);">Nenhum trecho correspondente encontrado</p>
-              <p style="font-size: 12.5px; margin-top: 4px;">Não localizamos uma explicação direta para "${escapeHtml(query)}". Experimente termos sinônimos ou consulte os momentos da aula abaixo.</p>
+            <div class="empty-search-box">
+              <h4>💡 O assunto "<em>${escapeHtml(query)}</em>" não foi citado pelo professor nesta aula</h4>
+              <p>Analisamos a transcrição completa de todos os trechos deste vídeo e o professor não aborda este tópico específico nesta aula.</p>
+              <div style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border);">
+                <div style="font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 6px; text-transform: uppercase;">
+                  Assuntos que o professor realmente explica nesta aula (clique para ir direto):
+                </div>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                  ${chipsFallbackHtml}
+                </div>
+              </div>
             </div>
           `;
           return;
@@ -1641,6 +1709,14 @@
           { label: '🔄 Convalidação (FO-CO)', q: 'Convalidação forma e competência não exclusiva' },
           { label: '⚖️ Anulação vs Revogação', q: 'Diferença de anulação ex tunc e revogação ex nunc' },
           { label: '🎯 Pegadinhas de Prova', q: 'Pegadinha de banca sobre atos administrativos' }
+        ];
+      } else if (t.includes('rede') || t.includes('redes') || t.includes('internet') || t.includes('computador')) {
+        chips = [
+          { label: '🌐 LAN vs MAN vs WAN', q: 'diferença entre LAN e WAN' },
+          { label: '🔄 Roteador e Switch', q: 'roteador e switch' },
+          { label: '📜 Protocolos HTTP, FTP e SMTP', q: 'protocolo HTTP e FTP' },
+          { label: '📊 Modelo OSI', q: 'modelo OSI' },
+          { label: '⚠️ Pegadinha da Banca', q: 'Qual a principal pegadinha de prova sobre redes de computadores?' }
         ];
       } else {
         chips = [

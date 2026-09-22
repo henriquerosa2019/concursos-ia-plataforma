@@ -606,6 +606,14 @@
 </head>
 <body>
 
+  <!-- Banner Informativo quando aberto via file:// -->
+  <div id="fileProtocolBanner" style="display: none; background: #FEF3C7; border-bottom: 2px solid #F59E0B; color: #92400E; padding: 12px 20px; font-size: 13.5px; text-align: center; font-weight: 500; z-index: 9999; position: relative;">
+    <span>⚠️ Você abriu esta página diretamente pelo arquivo (<code>file://</code>). Para que a extração de legendas e a IA funcionem sem bloqueios do navegador, acesse pela URL oficial:</span>
+    <a href="http://localhost:8095/estudio_momentos_video.html" style="color: #1F2937; font-weight: 700; text-decoration: underline; margin-left: 8px;">
+      🌐 http://localhost:8095/estudio_momentos_video.html
+    </a>
+  </div>
+
   <!-- Header -->
   <header>
     <div class="header-inner">
@@ -787,6 +795,7 @@
     // ARMAZENAMENTO E GERENCIAMENTO DAS AULAS (Zero Mockups)
     // =========================================================================
     const STORAGE_KEY = "concursos_estudio_aulas_real";
+    const API_BASE = (window.location.protocol === 'file:') ? 'http://localhost:8095' : '';
 
     function carregarAulasStorage() {
       try {
@@ -867,7 +876,7 @@
       if (!vid) return;
 
       try {
-        const resp = await fetch(`/api/youtube/info?videoId=${vid}`);
+        const resp = await fetch(`${API_BASE}/api/youtube/info?videoId=${vid}`);
         const data = await resp.json();
         if (data.success && data.title && !tituloInput.value) {
           tituloInput.value = data.title;
@@ -1037,7 +1046,7 @@
         showToast("Buscando legendas da aula no YouTube...", "⏳");
 
         // 1. Buscar transcrição automática no servidor
-        const trResp = await fetch(`/api/youtube/transcript?videoId=${encodeURIComponent(videoId)}`);
+        const trResp = await fetch(`${API_BASE}/api/youtube/transcript?videoId=${encodeURIComponent(videoId)}`);
         const trData = await trResp.json();
 
         let segmentos = [];
@@ -1056,7 +1065,7 @@
 
         // 2. Chamar IA para gerar pelo menos 10 momentos didáticos
         btnTxt.innerHTML = `<span class="spinner"></span> IA gerando momentos didáticos...`;
-        const aiResp = await fetch('/api/youtube/generate-moments', {
+        const aiResp = await fetch(`${API_BASE}/api/youtube/generate-moments`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1071,14 +1080,16 @@
           throw new Error(aiData.error || "A IA não conseguiu gerar os momentos.");
         }
 
-        // 3. Salvar nova aula
+        // 3. Normalizar e validar momentos contra a minutagem real da transcrição
+        const momentosValidados = normalizarMomentos(aiData.momentos, segmentos);
+
         const aulaId = `aula_${Date.now()}`;
         const novaAula = {
           id: aulaId,
           titulo: tituloFinal,
           videoId: videoId,
           transcricao: segmentos,
-          momentos: aiData.momentos,
+          momentos: momentosValidados,
           criadoEm: new Date().toISOString()
         };
 
@@ -1090,7 +1101,19 @@
         showToast(`🎉 Aula importada com sucesso! ${aiData.momentos.length} momentos prontos!`, "✅");
 
       } catch(e) {
-        errBox.textContent = "Erro na importação: " + (e.message || "Tente novamente.");
+        const msg = e.message || "";
+        if (msg === 'Failed to fetch' || msg.includes('NetworkError') || msg.includes('fetch')) {
+          errBox.innerHTML = `
+            <strong>⚠️ Falha de conexão com o servidor local!</strong><br>
+            Não foi possível comunicar com o servidor em <code>http://localhost:8095</code>.<br>
+            ${window.location.protocol === 'file:' 
+              ? 'Você abriu o arquivo via <code>file://</code>. Acesse pela URL oficial com o servidor ativo: <a href="http://localhost:8095/estudio_momentos_video.html" style="color:var(--accent); text-decoration:underline; font-weight:700;">http://localhost:8095/estudio_momentos_video.html</a> ou use o atalho <strong>"Estúdio Momentos do Vídeo"</strong> na Área de Trabalho.'
+              : 'Verifique se o servidor local está em execução (execute o arquivo <code>abrir_estudio_momentos.bat</code> na Área de Trabalho).'
+            }
+          `;
+        } else {
+          errBox.textContent = "Erro na importação: " + msg;
+        }
         errBox.style.display = 'block';
         document.getElementById('fallbackManualSection').style.display = 'block';
       } finally {
@@ -1113,7 +1136,7 @@
       const videoId = extrairVideoId(urlVal) || "manual_vid";
       try {
         showToast("Gerando momentos com a minutagem colada...", "⏳");
-        const resp = await fetch('/api/youtube/generate-moments', {
+        const resp = await fetch(`${API_BASE}/api/youtube/generate-moments`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1124,13 +1147,15 @@
         });
         const data = await resp.json();
         if (data.success && data.momentos) {
+          const momentosValidados = normalizarMomentos(data.momentos, []);
+
           const aulaId = `aula_${Date.now()}`;
           const novaAula = {
             id: aulaId,
             titulo: tituloVal,
             videoId: videoId,
             transcricao: [],
-            momentos: data.momentos,
+            momentos: momentosValidados,
             criadoEm: new Date().toISOString()
           };
           aulasState[aulaId] = novaAula;
@@ -1219,11 +1244,14 @@
       const container = document.getElementById('transcriptLinesContainer');
       if (!container) return;
       let html = '';
-      segmentos.forEach(s => {
+      segmentos.forEach((s, idx) => {
+        const tempo = obterTempoSegmento(s);
+        const label = s.tempoLabel || segundosParaTempo(tempo);
+        const texto = obterTextoSegmento(s);
         html += `
-          <div class="tr-line" onclick="irParaPontoExato(${s.tempoSegundos}, 'Transcrição', null)">
-            <span class="tr-time">[${s.tempoLabel}]</span>
-            <span class="tr-text">${escapeHtml(s.texto)}</span>
+          <div class="tr-line" data-segment-id="${escapeHtml(criarIdSegmento(s, idx))}" onclick="irParaPontoExato(${tempo}, 'Transcrição', null)">
+            <span class="tr-time">[${escapeHtml(label)}]</span>
+            <span class="tr-text">${escapeHtml(texto)}</span>
           </div>
         `;
       });
@@ -1308,6 +1336,209 @@
     // =========================================================================
     // BUSCA INTELIGENTE DO PONTO EXATO DA AULA (IA Semântica)
     // =========================================================================
+    
+    // =========================================================================
+    // MOTOR DE PROCESSAMENTO LEXICAL E SEMÂNTICO (Busca Híbrida & Normalização)
+    // =========================================================================
+
+    function normalizarTextoBusca(texto) {
+      return String(texto || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function tokenizarBusca(texto) {
+      const stopwords = new Set([
+        'a','as','o','os','um','uma','uns','umas','de','da','das','do','dos',
+        'e','ou','em','no','na','nos','nas','por','para','com','sem','sobre',
+        'que','qual','quais','onde','quando','como','explica','explicar',
+        'mostra','fale','fala','professor','aula','trecho','ponto','video',
+        'vídeo','é','sao','são','foi','ser','ter','esta','está','esse','este'
+      ]);
+      return [...new Set(
+        normalizarTextoBusca(texto)
+          .split(' ')
+          .filter(t => t.length >= 3 && !stopwords.has(t))
+      )];
+    }
+
+    function obterTempoSegmento(s) {
+      const candidatos = [
+        s?.tempoSegundos,
+        s?.start,
+        s?.inicio,
+        s?.startTime,
+        s?.offset
+      ];
+      for (const v of candidatos) {
+        const n = Number(v);
+        if (Number.isFinite(n) && n >= 0) return Math.floor(n);
+      }
+
+      const label = String(s?.tempoLabel || s?.timestamp || '');
+      const m = label.match(/(?:(\d+):)?(\d{1,2}):(\d{2})$/);
+      if (m) {
+        return Number(m[1] || 0) * 3600 + Number(m[2]) * 60 + Number(m[3]);
+      }
+      const m2 = label.match(/^(\d+):(\d{2})$/);
+      if (m2) return Number(m2[1]) * 60 + Number(m2[2]);
+      return 0;
+    }
+
+    function obterTextoSegmento(s) {
+      return String(s?.texto ?? s?.text ?? s?.content ?? '');
+    }
+
+    function criarIdSegmento(s, idx) {
+      return String(s?.id ?? s?.segmentoId ?? `seg_${idx}`);
+    }
+
+    function construirIndiceLocal(segmentos) {
+      return (segmentos || []).map((s, idx) => {
+        const texto = obterTextoSegmento(s);
+        return {
+          id: criarIdSegmento(s, idx),
+          indice: idx,
+          tempoSegundos: obterTempoSegmento(s),
+          tempoLabel: segundosParaTempo(obterTempoSegmento(s)),
+          texto,
+          normalizado: normalizarTextoBusca(texto)
+        };
+      }).filter(s => s.texto.trim());
+    }
+
+    function pontuarSegmento(segmento, tokens, consultaNormalizada) {
+      if (!tokens.length) return 0;
+      const texto = segmento.normalizado;
+      let score = 0;
+
+      // Correspondência exata da frase
+      if (consultaNormalizada.length >= 5 && texto.includes(consultaNormalizada)) {
+        score += 15;
+      }
+
+      tokens.forEach(token => {
+        if (texto.includes(token)) {
+          score += 3.5;
+          const ocorrencias = texto.split(token).length - 1;
+          score += Math.min(ocorrencias, 3) * 0.5;
+          if (texto.startsWith(token)) score += 1;
+        }
+      });
+
+      // Proximidade de múltiplos termos
+      if (tokens.length >= 2) {
+        const posicoes = tokens
+          .map(t => texto.indexOf(t))
+          .filter(p => p >= 0)
+          .sort((a,b) => a-b);
+        if (posicoes.length >= 2 && (posicoes[posicoes.length - 1] - posicoes[0]) < 120) {
+          score += 4;
+        }
+      }
+
+      return score;
+    }
+
+    function agruparTrechoRelevante(indice, posicao, raio = 1) {
+      const inicio = Math.max(0, posicao - raio);
+      const fim = Math.min(indice.length - 1, posicao + raio);
+      return indice.slice(inicio, fim + 1);
+    }
+
+    function buscarLocalmenteNaTranscricao(consulta, segmentos) {
+      const indice = construirIndiceLocal(segmentos);
+      const tokens = tokenizarBusca(consulta);
+      const consultaNormalizada = normalizarTextoBusca(consulta);
+
+      if (!indice.length || !tokens.length) return [];
+
+      const candidatos = indice
+        .map(seg => ({
+          ...seg,
+          score: pontuarSegmento(seg, tokens, consultaNormalizada)
+        }))
+        .filter(seg => seg.score > 0)
+        .sort((a,b) => b.score - a.score || a.tempoSegundos - b.tempoSegundos);
+
+      const usados = new Set();
+      const resultados = [];
+
+      for (const candidato of candidatos) {
+        const chave = Math.floor(candidato.tempoSegundos / 20);
+        if (usados.has(chave)) continue;
+        usados.add(chave);
+
+        const trecho = agruparTrechoRelevante(indice, candidato.indice, 1);
+        const textoTrecho = trecho.map(s => s.texto).join(' ');
+        const tFim = candidato.tempoSegundos + 60;
+
+        resultados.push({
+          segmentoId: candidato.id,
+          tempoSegundos: candidato.tempoSegundos,
+          tempoLabel: candidato.tempoLabel,
+          tempoFimSegundos: tFim,
+          tempoFimLabel: segundosParaTempo(tFim),
+          titulo: `Trecho aos ${candidato.tempoLabel} referente a "${consulta.slice(0, 35)}"`,
+          explicacao: textoTrecho,
+          trechoCitado: candidato.texto,
+          relevancia: Math.min(95, Math.round(50 + candidato.score * 5)),
+          fonte: 'Transcrição Cronometrada'
+        });
+
+        if (resultados.length >= 4) break;
+      }
+
+      return resultados;
+    }
+
+    function normalizarMomentos(momentos, segmentos) {
+      const lista = Array.isArray(momentos) ? momentos : [];
+      const indice = construirIndiceLocal(segmentos);
+
+      return lista.map((m, idx) => {
+        let tempo = Number(m?.tempoSegundos);
+
+        if (!Number.isFinite(tempo) || tempo < 0) {
+          tempo = obterTempoSegmento(indice[0] || {});
+        }
+
+        // Se temos transcrição real, alinha o timestamp ao trecho real mais próximo
+        if (indice.length) {
+          let melhor = indice[0];
+          let menorDist = Math.abs(melhor.tempoSegundos - tempo);
+          for (const s of indice) {
+            const dist = Math.abs(s.tempoSegundos - tempo);
+            if (dist < menorDist) {
+              melhor = s;
+              menorDist = dist;
+            }
+          }
+          // Substitui se o timestamp da IA desviou mais de 15 segundos da fala real
+          if (menorDist > 15) {
+            tempo = melhor.tempoSegundos;
+          }
+        }
+
+        return {
+          ...m,
+          id: m?.id ?? `momento_${idx + 1}`,
+          tempoSegundos: Math.max(0, Math.floor(tempo)),
+          tempoLabel: segundosParaTempo(tempo),
+          titulo: m?.titulo || `Momento ${idx + 1}`,
+          descricao: m?.descricao || ''
+        };
+      });
+    }
+
+
+    // =========================================================================
+    // BUSCA HÍBRIDA DO PONTO EXATO DA AULA (IA Semântica + Fallback Local)
+    // =========================================================================
     async function buscarPontoExatoNaAula(queryOpcional) {
       if (!aulaAtivaId || !aulasState[aulaAtivaId]) {
         showToast("Nenhuma aula selecionada para pesquisar.", "⚠️");
@@ -1326,6 +1557,7 @@
 
       const resContainer = document.getElementById('aulaSearchResults');
       const resCards = document.getElementById('searchResultCards');
+      const resHeader = document.getElementById('searchResultsHeader');
       const btn = document.getElementById('btnBuscarNaAula');
       const btnTxt = document.getElementById('btnBuscarTxt');
       const btnLimpar = document.getElementById('btnLimparBusca');
@@ -1336,34 +1568,53 @@
         <div style="padding: 24px; text-align: center; color: var(--text2);">
           <span class="spinner" style="border-top-color: var(--accent); border-color: rgba(15,107,92,0.2); width: 22px; height: 22px;"></span>
           <p style="margin-top: 10px; font-size: 13.5px; font-weight: 500;">
-            A IA está analisando a transcrição cronometrada da aula e localizando o ponto exato...
+            Localizando o ponto exato da aula com base na transcrição cronometrada...
           </p>
-          <p style="font-size: 12px; color: var(--text2); margin-top: 4px;">Termo pesquisado: "<strong>${escapeHtml(query)}</strong>"</p>
+          <p style="font-size: 12px; color: var(--text2); margin-top: 4px;">Pergunta/Conceito: "<strong>${escapeHtml(query)}</strong>"</p>
         </div>
       `;
       if (btn) btn.disabled = true;
       if (btnTxt) btnTxt.textContent = "Pesquisando...";
 
+      let resultados = [];
+      let fonteResultado = "IA Semântica";
+
       try {
+        // Camada 1: Busca Semântica via IA no Servidor
         const payload = {
           videoId: aula.videoId,
           query: query,
+          pergunta: query,
           segmentos: (aula.transcricao && aula.transcricao.length > 0) ? aula.transcricao : null
         };
 
-        const resp = await fetch('/api/youtube/search-in-transcript', {
+        const resp = await fetch(`${API_BASE}/api/youtube/search-in-transcript`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
 
-        const data = await resp.json();
-        if (!data.success) {
-          throw new Error(data.error || "Não foi possível realizar a busca.");
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data.success && Array.isArray(data.resultados) && data.resultados.length > 0) {
+            resultados = data.resultados;
+            fonteResultado = "IA Semântica";
+          }
         }
+      } catch (e_api) {
+        console.warn("Busca via IA falhou ou offline, acionando motor local:", e_api);
+      }
 
-        const resultados = data.resultados || [];
-        if (resultados.length === 0) {
+      // Camada 2: Fallback Imediato por Índice Textual Local na Transcrição
+      if (!resultados || resultados.length === 0) {
+        if (aula.transcricao && aula.transcricao.length > 0) {
+          resultados = buscarLocalmenteNaTranscricao(query, aula.transcricao);
+          fonteResultado = "Transcrição Cronometrada";
+        }
+      }
+
+      try {
+        if (!resultados || resultados.length === 0) {
           resCards.innerHTML = `
             <div style="padding: 24px; text-align: center; color: var(--text2);">
               <div style="font-size: 26px; margin-bottom: 6px;">🔍</div>
@@ -1374,17 +1625,23 @@
           return;
         }
 
+        if (resHeader) {
+          resHeader.innerHTML = `<span>🎯</span> Trechos Exatos Encontrados <span style="font-size:11px; font-weight:600; background:var(--accent-light); color:var(--accent); padding:2px 8px; border-radius:12px; margin-left:8px;">${fonteResultado}</span>`;
+        }
+
         let cardsHtml = '';
         resultados.forEach((r, idx) => {
-          const safeTitle = escapeHtml(r.titulo);
-          const safeExp = escapeHtml(r.explicacao);
-          const safeQuote = escapeHtml(r.trechoCitado);
-          const relVal = r.relevancia > 1 ? Math.round(r.relevancia) : Math.round(r.relevancia * 100);
+          const safeTitle = escapeHtml(r.titulo || 'Trecho Identificado');
+          const safeExp = escapeHtml(r.explicacao || '');
+          const safeQuote = escapeHtml(r.trechoCitado || '');
+          const relVal = r.relevancia > 1 ? Math.round(r.relevancia) : Math.round((r.relevancia || 0.9) * 100);
+          const tLabel = r.tempoLabel || segundosParaTempo(r.tempoSegundos);
+          const tFimLabel = r.tempoFimLabel || segundosParaTempo(r.tempoFimSegundos || (r.tempoSegundos + 60));
 
           cardsHtml += `
             <div class="search-result-card" onclick="irParaPontoExato(${r.tempoSegundos}, '${escapeJs(r.titulo)}', this)">
               <div class="search-result-top">
-                <span class="interval-badge">⏱️ [${r.tempoLabel} → ${r.tempoFimLabel}]</span>
+                <span class="interval-badge">⏱️ [${tLabel} → ${tFimLabel}]</span>
                 <span class="rel-badge">⭐ ${relVal}% Relevância</span>
               </div>
               <div class="search-result-title">${safeTitle}</div>
@@ -1392,7 +1649,7 @@
               ${safeQuote ? `<div class="search-result-quote">“${safeQuote}”</div>` : ''}
               <div class="search-result-footer">
                 <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); irParaPontoExato(${r.tempoSegundos}, '${escapeJs(r.titulo)}', this.closest('.search-result-card'))">
-                  ▶ Assistir a partir de [${r.tempoLabel}]
+                  ▶ Assistir a partir de [${tLabel}]
                 </button>
               </div>
             </div>
@@ -1400,7 +1657,7 @@
         });
 
         resCards.innerHTML = cardsHtml;
-        showToast(`🎯 Encontrado(s) ${resultados.length} trecho(s) com minutagem exata!`, "⚡");
+        showToast(`🎯 Encontrado(s) ${resultados.length} trecho(s) com minutagem exata (${fonteResultado})!`, "⚡");
 
       } catch(err) {
         resCards.innerHTML = `
@@ -1510,6 +1767,32 @@
     // INICIALIZAÇÃO (Zero Mockups)
     // =========================================================================
     document.addEventListener('DOMContentLoaded', () => {
+      // Verificação do protocolo file://
+      if (window.location.protocol === 'file:') {
+        const banner = document.getElementById('fileProtocolBanner');
+        if (banner) banner.style.display = 'block';
+
+        // Tentar redirecionar automaticamente para a URL oficial HTTP
+        fetch('http://localhost:8095/api/health')
+          .then(r => r.json())
+          .then(d => {
+            if (d && d.status === 'ok') {
+              console.log("Servidor local ativo! Redirecionando para http://localhost:8095/estudio_momentos_video.html");
+              window.location.href = 'http://localhost:8095/estudio_momentos_video.html';
+            }
+          })
+          .catch(() => {
+            if (banner) {
+              banner.innerHTML = `
+                ⚠️ <strong>Atenção: Servidor Local Offline!</strong> Você abriu o arquivo diretamente (<code>file://</code>). 
+                Para que a IA e as legendas funcionem, abra pelo atalho <strong>"Estúdio Momentos do Vídeo"</strong> na Área de Trabalho ou execute <code>abrir_estudio_momentos.bat</code>.
+              `;
+              banner.style.background = '#FEE2E2';
+              banner.style.borderBottom = '2px solid #EF4444';
+              banner.style.color = '#991B1B';
+            }
+          });
+      }
       const savedTheme = localStorage.getItem('concursos_estudio_theme') || 'light';
       document.documentElement.setAttribute('data-theme', savedTheme);
 

@@ -2356,6 +2356,13 @@ class ConcursosHandler(BaseHTTPRequestHandler):
         query = urllib.parse.parse_qs(parsed.query)
 
         # 0. Servir Imagens e Ativos Estáticos da Landing Page e Plataforma
+        if path in ("/api/health", "/health"):
+            self.send_response(200)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({"status": "ok", "app": "aprovacao-concursos"}).encode("utf-8"))
+            return
+
         if path.startswith("/assets/") or path.endswith((".jpg", ".png", ".webp", ".ico", ".svg")):
             rel_path = path.lstrip("/").replace("/", os.sep)
             local_file = os.path.join(BASE_DIR, rel_path)

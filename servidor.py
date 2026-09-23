@@ -2036,100 +2036,101 @@ def extract_text_from_pdf_bytes(pdf_bytes):
 
 def generate_raiox_content(discipline, subarea, context_text, banca="Cebraspe", focus=""):
     """
-    Pilar 2: Raio-X de Banca & Pegadinhas Mais Frequentes (Cebraspe, FGV, FCC, Vunesp).
-    Gera via IA se disponível, ou extrai as pegadinhas reais da aula existente, ou consulta o banco curado.
+    Pilar 2: Raio-X de Banca & Pegadinhas Mais Frequentes.
+    Segue estritamente o modelo de alta precisão orientado para provas de concursos:
+    - Analisa o conteúdo sob a perspectiva de prova
+    - Identifica conceitos com maior potencial de cobrança, diferenças, inversões, palavras absolutas, exceções, etc.
+    - Estrutura obrigatória em 4 itens para cada ponto:
+      1. O conhecimento correto.
+      2. O erro ou confusão provável.
+      3. Como uma questão poderia explorar essa confusão.
+      4. Como o aluno deve evitar o erro.
+    - Foco específico e banca informados pelo usuário.
+    - Não inventa cobrança se não estiver fundamentada; usa linguagem de potencialidade quando necessário.
     """
+    banca_label = banca if banca and banca.lower() != "geral" else "Bancas Examinadoras de Concursos Públicos"
+    foco_label = f"Foco específico solicitado pelo usuário: {focus}\n" if focus else ""
+    
     sys_prompt = (
-        f"Você é um especialista sênior em bancas examinadoras de concursos públicos ({banca}, FGV, FCC, Vunesp).\n"
-        f"Seu objetivo é gerar uma análise aprofundada de RAIO-X DE BANCA & PEGADINHAS (Pilar 2) sobre o tema solicitado.\n\n"
-        "Estruture a saída EXATAMENTE em Markdown no formato:\n"
-        "## 2. Raio-X de Banca & Pegadinhas Mais Frequentes\n\n"
-        "### 🚨 Pegadinha 1: [Título Curto e Impactante da Armadilha]\n"
-        "- **O que a banca afirma para induzir ao erro:** [Exemplo de afirmativa falaciosa ou pegadinha típica]\n"
-        "- **Pegadinha desmascarada (Onde está o erro):** [Explicação técnica direta de por que a banca induz ao erro]\n"
-        "- **💡 Regra de Ouro / Mnemônico:** [Mnemônico ou regra definitiva para o candidato gabaritar]\n\n"
-        "### 🚨 Pegadinha 2: [Título Curto e Impactante]\n"
-        "..."
-        "\n\nGere de 4 a 6 pegadinhas críticas e armadilhas clássicas da matéria."
+        f"Você é um especialista sênior em bancas examinadoras de concursos públicos ({banca_label}).\n"
+        "Seu objetivo é gerar o PILAR 2 — RAIO-X sob a perspectiva de uma prova de concurso público com rigor e máxima precisão.\n\n"
+        "DIRETRIZES FUNDAMENTAIS DO PILAR 2 — RAIO-X:\n"
+        "Analise o conteúdo da aula sob a perspectiva de uma prova de concurso público.\n\n"
+        "Identifique criteriosamente:\n"
+        "• conceitos com maior potencial de cobrança;\n"
+        "• diferenças que podem gerar alternativas erradas;\n"
+        "• inversões de conceitos;\n"
+        "• palavras absolutas;\n"
+        "• exceções;\n"
+        "• relações de causa e efeito;\n"
+        "• classificações que podem ser trocadas;\n"
+        "• conceitos semelhantes;\n"
+        "• afirmações verdadeiras que podem ser transformadas em falsas;\n"
+        "• possíveis pegadinhas;\n"
+        "• formas plausíveis de cobrança.\n\n"
+        "ESTRUTURA OBRIGATÓRIA PARA CADA PONTO:\n"
+        "Para cada ponto importante identificado, apresente estritamente o formato:\n\n"
+        "### 🚨 [Título Curto e Preciso do Ponto / Pegadinha]\n"
+        "1. **O conhecimento correto:** [Explicação precisa e direta da regra ou conceito]\n"
+        "2. **O erro ou confusão provável:** [Qual a confusão, troca de conceito, palavra absoluta ou inversão que o candidato comete]\n"
+        "3. **Como uma questão poderia explorar essa confusão:** [Exemplo de assertiva ou como a banca formula a pegadinha para induzir ao erro]\n"
+        "4. **Como o aluno deve evitar o erro:** [Dica definitiva, regra prática ou mnemônico para não errar]\n\n"
+        "REGRAS DE PRECISÃO E FIDELIDADE:\n"
+        "- Não invente uma cobrança específica de uma banca se ela não estiver fundamentada na informação disponível.\n"
+        "- Quando não houver evidência suficiente para afirmar que determinado ponto é uma característica de uma banca específica, utilize linguagem como: 'possível forma de cobrança' ou 'ponto com potencial de cobrança'.\n"
+        "- Busque ser estritamente preciso e técnico, sem divagações.\n"
+        "- Gere de 4 a 6 pontos críticos aprofundados."
     )
     user_prompt = (
-        f"Disciplina: {discipline} | Assunto: {subarea}\n"
-        f"Banca examinadora foco: {banca}\n"
-        f"Foco específico solicitado: {focus if focus else 'Principais pegadinhas, inversões conceituais, prazos e exceções'}\n\n"
-        f"Conteúdo de referência:\n{context_text[:12000]}"
+        f"PILAR 2 — RAIO-X\n\n"
+        f"Disciplina: {discipline.replace('_', ' ')} | Assunto: {subarea.replace('_', ' ')}\n"
+        f"Banca examinadora foco: {banca_label}\n"
+        f"{foco_label}"
+        f"Conteúdo de referência da aula:\n{context_text[:12000]}"
     )
     
     raw_md, prov = call_ai_service(sys_prompt, user_prompt, json_mode=False, temperature=0.7)
-    if raw_md and "## 2." in raw_md and "Pegadinha" in raw_md:
+    if raw_md and "###" in raw_md and ("conhecimento correto" in raw_md or "Pegadinha" in raw_md or "erro" in raw_md):
         return raw_md.strip(), prov
 
-    # 1. Se IA indisponível, extrai prioritariamente as pegadinhas reais da aula markdown já salva
-    folder = find_subarea_folder(discipline, subarea)
-    if os.path.exists(folder):
-        for f in os.listdir(folder):
-            if f.startswith("Aula_") and f.endswith(".md"):
-                try:
-                    with open(os.path.join(folder, f), "r", encoding="utf-8", errors="ignore") as lf:
-                        full_txt = lf.read()
-                    p2_match = re.search(r'(##\s*2\.\s*(?:Raio|Pontos|Pegadinha)[^\n]*\n)([\s\S]*?)(?=\n##\s*3\.|\Z)', full_txt, re.IGNORECASE)
-                    if p2_match:
-                        extracted = p2_match.group(0).strip()
-                        if len(extracted) > 150 and "Pegadinha" in extracted:
-                            return extracted, "offline_curated"
-                except Exception:
-                    pass
-
-    # 2. Se não houver arquivo markdown ou a seção estiver vazia, consulta o catálogo curado de alta retenção
+    # Fallback inteligente no modelo de 4 pontos estruturados
     clean_sub = subarea.lower()
     clean_disc = discipline.lower()
     
-    key = None
-    if "excel" in clean_sub or "excel" in clean_disc or "procv" in clean_sub:
-        key = "Excel"
-    elif "artigo" in clean_sub or "art_5" in clean_sub or "constitucional" in clean_disc:
-        key = "Artigo_5"
-    elif "ato" in clean_sub or "administrativo" in clean_disc:
-        key = "Atos_Administrativos"
-    elif "rede" in clean_sub or "redes" in clean_disc:
-        key = "Redes_de_Computadores"
-    elif "seguran" in clean_sub or "seguranca" in clean_disc:
-        key = "Seguranca_da_Informacao"
-    elif "portugues" in clean_disc or "morfologia" in clean_sub or "sintaxe" in clean_sub or "interpretacao" in clean_sub:
-        key = "Morfologia_e_Sintaxe"
-    elif "raciocinio" in clean_disc or "tabela" in clean_sub or "proposic" in clean_sub:
-        key = "Tabela_Verdade_e_Proposicoes"
-
-    if key and key in OFFLINE_CURATED_RAIOX:
-        return OFFLINE_CURATED_RAIOX[key], "banco_curado"
-
-    # 3. Fallback inteligente e específico para a matéria
     topic_clean = subarea.replace('_', ' ')
     disc_clean = discipline.replace('_', ' ')
+    
     fallback_md = (
         f"## 2. Raio-X de Banca & Pegadinhas Mais Frequentes ({banca})\n\n"
-        f"### 🚨 Pegadinha 1: Inversão Conceitual e Termos Restritivos em {topic_clean}\n"
-        f"- **O que a banca afirma para induzir ao erro:** A banca {banca} cria assertivas afirmando que as regras de {topic_clean} são absolutas, inserindo termos como 'sempre', 'exclusivamente' ou 'vedado'.\n"
-        f"- **Pegadinha desmascarada (Onde está o erro):** Em {disc_clean}, a regra geral quase sempre possui exceções expressas na doutrina e no edital.\n"
-        f"- **💡 Regra de Ouro / Mnemônico:** \"Palavra restritiva (sempre/nunca/jamais) em {banca} exige alerta vermelho dobrado!\"\n\n"
-        f"### 🚨 Pegadinha 2: Troca de Conceitos Próximos em {topic_clean}\n"
-        f"- **O que a banca afirma para induzir ao erro:** Troca a definição ou o campo de aplicação prática dos conceitos fundamentais da matéria.\n"
-        f"- **Pegadinha desmascarada (Onde está o erro):** A banca usa a redação correta de um conceito, mas atribui o nome de outro conceito correlato.\n"
-        f"- **💡 Regra de Ouro / Mnemônico:** \"Isole o sujeito e o predicado da questão antes de validar a assertiva!\"\n"
+        f"### 🚨 Ponto Crítico 1: Inversão Conceitual e Termos Restritivos em {topic_clean}\n"
+        f"1. **O conhecimento correto:** Em {disc_clean}, a regra geral sobre {topic_clean} admite aplicações práticas bem delimitadas e com ressalvas doutrinárias ou legais.\n"
+        f"2. **O erro ou confusão provável:** Acreditar que a regra é irrestrita ou aplicar requisitos absolutos sem observar as exceções normativas.\n"
+        f"3. **Como uma questão poderia explorar essa confusão:** Possível forma de cobrança pela banca {banca}: criar assertivas categóricas utilizando termos restritivos como 'sempre', 'nunca', 'exclusivamente' ou 'vedado em qualquer hipótese'.\n"
+        f"4. **Como o aluno deve evitar o erro:** Alerta vermelho com palavras absolutas em {banca}; buscar imediatamente a exceção ou a ressalva legal antes de marcar como correta.\n\n"
+        f"### 🚨 Ponto Crítico 2: Troca de Conceitos Semelhantes e Classificações em {topic_clean}\n"
+        f"1. **O conhecimento correto:** Cada instituto de {topic_clean} possui campo de incidência, competência e consequências jurídicas/técnicas próprias.\n"
+        f"2. **O erro ou confusão provável:** Confundir institutos correlatos que compartilham a mesma disciplina ou finalidade ampla.\n"
+        f"3. **Como uma questão poderia explorar essa confusão:** Ponto com potencial de cobrança: apresentar a definição perfeita de um conceito, mas atribuir-lhe o nome de outro conceito vizinho para induzir o candidato ao erro.\n"
+        f"4. **Como o aluno deve evitar o erro:** Isolar o sujeito e os elementos caracterizadores da assertiva; memorizar os mnemônicos e diferenças específicas do Pilar 1."
     )
     return fallback_md, "offline_curated"
 
-def update_lesson_markdown_with_raiox(discipline, subarea, raiox_markdown):
+def update_lesson_markdown_with_raiox(discipline, subarea, raiox_markdown, banca="Cebraspe", focus=""):
     """
-    Atualiza ou insere a seção ## 2. Raio-X de Banca no arquivo Aula_01_[Tema].md
+    Atualiza a aula ACRESCENTANDO as novas pegadinhas na seção ## 2. Raio-X de Banca
+    do arquivo Aula_01_[Tema].md e no catálogo pré-semeado, NUNCA DELETANDO as pegadinhas existentes.
     """
-    folder = os.path.join(BASE_DIR, discipline, subarea)
-    os.makedirs(folder, exist_ok=True)
+    folder = find_subarea_folder(discipline, subarea)
+    if not os.path.exists(folder):
+        folder = os.path.join(BASE_DIR, discipline, subarea)
+        os.makedirs(folder, exist_ok=True)
     
     lesson_md = None
-    for f in os.listdir(folder):
-        if f.startswith("Aula_") and f.endswith(".md"):
-            lesson_md = os.path.join(folder, f)
-            break
+    if os.path.exists(folder):
+        for f in os.listdir(folder):
+            if f.startswith("Aula_") and f.endswith(".md"):
+                lesson_md = os.path.join(folder, f)
+                break
     if not lesson_md:
         lesson_md = os.path.join(folder, f"Aula_01_{subarea}.md")
         
@@ -2145,25 +2146,51 @@ def update_lesson_markdown_with_raiox(discipline, subarea, raiox_markdown):
             f"**Duração:** 50 minutos  \n"
             f"**Categoria:** Edital de Concursos Públicos  \n\n---\n\n"
             f"## 1. Resumo Estruturado e Conceitos-Chave\n\n"
-            f"Conteúdo em estruturação. Revise os pontos na aba Raio-X e Flashcards.\n\n"
+            f"Conteúdo em estruturação.\n\n"
         )
         
-    # Verificar se já existe a seção ## 2.
+    # Limpar qualquer cabeçalho de seção 2 duplicado do novo markdown gerado
+    clean_new_raiox = re.sub(r'^(?:#+\s*)?2\.\s*(?:Raio[^\n]*|Pontos[^\n]*|Pegadinha[^\n]*)\n+', '', raiox_markdown.strip(), flags=re.IGNORECASE)
+    clean_new_raiox = re.sub(r'^#+\s*PILAR\s*2[^\n]*\n+', '', clean_new_raiox, flags=re.IGNORECASE).strip()
+
+    # Identificar a seção 2 existente
     pilar2_match = re.search(r'(##\s*2\.\s*(?:Raio|Pontos|Pegadinha)[^\n]*\n)([\s\S]*?)(?=\n##\s*3\.|\Z)', content, re.IGNORECASE)
+    
     if pilar2_match:
-        new_content = content[:pilar2_match.start()] + raiox_markdown + "\n\n" + content[pilar2_match.end():]
+        existing_sec2_full = pilar2_match.group(0).rstrip()
+        # ACRESCENTAR sem deletar as existentes: novas pegadinhas adicionadas abaixo das anteriores
+        updated_sec2 = existing_sec2_full + "\n\n" + clean_new_raiox
+        new_content = content[:pilar2_match.start()] + updated_sec2 + "\n\n" + content[pilar2_match.end():]
+        final_sec2 = updated_sec2
     else:
+        new_sec2 = f"## 2. Raio-X de Banca & Pegadinhas Mais Frequentes ({banca})\n\n" + clean_new_raiox
         pilar1_match = re.search(r'(##\s*1\.\s*[^\n]*\n[\s\S]*?)(?=\n##\s*|\Z)', content)
         if pilar1_match:
             insert_pos = pilar1_match.end()
-            new_content = content[:insert_pos] + "\n\n" + raiox_markdown + "\n\n" + content[insert_pos:]
+            new_content = content[:insert_pos] + "\n\n" + new_sec2 + "\n\n" + content[insert_pos:]
         else:
-            new_content = content.rstrip() + "\n\n---\n\n" + raiox_markdown + "\n"
+            new_content = content.rstrip() + "\n\n---\n\n" + new_sec2 + "\n"
+        final_sec2 = new_sec2
             
     with open(lesson_md, "w", encoding="utf-8") as f:
         f.write(new_content)
+
+    # Sincronizar catálogo pré-semeado para persistir em todos os ambientes
+    for pf in [os.path.join(BASE_DIR, "preseeded_topics.json"), os.path.join(BASE_DIR, "api", "preseeded_topics.json"), os.path.join(BASE_DIR, "public", "preseeded_topics.json")]:
+        if os.path.exists(pf):
+            try:
+                with open(pf, "r", encoding="utf-8") as f_cat:
+                    cdata = json.load(f_cat)
+                if discipline in cdata and subarea in cdata[discipline]:
+                    if "meta" not in cdata[discipline][subarea]:
+                        cdata[discipline][subarea]["meta"] = {}
+                    cdata[discipline][subarea]["meta"]["markdown_content"] = new_content
+                    with open(pf, "w", encoding="utf-8") as f_cat:
+                        json.dump(cdata, f_cat, ensure_ascii=False, indent=2)
+            except Exception as e_cat:
+                print(f"Aviso ao sincronizar catálogo: {e_cat}")
         
-    return lesson_md
+    return final_sec2
 
 def generate_pilar1_summary(discipline, subarea, title, professor, context_text):
     """
@@ -4078,8 +4105,9 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             is_trial = bool(payload.get("is_trial", False) or not payload.get("save_to_db", True))
             context = get_subarea_context(disc, sub)
             raiox_md, prov = generate_raiox_content(disc, sub, context, banca=banca, focus=focus)
-            if not is_trial and prov in ["gemini", "openai"]:
-                update_lesson_markdown_with_raiox(disc, sub, raiox_md)
+            full_sec = raiox_md
+            if not is_trial:
+                full_sec = update_lesson_markdown_with_raiox(disc, sub, raiox_md, banca=banca, focus=focus)
             
             self.send_response(200)
             self.send_header("Content-type", "application/json; charset=utf-8")
@@ -4087,6 +4115,7 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({
                 "success": True,
                 "markdown": raiox_md,
+                "full_section": full_sec,
                 "banca": banca,
                 "provider": prov,
                 "message": f"Raio-X & Pegadinhas ({banca}) gerado com sucesso!"

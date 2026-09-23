@@ -7573,7 +7573,13 @@
   function parseMarkdownPegadinhas(md) {
     if (!md) return '<div class="trap-card"><div class="trap-title">⚠️ Pegadinhas de Prova</div><p>Revise os pontos críticos desta disciplina.</p></div>';
     
-    let blocks = md.split(/\n(?=\d+\.\s|\#\#\#\s)/);
+    // Se o markdown contiver títulos ###, divide apenas por ### para não quebrar a numeração interna (1. 2. 3. 4.)
+    let blocks;
+    if (md.includes('### ')) {
+      blocks = md.split(/\n(?=###\s)/);
+    } else {
+      blocks = md.split(/\n(?=\d+\.\s)/);
+    }
     let html = [];
     
     blocks.forEach((blk, idx) => {
@@ -7586,7 +7592,7 @@
 
       let firstLine = trimmed.split('\n')[0];
       if (firstLine.startsWith('###')) {
-        let cleanTitle = firstLine.replace(/^###\s*/, '').replace(/^[🚨⚠️]\s*/, '').trim();
+        let cleanTitle = firstLine.replace(/^###\s*/, '').replace(/^[🚨⚠️🎯]\s*/, '').trim();
         title = (isCritical ? '🚨 ' : '⚠️ ') + cleanTitle;
         body = trimmed.substring(firstLine.length).trim();
       } else if (firstLine.includes('**')) {
@@ -7681,17 +7687,35 @@
         }
         closeModal('modalAiRaioX');
         if (data.provider === 'offline_curated' || data.provider === 'curated_template' || data.provider === 'banco_curado' || data.provider === 'curated_bank') {
-          showToast(`🛡️ Raio-X & Pegadinhas (${banca}) carregado do Banco Curado!`, "📚");
+          showToast(`🛡️ Raio-X & Pegadinhas (${banca}) acrescentado do Banco Curado!`, "📚");
         } else if (isTrial) {
           const dName = (currentDiscipline || 'Informática').replace(/_/g, ' ');
-          showToast(`⚡ Raio-X & Pegadinhas (${banca}) gerado para ${dName}! (1 de 1 utilizado no teste)`, '🎯');
+          showToast(`⚡ Raio-X & Pegadinhas (${banca}) acrescentado para ${dName}! (1 de 1 utilizado no teste)`, '🎯');
         } else {
-          showToast(`⚡ Raio-X & Pegadinhas (${banca}) gerado com sucesso!`, '🎯');
+          showToast(`⚡ Raio-X & Pegadinhas (${banca}) acrescentado com sucesso!`, '🎯');
         }
-        if (data.markdown) {
-          const tab1Box = document.getElementById('tab1Content');
+
+        const tab1Box = document.getElementById('tab1Content');
+        if (data.full_section) {
           if (tab1Box && typeof parseMarkdownPegadinhas === 'function') {
-            tab1Box.innerHTML = parseMarkdownPegadinhas(data.markdown);
+            tab1Box.innerHTML = parseMarkdownPegadinhas(data.full_section);
+          }
+          if (currentLessonMeta) {
+            const curMd = currentLessonMeta.markdown_content || '';
+            const p2 = curMd.search(/##\s*2\.\s*(Pontos|Raio)/i);
+            const p3 = curMd.search(/##\s*3\.\s*(Mini|Simulado|Esquematiza)/i);
+            if (p2 !== -1) {
+              const before = curMd.substring(0, p2);
+              const after = p3 !== -1 ? curMd.substring(p3) : '';
+              currentLessonMeta.markdown_content = before + data.full_section.trim() + '\n\n' + after;
+            } else {
+              currentLessonMeta.markdown_content = curMd.trim() + '\n\n---\n\n' + data.full_section.trim();
+            }
+          }
+        } else if (data.markdown) {
+          if (tab1Box && typeof parseMarkdownPegadinhas === 'function') {
+            const newCardsHtml = parseMarkdownPegadinhas(data.markdown);
+            tab1Box.innerHTML = (tab1Box.innerHTML || '') + '\n' + newCardsHtml;
           }
           if (currentLessonMeta) {
             currentLessonMeta.markdown_content = (currentLessonMeta.markdown_content || '') + '\n\n' + data.markdown;

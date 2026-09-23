@@ -69,6 +69,36 @@ Quando o 4º argumento for `0` ou `FALSO` (busca exata) e o valor procurado **n�
 - **Pegadinha desmascarada (Onde está o erro):** O Excel retornará um erro `#REF!` se o índice da coluna especificado for maior que o número de colunas na matriz, e não um valor vazio.
 - **💡 Regra de Ouro / Mnemônico:** "Cuidado com o índice, o limite é real!"
 
+### 🚨 Função PROCV e a Primeira Coluna
+1. **O conhecimento correto:** O `PROCV` realiza a busca vertical na primeira coluna da matriz especificada e retorna um valor correspondente da coluna definida pelo índice.
+2. **O erro ou confusão provável:** Candidatos podem acreditar que o `PROCV` pode buscar em qualquer coluna da matriz, resultando em uma interpretação errada da função.
+3. **Como uma questão poderia explorar essa confusão:** "A função `PROCV` pode localizar o valor procurado em qualquer coluna da tabela. Assinale V para verdadeiro e F para falso."
+4. **Como o aluno deve evitar o erro:** Lembrar que a busca é sempre na **primeira coluna** da matriz. O mnemônico "Primeiro à esquerda" pode ajudar a fixar essa ideia.
+
+### 🚨 Diferença entre Busca Exata e Aproximada
+1. **O conhecimento correto:** O argumento `0` ou `FALSO` no `PROCV` indica que a busca deve ser exata, enquanto `1` ou `VERDADEIRO` (ou omitido) realiza uma busca aproximada.
+2. **O erro ou confusão provável:** Candidatos confundem os argumentos e acreditam que `1` realiza a busca exata e `0` a aproximada.
+3. **Como uma questão poderia explorar essa confusão:** "No `PROCV`, o argumento `1` realiza uma busca exata. Essa afirmação é: ( ) CERTO ( ) ERRADO."
+4. **Como o aluno deve evitar o erro:** Utilizar a frase "Zero é certeiro; um é um palpite" como mnemônico para lembrar a função dos argumentos.
+
+### 🚨 Erro de Sintaxe com Índice da Coluna
+1. **O conhecimento correto:** O terceiro argumento do `PROCV` deve ser um número inteiro que representa a coluna da qual o valor deve ser retornado.
+2. **O erro ou confusão provável:** Candidatos podem tentar usar letras (como `B`) em vez de números, resultando em erro de sintaxe.
+3. **Como uma questão poderia explorar essa confusão:** "A fórmula `=PROCV('RJ'; A1:C10; B; 0)` está correta e retornará um valor. Assinale V ou F."
+4. **Como o aluno deve evitar o erro:** Lembrar que números são obrigatórios para o índice da coluna, usando o mnemônico "Número é o que conta, letra não vale!".
+
+### 🚨 Compreensão do Erro `#N/D`
+1. **O conhecimento correto:** O erro `#N/D` é retornado quando uma busca exata (`0` ou `FALSO`) não encontra o valor procurado na matriz.
+2. **O erro ou confusão provável:** Candidatos podem não associar corretamente o erro à ausência do valor na primeira coluna.
+3. **Como uma questão poderia explorar essa confusão:** "Se o `PROCV` não encontra o valor procurado, ele retorna `0`. Essa afirmação é: ( ) CERTO ( ) ERRADO."
+4. **Como o aluno deve evitar o erro:** Compreender que `#N/D` é o resultado da ausência do valor procurado e não um valor nulo. A frase "Nada disponível, não achou" pode ajudar a fixar essa ideia.
+
+### 🚨 Limitações do Índice da Coluna
+1. **O conhecimento correto:** O índice da coluna no `PROCV` não pode ser maior que o número total de colunas na matriz; caso contrário, o Excel retornará o erro `#REF!`.
+2. **O erro ou confusão provável:** Candidatos podem achar que o `PROCV` simplesmente retornará um valor vazio se o índice for inválido.
+3. **Como uma questão poderia explorar essa confusão:** "Se o índice da coluna em `PROCV` for maior que o número de colunas da matriz, o Excel retornará um valor vazio. Essa afirmação é: ( ) CERTO ( ) ERRADO."
+4. **Como o aluno deve evitar o erro:** Lembrar que um índice inválido resulta em `#REF!`. A frase "Cuidado com o índice, o limite é real!" pode ser usada como lembrete.
+
 
 ## 3. Esquematização para Revisão Ativa
 

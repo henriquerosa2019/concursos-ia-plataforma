@@ -987,7 +987,45 @@ export default async function handler(req, res) {
     if (apiKey) {
       try {
         const context = topic?.meta?.markdown_content || topic?.transcript?.full_text || `${disc} • ${sub}`;
-        const prompt = `Gere uma seção analítica de 'Raio-X de Banca & Pegadinhas' no estilo da banca ${banca} para ${disc} - ${sub}. Foco: ${focus || 'Armadilhas Frequentes'}. Contexto: ${context.slice(0, 5000)}. Retorne em Markdown claro com pontos críticos numerados, Pegadinha vs Verdade.`;
+        const prompt = `Você é um especialista sênior em bancas examinadoras de concursos públicos (${banca}).
+Seu objetivo é gerar o PILAR 2 — RAIO-X sob a perspectiva de uma prova de concurso público com rigor e máxima precisão.
+
+PILAR 2 — RAIO-X
+Disciplina: ${disc.replace(/_/g, ' ')} | Assunto: ${sub.replace(/_/g, ' ')}
+Banca Examinadora Alvo: ${banca}
+${focus ? `Foco específico solicitado pelo usuário: ${focus}\n` : ''}
+
+DIRETRIZES FUNDAMENTAIS DO PILAR 2 — RAIO-X:
+Analise o conteúdo da aula sob a perspectiva de uma prova de concurso público.
+
+Identifique criteriosamente:
+• conceitos com maior potencial de cobrança;
+• diferenças que podem gerar alternativas erradas;
+• inversões de conceitos;
+• palavras absolutas;
+• exceções;
+• relações de causa e efeito;
+• classificações que podem ser trocadas;
+• conceitos semelhantes;
+• afirmações verdadeiras que podem ser transformadas em falsas;
+• possíveis pegadinhas;
+• formas plausíveis de cobrança.
+
+Para cada ponto importante identificado, apresente estritamente o formato:
+### 🚨 [Título Curto e Preciso do Ponto / Pegadinha]
+1. **O conhecimento correto:** [Explicação precisa e direta da regra ou conceito]
+2. **O erro ou confusão provável:** [Qual a confusão, troca de conceito, palavra absoluta ou inversão que o candidato comete]
+3. **Como uma questão poderia explorar essa confusão:** [Exemplo de assertiva ou como a banca formula a pegadinha para induzir ao erro]
+4. **Como o aluno deve evitar o erro:** [Dica definitiva, regra prática ou mnemônico para não errar]
+
+REGRAS DE PRECISÃO E FIDELIDADE:
+- Não invente uma cobrança específica de uma banca se ela não estiver fundamentada na informação disponível.
+- Quando não houver evidência suficiente para afirmar que determinado ponto é uma característica de uma banca específica, utilize linguagem como: "possível forma de cobrança" ou "ponto com potencial de cobrança".
+- Busque ser estritamente preciso e técnico, sem divagações.
+- Gere de 4 a 6 pontos críticos aprofundados.
+
+Conteúdo de Referência da Aula:
+${context.slice(0, 10000)}`;
 
         const geminiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
           method: 'POST',
@@ -1005,13 +1043,32 @@ export default async function handler(req, res) {
     }
 
     if (!raioxMarkdown) {
-      raioxMarkdown = `## 2. Pontos Críticos de Banca & Pegadinhas (${banca})\n\n1. **Inversão de Conceitos Centrais:**\n   - *Pegadinha:* A banca ${banca} costuma alterar o sentido ou a ordem dos requisitos fundamentais de ${sub.replace(/_/g, ' ')}.\n   - *Como não errar:* Memorize a definição exata e os mnemônicos do Pilar 1.\n\n2. **Exceções Ocultas:**\n   - *Pegadinha:* Afirmar que uma regra geral não possui ressalvas no contexto prático.\n   - *Verdade:* Aplique a fundamentação consolidada e atente-se às palavras restritivas (sempre, jamais, unicamente).`;
+      raioxMarkdown = `### 🚨 Ponto Crítico 1: Inversão Conceitual e Termos Restritivos em ${sub.replace(/_/g, ' ')}\n1. **O conhecimento correto:** As regras gerais desta matéria admitem aplicações práticas bem delimitadas e com ressalvas doutrinárias ou legais.\n2. **O erro ou confusão provável:** Acreditar que a regra é irrestrita ou aplicar requisitos absolutos sem observar as exceções normativas.\n3. **Como uma questão poderia explorar essa confusão:** Possível forma de cobrança pela banca ${banca}: criar assertivas categóricas utilizando termos restritivos como 'sempre', 'nunca', 'exclusivamente' ou 'vedado em qualquer hipótese'.\n4. **Como o aluno deve evitar o erro:** Alerta vermelho com palavras absolutas em ${banca}; buscar imediatamente a exceção ou a ressalva legal antes de marcar como correta.\n\n### 🚨 Ponto Crítico 2: Troca de Conceitos Semelhantes e Classificações em ${sub.replace(/_/g, ' ')}\n1. **O conhecimento correto:** Cada instituto possui campo de incidência, competência e consequências próprias.\n2. **O erro ou confusão provável:** Confundir institutos correlatos que compartilham a mesma disciplina ou finalidade ampla.\n3. **Como uma questão poderia explorar essa confusão:** Ponto com potencial de cobrança: apresentar a definição perfeita de um conceito, mas atribuir-lhe o nome de outro conceito vizinho para induzir o candidato ao erro.\n4. **Como o aluno deve evitar o erro:** Isolar o sujeito e os elementos caracterizadores da assertiva; memorizar os mnemônicos e diferenças específicas do Pilar 1.`;
       provider = 'curated_template';
+    }
+
+    // ACRESCENTAR SEM DELETAR AS EXISTENTES
+    const cleanNew = raioxMarkdown.replace(/^(?:#+\s*)?2\.\s*(?:Raio[^\n]*|Pontos[^\n]*|Pegadinha[^\n]*)\n+/i, '').replace(/^#+\s*PILAR\s*2[^\n]*\n+/i, '').trim();
+    let fullSection = raioxMarkdown;
+    const existingMd = topic?.meta?.markdown_content || '';
+    const p2Match = existingMd.match(/(##\s*2\.\s*(?:Raio|Pontos|Pegadinha)[^\n]*\n)([\s\S]*?)(?=\n##\s*3\.|\Z)/i);
+
+    if (p2Match) {
+      fullSection = p2Match[0].trim() + '\n\n' + cleanNew;
+      if (!isTrial && topic && topic.meta) {
+        topic.meta.markdown_content = existingMd.slice(0, p2Match.index) + fullSection + '\n\n' + existingMd.slice(p2Match.index + p2Match[0].length);
+      }
+    } else {
+      fullSection = `## 2. Raio-X de Banca & Pegadinhas Mais Frequentes (${banca})\n\n` + cleanNew;
+      if (!isTrial && topic && topic.meta) {
+        topic.meta.markdown_content = (existingMd ? existingMd.trim() + '\n\n---\n\n' : '') + fullSection;
+      }
     }
 
     return res.status(200).json({
       success: true,
       markdown: raioxMarkdown,
+      full_section: fullSection,
       banca: banca,
       provider: provider,
       is_trial: isTrial,

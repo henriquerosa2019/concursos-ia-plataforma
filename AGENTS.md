@@ -95,11 +95,21 @@ Para qualquer aula em vídeo (YouTube ou arquivo) fornecida pelo usuário para e
 ---
 
 ## 9. Padrão de Raio-X com Pegadinhas Reais e Aprofundadas da Banca (Pilar 2)
-- O botão **"⚡ Gerar Raio-X & Pegadinhas com IA"** deve sempre entregar pegadinhas reais, detalhadas e técnicas da disciplina e banca específica:
+- **Regra Fundamental de Preservação (NUNCA DELETAR):** Ao gerar Raio-X / Pegadinhas adicionais para uma aula, é terminantemente proibido deletar ou substituir as que já existem. O sistema deve **apenas acrescentar** as novas pegadinhas abaixo das anteriores, preservando integralmente o acervo acumulado do aluno.
+- **Banca e Foco Específico:** Respeitar com rigor a banca examinadora selecionada (Cebraspe, FGV, FCC, Vunesp, etc.) e o foco específico informado pelo usuário no modal.
+- **Modelo Obrigatório do Pilar 2 — Raio-X:**
+  Para cada ponto importante identificado sob a perspectiva de prova de concurso público:
+  1. **O conhecimento correto:** Explicação técnica e direta da regra ou conceito.
+  2. **O erro ou confusão provável:** Identificação da confusão, inversão, palavra absoluta ou pegadinha.
+  3. **Como uma questão poderia explorar essa confusão:** Formulação ou assertiva da banca para induzir ao erro.
+  4. **Como o aluno deve evitar o erro:** Dica definitiva, regra prática ou mnemônico para gabaritar.
+- **Precisão e Cautela:** Não inventar cobrança específica de uma banca se não estiver fundamentada na informação disponível. Utilizar fórmulas como *"possível forma de cobrança"* ou *"ponto com potencial de cobrança"* quando a cobrança for doutrinária ou genérica.
+- **Bancos Curados de Alta Retenção:**
   1. **Excel / PROCV:** Regra do 3º argumento (número de índice vs letra), omissão do 4º argumento (aproximada 1 vs exata 0), erro `#N/D` vs `#REF!`, busca estritamente para a direita (impossível para a esquerda, exigindo PROCX), maiúsculas/minúsculas indiferentes e aninhamento de funções (`MAIOR`/`SE`).
   2. **Direito Constitucional (Art. 5º):** Mnemônico RAÇÃO (apenas Racismo e Grupos Armados são imprescritíveis), 3T+H (inafiançáveis e insuscetíveis de graça/anistia, mas prescritíveis), Inviolabilidade de domicílio durante a NOITE (ordem judicial NUNCA à noite, apenas durante o DIA).
   3. **Direito Administrativo (Atos):** Mnemônico COFIFOMOB, Convalidação restrita a Forma não essencial e Competência não exclusiva (FO-CO), Anulação (ilegalidade, Ex Tunc) vs Revogação (conveniência/oportunidade, Ex Nunc).
   4. **Redes e Informática:** TCP (orientado à conexão, handshake em 3 vias) vs UDP (não orientado, sem confirmação, veloz), Portas padrão (HTTP 80 vs HTTPS 443, SSH 22, DNS 53).
   5. **Proibição de Templates Genéricos:** Nunca exibir textos ou fallbacks genéricos de direito administrativo em tópicos de informática ou exatas. Priorizar sempre a Seção 2 da aula existente ou o banco curado específico da matéria.
+
 
 

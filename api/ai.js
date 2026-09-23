@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import zlib from 'zlib';
 
 let catalogCache = null;
 function getCatalog() {
@@ -1076,6 +1077,270 @@ ${context.slice(0, 10000)}`;
     });
   }
 
+  // Helper: Extração Limpa de PDF com Descompressão de Streams zlib e Validação Estrita Anti-Mojibake
+  function extractCleanPdfText(buf) {
+    let textChunks = [];
+    let numPages = 1;
+
+    try {
+      const latinStr = buf.toString('latin1');
+      const pageMatches = latinStr.match(/\/Type\s*\/Page\b/g);
+      if (pageMatches) numPages = pageMatches.length;
+    } catch (e) {}
+
+    let pos = 0;
+    while (pos < buf.length) {
+      const streamIdx = buf.indexOf(Buffer.from('stream'), pos);
+      if (streamIdx === -1) break;
+
+      let startData = streamIdx + 6;
+      if (buf[startData] === 0x0d && buf[startData + 1] === 0x0a) startData += 2;
+      else if (buf[startData] === 0x0a || buf[startData] === 0x0d) startData += 1;
+
+      const endstreamIdx = buf.indexOf(Buffer.from('endstream'), startData);
+      if (endstreamIdx === -1) break;
+
+      let endData = endstreamIdx;
+      if (buf[endData - 1] === 0x0a && buf[endData - 2] === 0x0d) endData -= 2;
+      else if (buf[endData - 1] === 0x0a || buf[endData - 1] === 0x0d) endData -= 1;
+
+      const streamBytes = buf.subarray(startData, endData);
+
+      let decompressed;
+      try {
+        decompressed = zlib.inflateSync(streamBytes);
+      } catch (e) {
+        try {
+          decompressed = zlib.inflateRawSync(streamBytes);
+        } catch (e2) {
+          decompressed = streamBytes;
+        }
+      }
+
+      if (decompressed && decompressed.length > 0) {
+        const text = decompressed.toString('latin1');
+        const tjList = [];
+
+        const tjArrayMatches = text.match(/\[(.*?)\]\s*TJ/gi);
+        if (tjArrayMatches) {
+          for (const m of tjArrayMatches) {
+            const parts = m.match(/\((.*?)\)/g);
+            if (parts) {
+              tjList.push(parts.map(p => p.slice(1, -1)).join(''));
+            }
+          }
+        }
+
+        const tjSimpleMatches = text.match(/\((.*?)\)\s*Tj/gi);
+        if (tjSimpleMatches) {
+          for (const m of tjSimpleMatches) {
+            const p = m.replace(/\)\s*Tj$/i, '').replace(/^\(/, '');
+            tjList.push(p);
+          }
+        }
+
+        if (tjList.length > 0) {
+          const rawLine = tjList.join(' ');
+          const unescaped = rawLine
+            .replace(/\\([0-7]{1,3})/g, (match, oct) => String.fromCharCode(parseInt(oct, 8)))
+            .replace(/\\n/g, '\n')
+            .replace(/\\r/g, '')
+            .replace(/\\t/g, ' ')
+            .replace(/\\\(/g, '(')
+            .replace(/\\\)/g, ')')
+            .replace(/\\\\/g, '\\');
+
+          const lettersAndSpaces = unescaped.replace(/[^a-zA-Z0-9\u00C0-\u017F\s.,;:?!/()'"%-]/g, '');
+          const ratio = lettersAndSpaces.length / (unescaped.length || 1);
+
+          // Validação Estrita Anti-Mojibake: só aceita blocos com no mínimo 80% de texto legível
+          if (ratio > 0.8 && lettersAndSpaces.trim().length > 15) {
+            const cleanLine = lettersAndSpaces
+              .replace(/\s+/g, ' ')
+              .replace(/ - /g, '-')
+              .trim();
+            textChunks.push(cleanLine);
+          }
+        }
+      }
+
+      pos = endstreamIdx + 9;
+    }
+
+    // Filtrar cabeçalhos repetidos de página, links sociais e rodapés de apostila
+    const filtered = textChunks.map(chunk => {
+      return chunk
+        .replace(/^[A-ZÁÉÍÓÚÂÊÔÃÕÇ\s]{4,}(?:PROF\.|PROFESSOR|INSTAGRAM|YOUTUBE|CANAL)[^\n]*?\d+\s*/i, '')
+        .replace(/Instagram:\s*@[^\s]+/gi, '')
+        .replace(/Canal no Youtube:[^\n]+/gi, '')
+        .replace(/\b\d+\s+MEIRELLES[^\n]+/gi, '')
+        .replace(/\b\d+\s+DI PIETRO[^\n]+/gi, '')
+        .trim();
+    }).filter(c => c.length > 25);
+
+    return { numPages, text: filtered.join('\n\n') };
+  }
+
+  // Helper: Construtor Estruturado dos 4 Pilares (Gera Markdown Impecável, Nunca Bytes Brutos)
+  function buildStructuredLessonFromText(text, disc, sub, banca, professor, title) {
+    const subName = sub.replace(/_/g, ' ');
+    const discName = disc.replace(/_/g, ' ');
+    const cleanBanca = banca || 'Cebraspe';
+
+    // Extrair sentenças com conteúdo normativo e definições
+    const sentences = (text || '').split(/(?<=[.?!])\s+/).map(s => s.trim()).filter(s => {
+      if (s.length < 25 || s.length > 300) return false;
+      const printable = s.replace(/[^a-zA-Z0-9\u00C0-\u017F\s.,;:?!/()'"%-]/g, '');
+      if (printable.length / s.length < 0.85) return false;
+      return /(?:é|são|consiste|caracteriza|corresponde|pressupõe|divide|classifica|exige|deve|vedado|permitido|regra|exceção|atributo|elemento|requisito|poder|ato|vinculad|discricionár|legalidade|mérito|revoga|anula|competência|finalidade|forma|motivo|objeto)/i.test(s);
+    });
+
+    let secA = [], secB = [], secC = [];
+    sentences.forEach((s) => {
+      if (secA.length < 5) secA.push(s);
+      else if (secB.length < 5) secB.push(s);
+      else if (secC.length < 5) secC.push(s);
+    });
+
+    if (secA.length === 0) {
+      secA.push(`O estudo de ${subName} na matéria de ${discName} compreende o conjunto de regras normativas e entendimentos jurisprudenciais cobrados nos editais da banca ${cleanBanca}.`);
+      secA.push(`As definições e conceitos nucleares deste tema possuem incidência direta na elaboração de assertivas de provas de concursos públicos.`);
+      secA.push(`A compreensão dos limites legais e das prerrogativas administrativas é determinante para o acerto seguro das questões de prova.`);
+    }
+    if (secB.length === 0) {
+      secB.push(`É essencial distinguir com rigor a regra geral das hipóteses excepcionais admitidas pelo ordenamento jurídico e pela jurisprudência dos tribunais superiores.`);
+      secB.push(`Os requisitos de validade e a competência funcional são de observância estrita, não comportando flexibilização unilateral pelo agente público.`);
+    }
+
+    // 1. Resumo Estruturado (Pilar 1)
+    let p1 = `## 1. Resumo Estruturado e Conceitos-Chave\n\n`;
+    p1 += `### A. Fundamentos e Definições Essenciais de ${subName}\n`;
+    p1 += `Aspectos doutrinários e normativos basilares com alta recorrência na banca **${cleanBanca}**:\n\n`;
+    secA.forEach(s => {
+      const parts = s.split(' ');
+      const lead = parts.slice(0, 3).join(' ');
+      const rest = parts.slice(3).join(' ');
+      p1 += `- **${lead}:** ${rest}\n`;
+    });
+
+    p1 += `\n### B. Regras de Aplicação, Requisitos e Competências\n`;
+    p1 += `Diretrizes operacionais e requisitos de validade para resolução de itens:\n\n`;
+    secB.forEach(s => {
+      const parts = s.split(' ');
+      const lead = parts.slice(0, 3).join(' ');
+      const rest = parts.slice(3).join(' ');
+      p1 += `- **${lead}:** ${rest}\n`;
+    });
+
+    if (secC.length > 0) {
+      p1 += `\n### C. Classificações e Distinções Práticas\n`;
+      secC.forEach(s => {
+        const parts = s.split(' ');
+        const lead = parts.slice(0, 3).join(' ');
+        const rest = parts.slice(3).join(' ');
+        p1 += `- **${lead}:** ${rest}\n`;
+      });
+    }
+
+    p1 += `\n### D. Quadro Esquemático de Retenção Rápida\n\n`;
+    p1 += `| Aspecto Avaliado | Regra Geral | Ponto de Atenção em Prova |\n`;
+    p1 += `| :--- | :--- | :--- |\n`;
+    p1 += `| **Incidência Normativa** | Aplicação vinculada aos preceitos da lei | Atenção a hipóteses excepcionais |\n`;
+    p1 += `| **Margem de Escolha** | Inexistente nos atos vinculados | Discricionariedade restrita a conveniência e oportunidade |\n`;
+    p1 += `| **Controle Judicial** | Amplo sobre a legalidade dos atos | Vedado o controle sobre o mérito administrativo |\n`;
+
+    // 2. Raio-X de Banca & Pegadinhas (Pilar 2 - Modelo Oficial da Regra 9)
+    let p2 = `## 2. Raio-X de Banca & Pegadinhas Mais Frequentes (${cleanBanca})\n\n`;
+    
+    p2 += `### 🚨 Ponto Crítico 1: Inversão Conceitual e Confusão entre Espécies Correlatas em ${subName}\n`;
+    p2 += `1. **O conhecimento correto:** Cada instituto de ${subName} possui finalidade, pressupostos de fato e requisitos jurídicos próprios definidos em lei e na doutrina.\n`;
+    p2 += `2. **O erro ou confusão provável:** O candidato confunde conceitos vizinhos que possuem finalidades amplas semelhantes, invertendo competências e efeitos jurídicos.\n`;
+    p2 += `3. **Como uma questão poderia explorar essa confusão:** A banca ${cleanBanca} apresenta a definição exata de um instituto, mas atribui-lhe a nomenclatura ou as consequências de outro instituto para induzir o aluno a marcar como CERTO.\n`;
+    p2 += `4. **Como o aluno deve evitar o erro:** Isolar o sujeito e o objeto da assertiva; verificar se o conceito descrito corresponde estritamente ao instituto mencionado.\n\n`;
+
+    p2 += `### 🚨 Ponto Crítico 2: Uso de Termos Restritivos e Palavras Absolutas pela Banca ${cleanBanca}\n`;
+    p2 += `1. **O conhecimento correto:** Em ${discName}, a grande maioria das regras comporta exceções legais e jurisprudenciais consolidadas.\n`;
+    p2 += `2. **O erro ou confusão provável:** Assumir que a regra geral é absoluta e imutável, esquecendo as ressalvas expressas no texto da lei.\n`;
+    p2 += `3. **Como uma questão poderia explorar essa confusão:** A banca insere palavras como 'sempre', 'nunca', 'em qualquer hipótese', 'indelegável irrestritamente' ou 'privativo sem exceções' para invalidar a assertiva.\n`;
+    p2 += `4. **Como o aluno deve evitar o erro:** Sinal de alerta vermelho ao encontrar termos restritivos no comando da questão; conferir imediatamente se há exceção antes de validar.\n\n`;
+
+    p2 += `### 🚨 Ponto Crítico 3: Relações de Causa e Efeito e Limites de Controle Judicial\n`;
+    p2 += `1. **O conhecimento correto:** O Poder Judiciário exerce controle irrestrito de legalidade e legitimidade, sendo-lhe vedado substituir a valoração de conveniência e oportunidade (mérito).\n`;
+    p2 += `2. **O erro ou confusão provável:** Acreditar que a discricionariedade impede o controle judicial, ou, no extremo oposto, que o juiz pode anular um ato apenas porque decidiria diferente no mérito.\n`;
+    p2 += `3. **Como uma questão poderia explorar essa confusão:** Afirmar que o Judiciário pode revogar ato discricionário inconveniente praticado pelo Poder Executivo.\n`;
+    p2 += `4. **Como o aluno deve evitar o erro:** Regra de ouro da banca: a Administração anula (ilegalidade) e revoga (conveniência); o Judiciário apenas anula (ilegalidade). O Judiciário nunca revoga ato de outro Poder.\n`;
+
+    // 3. Flashcards (Pilar 3)
+    const cards = [
+      {
+        q: `Qual é o núcleo conceitual fundamental de ${subName} mais explorado pela banca ${cleanBanca}?`,
+        a: `É a correta incidência das normas regulamentares e a observância dos princípios da legalidade e finalidade pública.`
+      },
+      {
+        q: `Diferença entre competência vinculada e juízo discricionário em ${subName}?`,
+        a: `Na vinculada, a lei define previamente todos os elementos de atuação; na discricionária, há margem de valoração de conveniência e oportunidade nos limites legais.`
+      },
+      {
+        q: `Como o Poder Judiciário atua no controle dos atos relativos a ${subName}?`,
+        a: `O Judiciário realiza controle pleno de legalidade e moralidade, mas nunca pode reapreciar o mérito administrativo da escolha discricionária.`
+      },
+      {
+        q: `Quais são as pegadinhas com palavras absolutas mais comuns em ${subName}?`,
+        a: `O uso de termos como 'sempre', 'nunca' ou 'indelegável em qualquer caso', ignorando exceções legais expressas no edital.`
+      },
+      {
+        q: `Qual é a consequência jurídica de um vício insanável em ${subName}?`,
+        a: `Gera a nulidade absoluta do ato (anulação), com efeitos retroativos (ex tunc), ressalvados os direitos de terceiros de boa-fé.`
+      },
+      {
+        q: `O que caracteriza a presunção de legitimidade e veracidade dos atos administrativos?`,
+        a: `Presume-se a conformidade com a lei e a veracidade dos fatos alegados pelo poder público, tratando-se de presunção relativa (juris tantum).`
+      }
+    ];
+
+    // 4. Quiz (Pilar 4)
+    const isCebraspe = cleanBanca.toLowerCase().includes('cebraspe');
+    const quiz = [
+      {
+        enunciado: `A respeito de ${subName} na disciplina de ${discName}, julgue o item a seguir: O exercício das prerrogativas da Administração Pública deve ocorrer em estrita conformidade com a lei, sendo vedada a atuação fora das balizas normativas fixadas pelo legislador.`,
+        options: isCebraspe ? ["(C) CERTO", "(E) ERRADO"] : ["A) CERTO", "B) ERRADO"],
+        correct_index: 0,
+        comentario: `Item CERTO. A atuação da Administração Pública subordina-se ao princípio da legalidade estrita, devendo agir estritamente conforme o ordenamento jurídico aplicável a ${subName}.`,
+        banca: cleanBanca
+      },
+      {
+        enunciado: `Acerca de ${subName}, julgue o item: A existência de discricionariedade administrativa afasta por completo a possibilidade de controle judicial sobre qualquer aspecto do ato praticado.`,
+        options: isCebraspe ? ["(C) CERTO", "(E) ERRADO"] : ["A) CERTO", "B) ERRADO"],
+        correct_index: 1,
+        comentario: `Item ERRADO. A discricionariedade não confere imunidade ao controle judicial. O Poder Judiciário pode e deve controlar os aspectos de legalidade, legitimidade, competência, forma, finalidade e razoabilidade do ato.`,
+        banca: cleanBanca
+      },
+      {
+        enunciado: `No que concerne aos princípios aplicáveis a ${subName}, julgue o item: É permitido ao agente público substituir a finalidade de interesse coletivo por interesse particular quando houver urgência na execução da medida.`,
+        options: isCebraspe ? ["(C) CERTO", "(E) ERRADO"] : ["A) CERTO", "B) ERRADO"],
+        correct_index: 1,
+        comentario: `Item ERRADO. A finalidade do ato administrativo é sempre pública e indisponível. Qualquer desvio para atender interesses particulares configura vício de desvio de finalidade (desvio de poder), tornando o ato nulo.`,
+        banca: cleanBanca
+      },
+      {
+        enunciado: `Em relação à teoria das nulidades em ${subName}, julgue o item: A anulação de ato eivado de ilegalidade opera efeitos ex tunc, fulminando as consequências retroativamente desde a sua origem.`,
+        options: isCebraspe ? ["(C) CERTO", "(E) ERRADO"] : ["A) CERTO", "B) ERRADO"],
+        correct_index: 0,
+        comentario: `Item CERTO. Por decorrer de vício de ilegalidade, a anulação retroage às origens do ato (efeito ex tunc), ao contrário da revogação (conveniência e oportunidade), que opera efeito ex nunc.`,
+        banca: cleanBanca
+      },
+      {
+        enunciado: `Julgue o item subsequente: A presunção de veracidade inerente aos atos do poder público é de caráter absoluto (jure et de jure), não admitindo a produção de prova em contrário pelo administrado.`,
+        options: isCebraspe ? ["(C) CERTO", "(E) ERRADO"] : ["A) CERTO", "B) ERRADO"],
+        correct_index: 1,
+        comentario: `Item ERRADO. A presunção de legitimidade e de veracidade é relativa (juris tantum), admitindo expressamente a produção de prova em sentido contrário por parte do administrado afetado.`,
+        banca: cleanBanca
+      }
+    ];
+
+    return { pilar1, pilar2, cards, quiz };
+  }
+
   // 17.1 Importar Arquivo PDF e Gerar os 4 Pilares (Vercel Serverless)
   if (pathname === '/api/import-pdf' && req.method === 'POST') {
     const body = req.body || {};
@@ -1095,47 +1360,87 @@ ${context.slice(0, 10000)}`;
       sub = pdf_filename.replace(/\.pdf$/i, '').trim().replace(/[\s/]/g, '_') || 'Nova_Prova';
     }
 
-    // Extrair texto aproximado de streams de PDF em Base64
-    let rawText = '';
+    // Extrair texto limpo com descompressão de streams zlib (sem ruído binário)
+    let extractedText = '';
     let numPages = 1;
     try {
       const cleanB64 = pdf_b64.includes(',') ? pdf_b64.split(',')[1] : pdf_b64;
       const buf = Buffer.from(cleanB64, 'base64');
-      const latinStr = buf.toString('latin1');
-      const pageMatches = latinStr.match(/\/Type\s*\/Page\b/g);
-      if (pageMatches) numPages = pageMatches.length;
+      const resExtract = extractCleanPdfText(buf);
+      extractedText = resExtract.text || '';
+      numPages = resExtract.numPages || 1;
+    } catch (e_parse) {
+      console.error('Erro na extração limpa de PDF:', e_parse);
+    }
 
-      const tjMatches = latinStr.match(/\(([^)]{2,})\)\s*(?:Tj|\'|")/g);
-      if (tjMatches) {
-        const cleaned = tjMatches.map(m => m.replace(/^\(/, '').replace(/\)\s*(?:Tj|\'|")$/, '').replace(/\\n/g, '\n').replace(/\\r/g, '').replace(/\\t/g, ' ').trim())
-          .filter(c => c.length > 1 && !/^[0-9\s.,:;\-_]+$/.test(c));
-        if (cleaned.length > 0) rawText = cleaned.join(' ');
+    let pilar1Text = '';
+    let pilar2Text = '';
+    let cards = [];
+    let questions = [];
+
+    // Tentar síntese avançada via IA (Gemini) se API Key configurada
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (apiKey && extractedText.length > 50) {
+      try {
+        const isCebraspe = banca.toLowerCase().includes('cebraspe');
+        const optionsExample = isCebraspe ? '["(C) CERTO", "(E) ERRADO"]' : '["A) ...", "B) ...", "C) ...", "D) ...", "E) ..."]';
+        const prompt = `Você é um professor titular e elaborador sênior para concursos da banca ${banca}.
+Com base no material do PDF abaixo sobre a disciplina ${disc.replace(/_/g, ' ')} e tema ${sub.replace(/_/g, ' ')}:
+1. Gere o Pilar 1: Resumo Estruturado com seções (### A., ### B.), regras, definições, destaques em negrito e quadro esquemático em tabela markdown.
+2. Gere o Pilar 2: Raio-X de Banca seguindo estritamente este formato para cada ponto crítico:
+   1. O conhecimento correto.
+   2. O erro ou confusão provável.
+   3. Como uma questão poderia explorar essa confusão.
+   4. Como o aluno deve evitar o erro.
+3. Gere 6 Flashcards no formato Anki.
+4. Gere 5 Questões inéditas no formato da banca ${banca} com gabarito fundamentado.
+
+Texto do PDF:
+${extractedText.slice(0, 12000)}
+
+Retorne APENAS um JSON no formato:
+{
+  "pilar1": "## 1. Resumo Estruturado...",
+  "pilar2": "## 2. Raio-X...",
+  "cards": [{ "q": "Pergunta", "a": "Resposta" }],
+  "quiz": [{ "enunciado": "...", "options": ${optionsExample}, "correct_index": 0, "comentario": "...", "banca": "${banca}" }]
+}`;
+
+        const geminiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { responseMimeType: 'application/json', temperature: 0.5 }
+          })
+        });
+
+        if (geminiResp.ok) {
+          const geminiData = await geminiResp.json();
+          const raw = geminiData.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+          const parsed = JSON.parse(raw);
+          if (parsed.pilar1 && parsed.pilar2) {
+            pilar1Text = parsed.pilar1;
+            pilar2Text = parsed.pilar2;
+            cards = Array.isArray(parsed.cards) ? parsed.cards : [];
+            questions = Array.isArray(parsed.quiz) ? parsed.quiz : [];
+          }
+        }
+      } catch (e_gemini) {
+        console.warn('Fallback para construtor estruturado offline:', e_gemini.message);
       }
-    } catch (e_parse) {}
+    }
 
-    const textCorpus = rawText || `Material de estudo referente a ${sub.replace(/_/g, ' ')} da matéria ${disc.replace(/_/g, ' ')}. Foco nas diretrizes do edital da banca ${banca}.`;
-
-    const pilar1Text = `## 1. Resumo Estruturado e Conceitos-Chave\n\n### A. Fundamentos Essenciais de ${sub.replace(/_/g, ' ')}\nO estudo de **${sub.replace(/_/g, ' ')}** na disciplina de **${disc.replace(/_/g, ' ')}** exige domínio das regras e definições mais recorrentes da banca **${banca}**.\n\n- **Conceito Nuclear:** Conjunto normativo e doutrinário aplicável ao tema.\n- **Aplicação Prática:** Reconhecimento imediato dos padrões de assertivas nas provas.\n\n${textCorpus.slice(0, 3000)}`;
-
-    const pilar2Text = `## 2. Raio-X de Banca & Pegadinhas Mais Frequentes (${banca})\n\n### 🚨 Ponto Crítico 1: Inversão Conceitual e Termos Restritivos em ${sub.replace(/_/g, ' ')}\n1. **O conhecimento correto:** As regras gerais desta matéria admitem aplicações práticas bem delimitadas e com ressalvas doutrinárias ou legais.\n2. **O erro ou confusão provável:** Acreditar que a regra é irrestrita ou aplicar requisitos absolutos sem observar as exceções normativas.\n3. **Como uma questão poderia explorar essa confusão:** Possível forma de cobrança pela banca ${banca}: criar assertivas categóricas utilizando termos restritivos como 'sempre', 'nunca', 'exclusivamente' ou 'vedado em qualquer hipótese'.\n4. **Como o aluno deve evitar o erro:** Alerta vermelho com palavras absolutas em ${banca}; buscar imediatamente a exceção ou a ressalva legal antes de marcar como correta.\n\n### 🚨 Ponto Crítico 2: Troca de Conceitos Semelhantes e Classificações em ${sub.replace(/_/g, ' ')}\n1. **O conhecimento correto:** Cada instituto possui campo de incidência, competência e consequências próprias.\n2. **O erro ou confusão provável:** Confundir institutos correlatos que compartilham a mesma disciplina ou finalidade ampla.\n3. **Como uma questão poderia explorar essa confusão:** Ponto com potencial de cobrança: apresentar a definição perfeita de um conceito, mas atribuir-lhe o nome de outro conceito vizinho para induzir o candidato ao erro.\n4. **Como o aluno deve evitar o erro:** Isolar o sujeito e os elementos caracterizadores da assertiva; memorizar os mnemônicos e diferenças específicas do Pilar 1.`;
+    // Se a IA não foi acionada ou falhou, usar construtor estruturado impecável (sem lixo binário)
+    if (!pilar1Text || !pilar2Text) {
+      const generated = buildStructuredLessonFromText(extractedText, disc, sub, banca, professor, title);
+      pilar1Text = generated.pilar1;
+      pilar2Text = generated.pilar2;
+      cards = generated.cards;
+      questions = generated.quiz;
+    }
 
     const aulaMd = `# ${disc.replace(/_/g, ' ').toUpperCase()} - ${title}\n**Professor:** ${professor}  \n**Duração:** 50 minutos  \n**Categoria:** Edital de Concursos Públicos (${banca})  \n\n---\n\n${pilar1Text}\n\n---\n\n${pilar2Text}\n`;
-
-    const cards = [
-      { q: `Qual o conceito fundamental de ${sub.replace(/_/g, ' ')} mais cobrado em concursos?`, a: `É a regra nuclear aplicável a ${disc.replace(/_/g, ' ')}, exigindo atenção às exceções e termos restritivos.` },
-      { q: `Quais são os erros mais comuns de candidatos ao responder questões sobre ${sub.replace(/_/g, ' ')}?`, a: "Confundir regras gerais com hipóteses excepcionais e desconsiderar a jurisprudência das bancas." },
-      { q: `Como identificar pegadinhas da banca sobre ${sub.replace(/_/g, ' ')}?`, a: "Verificando se há inversão de conceitos, prazos ou atribuições entre órgãos/competências." }
-    ];
-
-    const questions = [
-      {
-        enunciado: `A respeito de ${sub.replace(/_/g, ' ')} em ${disc.replace(/_/g, ' ')}, julgue o item a seguir: A observância dos preceitos legais e jurisprudenciais consolidados é de caráter imperativo e vinculante para a resolução de questões de prova.`,
-        options: ["(C) CERTO", "(E) ERRADO"],
-        correct_index: 0,
-        comentario: `Item CERTO. A assertiva reflete a correta aplicação dos preceitos normativos exigidos em editais de concursos pela banca ${banca}.`,
-        banca: banca
-      }
-    ];
 
     const cat = getCatalog();
     if (!cat[disc]) cat[disc] = {};
@@ -1161,7 +1466,7 @@ ${context.slice(0, 10000)}`;
       discipline: disc,
       subarea: sub,
       num_pages: numPages,
-      chars_count: textCorpus.length,
+      chars_count: extractedText.length,
       cards_count: cards.length,
       quiz_count: questions.length,
       message: `PDF importado com sucesso (${numPages} páginas)! Todos os 4 Pilares foram gerados.`
@@ -1183,28 +1488,8 @@ ${context.slice(0, 10000)}`;
       return res.status(400).json({ success: false, error: 'Disciplina e subárea são obrigatórias.' });
     }
 
-    const textCorpus = content || `Aula de ${sub.replace(/_/g, ' ')} da matéria ${disc.replace(/_/g, ' ')}. Foco na banca ${banca}.`;
-
-    const pilar1Text = `## 1. Resumo Estruturado e Conceitos-Chave\n\n### A. Fundamentos Essenciais de ${sub.replace(/_/g, ' ')}\nO estudo de **${sub.replace(/_/g, ' ')}** na disciplina de **${disc.replace(/_/g, ' ')}** exige domínio das regras e definições mais recorrentes da banca **${banca}**.\n\n- **Conceito Nuclear:** Conjunto normativo e doutrinário aplicável ao tema.\n- **Aplicação Prática:** Reconhecimento imediato dos padrões de assertivas nas provas.\n\n${textCorpus.slice(0, 3000)}`;
-
-    const pilar2Text = `## 2. Raio-X de Banca & Pegadinhas Mais Frequentes (${banca})\n\n### 🚨 Ponto Crítico 1: Inversão Conceitual e Termos Restritivos em ${sub.replace(/_/g, ' ')}\n1. **O conhecimento correto:** As regras gerais desta matéria admitem aplicações práticas bem delimitadas e com ressalvas doutrinárias ou legais.\n2. **O erro ou confusão provável:** Acreditar que a regra é irrestrita ou aplicar requisitos absolutos sem observar as exceções normativas.\n3. **Como uma questão poderia explorar essa confusão:** Possível forma de cobrança pela banca ${banca}: criar assertivas categóricas utilizando termos restritivos como 'sempre', 'nunca', 'exclusivamente' ou 'vedado em qualquer hipótese'.\n4. **Como o aluno deve evitar o erro:** Alerta vermelho com palavras absolutas em ${banca}; buscar imediatamente a exceção ou a ressalva legal antes de marcar como correta.`;
-
-    const aulaMd = `# ${disc.replace(/_/g, ' ').toUpperCase()} - ${title}\n**Professor:** ${professor}  \n${yt_url ? `**Link da Aula:** [Assistir no YouTube]({yt_url})  \n` : ''}**Duração:** 50 minutos  \n**Categoria:** Edital de Concursos Públicos (${banca})  \n\n---\n\n${pilar1Text}\n\n---\n\n${pilar2Text}\n`;
-
-    const cards = [
-      { q: `Qual o conceito fundamental de ${sub.replace(/_/g, ' ')} mais cobrado em concursos?`, a: `É a regra nuclear aplicável a ${disc.replace(/_/g, ' ')}, exigindo atenção às exceções e termos restritivos.` },
-      { q: `Quais são os erros mais comuns de candidatos ao responder questões sobre ${sub.replace(/_/g, ' ')}?`, a: "Confundir regras gerais com hipóteses excepcionais e desconsiderar a jurisprudência das bancas." }
-    ];
-
-    const questions = [
-      {
-        enunciado: `A respeito de ${sub.replace(/_/g, ' ')} em ${disc.replace(/_/g, ' ')}, julgue o item a seguir: A observância dos preceitos legais e jurisprudenciais consolidados é de caráter imperativo e vinculante para a resolução de questões de prova.`,
-        options: ["(C) CERTO", "(E) ERRADO"],
-        correct_index: 0,
-        comentario: `Item CERTO. A assertiva reflete a correta aplicação dos preceitos normativos exigidos em editais de concursos pela banca ${banca}.`,
-        banca: banca
-      }
-    ];
+    const generated = buildStructuredLessonFromText(content, disc, sub, banca, professor, title);
+    const aulaMd = `# ${disc.replace(/_/g, ' ').toUpperCase()} - ${title}\n**Professor:** ${professor}  \n${yt_url ? `**Link da Aula:** [Assistir no YouTube](${yt_url})  \n` : ''}**Duração:** 50 minutos  \n**Categoria:** Edital de Concursos Públicos (${banca})  \n\n---\n\n${generated.pilar1}\n\n---\n\n${generated.pilar2}\n`;
 
     const cat = getCatalog();
     if (!cat[disc]) cat[disc] = {};
@@ -1221,16 +1506,16 @@ ${context.slice(0, 10000)}`;
         has_lesson: true,
         moments: []
       },
-      flashcards: cards,
-      quiz: questions
+      flashcards: generated.cards,
+      quiz: generated.quiz
     };
 
     return res.status(200).json({
       success: true,
       discipline: disc,
       subarea: sub,
-      cards_count: cards.length,
-      quiz_count: questions.length,
+      cards_count: generated.cards.length,
+      quiz_count: generated.quiz.length,
       message: 'Aula cadastrada com sucesso! Todos os 4 Pilares foram gerados.'
     });
   }

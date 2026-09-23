@@ -2019,7 +2019,7 @@ def save_quiz_questions(discipline, subarea, questions):
 def extract_text_from_pdf_bytes(pdf_bytes):
     """
     Extrai texto completo de todas as páginas de um PDF em memória usando pypdf
-    com fallback inteligente para extração direta de streams de texto.
+    com fallback inteligente para descompressão de streams zlib e validação estrita anti-mojibake.
     """
     num_pages = 1
     pages_text = []
@@ -2031,23 +2031,75 @@ def extract_text_from_pdf_bytes(pdf_bytes):
             for i, page in enumerate(reader.pages):
                 t = page.extract_text() or ""
                 if t.strip():
-                    pages_text.append(f"--- PÁGINA {i+1} ---\n{t.strip()}")
+                    # Validar se o texto extraído é legível e não lixo binário
+                    clean_t = re.sub(r'[^a-zA-Z0-9\u00C0-\u017F\s.,;:?!/()\'\"%-]', '', t)
+                    if len(clean_t) / (len(t) or 1) >= 0.70:
+                        pages_text.append(f"--- PÁGINA {i+1} ---\n{t.strip()}")
         except Exception:
             pass
 
     full_text = "\n\n".join(pages_text).strip()
-    if not full_text:
-        # Fallback para extração de strings de texto legíveis em bytes do PDF
+    if not full_text or len(full_text) < 100:
+        # Fallback para descompressão nativa de streams FlateDecode zlib
         try:
-            raw_str = pdf_bytes.decode('latin1', errors='ignore')
-            tj_matches = re.findall(r'\(([^)]{2,})\)\s*(?:Tj|\'|")', raw_str)
-            if tj_matches:
-                cleaned = [m.replace('\\n', '\n').replace('\\r', '').replace('\\t', ' ').strip() for m in tj_matches]
-                cleaned = [c for c in cleaned if len(c) > 1 and not re.match(r'^[0-9\s\.\,\:\;\-\_]+$', c)]
-                if cleaned:
-                    full_text = " ".join(cleaned)
-        except Exception:
-            pass
+            import zlib
+            text_chunks = []
+            pos = 0
+            while pos < len(pdf_bytes):
+                stream_idx = pdf_bytes.find(b"stream", pos)
+                if stream_idx == -1:
+                    break
+                start_data = stream_idx + 6
+                if start_data < len(pdf_bytes) and pdf_bytes[start_data:start_data+2] == b"\r\n":
+                    start_data += 2
+                elif start_data < len(pdf_bytes) and pdf_bytes[start_data:start_data+1] in (b"\n", b"\r"):
+                    start_data += 1
+
+                end_stream = pdf_bytes.find(b"endstream", start_data)
+                if end_stream == -1:
+                    break
+                end_data = end_stream
+                if end_data >= 2 and pdf_bytes[end_data-2:end_data] == b"\r\n":
+                    end_data -= 2
+                elif end_data >= 1 and pdf_bytes[end_data-1:end_data] in (b"\n", b"\r"):
+                    end_data -= 1
+
+                s_bytes = pdf_bytes[start_data:end_data]
+                decomp = None
+                try:
+                    decomp = zlib.decompress(s_bytes)
+                except Exception:
+                    try:
+                        decomp = zlib.decompress(s_bytes, -zlib.MAX_WBITS)
+                    except Exception:
+                        pass
+
+                if decomp:
+                    raw_str = decomp.decode("latin1", errors="ignore")
+                    tj_matches = re.findall(r'\[(.*?)\]\s*TJ', raw_str, flags=re.IGNORECASE)
+                    lines = []
+                    for m in tj_matches:
+                        parts = re.findall(r'\((.*?)\)', m)
+                        if parts:
+                            lines.append("".join(parts))
+                    simple_matches = re.findall(r'\((.*?)\)\s*Tj', raw_str, flags=re.IGNORECASE)
+                    for sm in simple_matches:
+                        lines.append(sm)
+
+                    for line in lines:
+                        clean_line = re.sub(r'[^a-zA-Z0-9\u00C0-\u017F\s.,;:?!/()\'\"%-]', '', line)
+                        clean_line = re.sub(r'\s+', ' ', clean_line).strip()
+                        if len(clean_line) > 15:
+                            ratio = len(clean_line) / (len(line) or 1)
+                            if ratio >= 0.75:
+                                text_chunks.append(clean_line)
+
+                pos = end_stream + 9
+
+            if text_chunks:
+                full_text = "\n\n".join(text_chunks)
+        except Exception as e_fb:
+            print(f"Aviso no fallback zlib PDF: {e_fb}")
 
     return num_pages, full_text
 
@@ -2232,14 +2284,52 @@ def generate_pilar1_summary(discipline, subarea, title, professor, context_text)
     if raw_md and "## 1." in raw_md:
         return raw_md.strip()
         
-    return (
-        f"## 1. Resumo Estruturado e Conceitos-Chave\n\n"
-        f"### A. Fundamentos Essenciais de {subarea.replace('_', ' ')}\n"
-        f"O estudo de **{subarea.replace('_', ' ')}** na disciplina de **{discipline.replace('_', ' ')}** exige domínio das definições fundamentais, regras de incidência e competências do edital.\n\n"
-        f"- **Conceito Primário:** Conjunto de normas e preceitos aplicáveis com incidência recorrente em provas.\n"
-        f"- **Aplicação:** Identificação rápida de padrões nas questões das principais bancas examinadoras.\n\n"
-        f"{context_text[:3000] if context_text else 'Consulte os tópicos detalhados no material completo.'}"
-    )
+    sub_clean = subarea.replace('_', ' ')
+    disc_clean = discipline.replace('_', ' ')
+    
+    # Extrair e estruturar sentenças normativas sem ruído ou quebras
+    clean_txt = re.sub(r'^[A-ZÁÉÍÓÚÂÊÔÃÕÇ\s]{4,}(?:PROF\.|PROFESSOR|INSTAGRAM|YOUTUBE)[^\n]*?\d+\s*', '', context_text or '', flags=re.MULTILINE)
+    clean_txt = re.sub(r'--- PÁGINA \d+ ---', '', clean_txt)
+    clean_txt = re.sub(r'\s+', ' ', clean_txt).strip()
+    
+    sentences = [s.strip() for s in re.split(r'(?<=[.?!])\s+', clean_txt) if len(s.strip()) >= 30 and len(s.strip()) <= 300]
+    sentences = [s for s in sentences if re.search(r'(?:é|são|consiste|caracteriza|corresponde|pressupõe|divide|classifica|exige|deve|vedado|permitido|regra|exceção|atributo|elemento|requisito|poder|ato|vinculad|discricionár)', s, re.I)]
+    
+    sec_a = sentences[:4] if len(sentences) >= 4 else sentences
+    sec_b = sentences[4:8] if len(sentences) >= 8 else []
+    
+    lines_p1 = [
+        "## 1. Resumo Estruturado e Conceitos-Chave\n",
+        f"### A. Fundamentos e Definições Essenciais de {sub_clean}",
+        f"Aspectos doutrinários e normativos basilares com alta recorrência em provas de {disc_clean}:\n"
+    ]
+    if sec_a:
+        for s in sec_a:
+            words = s.split(' ')
+            lead = " ".join(words[:3])
+            rest = " ".join(words[3:])
+            lines_p1.append(f"- **{lead}:** {rest}")
+    else:
+        lines_p1.append(f"- **Conceito Nuclear:** Conjunto de normas e preceitos aplicáveis com incidência recorrente no edital.")
+        lines_p1.append(f"- **Aplicação Prática:** Identificação rápida de padrões nas questões das principais bancas examinadoras.")
+
+    if sec_b:
+        lines_p1.append(f"\n### B. Regras de Aplicação, Requisitos e Competências")
+        lines_p1.append(f"Diretrizes operacionais e requisitos de validade para resolução de itens:\n")
+        for s in sec_b:
+            words = s.split(' ')
+            lead = " ".join(words[:3])
+            rest = " ".join(words[3:])
+            lines_p1.append(f"- **{lead}:** {rest}")
+
+    lines_p1.append(f"\n### C. Quadro Esquemático de Retenção Rápida\n")
+    lines_p1.append("| Aspecto Avaliado | Regra Geral | Ponto de Atenção em Prova |")
+    lines_p1.append("| :--- | :--- | :--- |")
+    lines_p1.append("| **Incidência Normativa** | Aplicação vinculada aos termos da lei | Atenção a hipóteses excepcionais |")
+    lines_p1.append("| **Margem de Escolha** | Inexistente nos atos vinculados | Discricionariedade restrita a conveniência e oportunidade |")
+    lines_p1.append("| **Controle Judicial** | Amplo sobre a legalidade dos atos | Vedado o controle sobre o mérito administrativo |")
+
+    return "\n".join(lines_p1)
 
 def generate_flashcards_from_text(discipline, subarea, context_text, count=6):
     """

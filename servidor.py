@@ -2018,21 +2018,38 @@ def save_quiz_questions(discipline, subarea, questions):
 
 def extract_text_from_pdf_bytes(pdf_bytes):
     """
-    Extrai texto completo de todas as páginas de um PDF em memória usando pypdf.
+    Extrai texto completo de todas as páginas de um PDF em memória usando pypdf
+    com fallback inteligente para extração direta de streams de texto.
     """
-    if not pypdf:
-        return 0, "Biblioteca pypdf não instalada."
-    try:
-        reader = pypdf.PdfReader(io.BytesIO(pdf_bytes))
-        num_pages = len(reader.pages)
-        pages_text = []
-        for i, page in enumerate(reader.pages):
-            t = page.extract_text() or ""
-            if t.strip():
-                pages_text.append(f"--- PÁGINA {i+1} ---\n{t.strip()}")
-        return num_pages, "\n\n".join(pages_text)
-    except Exception as e:
-        return 0, f"Erro ao extrair texto do PDF: {str(e)}"
+    num_pages = 1
+    pages_text = []
+    
+    if pypdf:
+        try:
+            reader = pypdf.PdfReader(io.BytesIO(pdf_bytes))
+            num_pages = len(reader.pages) or 1
+            for i, page in enumerate(reader.pages):
+                t = page.extract_text() or ""
+                if t.strip():
+                    pages_text.append(f"--- PÁGINA {i+1} ---\n{t.strip()}")
+        except Exception:
+            pass
+
+    full_text = "\n\n".join(pages_text).strip()
+    if not full_text:
+        # Fallback para extração de strings de texto legíveis em bytes do PDF
+        try:
+            raw_str = pdf_bytes.decode('latin1', errors='ignore')
+            tj_matches = re.findall(r'\(([^)]{2,})\)\s*(?:Tj|\'|")', raw_str)
+            if tj_matches:
+                cleaned = [m.replace('\\n', '\n').replace('\\r', '').replace('\\t', ' ').strip() for m in tj_matches]
+                cleaned = [c for c in cleaned if len(c) > 1 and not re.match(r'^[0-9\s\.\,\:\;\-\_]+$', c)]
+                if cleaned:
+                    full_text = " ".join(cleaned)
+        except Exception:
+            pass
+
+    return num_pages, full_text
 
 def generate_raiox_content(discipline, subarea, context_text, banca="Cebraspe", focus=""):
     """
@@ -2302,22 +2319,88 @@ def generate_quiz_from_text(discipline, subarea, context_text, banca="Cebraspe",
         q["banca"] = q.get("banca", banca)
     return questions
 
+def sync_topic_to_catalog(discipline, subarea, title, professor, banca, aula_md, cards, questions, yt_url=""):
+    """
+    Sincroniza o tópico imediatamente nos catálogos pré-semeados (preseeded_topics.json)
+    para garantir que esteja disponível de imediato na interface, em builds de produção
+    e persista após recarregar a página (F5).
+    """
+    cat_paths = [
+        os.path.join(BASE_DIR, "preseeded_topics.json"),
+        os.path.join(BASE_DIR, "public", "preseeded_topics.json"),
+        os.path.join(BASE_DIR, "api", "preseeded_topics.json")
+    ]
+    
+    topic_data = {
+        "meta": {
+            "discipline": discipline,
+            "subarea": subarea,
+            "title": title or subarea.replace("_", " "),
+            "professor": professor or "Prof. Especialista",
+            "duration": "50 minutos",
+            "category": f"Edital de Concursos Públicos ({banca})",
+            "youtube_url": yt_url or "",
+            "markdown_content": aula_md,
+            "has_lesson": True,
+            "moments": []
+        },
+        "flashcards": cards or [],
+        "quiz": questions or []
+    }
+    
+    for cp in cat_paths:
+        if os.path.exists(os.path.dirname(cp)):
+            try:
+                cdata = {}
+                if os.path.exists(cp):
+                    with open(cp, "r", encoding="utf-8") as f:
+                        cdata = json.load(f)
+                if discipline not in cdata:
+                    cdata[discipline] = {}
+                cdata[discipline][subarea] = topic_data
+                with open(cp, "w", encoding="utf-8") as f:
+                    json.dump(cdata, f, ensure_ascii=False, indent=2)
+            except Exception as e:
+                print(f"Aviso ao sincronizar catálogo {cp}: {e}")
+
 def auto_generate_all_4_pillars(discipline, subarea, title, professor, text_corpus, yt_url="", banca="Cebraspe"):
     """
-    Executa a geração completa ponta a ponta dos 4 Pilares de Alta Retenção:
+    Executa a geração completa ponta a ponta dos 4 Pilares de Alta Retenção EM PARALELO:
     1. Resumo Estruturado (Aula_01_[Tema].md)
     2. Raio-X de Banca & Pegadinhas (Aula_01_[Tema].md)
     3. Flashcards Anki (Flashcards_[Tema]_Anki.txt)
     4. Mini-Simulado de Fixação (Simulado_[Tema]_Questoes.json)
     """
+    from concurrent.futures import ThreadPoolExecutor
+
     folder = os.path.join(BASE_DIR, discipline, subarea)
     os.makedirs(folder, exist_ok=True)
     
-    # 1. Resumo Estruturado
-    pilar1_text = generate_pilar1_summary(discipline, subarea, title, professor, text_corpus)
-    
-    # 2. Raio-X de Banca & Pegadinhas
-    raiox_text, _ = generate_raiox_content(discipline, subarea, text_corpus, banca=banca)
+    # 1 a 4. Execução Concorrente em Paralelo dos 4 Pilares para Velocidade Máxima
+    pilar1_text = ""
+    raiox_text = ""
+    cards = []
+    questions = []
+
+    try:
+        with ThreadPoolExecutor(max_workers=4) as executor:
+            f_p1 = executor.submit(generate_pilar1_summary, discipline, subarea, title, professor, text_corpus)
+            f_p2 = executor.submit(generate_raiox_content, discipline, subarea, text_corpus, banca=banca)
+            f_cards = executor.submit(generate_flashcards_from_text, discipline, subarea, text_corpus, count=6)
+            f_quiz = executor.submit(generate_quiz_from_text, discipline, subarea, text_corpus, banca=banca, count=5)
+
+            pilar1_text = f_p1.result()
+            raiox_res = f_p2.result()
+            raiox_text = raiox_res[0] if isinstance(raiox_res, tuple) else raiox_res
+            cards = f_cards.result()
+            questions = f_quiz.result()
+    except Exception as e_par:
+        print(f"Aviso no pool paralelo dos 4 pilares: {e_par}. Executando sequencial...")
+        pilar1_text = generate_pilar1_summary(discipline, subarea, title, professor, text_corpus)
+        raiox_res = generate_raiox_content(discipline, subarea, text_corpus, banca=banca)
+        raiox_text = raiox_res[0] if isinstance(raiox_res, tuple) else raiox_res
+        cards = generate_flashcards_from_text(discipline, subarea, text_corpus, count=6)
+        questions = generate_quiz_from_text(discipline, subarea, text_corpus, banca=banca, count=5)
     
     # Montar e salvar Aula_01_[Tema].md
     aula_md = f"# {discipline.replace('_', ' ').upper()} - {title}\n"
@@ -2334,14 +2417,12 @@ def auto_generate_all_4_pillars(discipline, subarea, title, professor, text_corp
         fm.write(aula_md)
         
     # 3. Flashcards Anki
-    cards = generate_flashcards_from_text(discipline, subarea, text_corpus, count=6)
     anki_path = os.path.join(folder, f"Flashcards_{subarea}_Anki.txt")
     with open(anki_path, "w", encoding="utf-8") as fa:
         for c in cards:
             fa.write(f"{c['q']}\t{c['a']}\n")
             
     # 4. Mini-Simulado de Fixação
-    questions = generate_quiz_from_text(discipline, subarea, text_corpus, banca=banca, count=5)
     save_quiz_questions(discipline, subarea, questions)
     
     # Salvar Transcrição Completa / Texto Fonte
@@ -2355,6 +2436,9 @@ def auto_generate_all_4_pillars(discipline, subarea, title, professor, text_corp
     if not os.path.exists(rfile):
         with open(rfile, "w", encoding="utf-8") as fr:
             json.dump({"cards": [], "quiz": []}, fr)
+
+    # Sincronizar catálogo para persistência imediata na interface e builds
+    sync_topic_to_catalog(discipline, subarea, title, professor, banca, aula_md, cards, questions, yt_url=yt_url)
             
     return {
         "lesson_path": lesson_path,
@@ -4038,7 +4122,8 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             is_trial = bool(payload.get("is_trial", False) or not payload.get("save_to_db", True))
             if not is_trial and supabase_client and supabase_client.is_supabase_configured():
                 try:
-                    supabase_client.sync_all_local_to_supabase()
+                    import threading
+                    threading.Thread(target=supabase_client.sync_all_local_to_supabase, daemon=True).start()
                 except Exception as e_supa_sync:
                     print(f"Aviso: Erro ao auto-sincronizar aula com Supabase: {e_supa_sync}")
 
@@ -4219,12 +4304,13 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                     banca=banca
                 )
 
-                # Sincronizar automaticamente com o Supabase se configurado
+                # Sincronizar automaticamente com o Supabase em background se configurado
                 if supabase_client and supabase_client.is_supabase_configured():
                     try:
-                        supabase_client.sync_all_local_to_supabase()
+                        import threading
+                        threading.Thread(target=supabase_client.sync_all_local_to_supabase, daemon=True).start()
                     except Exception as e_supa_sync:
-                        print(f"Aviso: Erro ao auto-sincronizar PDF com Supabase: {e_supa_sync}")
+                        print(f"Aviso: Erro ao agendar auto-sincronização do PDF com Supabase: {e_supa_sync}")
 
                 self.send_response(200)
                 self.send_header("Content-type", "application/json; charset=utf-8")

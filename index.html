@@ -7313,8 +7313,9 @@
   }
 
   function openImportLessonModal(mode) {
-    const userPlan = localStorage.getItem('concursos_user_plan');
-    if (userPlan !== 'vitalicio') {
+    if (typeof closeAuthModal === 'function') closeAuthModal();
+
+    if (typeof isUserTrial === 'function' && isUserTrial()) {
       const count = getTrialImportCount();
       if (count >= 1) {
         openModal('modalTrialImportLimit');
@@ -7324,6 +7325,7 @@
 
     const modal = document.getElementById('modalImportLesson');
     if (!modal) return;
+    modal.style.zIndex = '10005';
     modal.style.display = 'flex';
     const chosenMode = mode || 'pdf';
     switchImportMode(chosenMode);
@@ -7893,6 +7895,13 @@
   }
 
   async function submitImportUniversal() {
+    const isTrial = (typeof isUserTrial === 'function') ? isUserTrial() : false;
+    if (isTrial && typeof getTrialImportCount === 'function' && getTrialImportCount() >= 1) {
+      closeModal('modalImportLesson');
+      openModal('modalTrialImportLimit');
+      return;
+    }
+
     const selDisc = document.getElementById('importDisc').value;
     const customDisc = document.getElementById('importCustomDisc').value.trim();
     const disc = (selDisc === '__custom__') ? customDisc : selDisc;
@@ -7905,6 +7914,10 @@
       alert("Por favor, preencha a Disciplina e a Subárea/Tópico.");
       return;
     }
+
+    const userEmail = (typeof currentUser !== 'undefined' && currentUser && currentUser.email)
+      ? currentUser.email
+      : (localStorage.getItem('concursos_user_email') || '');
 
     const btn = document.getElementById('btnRunImportLesson');
     const spinner = document.getElementById('importLessonSpinner');
@@ -7930,7 +7943,10 @@
             professor: prof,
             banca: banca,
             pdf_base64: selectedPdfBase64,
-            pdf_filename: selectedPdfFileName
+            pdf_filename: selectedPdfFileName,
+            email: userEmail,
+            is_trial: isTrial,
+            save_to_db: !isTrial
           })
         });
         let data;
@@ -7941,13 +7957,22 @@
           data = { success: false, error: txt || "Falha na comunicação com o servidor ao processar o PDF." };
         }
         if (data.success) {
+          if (isTrial && typeof getTrialImportCount === 'function') {
+            localStorage.setItem('concursos_trial_imported_count', String(getTrialImportCount() + 1));
+          }
           closeModal('modalImportLesson');
-          showToast(`🎉 PDF importado! ${data.num_pages} páginas processadas e os 4 Pilares gerados.`, '📄');
+          showToast(`🎉 PDF importado! ${data.num_pages || 1} página(s) processadas e os 4 Pilares gerados.`, '📄');
           await loadStructureAndSidebar();
           const targetDisc = data.discipline || disc.replace(/\s+/g, '_');
           const targetSub = data.subarea || sub.replace(/\s+/g, '_');
+          
+          // Expandir grupo na barra lateral para o aluno ver o novo tópico
+          const grpId = 'grp-' + targetDisc.toLowerCase().replace(/[^a-z0-9]/g, '-');
+          const grpEl = document.getElementById(grpId);
+          if (grpEl) grpEl.style.display = 'block';
+
           await selectSubarea(targetDisc, targetSub);
-          switchTab(1); // Abre na aba Raio-X & Pegadinhas!
+          switchTab(0); // Leva o aluno direto para o Pilar 1 (Resumo & Sintaxe), cumprindo a Regra de Ouro!
         } else {
           alert("Erro ao importar PDF: " + (data.error || data.message || "Tente novamente."));
         }
@@ -7969,16 +7994,29 @@
             professor: prof,
             youtube_url: yt,
             content: content,
-            banca: banca
+            banca: banca,
+            email: userEmail,
+            is_trial: isTrial,
+            save_to_db: !isTrial
           })
         });
         const data = await resp.json();
         if (data.success) {
+          if (isTrial && typeof getTrialImportCount === 'function') {
+            localStorage.setItem('concursos_trial_imported_count', String(getTrialImportCount() + 1));
+          }
           closeModal('modalImportLesson');
           showToast("🎉 Aula cadastrada! Todos os 4 Pilares gerados com sucesso.", "📥");
           await loadStructureAndSidebar();
-          await selectSubarea(disc.replace(/\s+/g, '_'), sub.replace(/\s+/g, '_'));
-          switchTab(1);
+          const targetDisc = data.discipline || disc.replace(/\s+/g, '_');
+          const targetSub = data.subarea || sub.replace(/\s+/g, '_');
+          
+          const grpId = 'grp-' + targetDisc.toLowerCase().replace(/[^a-z0-9]/g, '-');
+          const grpEl = document.getElementById(grpId);
+          if (grpEl) grpEl.style.display = 'block';
+
+          await selectSubarea(targetDisc, targetSub);
+          switchTab(0);
         } else {
           alert("Erro ao importar aula: " + (data.message || data.error || "Tente novamente."));
         }

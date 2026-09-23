@@ -1,5 +1,12 @@
 import fs from 'fs';
 import path from 'path';
+import {
+  MASTER_STUDY_ENGINE_INSTRUCTION,
+  getPilar1Prompt,
+  getPilar2Prompt,
+  getPilar3Prompt,
+  getPilar4Prompt
+} from './master_study_engine.js';
 
 let catalogCache = null;
 function getCatalog() {
@@ -814,9 +821,7 @@ export default async function handler(req, res) {
       try {
         const topic = findTopicData(disc, sub);
         const context = topic?.meta?.markdown_content || topic?.transcript?.full_text || `${disc} • ${sub}`;
-        const isCebraspe = banca.toLowerCase().includes('cebraspe');
-        const optionsExample = isCebraspe ? '["A) CERTO", "B) ERRADO"]' : '["A) ...", "B) ...", "C) ...", "D) ...", "E) ..."]';
-        const prompt = `Você é um elaborador sênior de concursos da banca ${banca}. Crie exatamente ${count} questões INÉDITAS sobre ${disc} - ${sub}. Contexto: ${context.slice(0, 5000)}. Não repita estas questões: ${existingList}. Formato JSON: { "questions": [{ "enunciado": "...", "options": ${optionsExample}, "correct_index": 0, "comentario": "Fundamentação pedagógica detalhada", "banca": "${banca}" }] }`;
+        const prompt = `${getPilar4Prompt(disc, sub, banca, '', count)}\n\nContexto da Aula / Transcrição:\n${context.slice(0, 8000)}\n\nNão repita estas questões já existentes:\n${existingList}`;
 
         const geminiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
           method: 'POST',
@@ -912,7 +917,7 @@ export default async function handler(req, res) {
       try {
         const topic = findTopicData(disc, sub);
         const context = topic?.meta?.markdown_content || topic?.transcript?.full_text || `${disc} • ${sub}`;
-        const prompt = `Crie exatamente ${count} flashcards de alto impacto para concursos públicos sobre ${disc} - ${sub}. Foco: ${focus || 'Pegadinhas e Casos Críticos'}. Contexto: ${context.slice(0, 5000)}. Formato JSON estrito: { "cards": [{ "q": "Pergunta desafiadora inédita", "a": "Resposta fundamentada com a regra de prova" }] }`;
+        const prompt = `${getPilar3Prompt(disc, sub, focus, count)}\n\nContexto da Aula / Transcrição:\n${context.slice(0, 8000)}`;
 
         const geminiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
           method: 'POST',
@@ -987,7 +992,7 @@ export default async function handler(req, res) {
     if (apiKey) {
       try {
         const context = topic?.meta?.markdown_content || topic?.transcript?.full_text || `${disc} • ${sub}`;
-        const prompt = `Gere uma seção analítica de 'Raio-X de Banca & Pegadinhas' no estilo da banca ${banca} para ${disc} - ${sub}. Foco: ${focus || 'Armadilhas Frequentes'}. Contexto: ${context.slice(0, 5000)}. Retorne em Markdown claro com pontos críticos numerados, Pegadinha vs Verdade.`;
+        const prompt = `${getPilar2Prompt(disc, sub, banca, focus)}\n\nContexto da Aula / Transcrição:\n${context.slice(0, 8000)}`;
 
         const geminiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
           method: 'POST',

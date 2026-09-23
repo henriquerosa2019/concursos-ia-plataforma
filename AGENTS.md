@@ -102,4 +102,22 @@ Para qualquer aula em vídeo (YouTube ou arquivo) fornecida pelo usuário para e
   4. **Redes e Informática:** TCP (orientado à conexão, handshake em 3 vias) vs UDP (não orientado, sem confirmação, veloz), Portas padrão (HTTP 80 vs HTTPS 443, SSH 22, DNS 53).
   5. **Proibição de Templates Genéricos:** Nunca exibir textos ou fallbacks genéricos de direito administrativo em tópicos de informática ou exatas. Priorizar sempre a Seção 2 da aula existente ou o banco curado específico da matéria.
 
+---
+
+## 10. Instrução-Mestra de Qualidade (MASTER_STUDY_ENGINE) para os 4 Pilares
+- **Regra Fundamental Inegociável:** "Nunca produzir simplesmente um resumo da transcrição. Transformar a aula em material de estudo de ALTO VALOR AGREGADO para concursos públicos, preservando a fidelidade ao conteúdo original e aumentando sua utilidade pedagógica para um candidato."
+- **Arquitetura:** `TRANSCRIÇÃO → ANÁLISE PEDAGÓGICA (MASTER_STUDY_ENGINE) → 4 PILARES`.
+- **Regras Gerais Obrigatórias:**
+  1. Use a transcrição como fonte primária dos fatos apresentados na aula, sem inventar informações não sustentadas.
+  2. Elimine repetições, vícios de linguagem, conversas paralelas e trechos sem valor didático.
+  3. Dê preferência a: definições, conceitos nucleares, diferenças entre conceitos, classificações, exceções, regras, causas e consequências, contraexemplos e palavras-chave.
+  4. Trate termos como "atenção", "cuidado", "pegadinha", "prova", "banca", "importante", "não confunda", "sempre", "nunca", "exceto" como prioridade máxima de revisão.
+  5. Organize com foco em responder: "O que o candidato precisa saber deste trecho para acertar a questão?" e "Como a banca poderia transformar este conteúdo em questão?".
+- **Especialização dos 4 Pilares:**
+  - **Pilar 1 (Resumo & Síntese):** Apostila condensada didática. Aplicar sempre a sequência: `CONCEITO → EXPLICAÇÃO → EXEMPLO → CUIDADO/EXCEÇÃO → COMO PODE SER COBRADO`.
+  - **Pilar 2 (Raio-X das Bancas & Pegadinhas):** Análise sob perspectiva da banca (Cebraspe, FGV, etc.): 1. Conhecimento correto; 2. Erro/confusão provável; 3. Como a questão explora essa confusão; 4. Regra de Ouro / Mnemônico de Defesa.
+  - **Pilar 3 (Flashcards Anki & Esquematização):** Unidades atômicas de memória (uma ideia principal por cartão). **REGRA OBRIGATÓRIA DE MNEMÔNICOS:** "Você deverá criar sempre mnemônicos, dadas as importâncias deles para os alunos, em especial em Direito Administrativo, Direito Constitucional, Direito Penal e demais matérias onde os mnemônicos são muito utilizados."
+  - **Pilar 4 (Mini-Simulado de Fixação):** Questões inéditas, distratores plenamente plausíveis, com gabarito fundamentado, explicação de por que os distratores estão errados e ponto de aprendizagem nuclear.
+
+
 

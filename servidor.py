@@ -39,6 +39,13 @@ try:
     from http.server import ThreadingHTTPServer as HTTPServer, BaseHTTPRequestHandler
 except ImportError:
     from http.server import HTTPServer, BaseHTTPRequestHandler
+from master_study_engine import (
+    MASTER_STUDY_ENGINE_INSTRUCTION,
+    get_pilar1_prompt,
+    get_pilar2_prompt,
+    get_pilar3_prompt,
+    get_pilar4_prompt
+)
 
 if hasattr(sys.stdout, "reconfigure"):
     try:
@@ -2037,26 +2044,14 @@ def extract_text_from_pdf_bytes(pdf_bytes):
 def generate_raiox_content(discipline, subarea, context_text, banca="Cebraspe", focus=""):
     """
     Pilar 2: Raio-X de Banca & Pegadinhas Mais Frequentes (Cebraspe, FGV, FCC, Vunesp).
-    Gera via IA se disponível, ou extrai as pegadinhas reais da aula existente, ou consulta o banco curado.
+    Gera via IA com base na MASTER_STUDY_ENGINE, ou extrai as pegadinhas reais da aula existente, ou consulta o banco curado.
     """
-    sys_prompt = (
-        f"Você é um especialista sênior em bancas examinadoras de concursos públicos ({banca}, FGV, FCC, Vunesp).\n"
-        f"Seu objetivo é gerar uma análise aprofundada de RAIO-X DE BANCA & PEGADINHAS (Pilar 2) sobre o tema solicitado.\n\n"
-        "Estruture a saída EXATAMENTE em Markdown no formato:\n"
-        "## 2. Raio-X de Banca & Pegadinhas Mais Frequentes\n\n"
-        "### 🚨 Pegadinha 1: [Título Curto e Impactante da Armadilha]\n"
-        "- **O que a banca afirma para induzir ao erro:** [Exemplo de afirmativa falaciosa ou pegadinha típica]\n"
-        "- **Pegadinha desmascarada (Onde está o erro):** [Explicação técnica direta de por que a banca induz ao erro]\n"
-        "- **💡 Regra de Ouro / Mnemônico:** [Mnemônico ou regra definitiva para o candidato gabaritar]\n\n"
-        "### 🚨 Pegadinha 2: [Título Curto e Impactante]\n"
-        "..."
-        "\n\nGere de 4 a 6 pegadinhas críticas e armadilhas clássicas da matéria."
-    )
+    sys_prompt = get_pilar2_prompt(discipline, subarea, banca=banca, focus=focus)
     user_prompt = (
         f"Disciplina: {discipline} | Assunto: {subarea}\n"
         f"Banca examinadora foco: {banca}\n"
-        f"Foco específico solicitado: {focus if focus else 'Principais pegadinhas, inversões conceituais, prazos e exceções'}\n\n"
-        f"Conteúdo de referência:\n{context_text[:12000]}"
+        f"Foco específico solicitado: {focus if focus else 'Principais pegadinhas, inversões conceituais, termos absolutos, prazos e exceções'}\n\n"
+        f"Conteúdo de referência / Transcrição da Aula:\n{context_text[:14000]}"
     )
     
     raw_md, prov = call_ai_service(sys_prompt, user_prompt, json_mode=False, temperature=0.7)
@@ -2167,22 +2162,14 @@ def update_lesson_markdown_with_raiox(discipline, subarea, raiox_markdown):
 
 def generate_pilar1_summary(discipline, subarea, title, professor, context_text):
     """
-    Pilar 1: Resumo Estruturado com definições, conceitos-chave e tabelas comparativas.
+    Pilar 1: Resumo Estruturado e Conceitos-Chave (Apostila condensada).
+    Aplica a sequência: CONCEITO -> EXPLICAÇÃO -> EXEMPLO -> CUIDADO/EXCEÇÃO -> COMO PODE SER COBRADO.
     """
-    sys_prompt = (
-        "Você é um professor titular e elaborador sênior para concursos públicos de alto nível.\n"
-        "Seu objetivo é criar o PILAR 1: RESUMO ESTRUTURADO E CONCEITOS-CHAVE com base no conteúdo fornecido.\n\n"
-        "Estruture em Markdown impecável contendo:\n"
-        "- Definições formais, regras gerais e requisitos\n"
-        "- Subseções lógicas (### A. ..., ### B. ...)\n"
-        "- Tabelas comparativas em markdown quando houver termos confrontados\n"
-        "- Mnemônicos e destaques em negrito\n\n"
-        "Inicie obrigatoriamente em:\n"
-        "## 1. Resumo Estruturado e Conceitos-Chave"
-    )
+    sys_prompt = get_pilar1_prompt(discipline, subarea, title, professor)
     user_prompt = (
-        f"Disciplina: {discipline} | Subárea: {subarea} | Título: {title}\n\n"
-        f"Conteúdo de Estudo / Transcrição / PDF:\n{context_text[:14000]}"
+        f"Disciplina: {discipline} | Subárea: {subarea} | Título: {title}\n"
+        f"Professor: {professor}\n\n"
+        f"Conteúdo de Estudo / Transcrição da Aula:\n{context_text[:15000]}"
     )
     raw_md, _ = call_ai_service(sys_prompt, user_prompt, json_mode=False, temperature=0.6)
     if raw_md and "## 1." in raw_md:
@@ -2199,15 +2186,15 @@ def generate_pilar1_summary(discipline, subarea, title, professor, context_text)
 
 def generate_flashcards_from_text(discipline, subarea, context_text, count=6):
     """
-    Pilar 3: Flashcards de Alta Retenção no padrão Anki.
+    Pilar 3: Flashcards de Alta Retenção no padrão Anki com Mnemônicos Obrigatórios.
     """
-    sys_prompt = (
-        "Você é um especialista em memorização e flashcards Anki para concursos públicos.\n"
-        "Crie perguntas e respostas cirúrgicas, focadas em prazos, mnemônicos, exceções e pegadinhas.\n"
-        "Retorne SEMPRE um JSON no formato:\n"
-        "{\"cards\": [{\"q\": \"Pergunta desafiadora\", \"a\": \"Resposta fundamentada com a regra de prova\"}]}"
+    sys_prompt = get_pilar3_prompt(discipline, subarea, focus="", count=count)
+    user_prompt = (
+        f"Disciplina: {discipline} | Assunto: {subarea}\n\n"
+        f"Material de Estudo / Transcrição da Aula:\n{context_text[:14000]}\n\n"
+        f"Gere exatamente {count} flashcards de alta retenção no formato JSON. "
+        f"Lembre-se da regra mandatória: Você deverá criar sempre mnemônicos, dadas as importâncias deles para os alunos, em especial em Direito Administrativo, Direito Constitucional, Direito Penal e demais matérias onde os mnemônicos são muito utilizados."
     )
-    user_prompt = f"Disciplina: {discipline} | Assunto: {subarea}\n\nMaterial de Estudo:\n{context_text[:12000]}\n\nGere exatamente {count} flashcards de alta retenção."
     raw_json, _ = call_ai_service(sys_prompt, user_prompt, json_mode=True)
     cards = []
     if raw_json:
@@ -2226,17 +2213,14 @@ def generate_flashcards_from_text(discipline, subarea, context_text, count=6):
 
 def generate_quiz_from_text(discipline, subarea, context_text, banca="Cebraspe", count=5):
     """
-    Pilar 4: Mini-Simulado de Fixação (Cebraspe Certo/Errado ou Múltipla Escolha).
+    Pilar 4: Mini-Simulado de Fixação com Distratores Plausíveis e Gabarito Fundamentado.
     """
-    sys_prompt = (
-        f"Você é um examinador de bancas de concursos ({banca}).\n"
-        f"Crie {count} questões de fixação inéditas e desafiadoras com base no material fornecido.\n"
-        "Se Cebraspe: 'options' DEVE ser estritamente [\"A) CERTO\", \"B) ERRADO\"].\n"
-        "Se FGV, FCC ou Vunesp: 'options' com 4 ou 5 alternativas (A, B, C, D, E).\n"
-        "Retorne SEMPRE um JSON válido:\n"
-        "{\"questions\": [{\"enunciado\": \"...\", \"options\": [...], \"correct_index\": 0, \"comentario\": \"...\"}]}"
+    sys_prompt = get_pilar4_prompt(discipline, subarea, banca=banca, focus="", count=count)
+    user_prompt = (
+        f"Banca: {banca} | Disciplina: {discipline} | Assunto: {subarea}\n\n"
+        f"Material de Estudo / Transcrição da Aula:\n{context_text[:14000]}\n\n"
+        f"Gere exatamente {count} questões completas no formato JSON especificado com gabarito fundamentado, análise de distratores e ponto de aprendizagem."
     )
-    user_prompt = f"Banca: {banca} | Disciplina: {discipline} | Assunto: {subarea}\n\nMaterial:\n{context_text[:12000]}"
     raw_json, _ = call_ai_service(sys_prompt, user_prompt, json_mode=True, temperature=0.7)
     questions = []
     if raw_json:

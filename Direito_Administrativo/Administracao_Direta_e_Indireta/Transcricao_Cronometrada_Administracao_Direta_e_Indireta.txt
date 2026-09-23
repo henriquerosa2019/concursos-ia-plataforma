@@ -1,0 +1,1194 @@
+[00:00] (0s): Boas, meu povo amado. Vamos lá para mais
+[00:02] (2s): uma aula. Hoje é sexta-feira, 16 horas.
+[00:05] (5s): Tu tu tem compromisso aqui conosco? Toda
+[00:07] (7s): quarta e sexta, né? Em regra, claro que
+[00:10] (10s): nós temos exceções. Semana que vem vai
+[00:12] (12s): ser uma dessas exceções, né? Nós temos
+[00:14] (14s): que adiantar aí algumas aulas. Mas hoje
+[00:17] (17s): é sexta, 16 horas, é dia e hora de
+[00:20] (20s): estudar direito administrativo. E uma
+[00:23] (23s): aula mais genérica, mais geralzona, né?
+[00:25] (25s): Nós vamos rever aí alguns conceitos de
+[00:28] (28s): organização da ADM pública. O que é a
+[00:31] (31s): desconcentração, o que é a
+[00:32] (32s): descentralização, da onde vem o a tal da
+[00:35] (35s): autarquia, né? Qual é a diferença entre
+[00:38] (38s): empresa pública e sociedade agumianista?
+[00:41] (41s): Enfim, vamos estudar um pouquinho, vamos
+[00:43] (43s): rever alguns conceitos e eu convido você
+[00:45] (45s): a se concentrar a partir de agora e
+[00:48] (48s): ficar uma hora resolvendo questões.
+[00:51] (51s): Muitos de vocês estão no trabalho, estão
+[00:53] (53s): nas outras em outras atividades, então
+[00:55] (55s): eu sei que é difícil, mas se puder dá
+[00:57] (57s): uma dá uma uma focada aqui na tela,
+[01:00] (60s): tenta participar do chat e lembrando que
+[01:03] (63s): só participa do chat quem está inscrito.
+[01:07] (67s): Então te inscreve aí, rapaz, participa,
+[01:10] (70s): coloca lá, tá certo, tá errada, letra B,
+[01:11] (71s): letra C, né? Enfim, coloca teu
+[01:14] (74s): comentário, participa. Vamos tornar aí
+[01:16] (76s): uma aula mais dinâmica, tá? Uma hora de
+[01:19] (79s): resolução de questões de bancas
+[01:21] (81s): variadas. Aqui nós teremos FGV, teremos
+[01:24] (84s): Cebrasp, teremos Quadrix. Ixi, tem muita
+[01:27] (87s): coisa aqui para falar de um grande
+[01:29] (89s): assunto que cai quase que em todo
+[01:31] (91s): concurso, tá? Cai pro CNU, cai pro TSE
+[01:34] (94s): unificado, cai para ixi, ó, tribunais aí
+[01:37] (97s): a full, né? Menos o TJ São Paulo, porque
+[01:40] (100s): o TJ São Paulo é diferentão. Por quê?
+[01:43] (103s): Não sei, tá? Não sei porque ele não
+[01:45] (105s): cobra o direito administrativo como um
+[01:47] (107s): todo, né? Lá só é cobrado duas leis, a
+[01:51] (111s): LIA e o Estatuto de São Paulo. Mas
+[01:53] (113s): enfim, fora o TJ São Paulo, basicamente
+[01:56] (116s): esse conteúdo cai quase que em todos os
+[01:59] (119s): concursos, tá bom? Boa tarde para todo
+[02:01] (121s): mundo. Eh, boa tarde pro pra Giane, pr
+[02:05] (125s): pra Rejane, perdão, paraa Rejane, pra
+[02:07] (127s): Cibelle, pra Vanessa, né? Boa tarde,
+[02:09] (129s): Belor, melhor. Valeu, Vanessinha, tamos
+[02:11] (131s): junto. E Valdemar, Valdemar da Costa
+[02:14] (134s): Neta, né? Quem diria? Valdemar Antônio
+[02:16] (136s): de Oliveira, boa tarde para você.
+[02:18] (138s): Josemar, oi, professor Franco, essa aula
+[02:20] (140s): é importante para revisar CNU? Sim,
+[02:23] (143s): muito importante. Bloco oito na veia,
+[02:26] (146s): né? Bloco oito na veia. OK. Semana que
+[02:29] (149s): vem, pessoal, semana que vem eu vou
+[02:31] (151s): entrar mais cedo, tá? Se não me engano,
+[02:33] (153s): é terça e quarta ou segunda e terça, eu
+[02:36] (156s): não lembro, mas semana que vem nós vamos
+[02:38] (158s): entrar com dois dois dias e vamos tentar
+[02:41] (161s): dar uma uma acelerada aí no CNU, tá? Até
+[02:44] (164s): porque a prova é dia 18, né? Então vamos
+[02:46] (166s): embora. Vamos nós vamos junto, hein? Não
+[02:48] (168s): vou esquecer de vocês nunca, nunca. E
+[02:50] (170s): boa tarde para quem já chegou antes, né?
+[02:52] (172s): a Jennifer, Aila, a Lamec, enfim, Ca
+[02:55] (175s): Rosemar, Marcão e foi o primeiro, né?
+[02:59] (179s): Boa tarde para todo mundo. A partir de
+[03:01] (181s): agora, concentração total, eu vou
+[03:02] (182s): entregar para vocês algumas questões aí
+[03:05] (185s): para nós treinarmos a matéria de
+[03:08] (188s): desconcentração, descentralização,
+[03:10] (190s): entender o que que é um órgão, o que que
+[03:12] (192s): é uma entidade. Então, full time a
+[03:14] (194s): partir de agora, tá? Vamos lá. Direito
+[03:16] (196s): administrativo para concursos no gênero,
+[03:18] (198s): né? a parte geralzona, ADM pública,
+[03:21] (201s): então direta indireta e vamos com tudo
+[03:23] (203s): aí pra primeira questão. No que diz
+[03:26] (206s): respeito, quero participação, hein? Tem
+[03:27] (207s): que participar. Vamos chegar aí a 100 ao
+[03:30] (210s): vivo, que se Deus, nosso senhor quiser,
+[03:32] (212s): ó, vamos chegar 100 ao vivo. Então,
+[03:34] (214s): compartilha, cara, ajuda o canal, né?
+[03:36] (216s): Nós estamos quase batendo a marca aí dos
+[03:38] (218s): 700.000. Então, te inscreve no canal,
+[03:40] (220s): compartilha, vai participando aqui para
+[03:42] (222s): nós tornarmos uma aula mais leve, né?
+[03:45] (225s): Primeira questão na tela, concentração a
+[03:47] (227s): partir de agora. A desconcentração e a
+[03:49] (229s): descentralização tem um comum, tem em
+[03:52] (232s): comum a busca pela especialização da
+[03:55] (235s): execução é muito ão, né, cara? Para que
+[03:57] (237s): tanto ão? Desconcentração,
+[04:00] (240s): descentralização,
+[04:02] (242s): especialização,
+[04:03] (243s): execução. Ah, o avaliador também volta e
+[04:05] (245s): meia, né? Pelo amor de Deus. A
+[04:08] (248s): desconcentração
+[04:10] (250s): e a descentralização
+[04:12] (252s): tem em comum a busca pela especialização
+[04:15] (255s): da execução do serviço público. Porém, a
+[04:19] (259s): primeira ocorre no âmbito de uma única
+[04:22] (262s): pessoa jurídica e a segunda pressupõe a
+[04:25] (265s): existência de duas ou mais pessoas
+[04:28] (268s): jurídicas, né? Seja ela física ou
+[04:31] (271s): jurídica. E aí,
+[04:33] (273s): certo ou errado? Eu tenho certeza que
+[04:36] (276s): você sabe essa pergunta, hein? Sabe e
+[04:39] (279s): vai respondendo o chat para mim. Vamos
+[04:40] (280s): lá.
+[05:02] (302s): Val errado, Mila errado, Luciano errado,
+[05:04] (304s): Diogo Amarante errado, Cau errado, tudo
+[05:08] (308s): errado. Meu Deus do céu. Lamec está
+[05:11] (311s): certo,
+[05:12] (312s): Lamec. E aí vamos deixar Lamec Miranda
+[05:17] (317s): Solito. Mas
+[05:19] (319s): moçada, o que que é uma desconcentração?
+[05:23] (323s): Desenha a diumona. Desenha a diumona.
+[05:26] (326s): Vamos lá. Eu tenho a diumona.
+[05:29] (329s): Dentro da diumona, eu tenho a
+[05:31] (331s): desconcentração,
+[05:33] (333s): porque senão teria apenas uma pessoa
+[05:35] (335s): comandando tudo. Isso é impossível.
+[05:37] (337s): Então eu vou desconcentrar dentro da do
+[05:40] (340s): corpo, né? Eu vou tirar do centro,
+[05:43] (343s): desconcentração,
+[05:45] (345s): mas dentro da mesma pessoa. E aí eu
+[05:47] (347s): estou criando órgãos, né? Eu vou criar
+[05:50] (350s): ministérios, vou criar secretarias, vou
+[05:53] (353s): criar departamentos, vou criar chefias,
+[05:55] (355s): enfim, vou criar órgãos que não têm
+[05:58] (358s): vida, né? São seres despersonalizados.
+[06:01] (361s): Lembra? Isso é desconcentração,
+[06:05] (365s): ó. Desconcentração.
+[06:07] (367s): Agora, o que que seria uma
+[06:09] (369s): descentralização?
+[06:11] (371s): A descentralização é a criação de novas
+[06:14] (374s): pessoas fora do corpo. Então você vai
+[06:17] (377s): criar braços e pernas, né? Criando braço
+[06:20] (380s): e perna. Essa eu estou desenhando para
+[06:23] (383s): você a descentralização
+[06:26] (386s): administrativa ou funcional ou por
+[06:29] (389s): serviços, né? Onde você tem a criação de
+[06:31] (391s): autarquias, a criação de fundações
+[06:34] (394s): públicas, a criação de empresas públicas
+[06:37] (397s): e sociedade economia mista. Joinha.
+[06:41] (401s): Muito bem. Digamos que aqui eu esteja
+[06:43] (403s): falando de uma união, tá? A união tem lá
+[06:46] (406s): suas autarquias, seus órgãos, seus
+[06:48] (408s): ministérios, né? Suas empresas públicas
+[06:50] (410s): e tudo mais. Então vamos lá. Elas têm
+[06:52] (412s): comum, então, a execução de serviços
+[06:55] (415s): públicos, né? OK. Porém, a primeira
+[06:57] (417s): ocorre no âmbito de uma única pessoa
+[06:59] (419s): jurídica. Por que que é uma única pessoa
+[07:01] (421s): jurídica? Porque foram criadas dentro do
+[07:03] (423s): corpo da união, não saíram do corpo da
+[07:06] (426s): união. Entendeu? Então, sim, a
+[07:09] (429s): desconcentração é uma única pessoa
+[07:11] (431s): jurídica. Uma única pessoa jurídica.
+[07:15] (435s): E a segunda pressupõe a existência de
+[07:17] (437s): duas ou mais pessoas jurídicas, né? Ô,
+[07:21] (441s): Franco, mas tem uma palavrinha aqui que
+[07:23] (443s): tá me incomodando. A pessoas físicas.
+[07:26] (446s): Veja que aqui, pessoal, nós estamos
+[07:28] (448s): trabalhando uma questão de
+[07:30] (450s): descentralização e não especificamente a
+[07:33] (453s): descentralização por função. Ou seja, eu
+[07:37] (457s): posso ter uma descentralização
+[07:40] (460s): para uma pessoa física. Eu posso, gente.
+[07:43] (463s): Só que, claro, eu não vou fazer uma
+[07:46] (466s): descentralização funcional para uma
+[07:49] (469s): pessoa física. que eu tenho que criar
+[07:50] (470s): uma pessoa jurídica ou de direito
+[07:52] (472s): público ou de direito privado. Mas não
+[07:54] (474s): te esqueça que nós temos a
+[07:55] (475s): descentralização
+[07:57] (477s): por colaboração. E aí eu posso ter uma
+[08:00] (480s): concessão, eu posso ter uma permissão,
+[08:02] (482s): eu posso ter uma autorização e a e a
+[08:05] (485s): permissão e a autorização podem ser sim
+[08:09] (489s): entregues à pessoa física, né? Então,
+[08:12] (492s): para quem marcou eh errada essa questão,
+[08:14] (494s): tenho certeza que eh se apegou ali à
+[08:17] (497s): palavrinha física, né, pessoas físicas.
+[08:21] (501s): Mas não te preocupe, a veja que é uma
+[08:23] (503s): questão, ela é mais genérica, não é
+[08:26] (506s): específica da descentralização eh
+[08:28] (508s): administrativa, tá? Então, lembre-se que
+[08:30] (510s): eu tenho a descentralização por
+[08:32] (512s): colaboração, que é onde você tem a
+[08:34] (514s): delegação através dos contratos de
+[08:38] (518s): concessão ou dos atos de permissão e
+[08:41] (521s): autorização e aí sim entraria a pessoa
+[08:44] (524s): física. Tá bom? É nós. Beleza? Então, ó,
+[08:48] (528s): vamos com tudo. Primeira questãozinha tá
+[08:50] (530s): na tela, tá? Fica tranquila, Mila, fica
+[08:53] (533s): tranquila. Eu sei que você sabe, né? Só
+[08:57] (537s): que calma. Na hora da prova, cuidado com
+[09:00] (540s): essas com essas pegadinhas, né? Banca
+[09:03] (543s): boa com a Cebraspe, te derruba em uma
+[09:05] (545s): palavra, né? E aí dá uma tristeza do
+[09:08] (548s): cão, né? Você estudou, você se preparou,
+[09:10] (550s): você conhece o conteúdo, mas por uma
+[09:13] (553s): palavra muitas vezes você pega o rumo
+[09:15] (555s): errado, né? Pega o azimuta errado e sobe
+[09:17] (557s): lá três, quatro montanha à toa, né?
+[09:20] (560s): Enfim, vamos lá, próxima questãozinha.
+[09:23] (563s): Vou deixar você resolver. Essa aqui é
+[09:25] (565s): mais fácil. Vamos ver.
+[10:00] (600s): Bora, meu povo. Certo, errado. Quero
+[10:03] (603s): resposta na tela.
+[10:06] (606s): A desconcentração,
+[10:08] (608s): desconcentração da atividade
+[10:09] (609s): administrativa passa a ser desempenhados
+[10:11] (611s): pelos próprios órgãos
+[10:15] (615s): originados da pessoa jurídica,
+[10:17] (617s): hierarquicamente distribuídos e com
+[10:19] (619s): competência definida em lei. Sim. dentro
+[10:23] (623s): da pessoa jurídica, eu tenho essa
+[10:25] (625s): subordinação.
+[10:27] (627s): Eu vou novamente desenhar de monona
+[10:29] (629s): porque basicamente toda a a nossa aula
+[10:31] (631s): vai ser em cima dela aqui, ó. Ó, vamos
+[10:33] (633s): lá.
+[10:35] (635s): Aqui nós temos as entidades que não nos
+[10:36] (636s): interessa agora, né? Porque o que me
+[10:38] (638s): interessa agora é a criação dos órgãos.
+[10:41] (641s): Quando você cria órgãos aqui, moçada, ó,
+[10:44] (644s): você tem que desenhar um S, um S de
+[10:47] (647s): subordinação. Subordinação,
+[10:49] (649s): subordinação, subordinação,
+[10:52] (652s): subordinação. E quando tu desenha a
+[10:55] (655s): descentralização, tu vai colocar um V de
+[10:58] (658s): vinculação, vinculação, vinculação.
+[11:01] (661s): Então, as autarquias estão vinculadas ao
+[11:04] (664s): ministério, as fundações públicas estão
+[11:06] (666s): vinculadas ao órgão, as empresas
+[11:09] (669s): públicas e as 100 estão vinculadas ao
+[11:12] (672s): órgão, tá? Nunca subordinadas. Então,
+[11:15] (675s): sim, dentro, perceba, ó, dentro da
+[11:19] (679s): pessoa jurídica, quando ocorre a
+[11:21] (681s): desconcentração,
+[11:23] (683s): você tem realmente uma hierarquia, né? é
+[11:26] (686s): um controle mais direto, hierárquico,
+[11:28] (688s): você distribui. Inclusive, tu vai fazer
+[11:30] (690s): uma questão comigo, uma questão de
+[11:33] (693s): órgãos, né, daqui a pouco, onde você vai
+[11:35] (695s): ter lá a definição da hierarquia, né?
+[11:38] (698s): Órgãos independentes.
+[11:40] (700s): Independentes.
+[11:43] (703s): Depois nós temos os órgãos autônomos,
+[11:46] (706s): lembra disso? Autônomos. Depois nós
+[11:49] (709s): temos os superiores.
+[11:52] (712s): Superiores. Depois nós temos os
+[11:54] (714s): subalternos. subalternos
+[11:57] (717s): e há uma certa hierarquia sim entre
+[11:59] (719s): eles. Então sim, a na desconcentração as
+[12:03] (723s): atividades passam a ser desempenhadas
+[12:04] (724s): pelo pelos órgãos, né, que não têm
+[12:07] (727s): personalidade jurídica e estão
+[12:10] (730s): organizados de forma hierárquica, OK?
+[12:13] (733s): 100%. Então, boa parte de vocês
+[12:15] (735s): colocaram como correta e de fato está
+[12:17] (737s): corretíssima essa questão aqui, tá?
+[12:20] (740s): Joinha, tranquilo, tá fácil, né? Eu sei
+[12:23] (743s): que é uma é um conteúdo mais agradável,
+[12:24] (744s): mais
+[12:26] (746s): tranquilo, né? Eu sei que boa parte de
+[12:28] (748s): vocês já não tem dificuldade nesse
+[12:30] (750s): conteúdo aqui. Então, questãozinha
+[12:32] (752s): correta. Vamos embora. Vamos embora.
+[12:34] (754s): Vamos chegar 100 ao vivo, hein? Me
+[12:35] (755s): ajuda.
+[12:37] (757s): Na descentralização, a transferência de
+[12:40] (760s): competências ocorre entre pessoas
+[12:42] (762s): jurídicas distintas. Olha que maravilha
+[12:45] (765s): de questão, hein? na descentralização.
+[12:49] (769s): A transferência de competências se dá
+[12:52] (772s): então entre pessoas jurídicas distintas.
+[12:55] (775s): Eu já mostrei para vocês, eu vou voltar
+[12:57] (777s): aqui na de Mona original, que na
+[12:59] (779s): descentralização
+[13:01] (781s): você tem duas pessoas. Duas pessoas.
+[13:05] (785s): Você tem a união, que é pessoa jurídica
+[13:07] (787s): de direito público interno, e você tem a
+[13:09] (789s): autarquia, que é a pessoa jurídica de
+[13:12] (792s): direito público. Você tem uma 100, que é
+[13:14] (794s): pessoa jurídica de direito privado.
+[13:16] (796s): Então você tem pelo menos duas pessoas
+[13:19] (799s): jurídicas, são pessoas distintas,
+[13:22] (802s): inclusive você pode ter pessoas privadas
+[13:25] (805s): quando ocorre a descentralização por
+[13:28] (808s): colaboração, tá? Então eu vou desenhar
+[13:30] (810s): para você aqui, ó, as formas de
+[13:33] (813s): descentralização para não ter problema
+[13:35] (815s): depois, tá? Uma descentralização, ela
+[13:39] (819s): pode ser política,
+[13:41] (821s): política
+[13:43] (823s): por serviço ou por colaboração.
+[13:48] (828s): Colaboração
+[13:50] (830s): aqui também é conhecido como
+[13:53] (833s): descentralização administrativa ou
+[13:55] (835s): funcional, tá? Na descentralização
+[13:59] (839s): política, você faz ela através da
+[14:02] (842s): própria Constituição Federal. É lá no
+[14:05] (845s): artigo 18 que nós temos a divisão do do
+[14:08] (848s): Estado brasileiro, né? E lá você faz a
+[14:11] (851s): criação dos entes entes políticos.
+[14:17] (857s): Entes políticos.
+[14:20] (860s): Nós temos a União, os Estados, o DF, os
+[14:24] (864s): municípios. E aí nós temos aqui a nossa
+[14:27] (867s): queridíssima ADM
+[14:30] (870s): Pública Direta, tá? ADM Pública Direta.
+[14:35] (875s): Se perguntar para você quem são
+[14:38] (878s): os entes que compõem a ADM pública
+[14:41] (881s): direta, tu vai dizer união, estado, DF,
+[14:45] (885s): municípios. Eles são entes políticos,
+[14:49] (889s): detém atribuições administrativas,
+[14:52] (892s): financeiras, orçamentárias, de gestão e
+[14:54] (894s): também política, coisa que outras
+[14:57] (897s): entidades não têm, tá? Então são entes
+[15:00] (900s): políticos, OK? Previstos diretamente na
+[15:03] (903s): Constituição. Agora, quando você vai lá
+[15:06] (906s): para descentralização
+[15:08] (908s): por serviço ou administrativa, aí você
+[15:11] (911s): faz isso por lei, tá? faz isso por lei
+[15:15] (915s): ou cria através da lei específica ou
+[15:18] (918s): autoriza por lei, mas tem que ser por
+[15:20] (920s): lei, tá? Por lei, beleza? Já entendi,
+[15:24] (924s): Franca? Por lei. E aqui você vai criar
+[15:26] (926s): as entidades.
+[15:29] (929s): Entidades,
+[15:31] (931s): as entidades obviamente
+[15:33] (933s): administrativas, né? Quem são as
+[15:36] (936s): entidades administrativas? as
+[15:37] (937s): autarquias, as fundações públicas, as
+[15:41] (941s): empresas públicas e as sociedades de
+[15:43] (943s): economia mista. E aí vai ter então a
+[15:47] (947s): nossa ADM pública
+[15:51] (951s): indireta.
+[15:53] (953s): Indireta. Olha que coisa fácil, né?
+[15:55] (955s): Então, quem são as tais ADM indireta? As
+[16:00] (960s): entidades, autarquias, fundações,
+[16:03] (963s): empresas e sociedades. Beleza? Eis aí a
+[16:06] (966s): ADM pública direta e indireta, OK? Só
+[16:10] (970s): que não acaba por aqui a tal da
+[16:14] (974s): descentralização.
+[16:16] (976s): Porque quando eu vou criar uma nova
+[16:18] (978s): pessoa jurídica linkcada, vinculada ao
+[16:22] (982s): Estado, eu estou criando uma autarquia,
+[16:25] (985s): criando uma fundação pública, criando
+[16:27] (987s): uma empresa ou criando uma sociedade com
+[16:30] (990s): minha mista, tá? Agora, quando eu não
+[16:32] (992s): quero criar nada e só repassar a tarefa,
+[16:36] (996s): pagar a missão, passar o serviço, a
+[16:39] (999s): execução do serviço, aí eu vou pegar
+[16:42] (1002s): emprestado uma entidade que já existe no
+[16:46] (1006s): mercado. Eu vou simplesmente largar esse
+[16:49] (1009s): serviço para que o mercado execute
+[16:52] (1012s): através de uma descentralização por
+[16:55] (1015s): colaboração. E aí eu vou ter que fazer
+[16:57] (1017s): um contrato, vou ter que fazer um ato
+[16:59] (1019s): para ter esse vínculo da empresa com o
+[17:03] (1023s): estado, entendeu? Então como que eu faço
+[17:06] (1026s): essa descentralização por colaboração?
+[17:09] (1029s): Você vai fazer por ato ou por contrato,
+[17:14] (1034s): tá? Ao ou contrato. Beleza? Já entendi.
+[17:19] (1039s): E daqui, pessoal, vai sair então as
+[17:22] (1042s): concessionárias, né? Daqui sai as
+[17:25] (1045s): empresas, ó, empresas
+[17:29] (1049s): ou pessoas físicas, já que você teve a
+[17:32] (1052s): primeiro contato ali, sabendo que eu
+[17:34] (1054s): posso descentralizar
+[17:36] (1056s): para uma pessoa física através de uma
+[17:38] (1058s): autorização, por exemplo, entendeu? E aí
+[17:41] (1061s): nós teremos os contratos, né, de
+[17:44] (1064s): concessão e os atos de permissão e
+[17:47] (1067s): autorização. Joinha? Lembrando que este
+[17:50] (1070s): povo aqui, ó, não fazem parte da ADM
+[17:54] (1074s): pública. Eles são pessoas físicas, são
+[17:57] (1077s): pessoas jurídicas de direito privado que
+[17:59] (1079s): não pertencem à ADM pública. Então, ó,
+[18:04] (1084s): não
+[18:05] (1085s): fazem
+[18:08] (1088s): parte
+[18:09] (1089s): da
+[18:11] (1091s): ADM
+[18:13] (1093s): pública. OK? Muito cuidado, porque eles
+[18:16] (1096s): vão dizer que uma concessionária
+[18:19] (1099s): é equiparada a uma empresa pública ou
+[18:22] (1102s): concessionária é pessoa jurídica de
+[18:24] (1104s): público. Não, cara, Deus o livre. É lá
+[18:26] (1106s): do mercado, não tem nada a ver com o
+[18:27] (1107s): setor público, tá joinha? Então vamos
+[18:30] (1110s): lá. A descentralização é a transferência
+[18:33] (1113s): de competências que ocorre entre pessoas
+[18:35] (1115s): jurídic distintas. Sim, exatamente.
+[18:39] (1119s): Parabéns para todo mundo aí. Fechou, ó.
+[18:42] (1122s): Obrigadão, hein? Já somos 90, falta só
+[18:45] (1125s): 10. 10 fora. Vamos bater 100, se Deus
+[18:47] (1127s): quiser, depois para nós a colocarmos aí
+[18:51] (1131s): o nosso a nossa meta, né, de 100 ao vivo
+[18:54] (1134s): para podermos dobrar a meta, como diria
+[18:56] (1136s): a nossa amiga Dilmona, tá? Vamos dobrar
+[18:58] (1138s): a meta, mas tem que chegar a 100. Então
+[18:59] (1139s): me ajuda aí, cara. Vamos lá.
+[19:02] (1142s): Questãozinha correta. Segunda, quarta,
+[19:05] (1145s): quarta questão. Vamos lá pra quarta
+[19:06] (1146s): questão. Uma questãozinha da FGV atual
+[19:09] (1149s): TJ Santa Catarina. Diz assim, ó. no
+[19:12] (1152s): âmbito da da classificação dos órgãos
+[19:14] (1154s): quanto à posição estatal, que é no que
+[19:17] (1157s): tange a classificação, pessoal,
+[19:19] (1159s): classificação de órgãos. Essa aqui é
+[19:21] (1161s): mais cobrada, tá? Essa aqui, sem dúvida,
+[19:24] (1164s): é mais cobrada. Tem 1 milhão de
+[19:26] (1166s): classificações de órgãos, mas essa aqui
+[19:29] (1169s): tem que saber. Essa aqui não tem como ir
+[19:31] (1171s): pra prova sem dominar, que é a posição
+[19:34] (1174s): que nós já passamos, independentes,
+[19:36] (1176s): autônomos, superiores e subalternos, tá?
+[19:40] (1180s): Exatamente. Seguindo essa hierarquia,
+[19:42] (1182s): OK? Existem os órgãos independentes, né?
+[19:46] (1186s): Ó, os independentes
+[19:48] (1188s): também designados de órgãos primários,
+[19:51] (1191s): porque são previstos diretamente na
+[19:52] (1192s): Constituição, né? Em relação aos quais é
+[19:55] (1195s): bastante difundida a compreensão de que
+[19:57] (1197s): eles têm as suas atribuições definidas
+[20:00] (1200s): na Constituição. Exatamente. E de que
+[20:02] (1202s): são colocados no ápice da pirâmide
+[20:05] (1205s): governamental, sem qualquer subordinação
+[20:07] (1207s): hierárquica ou funcional.
+[20:09] (1209s): Nesse contexto podem ser apontados como
+[20:12] (1212s): exemplo de órgãos independentes.
+[20:15] (1215s): E aí você tem, olha que interessante, ó,
+[20:18] (1218s): você tem entes federativos,
+[20:22] (1222s): tu tem procuradorias,
+[20:25] (1225s): autarquias e secretarias.
+[20:29] (1229s): E tu tem tribunais, nesse caso, o TJ,
+[20:32] (1232s): Tribunal de Justiça, meu amigo, o que
+[20:35] (1235s): que seria? Vou até colocar aqui para
+[20:36] (1236s): vocês, ó.
+[20:38] (1238s): órgãos independentes.
+[20:41] (1241s): Indeendentes
+[20:45] (1245s): órgãos autônomos
+[20:50] (1250s): superiores
+[20:55] (1255s): e subalternos,
+[20:58] (1258s): tá?
+[20:59] (1259s): É, é mais fácil, mais comum você fazer
+[21:03] (1263s): essa correlação quando eu tenho exemplo
+[21:06] (1266s): do poder executivo, tá? Vou até colocar
+[21:09] (1269s): aqui para vocês, ó, uma forma mais
+[21:11] (1271s): estendida. Quer ver, ó, como é fácil de
+[21:14] (1274s): fazer? Vamos lá.
+[21:17] (1277s): Pega aqui um exemplo, eh, federal. Vamos
+[21:20] (1280s): pegar aqui, ó, quem é um órgão
+[21:23] (1283s): independente do poder executivo federal?
+[21:25] (1285s): A presidência da República,
+[21:29] (1289s): quem é o órgão independente da do estado
+[21:32] (1292s): no poder executivo federal? A
+[21:34] (1294s): governadoria. Governadoria.
+[21:37] (1297s): Ógem independente lá do município, o
+[21:40] (1300s): passo ou gabinete prefeito, né? Enfim, é
+[21:44] (1304s): onde fica o chefe do poder executivo,
+[21:47] (1307s): tá? O órgão autônomo, veja, ele vem logo
+[21:51] (1311s): abaixo do órgão independente, né? O que
+[21:54] (1314s): que tá em casa? A primeira esfera, né? O
+[21:58] (1318s): primeiro, o primeiro contato ali com o
+[22:00] (1320s): presidente é quem? O primeiro escalão de
+[22:02] (1322s): governo é o ministério. Então, os
+[22:05] (1325s): ministros formam o primeiro escalão de
+[22:07] (1327s): governo. Logo, os ministérios são
+[22:10] (1330s): exemplos de órgãos autônomos, não
+[22:14] (1334s): independentes. Então você vai pegar e
+[22:16] (1336s): colocar assim, ó, os ministérios. e numa
+[22:20] (1340s): correlação. Ora, se o ministro ele está
+[22:24] (1344s): no órgão autônomo, então o secretário de
+[22:27] (1347s): estado, o secretário de município também
+[22:30] (1350s): é órgão autônomo dentro da sua
+[22:32] (1352s): circunscrição, entendeu? Então o min o
+[22:36] (1356s): ministro presidente, o secretário de
+[22:38] (1358s): estado, o secretário de município, são
+[22:40] (1360s): órgãos autônomos. Logo abaixo aí é um
+[22:43] (1363s): caos, né? Porque aí muda bastante de de
+[22:46] (1366s): acordo com cada estrutura. Mas, por
+[22:48] (1368s): exemplo, ó, nós poderemos ter logo
+[22:51] (1371s): depois do ministro os diretores de
+[22:53] (1373s): departamento, né? O departamento, vamos
+[22:56] (1376s): pegar aqui, departamento de polícia
+[22:59] (1379s): federal, né? O DPF, Departamento de
+[23:02] (1382s): Polícia Federal. Nós temos um diretor
+[23:04] (1384s): que que é um delegado de polícia que
+[23:06] (1386s): está logo abaixo do ministro, entendeu?
+[23:09] (1389s): Então, o departamento de polícia federal
+[23:11] (1391s): e depois nós temos uma delegacia de
+[23:14] (1394s): Polícia Federal, entendeu? que é o órgão
+[23:16] (1396s): subalterno. Então, um vai puxando o
+[23:19] (1399s): outro, tá? E há uma certa hierarquia
+[23:22] (1402s): entre eles. As delegacias de polícias
+[23:24] (1404s): federal estão dentro do do DPF, que é o
+[23:28] (1408s): departamento de polícia federal, que por
+[23:31] (1411s): sua vez está dentro do Ministério da
+[23:33] (1413s): Justiça, que por sua vez está dentro da
+[23:36] (1416s): da presidência da República. Então essa
+[23:38] (1418s): é a bola, né? Essa a esfera que o a
+[23:42] (1422s): doutrina coloca então como classificação
+[23:46] (1426s): contra a posição estatal. E aí você vai
+[23:48] (1428s): fazendo a mesma coisa aí no âmbito do do
+[23:50] (1430s): governo do estado e também eh do
+[23:52] (1432s): município. Cara,
+[23:55] (1435s): se tu leva como padrão pegar todo aquilo
+[23:58] (1438s): que está diretamente citado na
+[24:01] (1441s): Constituição,
+[24:02] (1442s): então isso vale também para os outros
+[24:05] (1445s): poderes. Congresso Nacional é órgão
+[24:08] (1448s): independente, é. STF é órgão
+[24:12] (1452s): independente? É. Tribunais do poder
+[24:15] (1455s): judiciário são órgãos independentes.
+[24:17] (1457s): Então isso quer dizer que a resposta
+[24:19] (1459s): correta é letra A. Tribunais do poder
+[24:22] (1462s): judiciário são órgãos independentes.
+[24:26] (1466s): Confranc e os entes? Cara, os entes eles
+[24:29] (1469s): não são órgãos, eles são entes, cara. É
+[24:32] (1472s): muito mais do que órgão, entendeu? É
+[24:35] (1475s): muito mais. Os entes criam os órgãos. É
+[24:38] (1478s): diferente a pegada. Então não é ente,
+[24:42] (1482s): tá? Tá? As procuradorias estão dentro.
+[24:47] (1487s): Ah, vamos colocar aqui, ó. A
+[24:48] (1488s): procuradoria poderia estar aqui, ó, como
+[24:51] (1491s): um uma a PGE, ó, PGE, né? A procuradoria
+[24:55] (1495s): quase que seria ganha um status de
+[24:57] (1497s): secretaria, né? A procuradoria do estado
+[25:00] (1500s): ganha um status de secretaria. É como se
+[25:02] (1502s): fosse, por exemplo, também a PGM, né?
+[25:05] (1505s): Ganharia um status de secretaria. Então,
+[25:07] (1507s): não é órgão independente. As
+[25:09] (1509s): procuradorias são órgãos, são, mas são
+[25:12] (1512s): órgãos autônomos, não são órgãos
+[25:14] (1514s): dependentes, tá? Então, risca aqui. As
+[25:17] (1517s): autarquias são entidades, cara. Não são
+[25:19] (1519s): órgãos. Ei, autarquia não é entidade.
+[25:23] (1523s): Autarquia é uma entidade, não tem nada a
+[25:26] (1526s): ver com órgão. Então, é a primeira que
+[25:28] (1528s): tu tem que riscar, entendeu? Aqui não
+[25:30] (1530s): existe. E a secretaria é órgão autônomo,
+[25:33] (1533s): tá vendo, ó? Secretaria é órgão
+[25:35] (1535s): autônomo. Então eles te deram dois
+[25:38] (1538s): órgãos autônomos, as secretarias e as
+[25:41] (1541s): PGS,
+[25:43] (1543s): uma autarquia que não tem nada a ver,
+[25:45] (1545s): que é uma entidade administrativa e te
+[25:48] (1548s): deram um ente político que é muito
+[25:50] (1550s): maior, entendeu? O único que é um órgão
+[25:53] (1553s): de fato independente é a letra A, que é
+[25:56] (1556s): o tribunal. Beleza?
+[25:59] (1559s): Muito bem. Parabéns para quem
+[26:00] (1560s): participou. Parabéns dobrado aí para
+[26:02] (1562s): quem acertou. Já somos 110. Valeu, hein,
+[26:05] (1565s): cruzada. 110 ao vivo numa sexta-feira,
+[26:10] (1570s): 4 da tarde, não é horário nobre, né?
+[26:13] (1573s): Sexta-feira 4 da tarde, estudando
+[26:16] (1576s): direito administrativo. Ó, você tá de
+[26:17] (1577s): parabéns. Obrigado mesmo pela parceria e
+[26:20] (1580s): vão com tudo aí, vão manter esse ritmo,
+[26:22] (1582s): né? Mais de 100 ao vivo, se Deus quiser,
+[26:24] (1584s): toda quarta, toda sexta para deixar todo
+[26:27] (1587s): mundo feliz. #700K.
+[26:29] (1589s): Vamos buscar aí essa marca para a nossa
+[26:32] (1592s): nova. Beleza? Vamos lá. Próxima
+[26:35] (1595s): questãozinha. FGV também. Considerando
+[26:37] (1597s): as as peculiaridades da organização
+[26:40] (1600s): administrativa no âmbito da ADM indireta
+[26:43] (1603s): descentralizada, veja, ADM indireta
+[26:46] (1606s): descentralizada,
+[26:48] (1608s): existem pessoas jurídicas de direito
+[26:50] (1610s): público, dentre as quais é correto
+[26:52] (1612s): indicar, meu amigo, desenha a nossa
+[26:56] (1616s): diumona.
+[26:58] (1618s): Desenha a diumona.
+[27:00] (1620s): Dentro da diumona você tem os órgãos,
+[27:02] (1622s): mas não é o que você quer. Confere? Não
+[27:04] (1624s): é o que você quer. Você quer uma ADM
+[27:07] (1627s): pública descentralizada. Então não é
+[27:11] (1631s): órgão. Então você vai precisar colocar a
+[27:14] (1634s): diumona, os seus bracinhos e perninhas,
+[27:17] (1637s): né? Acima da linha do Equador nós temos
+[27:21] (1641s): aqui as autarquias e as fundações
+[27:24] (1644s): públicas, né?
+[27:26] (1646s): Abaixo da linha do Equador, nós temos as
+[27:28] (1648s): empresas públicas e as sociedades mista.
+[27:32] (1652s): Por que que eu mudo de cor? Porque
+[27:34] (1654s): acima, cara, é direito público
+[27:38] (1658s): e abaixo é direito privado, entendeu?
+[27:41] (1661s): Então, eu tenho duas entidades de
+[27:44] (1664s): direito público, que eu chamo de
+[27:46] (1666s): autarquias e fundações públicas de
+[27:49] (1669s): direito público. E eu tenho pelo menos
+[27:52] (1672s): duas entidades de direito privado, as
+[27:54] (1674s): empresas públicas e as sociedade minha
+[27:57] (1677s): mista. Cuidado que nós temos ainda uma
+[28:00] (1680s): fundação pública de direito privado.
+[28:03] (1683s): Lembre-se disso, né?
+[28:05] (1685s): Só que tem que lembrar que todos os
+[28:09] (1689s): entes, quem são os entes? União,
+[28:14] (1694s): Estados, DF, Municípios
+[28:18] (1698s): são pessoas jurídicas
+[28:21] (1701s): de direito
+[28:23] (1703s): público
+[28:25] (1705s): interno. Essa é a classificação oficial.
+[28:28] (1708s): Então, os entes políticos também são
+[28:32] (1712s): pessoas jurídicas e são pessoas
+[28:34] (1714s): jurídicas de direito público, tá? Então,
+[28:38] (1718s): eu tenho todos os entes, pessoas
+[28:41] (1721s): jurídicas de direito público e além dos
+[28:44] (1724s): entes, as autarquias e algumas
+[28:47] (1727s): fundações.
+[28:49] (1729s): O resto é privado, tá? Beleza? Ora, se
+[28:52] (1732s): eu estou falando de uma descentralização
+[28:56] (1736s): administrativa
+[28:57] (1737s): e eu quero achar uma pessoa jurídica de
+[28:59] (1739s): direito público, meu amigo, ou vai ser
+[29:03] (1743s): uma fundação ou vai ser uma autarquia,
+[29:06] (1746s): tá? Uma fundação, uma autarquia. Beleza?
+[29:11] (1751s): Aí vem a pergunta. Existem, ó,
+[29:13] (1753s): considerando as peculiaridades da da
+[29:15] (1755s): organização administrativa no âmbito da
+[29:17] (1757s): pública indireta descentralizada,
+[29:20] (1760s): existem pessoas jurídicas público. Aí
+[29:22] (1762s): você vem aqui, ó, entes federativos.
+[29:28] (1768s): Ô, Franco, entes federativos
+[29:32] (1772s): e fundações. Não seria uma questão
+[29:34] (1774s): correta, já que você tá me falando que
+[29:36] (1776s): fundação pública é direito público. Sim.
+[29:40] (1780s): E você me falou que entes também são de
+[29:42] (1782s): direito público. Então, pronto, vou
+[29:44] (1784s): marcar a letra A. É nós. Vamos pra
+[29:46] (1786s): próxima. Ei,
+[29:49] (1789s): os entes
+[29:51] (1791s): não fazem parte da descentralização
+[29:55] (1795s): administrativa.
+[29:57] (1797s): Os entes não são ADM indireta.
+[30:03] (1803s): Os entes são pessoas jurídicas de
+[30:05] (1805s): direito público, mas da ADM direta.
+[30:10] (1810s): Cuidado com a FGV, tá? Então ela tá te
+[30:14] (1814s): pegando só no capt da questão, OK? Então
+[30:18] (1818s): não é nesse caso aqui, ó, nós não vamos
+[30:21] (1821s): marcar a letra A porque ente não é
+[30:24] (1824s): direta. Apoca direta.
+[30:28] (1828s): Bom, sociedagam mista e empresas
+[30:31] (1831s): públicas, você já viu que é de é direito
+[30:33] (1833s): privado, né? EP e 100 é PJ de direito
+[30:38] (1838s): privado. Beleza? Então, não é
+[30:41] (1841s): organizações sociais, cara. Ó, vou
+[30:44] (1844s): colocar um rostinho aqui, ó. O
+[30:48] (1848s): e serviços sociais autônomos.
+[30:52] (1852s): Esse povo aqui,
+[30:54] (1854s): OS, presta atenção, OS, OIP,
+[31:00] (1860s): sistema S,
+[31:02] (1862s): partido político, ONG, OSC,
+[31:08] (1868s): esse povo, eles fazem parte do terceiro
+[31:12] (1872s): setor.
+[31:14] (1874s): Você nunca coloque-os
+[31:17] (1877s): no primeiro setor.
+[31:19] (1879s): Dilmona é o primeiro setor, é o governo,
+[31:23] (1883s): é o estado.
+[31:25] (1885s): Isso aqui é terceiro setor
+[31:28] (1888s): e sempre serão pessoas jurídicas de
+[31:32] (1892s): direito privado.
+[31:34] (1894s): Atenção pessoal do TSE, partido político
+[31:38] (1898s): é terceiro setor, logo, pessoa jurídica
+[31:42] (1902s): de direito privado,
+[31:44] (1904s): entendeu? Porque tá lá no terceiro
+[31:46] (1906s): setor. Joia? Então, essas aqui são as
+[31:49] (1909s): primeiras que você risca. C e aí fica só
+[31:55] (1915s): a resposta correta. Autarquias, que você
+[31:58] (1918s): sabe muito bem que é pessoa jurídica de
+[32:01] (1921s): direito público. E essa coisa aqui
+[32:03] (1923s): chamada de associação pública, que para
+[32:07] (1927s): quem já estudou um pouquinho mais vai
+[32:09] (1929s): lembrar que uma associação pública não
+[32:12] (1932s): passa de um consórcio.
+[32:14] (1934s): Lembra disso? são consórcio,
+[32:19] (1939s): só que consórcio
+[32:21] (1941s): público,
+[32:22] (1942s): né? Um consórcio público, ele pode ser
+[32:26] (1946s): pessoa jurídica de direito público e aí
+[32:28] (1948s): a doutrina os chama de associações,
+[32:32] (1952s): ou o consórcio pode ser de direito
+[32:34] (1954s): privado, aí vira uma associação privada,
+[32:36] (1956s): tá? Se for uma associação pública, se
+[32:40] (1960s): equipara a autarquia e sim, é pessoa
+[32:43] (1963s): jurídica de direito público. Então é
+[32:46] (1966s): nós, letra D. Tá? Fechou?
+[32:51] (1971s): 100%. É uma questão boa, não é uma
+[32:54] (1974s): questão difícil, tá? É uma questão que
+[32:57] (1977s): você consegue ali eh cortar de pronto
+[33:00] (1980s): umas duas ou três e fica em dúvida se
+[33:03] (1983s): ficar em duas, né? E aí tu tem que
+[33:05] (1985s): lembrar um pouquinho mais das da da
+[33:08] (1988s): estrutura da ADM pública, lembrar que
+[33:11] (1991s): existe os consórcios, né? Lembrar que
+[33:13] (1993s): existe o terceiro setor. Por isso que eu
+[33:15] (1995s): sempre nas minhas aulas, por mais que no
+[33:18] (1998s): teu edital não seja cobrado de forma
+[33:20] (2000s): direta o terceiro setor, eu sempre
+[33:23] (2003s): procuro lembrar que ele existe, né?
+[33:25] (2005s): Porque volta e volta vem uma
+[33:27] (2007s): questãozinha como essa aqui, ó,
+[33:29] (2009s): colocando aí duas alternativas com
+[33:32] (2012s): terceiro setor no meio. Então, tu tem
+[33:35] (2015s): que saber que existe essas coisas, tá?
+[33:37] (2017s): Que OS, OIP, OSC, partido, sistema S,
+[33:42] (2022s): tudo isso aí, pessoal, não é autarquia,
+[33:44] (2024s): não é órgão, não é entidade, não
+[33:46] (2026s): pertence à ADM pública, eles estão lá no
+[33:50] (2030s): terceiro setor, tá? Fechou?
+[33:54] (2034s): Vamos pra próxima.
+[33:56] (2036s): Suponha que em determinado município o
+[33:59] (2039s): prefeito tenha decidido transferir os
+[34:00] (2040s): serviços públicos de limpeza urbana para
+[34:03] (2043s): uma autarquia municipal. Nesse caso, é
+[34:06] (2046s): correto afirmar que, ó, o prefeitão vai
+[34:10] (2050s): descentralizar
+[34:12] (2052s): o serviço de limpeza.
+[34:15] (2055s): OK? Eu posso fazer isso através de uma
+[34:17] (2057s): descentralização administrativa,
+[34:20] (2060s): que aí eu vou criar uma pessoa jurídica,
+[34:23] (2063s): nesse caso uma autarquia. E a autarquia
+[34:25] (2065s): criada, ela vai prestar o serviço
+[34:28] (2068s): público, ela vai ser o titular de
+[34:29] (2069s): serviço público, vai executar o serviço
+[34:31] (2071s): público. Ou eu posso simplesmente
+[34:34] (2074s): conceder serviço, se for o caso, se for
+[34:36] (2076s): possível, né? Ou fazer um contrato
+[34:39] (2079s): normal, repassando a execução desse
+[34:41] (2081s): serviço para uma empresa, tá? Mas o fato
+[34:44] (2084s): é que o prefeito então decidiu criar uma
+[34:47] (2087s): autarquia para ser a titular e a
+[34:51] (2091s): executora do serviço público de limpeza
+[34:54] (2094s): urbana na cidade. Nesse caso, ocorreu o
+[34:57] (2097s): quê? De pronto você vai riscar
+[35:01] (2101s): desconcentração,
+[35:03] (2103s): centralização,
+[35:05] (2105s): concentração
+[35:07] (2107s): e delegação. De pronto você vai riscar
+[35:09] (2109s): isso. Mas se você riscar isso, só sobra
+[35:12] (2112s): uma resposta. Sim, é uma
+[35:14] (2114s): descentralização
+[35:16] (2116s): e é uma descentralização
+[35:19] (2119s): administrativa,
+[35:21] (2121s): onde eu crio uma nova pessoa jurídica de
+[35:25] (2125s): direito público, que vai ser a titular
+[35:27] (2127s): do serviço e a executora do serviço. Eu
+[35:31] (2131s): vou fazer isso através de lei, né? E a
+[35:33] (2133s): partir dali a autarquia vai se virar,
+[35:36] (2136s): OK? haverá uma descentralização
+[35:38] (2138s): administrativa e a criação da autarquia
+[35:41] (2141s): será por meio de lei específica. Letra
+[35:44] (2144s): A, na veia, né? Na veia, fácil demais,
+[35:48] (2148s): não é desconcentração, senão estaria
+[35:49] (2149s): criando órgão, né? E também não tem nada
+[35:52] (2152s): a ver com centralização e também não é
+[35:55] (2155s): delegação, tá gente? Eu não vou criar
+[35:57] (2157s): uma autarquia através de uma delegação.
+[36:01] (2161s): Se fosse uma delegação, seria uma
+[36:04] (2164s): descentralização por colaboração. Aí eu
+[36:07] (2167s): faria um contrato com alguma empresa,
+[36:09] (2169s): por exemplo. Tá muito bem. Próxima
+[36:12] (2172s): questãozinha.
+[36:14] (2174s): Vamos lá.
+[36:18] (2178s): Por serem autônomas e descentralizadas,
+[36:22] (2182s): as entidades da ADM pública indireta não
+[36:25] (2185s): estão sujeitas ao controle e à
+[36:28] (2188s): fiscalização do Estado. Quero só ver,
+[36:30] (2190s): hein?
+[36:31] (2191s): Por serem autônomas e descentralizadas,
+[36:36] (2196s): as entidades da ADM pública indireta não
+[36:39] (2199s): estão sujeitas ao controle e a
+[36:41] (2201s): fiscalização.
+[36:43] (2203s): Moçada,
+[36:45] (2205s): eu sei que você sabe, eu sei disso.
+[36:50] (2210s): E toda vez que falar pr você que alguém
+[36:53] (2213s): ou alguma coisa não está sujeita a
+[36:56] (2216s): controle,
+[36:58] (2218s): você vai meter um xão desse tamanho, tá?
+[37:04] (2224s): Entenda uma coisa,
+[37:07] (2227s): todo mundo vai ser controlado por
+[37:11] (2231s): alguém.
+[37:12] (2232s): Não tem essa da Petrobras,
+[37:15] (2235s): dos Correios, do Banco do Brasil,
+[37:19] (2239s): da Caixa Econômica. São pessoas
+[37:21] (2241s): jurídicas de direito privado que exercem
+[37:24] (2244s): atividades econômicas, logo não precisam
+[37:28] (2248s): prestar contas ao TCU, logo não passam
+[37:32] (2252s): pelo controle X, Y, Z. Todo mundo passa
+[37:36] (2256s): por controle. Ponto.
+[37:40] (2260s): Essa questão é muito antiga e, cara, não
+[37:42] (2262s): dá mais para errar ela, tá? Não dá mais.
+[37:45] (2265s): Tem que acertar. Ó, por serem autônomas
+[37:49] (2269s): e descentralizadas,
+[37:51] (2271s): as entidades
+[37:53] (2273s): da ADM indireta estão sujeitas ao
+[37:56] (2276s): controle? Estão sujeitas. E como tá
+[37:58] (2278s): dizendo que não, então, meu amigo, já
+[38:01] (2281s): era. Questão errada. Eu trouxe ela aqui,
+[38:04] (2284s): cara, porque assim, eh,
+[38:09] (2289s): eu acho que ninguém erra essa questão. É
+[38:11] (2291s): uma questão que o avaliador coloca meio
+[38:13] (2293s): que para, né? Ah, vamos dar uma questão
+[38:15] (2295s): aqui pro pessoal não zerar, porque eu
+[38:17] (2297s): não acredito que o candidato, uma
+[38:19] (2299s): candidata que fica estudando, se
+[38:20] (2300s): preparando e estudando a organização,
+[38:23] (2303s): estudou lá controle da ADM pública, vai
+[38:27] (2307s): marcar como correta que alguém, que as
+[38:30] (2310s): autarquias, que as empresas públicas,
+[38:33] (2313s): que as fundações, que as sociedam mista
+[38:37] (2317s): não precisam prestar contas. É claro que
+[38:39] (2319s): precisam, é óbvio. Então é claro que
+[38:42] (2322s): você pode controlar, né, fiscalizar
+[38:45] (2325s): essas entidades. Então não dá, não dá
+[38:48] (2328s): para acreditar que alguém vai errar uma
+[38:49] (2329s): questão dessa. Mas enfim, tá aí, é uma
+[38:52] (2332s): questão atual, né, e pode aparecer em
+[38:54] (2334s): qualquer momento. Sempre vem, sempre
+[38:57] (2337s): vem. Vamos lá.
+[39:00] (2340s): A essência do regime jurídico das
+[39:03] (2343s): autarquias deve amoldar-se a sua
+[39:06] (2346s): respectiva área de atuação econômica,
+[39:09] (2349s): cultural e assim por diante. Vamos ver.
+[39:13] (2353s): Quero só ver, hein? Vamos embora.
+[40:01] (2401s): Quero resposta na tela. Sem medo. Sem
+[40:03] (2403s): medo, hein? Sem medo. Pode marcar.
+[40:05] (2405s): Certo, errado. Participa. Agora é hora
+[40:07] (2407s): de você errar, cara. Não tenha medo. Não
+[40:09] (2409s): tenha vergonha. Coloca aí. Certo. Tá
+[40:11] (2411s): errado. Tá certo, tá errado. Vamos lá.
+[40:14] (2414s): Eu gostei da Tanise, né? Essa aí tá
+[40:16] (2416s): estranha. Tá. Dá um negócio ruim, né?
+[40:20] (2420s): E aí quando é a primeira assim, ó, vou
+[40:22] (2422s): começar por direito. Eu eu domino
+[40:25] (2425s): direito e vou começar por direito. A
+[40:27] (2427s): primeira questão de direito, você se
+[40:30] (2430s): depara com essa belezura aqui. A
+[40:33] (2433s): essência do regime jurídico das
+[40:35] (2435s): autarquias deve amoldar-se a sua
+[40:38] (2438s): respectiva área de atuação econômica,
+[40:41] (2441s): cultural, etc. Aí aí você abandona, aí
+[40:45] (2445s): dá uma, né, dá aquela quebrada assim,
+[40:48] (2448s): mas para respira.
+[40:50] (2450s): Respira, cara. O que que eu sei da
+[40:53] (2453s): autarquia? Eu sei que a natureza
+[40:55] (2455s): jurídica da autarquia é pessoa jurídica
+[40:59] (2459s): de direito público. A autarquia é uma
+[41:02] (2462s): pessoa jurídica? É de direito público.
+[41:07] (2467s): Existe autarquia de direito privado?
+[41:10] (2470s): Não. Veja só. Desenha de mona. Desenha
+[41:14] (2474s): de mona. Olha aqui, ó.
+[41:17] (2477s): desenha de mono. Dentro da diumona você
+[41:20] (2480s): tem os órgãos através da
+[41:22] (2482s): desconcentração.
+[41:25] (2485s): Aí você vai ter as autarquias, as
+[41:26] (2486s): fundações, as empresas públicas e a
+[41:29] (2489s): sociedade minha mista, né? Beleza. Aqui
+[41:32] (2492s): você tem autarquias, fundações públicas,
+[41:37] (2497s): EP e 100.
+[41:40] (2500s): Ora, quando alguém te pergunta sobre o
+[41:42] (2502s): regime jurídico, sobre a natureza
+[41:43] (2503s): jurídica, eh, de alguma coisa, é, ou é
+[41:47] (2507s): direito público ou direito privado, tá?
+[41:50] (2510s): Se é direito privado, tem que tá aqui
+[41:53] (2513s): embaixo. Se se é direito público, tá lá
+[41:56] (2516s): em cima, né? Lembrando sempre que você
+[41:58] (2518s): tem essa coisinha de Deus aqui, ó, que
+[42:01] (2521s): pode ser direito público ou
+[42:04] (2524s): de direito privado, tá? toma cuidado com
+[42:07] (2527s): ela. Pode ser fundação pública de
+[42:09] (2529s): direito privado, sim.
+[42:11] (2531s): Mas veja, você não tem isso aqui,
+[42:14] (2534s): entendeu? Você não tem. Isso quer dizer
+[42:18] (2538s): o quê? Que a pessoa jurídica, autarquia,
+[42:22] (2542s): sempre será de direito público. Então,
+[42:26] (2546s): não existe isso aqui. A natureza
+[42:29] (2549s): jurídica, então, ela vai amoldar-se
+[42:32] (2552s): a área da atuação? A resposta é não.
+[42:37] (2557s): Não importa a área de atuação, se é
+[42:40] (2560s): econômica, se é cultural, se é
+[42:43] (2563s): administrativa, se é geográfica.
+[42:47] (2567s): Uma autarquia é pessoa jurídica de
+[42:49] (2569s): direito público sempre, não importa onde
+[42:52] (2572s): ela atue, entendeu? Agora, se a pergunta
+[42:55] (2575s): fosse: "A fundação pública pode ter
+[42:59] (2579s): personalidade jurídica de direito
+[43:00] (2580s): público ou privado?" Sim, aí sim.
+[43:03] (2583s): Mas a autarquia não. A autarquia é só
+[43:06] (2586s): direito público e a questão de fato está
+[43:10] (2590s): errada. Fechou? Joinha. Muito bem. Então
+[43:15] (2595s): é uma questão boa, né? Uma questão tu dá
+[43:20] (2600s): dá aquela travada, mas tu percebe que
+[43:23] (2603s): com calma, com técnica, você consegue
+[43:26] (2606s): sair, tu consegue resolver, né? Então
+[43:28] (2608s): vamos embora.
+[43:31] (2611s): Próxima.
+[43:34] (2614s): No que se refere às suas características
+[43:36] (2616s): de natureza jurídica, as autarquias.
+[43:39] (2619s): Então, vamos falar um pouquinho mais
+[43:40] (2620s): delas, né? As tais autarquias.
+[43:43] (2623s): As autarquias são entidades com fins
+[43:45] (2625s): lucrativos,
+[43:47] (2627s): realizam atividades típicas da atividade
+[43:49] (2629s): da ADM pública, são órgãos da adminção
+[43:53] (2633s): direta, possuem personalidade jurídica
+[43:57] (2637s): de direito público. De acordo com o que
+[44:00] (2640s): foi dito, as assertivas corretas são 1 2
+[44:04] (2644s): 3 4. Qual que você marcaria?
+[44:09] (2649s): Valendo.
+[44:24] (2664s): Lembrando que as autarquias são pessoas
+[44:27] (2667s): jurídicas de direito público.
+[44:29] (2669s): se são pessoas jurídicas de direito
+[44:31] (2671s): público.
+[44:33] (2673s): Se as autarquias são pessoas jurídicas
+[44:35] (2675s): de direito público, elas não são órgãos,
+[44:40] (2680s): porque órgãos são seres sem vida. Órgão
+[44:45] (2685s): não tem vida. Órgão não tem
+[44:48] (2688s): personalidade jurídica, nem de direito
+[44:51] (2691s): público, nem de direito privado. Órg
+[44:54] (2694s): órgão, entendeu? Então, tu não vai nunca
+[44:57] (2697s): equiparar uma autarquia a órgão e
+[45:00] (2700s): vice-versa. Entendido? A autarquia é
+[45:04] (2704s): pessoa jurídica de direito público
+[45:07] (2707s): pertencente à ADM indireta ainda por
+[45:10] (2710s): cima. Então a, cara, tá fora de combate
+[45:13] (2713s): mesmo, tá? A TRS tá fora. Fora. E aí
+[45:18] (2718s): fica só a letra B e a letra D.
+[45:22] (2722s): Bom, a autarquia ela tem fins
+[45:24] (2724s): lucrativos? É óbvio que não, né? A
+[45:28] (2728s): autarquia não tem fins lucrativos. Então
+[45:30] (2730s): a número um foi pro barro. Logo, ficamos
+[45:33] (2733s): com quem? Com a letra D. Ficamos a então
+[45:37] (2737s): com realizo atividades típicas da ADM
+[45:41] (2741s): pública e possuem personalidade jurídica
+[45:44] (2744s): de direito público. Beleza, né?
+[45:47] (2747s): Atividades típicas do Estado é cois da
+[45:50] (2750s): autarquia.
+[45:51] (2751s): E sim, ela é pessoa jurídica de direito
+[45:54] (2754s): público. Então, a 4 são as nossas
+[45:58] (2758s): respostas corretas. Fechou? 100%.
+[46:02] (2762s): Moçada,
+[46:04] (2764s): essa questão é fácil, né? A questãozinha
+[46:07] (2767s): tranquila. Para quem estudou o básico do
+[46:10] (2770s): básico da autarquia vai lembrar. Ela é o
+[46:12] (2772s): braço direito da Diumona. É o braço
+[46:14] (2774s): direito da Diumona. Ela é como se fosse
+[46:17] (2777s): o Estado. O eh desenvolve atividades
+[46:21] (2781s): diretamente relacionadas ao estado,
+[46:23] (2783s): atividades típicas do Estado. Nunca
+[46:27] (2787s): atividade econômica, sempre serviço
+[46:30] (2790s): público. Falou em autarquia, é serviço
+[46:33] (2793s): público. Autarquia não é banco.
+[46:36] (2796s): Autarquia não mexe com petróleo.
+[46:38] (2798s): Autarquia não mexe com dinheiro,
+[46:40] (2800s): entendeu? Autarquia é serviço público
+[46:43] (2803s): sempre. é atividades típicas do estado.
+[46:46] (2806s): Quer mexer com petróleo, quer mexer com
+[46:49] (2809s): dinheiro, com banco, quer mexer com essa
+[46:51] (2811s): parte econômica. Aí o estado vai criar o
+[46:54] (2814s): quê? As estatais, empresas públicas ou
+[46:59] (2819s): as sociedade economiamista. Aí sim elas
+[47:03] (2823s): vão lidar tanto com o serviço público
+[47:05] (2825s): quanto com a atividade econômica,
+[47:08] (2828s): entendeu? Então, perfeita aí essa
+[47:11] (2831s): questãozinha muito boa. Vamos pra
+[47:13] (2833s): próxima que eu sei que vocês têm tempo,
+[47:16] (2836s): tem tem coisa para fazer. Eu quero
+[47:18] (2838s): terminar aí as 10 questões de hoje, tá?
+[47:21] (2841s): Com relação às distinções entre a
+[47:23] (2843s): empresa pública e a sociedade comia
+[47:25] (2845s): mista. Vamos embora, hein, moçada? Quero
+[47:27] (2847s): só ver, hein?
+[47:29] (2849s): Essa é uma é uma questãozinha boa para
+[47:32] (2852s): você relembrar, para você praticar as
+[47:35] (2855s): três principais diferenças das pernas. A
+[47:39] (2859s): diferença de se criar uma EP ou uma 100,
+[47:43] (2863s): tá? Tem que lembrar. Inclusive, cara,
+[47:45] (2865s): deixa eu vou abrir uma telinha branca
+[47:47] (2867s): aqui. É uma preta, pode ser? E eu quero
+[47:51] (2871s): ver se você consegue lembrar do que eu
+[47:53] (2873s): tô falando. Vamos lá.
+[47:56] (2876s): Ó, a dimona novamente, tá? Você vai
+[47:58] (2878s): enjoar diumona.
+[48:00] (2880s): Em dentro nós temos os órgãos, aí nós
+[48:03] (2883s): temos as autarquias, né? E nós temos as
+[48:06] (2886s): fundações. E nós temos também as
+[48:09] (2889s): empresas públicas, ó, empresas públicas
+[48:13] (2893s): e sou mista, né? Beleza. Isso aqui você
+[48:17] (2897s): já sabe de col salteado, mas é para
+[48:19] (2899s): decorar mesmo. OK. Agora, quais são as
+[48:23] (2903s): principais diferenças entre uma EP e uma
+[48:28] (2908s): 100? Veja que as duas são chamadas de
+[48:32] (2912s): estatais. Bateu estatal na na tua prova,
+[48:35] (2915s): tu vai lembrar o quê? Em P ou 100. EP ou
+[48:38] (2918s): 100. Elas são as estatais, tá? Só que há
+[48:42] (2922s): uma diferença ou há três principais há
+[48:45] (2925s): três diferenças muito gritantes entre
+[48:48] (2928s): uma EP e uma 100. A primeira diferença é
+[48:51] (2931s): a questão do foro, tá? Foro. Uma empresa
+[48:56] (2936s): pública federal, ela litiga lá na
+[48:59] (2939s): Justiça Federal, uma empresa pública eh
+[49:03] (2943s): eh estadual, municipal, já é o
+[49:07] (2947s): contrário, já é na justiça comum
+[49:09] (2949s): estadual. Porém, uma sociedade
+[49:12] (2952s): comumamista, mesmo a federal, ela vai
+[49:16] (2956s): litigar na justiça comum.
+[49:19] (2959s): estadual. Então, há uma diferença entre
+[49:22] (2962s): o foro da EP Federal para uma 100
+[49:26] (2966s): federal. A segunda diferença é no que
+[49:29] (2969s): tange ao capital. O capital, o capital
+[49:33] (2973s): social de uma EP é 100% público. Capital
+[49:38] (2978s): social de uma EP 100% público. Não tem
+[49:42] (2982s): dinheiro privado uma EP, só dinheiro
+[49:45] (2985s): público, tá? Agora esse M aqui, ó, não
+[49:51] (2991s): tá de sacanagem. Esse M aqui é do quê? É
+[49:54] (2994s): sociedade de economia
+[49:58] (2998s): mista. Parte de dinheiro público, parte
+[50:02] (3002s): de dinheiro privado. Claro que 50% mais
+[50:05] (3005s): 1 tem que ser direito, dinheiro público,
+[50:09] (3009s): mas o restante pode ter investidores
+[50:11] (3011s): privados. Então o capital não dá 100,
+[50:15] (3015s): aceita capital privado, aceita um
+[50:17] (3017s): dinheiro privado, entendeu? Beleza.
+[50:20] (3020s): Agora o último é a razão social. A razão
+[50:25] (3025s): social.
+[50:26] (3026s): Ora, uma empresa pública, ela pode ter
+[50:32] (3032s): quaisquer
+[50:33] (3033s): terminações sociais,
+[50:36] (3036s): comandita,
+[50:38] (3038s): limitada,
+[50:40] (3040s): sociedade anônima.
+[50:42] (3042s): pode assumir aí qualquer formato
+[50:45] (3045s): comercial.
+[50:46] (3046s): Agora, uma sociedade economia mista, ela
+[50:50] (3050s): só pode ter uma terminação, uma razão
+[50:53] (3053s): social. Uma 100 só pode ser SA. Uma 100
+[51:00] (3060s): só SA. Se você cria uma 100,
+[51:04] (3064s): automaticamente ela vai ser o quê? Uma
+[51:07] (3067s): SA, uma sociedade anônima, entendeu?
+[51:11] (3071s): dividida por ações. Então, há uma
+[51:13] (3073s): diferença no que tange a razão social de
+[51:16] (3076s): P e 100. OK? Sabendo disso, agora você
+[51:21] (3081s): vai para a questão e você vai ver que é
+[51:23] (3083s): fácil de resolver. Ó, em relação às
+[51:27] (3087s): distinções, quando bate distinções entre
+[51:30] (3090s): EP e sociedade com minha mista, é aquilo
+[51:34] (3094s): que eu te mostrei, cara. É batata. Eles
+[51:38] (3098s): vão te cobrar o foro, eles vão te cobrar
+[51:40] (3100s): o capital ou eles vão te cobrar a razão
+[51:43] (3103s): social. Não tem para onde fugir. Falou
+[51:47] (3107s): em distinção. É, é nessa tríade aqui,
+[51:50] (3110s): tá? Quer ver? Ó, uma sociedade comamista
+[51:54] (3114s): possui funcionários registros para CLT,
+[51:56] (3116s): enquanto a empresa pública possui
+[51:58] (3118s): empregados poros estatutários. Não,
+[52:00] (3120s): pessoal, ó, tanto a economia mista, tá?
+[52:04] (3124s): Tanto a economia mista quanto a empresa
+[52:06] (3126s): pública vão ter empregados públicos ou
+[52:10] (3130s): os tais funcionários regidos por CLT,
+[52:14] (3134s): tá? Elas não são estatutários. Quem faz
+[52:17] (3137s): concurso para um Banco do Brasil, Caixa
+[52:20] (3140s): Econômica, Petrobras,
+[52:22] (3142s): será empregado público regido por CLT.
+[52:25] (3145s): OK? Então isso não as difere, não as
+[52:28] (3148s): difere. Isso não é não é distinção.
+[52:31] (3151s): A empresa pública, vamos ver aqui, ó. A
+[52:34] (3154s): empresa pública opera apenas em áreas de
+[52:37] (3157s): interesse social, diferentemente emenda
+[52:39] (3159s): sociar
+[52:41] (3161s): nas atividades econômicas em geral.
+[52:44] (3164s): Moçada, as duas atuam, as duas podem
+[52:49] (3169s): prestar serviço ou atividade econômica.
+[52:54] (3174s): As duas. Eu posso criar uma EP para
+[52:56] (3176s): prestar serviço ou atividade econômica.
+[52:59] (3179s): Eu posso criar uma 100 para prestar
+[53:02] (3182s): serviço ou atividade econômica. Então
+[53:04] (3184s): isso também não difere, tá? Então a
+[53:07] (3187s): letra B foi pro barro, OK? Letra C.
+[53:12] (3192s): Diferentemente da empresa pública, a 100
+[53:15] (3195s): não pode ser criada para atuar em áreas
+[53:17] (3197s): de produção de bens. Claro que pode,
+[53:19] (3199s): gente. Ó, eu posso criar uma 100 ou eu
+[53:23] (3203s): posso criar uma IP para atuar na área de
+[53:26] (3206s): produção de bens. Entendeu? Isso também
+[53:29] (3209s): não as difere. Letra D. Uma sociedade
+[53:33] (3213s): economia mista é pessoa jurídica de
+[53:36] (3216s): direito privado. Sim, é pessoa jurídica
+[53:40] (3220s): de direito privado. O que não ocorre com
+[53:43] (3223s): a empresa pública?
+[53:46] (3226s): As duas são pessoas jurídicas de direito
+[53:49] (3229s): privado. A EP e a 100 são as pernas. E
+[53:55] (3235s): as pernas são o quê? direito privado,
+[53:59] (3239s): entendeu? E aí ficou fácil, né? Ficamos
+[54:02] (3242s): aí com a nossa última questãozinha.
+[54:05] (3245s): A empresa pública pode ser constituída
+[54:08] (3248s): sob diferentes formas jurídicas, ou
+[54:12] (3252s): seja,
+[54:14] (3254s): diferentes razões sociais. Eu posso ter
+[54:17] (3257s): uma EP limitada, uma IP comandita, uma
+[54:21] (3261s): IPR.
+[54:22] (3262s): Tranquilo? Então, até aqui, beleza?
+[54:26] (3266s): enquanto a sociedade comiamista, nesse
+[54:30] (3270s): caso, só pode ser, né, é construída
+[54:34] (3274s): obrigatoriamente
+[54:35] (3275s): na forma de sociedade anônima. Fechou?
+[54:40] (3280s): Olha que olha olha o que Deus faz na
+[54:42] (3282s): vida da gente, né? É só você saber as
+[54:45] (3285s): três diferenças: o foro, o capital e a
+[54:49] (3289s): razão social, porque o resto elas são
+[54:52] (3292s): idênticas, entendeu? Aí vai dar escolha
+[54:55] (3295s): do gestor em criar uma EP ou criar uma
+[54:59] (3299s): 100. Beleza? Muito bem. Questão letra E.
+[55:05] (3305s): Joinha. Boa tarde para todo mundo,
+[55:07] (3307s): moçada. É isso. Peço, né? Eh, eh, eh,
+[55:12] (3312s): mais uma vez para você se inscrever no
+[55:13] (3313s): nosso canal. Aí você pode, né, comentar
+[55:16] (3316s): e participar ativamente aqui nas nossas
+[55:17] (3317s): aulas todas as quartas e sextas. Semana
+[55:20] (3320s): que vem vai ser um pouquinho diferente,
+[55:21] (3321s): mas estarei aqui presente ao vivo para
+[55:23] (3323s): mais aulas aí eh eh de graça, a 0, ao
+[55:28] (3328s): vivaço para vocês. Olha a mensagem do
+[55:30] (3330s): dia. Cada esforço que você faz agora é
+[55:33] (3333s): um passo mais próximo da conquista que
+[55:35] (3335s): você deseja. Acredite no seu potencial,
+[55:37] (3337s): transforme suas metas em vitórias, né,
+[55:41] (3341s): moçada? Vamos ter a nossa nova
+[55:44] (3344s): revolução, né, nosso evento aí no dia
+[55:47] (3347s): 19, ó, presta atenção, 19 de agosto, às
+[55:51] (3351s): 9:33, ao vivo aqui no canal. Então,
+[55:54] (3354s): muito interessante. Reserve aí esse
+[55:57] (3357s): horário, né? Guarde aí esse essa data
+[56:00] (3360s): para você prestar atenção aí no que está
+[56:02] (3362s): acontecendo no mundo dos concursos, né?
+[56:05] (3365s): se se atualizar nessa nessa questão. O
+[56:08] (3368s): link já está aí para vocês. Então, clica
+[56:11] (3371s): no link e já já coloca lá para ativar o
+[56:13] (3373s): lembrete, tá? Clica no link, já ativa o
+[56:16] (3376s): lembrete, já vai ter assim que o pessoal
+[56:18] (3378s): entrar ao vivo, você já vai ficar
+[56:19] (3379s): sabendo. E acima de tudo, cara, te
+[56:22] (3382s): inscreve no canal, dá essa força aqui
+[56:24] (3384s): pra nova. Vão chegar aí, se Deus quiser,
+[56:26] (3386s): a 700.000 e logo logo a #1ilha
+[56:30] (3390s): #1 milhão, né? Juntos aqui. Vamos, vamos
+[56:33] (3393s): para cima.
+[56:34] (3394s): Vamos lá, moçada. Ó, para quem não
+[56:36] (3396s): conhece Nova Concursos, né, lá no Face
+[56:39] (3399s): também no Instagram. E para quem não me
+[56:40] (3400s): segue lá no nosso
+[56:43] (3403s): Instagram, Prof L Franco, tá? Prof
+[56:48] (3408s): Franco, esse é o primeiro contato que
+[56:49] (3409s): você vai ter comigo para ações judiciais
+[56:51] (3411s): na área de concurso, licitação, né? A
+[56:54] (3414s): parte de P, sindicância que você precisa
+[56:56] (3416s): aí para atender algum servidor. Enfim,
+[56:59] (3419s): todo que for de direito administrativo
+[57:01] (3421s): que eu posso te ajudar, me chama lá no
+[57:03] (3423s): Instagram e vamos conversando, tá?
+[57:05] (3425s): Joinha 100%. Estamos firmes.
+[57:10] (3430s): Valeu. Ah, valeu, Paula. Valeu, TS13 aí,
+[57:13] (3433s): Vanessinha, a Adriana. Vamos juntos, tá,
+[57:17] (3437s): Adriano? Vamos juntos, Luciane, né?
+[57:20] (3440s): Deixa eu ver se tem alguma pergunta.
+[57:21] (3441s): Não, né? Tudo 100%. Vocês são
+[57:22] (3442s): maravilhosos, cara. Tá, parabéns. Ó,
+[57:24] (3444s): passamos de 100, passamos longe de 100,
+[57:27] (3447s): tá? E a meta é chegar agora a 200,
+[57:29] (3449s): porque sempre vamos ter que dobrar.
+[57:30] (3450s): Então, vamos chegar a 200. Semana que
+[57:32] (3452s): vem e vamos pensar em alguma coisa aí,
+[57:35] (3455s): né, para ajudar vocês aí do nosso
+[57:37] (3457s): querido CNU, né? E claro, foco total aí
+[57:40] (3460s): nas provas. Editais estão bombando, né?
+[57:44] (3464s): Mesmo em ano eleitoral tem concurso,
+[57:46] (3466s): você sabe disso. E tem concurso bom.
+[57:48] (3468s): Então vamos com tudo aí estudar
+[57:50] (3470s): certinho, aproveitar cada minuto da tua
+[57:53] (3473s): vida para buscar essa conquista, tá bom?
+[57:55] (3475s): Abraço, fique com Deus, até a próxima.
+[57:58] (3478s): M.

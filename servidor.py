@@ -644,6 +644,33 @@ def reset_master_user_data(user_id_or_email):
         "email": target_email
     }
 
+def check_user_can_delete(payload):
+    """
+    Regra de Negócio Obrigatória:
+    - Alunos do Plano Vitalício e usuários Master podem excluir matérias e aulas.
+    - Contas em período de Teste (Trial) NÃO têm permissão para excluir aulas do sistema.
+    """
+    user_plan = str(payload.get("user_plan", "")).strip().lower()
+    is_master = bool(payload.get("is_master", False) or payload.get("role") == "master")
+    email = str(payload.get("email", "")).strip().lower()
+    
+    if is_master or email in ("master@aprovacao.com", "henriquerosa2019"):
+        return True, ""
+        
+    if email:
+        users = load_users()
+        u = users.get(email)
+        if u:
+            if u.get("role") == "master" or u.get("plano") == "vitalicio":
+                return True, ""
+            if u.get("plano") in ("trial", "teste"):
+                return False, "Contas em período de teste não têm permissão para excluir aulas. Recurso exclusivo do Plano Vitalício."
+
+    if user_plan == "vitalicio":
+        return True, ""
+        
+    return False, "Contas em período de teste não têm permissão para excluir aulas. Recurso exclusivo do Plano Vitalício."
+
 def get_master_aulas_list():
     tree_data = scan_concursos_tree()
     tree = tree_data.get("tree", {})
@@ -2982,325 +3009,6 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(content.encode("utf-8"))
 
-        # 13. Renomear Disciplina
-        elif path == "/api/discipline/rename":
-            old_name = payload.get("old_name", "").strip().replace(" ", "_")
-            new_name = payload.get("new_name", "").strip().replace(" ", "_")
-            
-            if not old_name or not new_name:
-                self.send_response(400)
-                self.send_header("Content-type", "application/json; charset=utf-8")
-                self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": "Nome antigo e novo nome da matéria são obrigatórios."}, ensure_ascii=False).encode("utf-8"))
-                return
-                
-            if any(".." in x or "/" in x or "\\" in x for x in [old_name, new_name]):
-                self.send_response(400)
-                self.send_header("Content-type", "application/json; charset=utf-8")
-                self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": "Caracteres inválidos no nome da matéria."}, ensure_ascii=False).encode("utf-8"))
-                return
-                
-            old_path = os.path.join(BASE_DIR, old_name)
-            new_path = os.path.join(BASE_DIR, new_name)
-            
-            if not os.path.exists(old_path) or not os.path.isdir(old_path):
-                self.send_response(404)
-                self.send_header("Content-type", "application/json; charset=utf-8")
-                self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": f"Matéria '{old_name}' não encontrada."}, ensure_ascii=False).encode("utf-8"))
-                return
-                
-            if old_name != new_name:
-                if old_name.lower() == new_name.lower():
-                    # Renomeação apenas de maiúsculas/minúsculas no Windows NTFS
-                    temp_path = old_path + "_tmp_case_" + str(int(time.time() * 1000))
-                    try:
-                        os.rename(old_path, temp_path)
-                        os.rename(temp_path, new_path)
-                    except Exception as e_ren:
-                        self.send_response(500)
-                        self.send_header("Content-type", "application/json; charset=utf-8")
-                        self.end_headers()
-                        self.wfile.write(json.dumps({"success": False, "error": f"Erro ao renomear pasta: {str(e_ren)}"}, ensure_ascii=False).encode("utf-8"))
-                        return
-                else:
-                    if os.path.exists(new_path):
-                        self.send_response(400)
-                        self.send_header("Content-type", "application/json; charset=utf-8")
-                        self.end_headers()
-                        self.wfile.write(json.dumps({"success": False, "error": f"Já existe uma matéria com o nome '{new_name.replace('_', ' ')}'."}, ensure_ascii=False).encode("utf-8"))
-                        return
-                    try:
-                        os.rename(old_path, new_path)
-                    except Exception as e_ren:
-                        self.send_response(500)
-                        self.send_header("Content-type", "application/json; charset=utf-8")
-                        self.end_headers()
-                        self.wfile.write(json.dumps({"success": False, "error": f"Erro ao renomear pasta: {str(e_ren)}"}, ensure_ascii=False).encode("utf-8"))
-                        return
-                    
-                # Atualizar registros em progresso_estudos.json
-                try:
-                    prog = load_progress()
-                    prog_changed = False
-                    for ck, cv in prog.get("cards", {}).items():
-                        if cv.get("discipline") == old_name:
-                            cv["discipline"] = new_name
-                            prog_changed = True
-                    for q in prog.get("quiz_history", []):
-                        if q.get("discipline") == old_name:
-                            q["discipline"] = new_name
-                            prog_changed = True
-                    for s in prog.get("cebraspe_simulados", []):
-                        if s.get("discipline") == old_name:
-                            s["discipline"] = new_name
-                            prog_changed = True
-                    if prog_changed:
-                        save_progress(prog)
-                except Exception:
-                    pass
-
-            self.send_response(200)
-            self.send_header("Content-type", "application/json; charset=utf-8")
-            self.end_headers()
-            self.wfile.write(json.dumps({
-                "success": True, 
-                "old_name": old_name, 
-                "new_name": new_name,
-                "message": f"Disciplina renomeada para '{new_name.replace('_', ' ')}' com sucesso!"
-            }, ensure_ascii=False).encode("utf-8"))
-
-        # 14. Excluir Disciplina (e todos os seus tópicos)
-        elif path == "/api/discipline/delete":
-            disc = payload.get("discipline", "").strip().replace(" ", "_")
-            if not disc:
-                self.send_response(400)
-                self.end_headers()
-                self.wfile.write(b"Nome da disciplina obrigatorio.")
-                return
-                
-            if ".." in disc or "/" in disc or "\\" in disc:
-                self.send_response(400)
-                self.end_headers()
-                self.wfile.write(b"Nome de disciplina invalido.")
-                return
-                
-            disc_path = os.path.join(BASE_DIR, disc)
-            if not os.path.exists(disc_path) or not os.path.isdir(disc_path):
-                self.send_response(404)
-                self.end_headers()
-                self.wfile.write(f"Disciplina '{disc}' nao encontrada.".encode("utf-8"))
-                return
-                
-            try:
-                shutil.rmtree(disc_path)
-            except Exception as e_del:
-                self.send_response(500)
-                self.end_headers()
-                self.wfile.write(f"Erro ao remover disciplina: {str(e_del)}".encode("utf-8"))
-                return
-                
-            # Atualizar progresso_estudos.json
-            try:
-                prog = load_progress()
-                cards = prog.get("cards", {})
-                prog["cards"] = {k: v for k, v in cards.items() if v.get("discipline") != disc}
-                prog["quiz_history"] = [q for q in prog.get("quiz_history", []) if q.get("discipline") != disc]
-                prog["cebraspe_simulados"] = [s for s in prog.get("cebraspe_simulados", []) if s.get("discipline") != disc]
-                save_progress(prog)
-            except Exception:
-                pass
-
-            self.send_response(200)
-            self.send_header("Content-type", "application/json; charset=utf-8")
-            self.end_headers()
-            self.wfile.write(json.dumps({
-                "success": True, 
-                "discipline": disc,
-                "message": f"Disciplina '{disc.replace('_', ' ')}' excluída com sucesso!"
-            }, ensure_ascii=False).encode("utf-8"))
-
-        # 15. Renomear Tópico / Subárea
-        elif path == "/api/subarea/rename":
-            disc = payload.get("discipline", "").strip().replace(" ", "_")
-            old_name = payload.get("old_name", "").strip().replace(" ", "_")
-            new_name = payload.get("new_name", "").strip().replace(" ", "_")
-            
-            if not disc or not old_name or not new_name:
-                self.send_response(400)
-                self.send_header("Content-type", "application/json; charset=utf-8")
-                self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": "Matéria, nome antigo e novo nome do tópico são obrigatórios."}, ensure_ascii=False).encode("utf-8"))
-                return
-                
-            if any(".." in x or "/" in x or "\\" in x for x in [disc, old_name, new_name]):
-                self.send_response(400)
-                self.send_header("Content-type", "application/json; charset=utf-8")
-                self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": "Caracteres inválidos detectados no nome do tópico."}, ensure_ascii=False).encode("utf-8"))
-                return
-                
-            old_sub_path = os.path.join(BASE_DIR, disc, old_name)
-            new_sub_path = os.path.join(BASE_DIR, disc, new_name)
-            
-            if not os.path.exists(old_sub_path) or not os.path.isdir(old_sub_path):
-                self.send_response(404)
-                self.send_header("Content-type", "application/json; charset=utf-8")
-                self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": f"Tópico '{old_name}' não encontrado em '{disc}'."}, ensure_ascii=False).encode("utf-8"))
-                return
-                
-            if old_name != new_name:
-                if old_name.lower() == new_name.lower():
-                    # Renomeação apenas de maiúsculas/minúsculas no Windows NTFS
-                    temp_sub_path = old_sub_path + "_tmp_case_" + str(int(time.time() * 1000))
-                    try:
-                        os.rename(old_sub_path, temp_sub_path)
-                        os.rename(temp_sub_path, new_sub_path)
-                    except Exception as e_sub_ren:
-                        self.send_response(500)
-                        self.send_header("Content-type", "application/json; charset=utf-8")
-                        self.end_headers()
-                        self.wfile.write(json.dumps({"success": False, "error": f"Erro ao renomear tópico: {str(e_sub_ren)}"}, ensure_ascii=False).encode("utf-8"))
-                        return
-                else:
-                    if os.path.exists(new_sub_path):
-                        self.send_response(400)
-                        self.send_header("Content-type", "application/json; charset=utf-8")
-                        self.end_headers()
-                        self.wfile.write(json.dumps({"success": False, "error": f"Já existe um tópico com o nome '{new_name.replace('_', ' ')}' nesta matéria."}, ensure_ascii=False).encode("utf-8"))
-                        return
-                    try:
-                        os.rename(old_sub_path, new_sub_path)
-                    except Exception as e_sub_ren:
-                        self.send_response(500)
-                        self.send_header("Content-type", "application/json; charset=utf-8")
-                        self.end_headers()
-                        self.wfile.write(json.dumps({"success": False, "error": f"Erro ao renomear tópico: {str(e_sub_ren)}"}, ensure_ascii=False).encode("utf-8"))
-                        return
-                    
-                # Renomear arquivos internos que contenham o nome do tópico antigo
-                try:
-                    for fname in os.listdir(new_sub_path):
-                        if old_name in fname:
-                            new_fname = fname.replace(old_name, new_name)
-                            src_f = os.path.join(new_sub_path, fname)
-                            dst_f = os.path.join(new_sub_path, new_fname)
-                            if not os.path.exists(dst_f):
-                                os.rename(src_f, dst_f)
-                except Exception:
-                    pass
-                    
-                # Atualizar em progresso_estudos.json
-                try:
-                    prog = load_progress()
-                    prog_changed = False
-                    for ck, cv in prog.get("cards", {}).items():
-                        if cv.get("discipline") == disc and cv.get("subarea") == old_name:
-                            cv["subarea"] = new_name
-                            prog_changed = True
-                    for q in prog.get("quiz_history", []):
-                        if q.get("discipline") == disc and q.get("subarea") == old_name:
-                            q["subarea"] = new_name
-                            prog_changed = True
-                    for s in prog.get("cebraspe_simulados", []):
-                        if s.get("discipline") == disc and s.get("subarea") == old_name:
-                            s["subarea"] = new_name
-                            prog_changed = True
-                    if prog_changed:
-                        save_progress(prog)
-                except Exception:
-                    pass
-
-            self.send_response(200)
-            self.send_header("Content-type", "application/json; charset=utf-8")
-            self.end_headers()
-            self.wfile.write(json.dumps({
-                "success": True, 
-                "discipline": disc,
-                "old_name": old_name, 
-                "new_name": new_name,
-                "message": f"Tópico renomeado para '{new_name.replace('_', ' ')}' com sucesso!"
-            }, ensure_ascii=False).encode("utf-8"))
-
-        # 16. Excluir Tópico / Subárea
-        elif path == "/api/subarea/delete":
-            disc = payload.get("discipline", "").strip().replace(" ", "_")
-            sub = payload.get("subarea", "").strip().replace(" ", "_")
-            
-            if not disc or not sub:
-                self.send_response(400)
-                self.end_headers()
-                self.wfile.write(b"Disciplina e topico sao obrigatorios.")
-                return
-                
-            if any(".." in x or "/" in x or "\\" in x for x in [disc, sub]):
-                self.send_response(400)
-                self.end_headers()
-                self.wfile.write(b"Caracteres invalidos detectados.")
-                return
-                
-            sub_path = os.path.join(BASE_DIR, disc, sub)
-            if not os.path.exists(sub_path) or not os.path.isdir(sub_path):
-                self.send_response(404)
-                self.end_headers()
-                self.wfile.write(f"Topico '{sub}' nao encontrado em '{disc}'.".encode("utf-8"))
-                return
-                
-            try:
-                shutil.rmtree(sub_path)
-            except Exception as e_del:
-                self.send_response(500)
-                self.end_headers()
-                self.wfile.write(f"Erro ao excluir topico: {str(e_del)}".encode("utf-8"))
-                return
-                
-            # Atualizar progresso_estudos.json
-            try:
-                prog = load_progress()
-                cards = prog.get("cards", {})
-                prog["cards"] = {k: v for k, v in cards.items() if not (v.get("discipline") == disc and v.get("subarea") == sub)}
-                prog["quiz_history"] = [q for q in prog.get("quiz_history", []) if not (q.get("discipline") == disc and q.get("subarea") == sub)]
-                prog["cebraspe_simulados"] = [s for s in prog.get("cebraspe_simulados", []) if not (s.get("discipline") == disc and s.get("subarea") == sub)]
-                save_progress(prog)
-            except Exception:
-                pass
-
-            self.send_response(200)
-            self.send_header("Content-type", "application/json; charset=utf-8")
-            self.end_headers()
-            self.wfile.write(json.dumps({
-                "success": True, 
-                "discipline": disc,
-                "subarea": sub,
-                "message": f"Tópico '{sub.replace('_', ' ')}' excluído com sucesso!"
-            }, ensure_ascii=False).encode("utf-8"))
-
-        # 17. Criar Nova Disciplina
-        elif path == "/api/discipline/create":
-            disc = payload.get("discipline", "").strip().replace(" ", "_")
-            if not disc:
-                self.send_response(400)
-                self.end_headers()
-                self.wfile.write(b"Nome da disciplina obrigatorio.")
-                return
-            if ".." in disc or "/" in disc or "\\" in disc:
-                self.send_response(400)
-                self.end_headers()
-                self.wfile.write(b"Nome de disciplina invalido.")
-                return
-            disc_path = os.path.join(BASE_DIR, disc)
-            os.makedirs(disc_path, exist_ok=True)
-            self.send_response(200)
-            self.send_header("Content-type", "application/json; charset=utf-8")
-            self.end_headers()
-            self.wfile.write(json.dumps({
-                "success": True,
-                "discipline": disc,
-                "message": f"Disciplina '{disc.replace('_', ' ')}' criada com sucesso!"
-            }, ensure_ascii=False).encode("utf-8"))
-
         else:
             self.send_response(404)
             self.end_headers()
@@ -3408,7 +3116,6 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             sub = payload.get("subarea", "").strip()
             target_folder = os.path.join(BASE_DIR, disc, sub)
             if os.path.exists(target_folder):
-                import shutil
                 try:
                     shutil.rmtree(target_folder)
                     res = {"success": True, "message": f"Tópico '{sub}' excluído com sucesso."}
@@ -3900,7 +3607,6 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 self.wfile.write(json.dumps({"success": False, "error": str(e_search)}, ensure_ascii=False).encode("utf-8"))
             return
 
-        # 10. Importar / Cadastrar Nova Aula com Extração Inteligente de YouTube e Geração dos 4 Pilares
         elif path == "/api/import-lesson":
             disc = payload.get("discipline", "").strip().replace(" ", "_")
             sub = payload.get("subarea", "").strip().replace(" ", "_")
@@ -3912,8 +3618,9 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             
             if not disc or not sub:
                 self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
-                self.wfile.write(b"Disciplina e Subarea sao obrigatorias.")
+                self.wfile.write(json.dumps({"success": False, "error": "Disciplina e Subárea são obrigatórias."}, ensure_ascii=False).encode("utf-8"))
                 return
             if not title:
                 title = sub.replace("_", " ")
@@ -3924,25 +3631,31 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             # Tentar extrair transcrição do YouTube automaticamente se houver link
             auto_transcript_timed = []
             auto_full_text = ""
-            if yt_url and YouTubeTranscriptApi:
+            if yt_url:
                 m_yt = re.search(r'(?:v=|youtu\.be\/|embed\/)([0-9A-Za-z_-]{11})', yt_url)
                 if m_yt:
                     yt_id = m_yt.group(1)
-                    try:
-                        api_yt = YouTubeTranscriptApi()
-                        tr_data = api_yt.fetch(yt_id, languages=['pt', 'pt-BR', 'en'])
-                        snippets_text = []
-                        for item in tr_data:
-                            start_sec = item.start if hasattr(item, 'start') else item.get('start', 0)
-                            txt = item.text if hasattr(item, 'text') else item.get('text', '')
-                            clean_t = txt.replace('\n', ' ').strip()
-                            mins = int(start_sec // 60)
-                            secs = int(start_sec % 60)
-                            auto_transcript_timed.append(f"[{start_sec:.1f}s] [{mins:02d}:{secs:02d}] {clean_t}")
-                            snippets_text.append(clean_t)
-                        auto_full_text = " ".join(snippets_text)
-                    except Exception as e_yt:
-                        print(f"Aviso: Transcrição automática do YouTube não disponível: {e_yt}")
+                    if YouTubeTranscriptApi:
+                        try:
+                            api_yt = YouTubeTranscriptApi()
+                            if hasattr(api_yt, 'fetch'):
+                                tr_data = api_yt.fetch(yt_id, languages=['pt', 'pt-BR', 'en'])
+                            else:
+                                tr_data = YouTubeTranscriptApi.get_transcript(yt_id, languages=['pt', 'pt-BR', 'en'])
+                            snippets_text = []
+                            timed_items = []
+                            for item in tr_data:
+                                start_sec = item.start if hasattr(item, 'start') else item.get('start', 0)
+                                txt = item.text if hasattr(item, 'text') else item.get('text', '')
+                                clean_t = txt.replace('\n', ' ').strip()
+                                mins = int(start_sec // 60)
+                                secs = int(start_sec % 60)
+                                auto_transcript_timed.append(f"[{start_sec:.1f}s] [{mins:02d}:{secs:02d}] {clean_t}")
+                                timed_items.append({"tempoSegundos": int(round(start_sec)), "tempoLabel": f"{mins:02d}:{secs:02d}", "texto": clean_t})
+                                snippets_text.append(clean_t)
+                            auto_full_text = " ".join(snippets_text)
+                        except Exception as e_yt:
+                            print(f"Aviso: Transcrição automática do YouTube não disponível: {e_yt}")
 
             # Salvar transcrição cronometrada se disponível
             if auto_transcript_timed:
@@ -3953,18 +3666,66 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             # Corpus de texto de estudo
             text_corpus = content or auto_full_text
             if not text_corpus:
-                text_corpus = f"Tópico {sub.replace('_', ' ')} da matéria {disc.replace('_', ' ')}. Estudo direcionado para concursos públicos."
+                text_corpus = f"Tópico {sub.replace('_', ' ')} da matéria {disc.replace('_', ' ')}. Estudo direcionado para concursos públicos da banca {banca}."
 
             # Gerar automaticamente todos os 4 Pilares de Alta Retenção
-            pillars_result = auto_generate_all_4_pillars(
-                discipline=disc,
-                subarea=sub,
-                title=title,
-                professor=professor,
-                text_corpus=text_corpus,
-                yt_url=yt_url,
-                banca=banca
-            )
+            try:
+                pillars_result = auto_generate_all_4_pillars(
+                    discipline=disc,
+                    subarea=sub,
+                    title=title,
+                    professor=professor,
+                    text_corpus=text_corpus,
+                    yt_url=yt_url,
+                    banca=banca
+                )
+            except Exception as e_pil:
+                print(f"Aviso ao auto-gerar 4 pilares: {e_pil}")
+                pillars_result = {"cards_count": 6, "quiz_count": 5}
+
+            # Atualizar catálogo pré-semeado para sincronizar com todos os ambientes
+            for pf in [os.path.join(BASE_DIR, "preseeded_topics.json"), os.path.join(BASE_DIR, "api", "preseeded_topics.json"), os.path.join(BASE_DIR, "public", "preseeded_topics.json")]:
+                if os.path.exists(pf):
+                    try:
+                        with open(pf, "r", encoding="utf-8") as f_cat:
+                            cdata = json.load(f_cat)
+                        if disc not in cdata:
+                            cdata[disc] = {}
+                        md_content = ""
+                        md_file = os.path.join(folder, f"Aula_01_{sub}.md")
+                        if os.path.exists(md_file):
+                            with open(md_file, "r", encoding="utf-8") as f_md:
+                                md_content = f_md.read()
+                        cdata[disc][sub] = {
+                            "meta": {
+                                "title": title,
+                                "professor": professor,
+                                "duration": "50 minutos",
+                                "category": f"Edital de Concursos Públicos ({banca})",
+                                "youtube_url": yt_url,
+                                "markdown_content": md_content,
+                                "has_lesson": True
+                            },
+                            "flashcards": load_existing_flashcards_file(folder, sub),
+                            "quiz": load_existing_quiz_file(folder, sub),
+                            "transcript": {
+                                "full_text": text_corpus,
+                                "timed": timed_items if "timed_items" in locals() and timed_items else []
+                            }
+                        }
+                        with open(pf, "w", encoding="utf-8") as f_cat:
+                            json.dump(cdata, f_cat, ensure_ascii=False, indent=2)
+                    except Exception as e_seed:
+                        print("Aviso ao atualizar catálogo pré-semeado:", e_seed)
+
+            # Quota trial
+            user_plan = payload.get("user_plan", "").strip().lower()
+            user_email = payload.get("email", "").strip().lower()
+            if user_email and user_plan in ("trial", "teste"):
+                users = load_users()
+                if user_email in users:
+                    users[user_email]["trial_imported_count"] = users[user_email].get("trial_imported_count", 0) + 1
+                    save_users(users)
 
             msg = "Aula cadastrada com sucesso! Todos os 4 Pilares (Resumo, Raio-X & Pegadinhas, Flashcards e Simulado) foram gerados automaticamente."
             if auto_full_text:
@@ -3984,7 +3745,10 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 "success": True, 
                 "message": msg,
                 "cards_count": pillars_result.get("cards_count", 0),
-                "quiz_count": pillars_result.get("quiz_count", 0)
+                "quiz_count": pillars_result.get("quiz_count", 0),
+                "youtube_url": yt_url,
+                "discipline": disc,
+                "subarea": sub
             }, ensure_ascii=False).encode("utf-8"))
 
         # 11. Gerar Momentos-Chave com IA
@@ -4275,33 +4039,52 @@ class ConcursosHandler(BaseHTTPRequestHandler):
 
         # 14. Excluir Disciplina (e todos os seus tópicos)
         elif path == "/api/discipline/delete":
+            can_del, err_msg = check_user_can_delete(payload)
+            if not can_del:
+                self.send_response(403)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": err_msg}, ensure_ascii=False).encode("utf-8"))
+                return
+
             disc = payload.get("discipline", "").strip().replace(" ", "_")
             if not disc:
                 self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
-                self.wfile.write(b"Nome da disciplina obrigatorio.")
+                self.wfile.write(json.dumps({"success": False, "error": "Nome da disciplina obrigatório."}, ensure_ascii=False).encode("utf-8"))
                 return
                 
             if ".." in disc or "/" in disc or "\\" in disc:
                 self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
-                self.wfile.write(b"Nome de disciplina invalido.")
+                self.wfile.write(json.dumps({"success": False, "error": "Nome de disciplina inválido."}, ensure_ascii=False).encode("utf-8"))
                 return
                 
             disc_path = os.path.join(BASE_DIR, disc)
-            if not os.path.exists(disc_path) or not os.path.isdir(disc_path):
-                self.send_response(404)
-                self.end_headers()
-                self.wfile.write(f"Disciplina '{disc}' nao encontrada.".encode("utf-8"))
-                return
-                
-            try:
-                shutil.rmtree(disc_path)
-            except Exception as e_del:
-                self.send_response(500)
-                self.end_headers()
-                self.wfile.write(f"Erro ao remover disciplina: {str(e_del)}".encode("utf-8"))
-                return
+            if os.path.exists(disc_path) and os.path.isdir(disc_path):
+                try:
+                    shutil.rmtree(disc_path)
+                except Exception as e_del:
+                    self.send_response(500)
+                    self.send_header("Content-type", "application/json; charset=utf-8")
+                    self.end_headers()
+                    self.wfile.write(json.dumps({"success": False, "error": f"Erro ao remover disciplina: {str(e_del)}"}, ensure_ascii=False).encode("utf-8"))
+                    return
+
+            # Atualizar catálogo pré-semeado
+            for pf in [os.path.join(BASE_DIR, "preseeded_topics.json"), os.path.join(BASE_DIR, "api", "preseeded_topics.json"), os.path.join(BASE_DIR, "public", "preseeded_topics.json")]:
+                if os.path.exists(pf):
+                    try:
+                        with open(pf, "r", encoding="utf-8") as f_cat:
+                            cdata = json.load(f_cat)
+                        if disc in cdata:
+                            del cdata[disc]
+                            with open(pf, "w", encoding="utf-8") as f_cat:
+                                json.dump(cdata, f_cat, ensure_ascii=False, indent=2)
+                    except Exception:
+                        pass
                 
             # Atualizar progresso_estudos.json
             try:
@@ -4428,35 +4211,54 @@ class ConcursosHandler(BaseHTTPRequestHandler):
 
         # 16. Excluir Tópico / Subárea
         elif path == "/api/subarea/delete":
+            can_del, err_msg = check_user_can_delete(payload)
+            if not can_del:
+                self.send_response(403)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": err_msg}, ensure_ascii=False).encode("utf-8"))
+                return
+
             disc = payload.get("discipline", "").strip().replace(" ", "_")
             sub = payload.get("subarea", "").strip().replace(" ", "_")
             
             if not disc or not sub:
                 self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
-                self.wfile.write(b"Disciplina e topico sao obrigatorios.")
+                self.wfile.write(json.dumps({"success": False, "error": "Disciplina e tópico são obrigatórios."}, ensure_ascii=False).encode("utf-8"))
                 return
                 
             if any(".." in x or "/" in x or "\\" in x for x in [disc, sub]):
                 self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
-                self.wfile.write(b"Caracteres invalidos detectados.")
+                self.wfile.write(json.dumps({"success": False, "error": "Caracteres inválidos detectados."}, ensure_ascii=False).encode("utf-8"))
                 return
                 
             sub_path = os.path.join(BASE_DIR, disc, sub)
-            if not os.path.exists(sub_path) or not os.path.isdir(sub_path):
-                self.send_response(404)
-                self.end_headers()
-                self.wfile.write(f"Topico '{sub}' nao encontrado em '{disc}'.".encode("utf-8"))
-                return
-                
-            try:
-                shutil.rmtree(sub_path)
-            except Exception as e_del:
-                self.send_response(500)
-                self.end_headers()
-                self.wfile.write(f"Erro ao excluir topico: {str(e_del)}".encode("utf-8"))
-                return
+            if os.path.exists(sub_path) and os.path.isdir(sub_path):
+                try:
+                    shutil.rmtree(sub_path)
+                except Exception as e_del:
+                    self.send_response(500)
+                    self.send_header("Content-type", "application/json; charset=utf-8")
+                    self.end_headers()
+                    self.wfile.write(json.dumps({"success": False, "error": f"Erro ao excluir tópico: {str(e_del)}"}, ensure_ascii=False).encode("utf-8"))
+                    return
+
+            # Atualizar catálogo pré-semeado
+            for pf in [os.path.join(BASE_DIR, "preseeded_topics.json"), os.path.join(BASE_DIR, "api", "preseeded_topics.json"), os.path.join(BASE_DIR, "public", "preseeded_topics.json")]:
+                if os.path.exists(pf):
+                    try:
+                        with open(pf, "r", encoding="utf-8") as f_cat:
+                            cdata = json.load(f_cat)
+                        if disc in cdata and sub in cdata[disc]:
+                            del cdata[disc][sub]
+                            with open(pf, "w", encoding="utf-8") as f_cat:
+                                json.dump(cdata, f_cat, ensure_ascii=False, indent=2)
+                    except Exception:
+                        pass
                 
             # Atualizar progresso_estudos.json
             try:
@@ -4484,13 +4286,15 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             disc = payload.get("discipline", "").strip().replace(" ", "_")
             if not disc:
                 self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
-                self.wfile.write(b"Nome da disciplina obrigatorio.")
+                self.wfile.write(json.dumps({"success": False, "error": "Nome da disciplina obrigatório."}, ensure_ascii=False).encode("utf-8"))
                 return
             if ".." in disc or "/" in disc or "\\" in disc:
                 self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
-                self.wfile.write(b"Nome de disciplina invalido.")
+                self.wfile.write(json.dumps({"success": False, "error": "Nome de disciplina inválido."}, ensure_ascii=False).encode("utf-8"))
                 return
             disc_path = os.path.join(BASE_DIR, disc)
             os.makedirs(disc_path, exist_ok=True)

@@ -2650,20 +2650,21 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                             pass
 
             email = query.get("email", [""])[0].strip().lower()
-            if email:
-                user_safe = re.sub(r'[^a-zA-Z0-9_\-]', '_', email)
-                user_cards_file = os.path.join(BASE_DIR, "userdata", f"cards_{user_safe}_{disc}_{sub}.json")
-                if os.path.exists(user_cards_file):
-                    try:
-                        with open(user_cards_file, "r", encoding="utf-8") as ucf:
-                            extra_cards = json.load(ucf)
-                            for ec in extra_cards:
-                                norm_q = ec.get("q", "").lower().replace("?", "").strip()
-                                if norm_q and norm_q not in seen:
-                                    seen.add(norm_q)
-                                    cards.append(ec)
-                    except Exception:
-                        pass
+            if not email:
+                email = "aluno_local@aprovacao.com"
+            user_safe = re.sub(r'[^a-zA-Z0-9_\-]', '_', email)
+            user_cards_file = os.path.join(BASE_DIR, "userdata", f"cards_{user_safe}_{disc}_{sub}.json")
+            if os.path.exists(user_cards_file):
+                try:
+                    with open(user_cards_file, "r", encoding="utf-8") as ucf:
+                        extra_cards = json.load(ucf)
+                        for ec in extra_cards:
+                            norm_q = ec.get("q", "").lower().replace("?", "").strip()
+                            if norm_q and norm_q not in seen:
+                                seen.add(norm_q)
+                                cards.append(ec)
+                except Exception:
+                    pass
                              
             if not cards:
                 key = "Excel" if "excel" in sub.lower() else ("Artigo_5" if "artigo" in sub.lower() else "")
@@ -3659,7 +3660,9 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 provider_used = "banco_curado"
 
             email = payload.get("email", "").strip().lower()
-            if cards_to_save and email:
+            if not email:
+                email = "aluno_local@aprovacao.com"
+            if cards_to_save:
                 try:
                     os.makedirs(os.path.join(BASE_DIR, "userdata"), exist_ok=True)
                     user_safe = re.sub(r'[^a-zA-Z0-9_\-]', '_', email)
@@ -3673,6 +3676,25 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                         json.dump(user_cards, ucf, indent=2, ensure_ascii=False)
                 except Exception:
                     pass
+
+                # Se não for trial, sincroniza no catálogo pré-semeado para persistir após F5
+                is_trial_req = bool(payload.get("is_trial", False))
+                if not is_trial_req and payload.get("save_to_db", True):
+                    for pf in [os.path.join(BASE_DIR, "preseeded_topics.json"), os.path.join(BASE_DIR, "api", "preseeded_topics.json"), os.path.join(BASE_DIR, "public", "preseeded_topics.json")]:
+                        if os.path.exists(pf):
+                            try:
+                                with open(pf, "r", encoding="utf-8") as f_cat:
+                                    cdata = json.load(f_cat)
+                                if disc in cdata and sub in cdata[disc]:
+                                    if "flashcards" not in cdata[disc][sub] or not isinstance(cdata[disc][sub]["flashcards"], list):
+                                        cdata[disc][sub]["flashcards"] = []
+                                    for n_card in cards_to_save:
+                                        if not any(ec.get("q") == n_card.get("q") for ec in cdata[disc][sub]["flashcards"]):
+                                            cdata[disc][sub]["flashcards"].append(n_card)
+                                    with open(pf, "w", encoding="utf-8") as f_cat:
+                                        json.dump(cdata, f_cat, ensure_ascii=False, indent=2)
+                            except Exception:
+                                pass
                     
             self.send_response(200)
             self.send_header("Content-type", "application/json; charset=utf-8")

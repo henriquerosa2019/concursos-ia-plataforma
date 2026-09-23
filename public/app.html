@@ -7012,7 +7012,8 @@
           count: parseInt(count),
           focus: focus,
           is_trial: isTrial,
-          save_to_db: !isTrial
+          save_to_db: !isTrial,
+          email: (typeof currentUser !== 'undefined' && currentUser && currentUser.email) ? currentUser.email : ''
         })
       });
       const data = await resp.json();
@@ -7020,9 +7021,17 @@
         if (isTrial) {
           recordTrialFeatureGenerated('cards', currentDiscipline);
         }
-        data.cards.forEach(c => flashcardsData.push(c));
+        data.cards.forEach(c => {
+          if (!rawFlashcardsData.some(ec => ec.q === c.q)) rawFlashcardsData.push(c);
+          if (!flashcardsData.some(ec => ec.q === c.q)) flashcardsData.push(c);
+        });
         currentCardIndex = flashcardsData.length - data.cards.length;
         isCardFlipped = false;
+        updateFlashcardFilterCounts();
+        const cntEl = document.getElementById('tabCardCount');
+        if (cntEl) cntEl.textContent = rawFlashcardsData.length;
+        const metEl = document.getElementById('metricCards');
+        if (metEl) metEl.textContent = rawFlashcardsData.length;
         switchTab(2, true);
         updateCard();
         if (data.provider === 'banco_curado' || data.provider === 'curated_bank' || data.provider === 'offline_curated' || data.provider === 'offline_bank') {

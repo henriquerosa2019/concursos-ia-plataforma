@@ -152,6 +152,18 @@
         {
           "q": "Por que a nova função PROCX é considerada superior ao PROCV clássico em provas recentes?",
           "a": "Porque o PROCX é bidirecional (busca para esquerda ou direita), não exige número ordinal de coluna, não exige ordenação e seu padrão já é busca exata sem precisar de FALSO."
+        },
+        {
+          "q": "Como a função PROCX no Excel supera as limitações do PROCV em termos de flexibilidade na busca de dados?",
+          "a": "A função PROCX permite buscar valores em qualquer direção (horizontal ou vertical) e permite que o valor procurado e o valor de retorno estejam em colunas diferentes, ao contrário do PROCV, que só busca na primeira coluna da matriz."
+        },
+        {
+          "q": "Quais são os principais argumentos da função PROCX e como eles se diferenciam dos argumentos do PROCV?",
+          "a": "A função PROCX possui três argumentos principais: 'valor_procurado', 'matriz_procurada' e 'matriz_retorno'. Ao contrário do PROCV, que utiliza um índice de coluna fixo, o PROCX utiliza matrizes de procura e retorno, aumentando a flexibilidade da pesquisa."
+        },
+        {
+          "q": "O que acontece se um valor procurado na função PROCX não for encontrado na matriz de procura?",
+          "a": "Se o valor procurado não for encontrado na matriz de procura da função PROCX, ela retorna o erro #N/D, assim como o PROCV quando não encontra uma correspondência exata."
         }
       ],
       "quiz": [

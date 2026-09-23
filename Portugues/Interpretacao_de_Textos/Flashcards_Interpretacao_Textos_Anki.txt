@@ -1,2 +1,5 @@
-Qual é a diferença entre questões de COMPREENSÃO e de INTERPRETAÇÃO de texto?	Compreensão busca informações explícitas no texto ('segundo o texto'). Interpretação busca deduções e inferências implícitas sustentadas pelo texto ('infere-se do texto').
-O que caracteriza o erro de Extrapolação em questões de interpretação?	Inserir ideias que, embora possam ser verdadeiras no mundo real, não foram sustentadas pelo autor no texto da prova.
+Qual a diferença essencial entre Compreensão e Interpretação de textos?	Compreensão é o que está explícito no texto ('conforme o autor'); Interpretação é a inferência lógica nas entrelinhas ('depreende-se do texto').
+O que caracteriza um texto Dissertativo-Argumentativo?	A apresentação e defesa de uma TESE (ponto de vista) fundamentada em argumentos e dados para persuadir o leitor.
+Qual é a diferença entre Coesão Anafórica e Coesão Catafórica?	Anafórica retoma um elemento já citado anteriormente no texto; Catafórica antecipa um elemento que ainda será mencionado.
+Qual armadilha clássica da banca Cebraspe ocorre ao usar 'todos' ou 'nunca' em questões de interpretação?	A armadilha da Generalização Indevida: transformar uma afirmação restrita ou probabilística do texto em uma regra absoluta.
+Qual o objetivo de um texto do tipo Injuntivo?	Instruir, prescrever normas ou orientar ações práticas do interlocutor, geralmente empregando verbos no modo imperativo.

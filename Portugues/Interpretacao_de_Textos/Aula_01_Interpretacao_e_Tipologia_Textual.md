@@ -1,23 +1,31 @@
-# PORTUGUES - Língua Portuguesa • Interpretação e Compreensão de Textos
-**Professor:** Prof. Titular Especialista  
-**Duração:** 50 minutos  
-**Categoria:** Edital de Concursos Públicos  
+# Língua Portuguesa • Interpretação e Compreensão de Textos
+## Tipologia Textual, Coesão, Coerência e Inferência de Sentido
 
 ---
 
-## 1. Resumo Estruturado e Conceitos-Chave
+### Pilar 1: Resumo Estruturado & Conceitos-Chave
 
-### A. Compreensão vs Interpretação Textual
-- **CONCEITO:**
-  - **Compreensão (Decodificação):** Está EXPLÍCITO no texto. Enunciados típicos: *"O autor afirma que..."*, *"Segundo o texto..."*, *"De acordo com o primeiro parágrafo..."*.
-  - **Interpretação (Inferência/Hermêutica):** Está IMPLÍCITO no texto (leitura das entrelinhas sustentada pelos fatos). Enunciados típicos: *"Depreende-se do texto que..."*, *"Infere-se que..."*, *"Conclui-se dos argumentos apresentados..."*.
-- **CUIDADO / EXCEÇÃO:** Erros clássicos de interpretação: **Extrapolação** (trazer dados do mundo real ausentes no texto), **Redução** (focar em detalhe secundário) e **Contradição** (concluir o oposto).
+#### 1. Compreensão vs. Interpretação
+- **Compreensão Textual (Decodificação):** A informação está **explícita** dentro do texto.
+  - Comandos de prova: *"Segundo o texto...", "Conforme o autor...", "No 2º parágrafo afirma-se que..."*.
+- **Interpretação Textual (Inferência / Extrapolação):** A informação está **implícita** (nas entrelinhas), inferida a partir de pistas linguísticas.
+  - Comandos de prova: *"Infere-se do texto...", "Conclui-se que...", "O texto sugere que..."*.
+
+#### 2. Tipologia Textual
+- **Narrativo:** Narra sequência de fatos no tempo com personagens, enredo e narrador.
+- **Descritivo:** Retrato de pessoas, objetos ou cenários com abundância de adjetivos.
+- **Dissertativo-Expositivo:** Apresenta dados, conceitos ou teorias sem defender um ponto de vista subjetivo.
+- **Dissertativo-Argumentativo:** Defende uma **tese** fundamentada em argumentos para convencer o leitor.
+- **Injuntivo / Instrucional:** Prescreve regras, instruções e ordens (verbos no imperativo, ex: manual, edital, receita).
+
+#### 3. Elementos de Coesão
+- **Anafórica:** Retoma termo anterior (*"O edital foi publicado; ele prevê..."*).
+- **Catafórica:** Antecipa termo seguinte (*"O concurseiro precisa disto: foco e repetição."*).
 
 ---
 
-## 2. Raio-X de Banca & Pegadinhas Mais Frequentes (Cebraspe / FGV)
+### Pilar 2: Raio-X de Banca & Pegadinhas (Cebraspe / FGV)
 
-### 🚨 Pegadinha 1: Extrapolação do Sentido Original
-- **O que a banca afirma para induzir ao erro:** Cria assertivas perfeitamente verdadeiras na vida real ou no contexto social, mas que NÃO têm qualquer respaldo ou menção no texto da prova.
-- **Pegadinha desmascarada (Onde está o erro):** Prova de concurso não testa sua opinião política ou fatos externos na interpretação; você deve julgar EXCLUSIVAMENTE o que o autor sustentou no texto.
-- **💡 Regra de Ouro / Mnemônico:** "Não invente moda: se o texto não disse, para o Cebraspe não existe!"
+- **Armadilha da Extrapolação:** Afirmar algo verdadeiro no mundo real, mas que NÃO consta no texto da prova. Se o texto não disse, é extrapolação!
+- **Armadilha da Restrição ou Generalização:** O texto fala *"muitos estudantes..."* e a banca afirma *"todos os estudantes..."*. Cuidado com palavras totalizadoras (*sempre, nunca, todos, nenhum*).
+- **Armadilha do Sinônimo Impróprio:** Substituição de conjunção que altera o valor sintático-semântico (ex: trocar *"embora"* por *"portanto"*).

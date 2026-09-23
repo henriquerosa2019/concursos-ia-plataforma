@@ -1,73 +1,124 @@
-# DIREITO ADMINISTRATIVO - DIREITO ADMINISTRATIVO - KVERNA 2026   NOITE   CARREIRAS   TEORIA   ATOS ADMINISTRATIVOS   SG
+# DIREITO ADMINISTRATIVO - KVERNA 2026   NOITE   CARREIRAS   TEORIA   ATOS ADMINISTRATIVOS   SG
 **Professor:** Prof. Especialista  
 **Duração:** 50 minutos  
-**Categoria:** Edital de Concursos Públicos  
+**Categoria:** Edital de Concursos Públicos (Cebraspe)  
 
 ---
 
 ## 1. Resumo Estruturado e Conceitos-Chave
 
-### A. Conceito e Distinção Nuclear
-- **CONCEITO:** Ato administrativo é a declaração unilateral do Estado ou de quem lhe faça as vezes, no exercício de prerrogativas públicas, que produz efeitos jurídicos imediatos com observância da lei e sob controle judicial.
-- **EXPLICAÇÃO:** Diferencia-se dos "atos da administração" (conceito amplo que inclui atos políticos, materiais e de direito privado) por ser regido estritamente pelo Direito Público.
-- **EXEMPLO:** A expedição de uma licença para dirigir (CNH) ou a aplicação de uma multa de trânsito pela autoridade de trânsito.
-- **CUIDADO / EXCEÇÃO:** Contratos administrativos são atos BILATERAIS (acordo de vontades), não se confundindo com atos administrativos puros (unilaterais).
-- **COMO PODE SER COBRADO:** A banca Cebraspe afirmará que todo ato praticado pela administração é ato administrativo. Item ERRADO: a locação de imóvel pela administração rege-se prioritariamente pelo direito privado.
+### A. Definições Formais
+
+**Atos Administrativos**: São manifestações unilaterais da Administração Pública que visam adquirir, resguardar, transferir, modificar, extinguir ou declarar direitos, ou ainda impor obrigações aos administrados ou à própria Administração.
+
+### B. Regras Gerais e Requisitos
+
+1. **Atos Administrativos vs. Atos da Administração**:
+   - **Atos Administrativos**: Regidos pelo direito público, com prerrogativas e restrições próprias.
+   - **Atos da Administração**: Termo mais amplo, que pode incluir ações não necessariamente administrativas.
+
+2. **Elementos do Ato Administrativo**:
+   - **Competência**: Poder legal do agente para praticar o ato.
+   - **Finalidade**: Resultado que se busca alcançar.
+   - **Forma**: Modo de exteriorização do ato.
+   - **Motivo**: Pressupostos que justificam a prática do ato.
+   - **Objeto**: Efeito jurídico gerado pelo ato.
+
+### C. Atributos dos Atos Administrativos
+
+| Atributos                       | Descrição                                                                                                                                          |
+|---------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Presunção de Legitimidade**   | Presume-se que o ato foi emitido em conformidade com a lei até prova em contrário.                                                              |
+| **Presunção de Veracidade**     | Presume-se verdadeiros os fatos alegados pela Administração.                                                                                      |
+| **Autoexecutoriedade**          | Possibilidade de execução imediata do ato pela própria Administração, sem necessidade de ordem judicial.                                          |
+| **Imperatividade**              | Imposição unilateral a terceiros, independente de concordância.                                                                                   |
+| **Tipicidade**                  | O ato deve corresponder a figuras previamente definidas pela lei, garantindo ao administrado segurança jurídica.                                   |
+
+### D. Vinculação e Discricionariedade
+
+- **Atos Vinculados**: A lei determina todos os elementos do ato, sem margem de liberdade.
+- **Atos Discricionários**: A Administração tem liberdade de decisão, pautando-se na conveniência e oportunidade.
+
+| Elemento         | Ato Vinculado | Ato Discricionário |
+|-------------------|---------------|---------------------|
+| Competência       | V             | V                   |
+| Finalidade        | V             | V                   |
+| Forma             | V             | V                   |
+| Motivo            | V             | D                   |
+| Objeto            | V             | D                   |
+
+### E. Vícios nos Elementos do Ato Administrativo
+
+Os atos administrativos são nulos em casos de:
+- **Incompetência**
+- **Vício de forma**
+- **Ilegalidade do objeto**
+- **Inexistência dos motivos**
+- **Desvio de finalidade**
+
+### F. Extinção dos Atos Administrativos
+
+1. **Anulação**: Extinção por ilegalidade, com efeitos retroativos (ex tunc).
+2. **Revogação**: Extinção por conveniência, com efeitos não retroativos (ex nunc).
+3. **Cassação**: Quando o beneficiário não cumpre requisitos.
+4. **Caducidade**: Nova lei derruba efeitos do ato.
+5. **Contraposição**: Novo ato com efeitos opostos ao anterior.
+
+### G. Convalidação
+
+- Ato que supre vícios sanáveis do ato administrativo, com efeitos retroativos (ex tunc).
+- Somente elementos como competência e forma podem ser convalidados.
+
+### H. Espécies de Atos Administrativos
+
+| Espécies             | Descrição                                                                                                                                                     |
+|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Atos Normativos** | Comandos gerais e abstratos (ex: Decretos, Regulamentos).                                                                                                 |
+| **Atos Ordinatórios** | Regulam a conduta funcional dos agentes (ex: Portarias, Avisos).                                                                                          |
+| **Atos Negociais**  | Declaração de vontade do Poder Público que coincide com a pretensão do particular (ex: Licenças, Autorizações).                                              |
+| **Atos Enunciativos** | Atestam ou certificam situações de fato e de direito (ex: Certidões, Atestados).                                                                          |
+| **Atos Punitivos**  | Sanções impostas a infratores (ex: Multas, Demissões).                                                                                                     |
+
+### I. Mnemônicos e Destaques
+
+- **Mnemônico para Elementos do Ato Administrativo**: **C**ompete **F**azer **F**ormas **M**otivas **O**bjetivas (Competência, Finalidade, Forma, Motivo, Objeto).
+- **Destaque**: **A presunção de legitimidade e veracidade é um dos pilares para a validade dos atos administrativos.**
 
 ---
 
-### B. Elementos / Requisitos de Validade (Mnemônico COFIFOMOB)
-- **CONCEITO:** São os 5 requisitos indispensáveis para a perfeição e validade de qualquer ato: Competência, Finalidade, Forma, Motivo e Objeto.
-- **EXPLICAÇÃO:**
-  1. **Competência:** Poder legal atribuído ao agente público. É irrenunciável e intransferível, admitindo delegação e avocação quando não for exclusiva.
-  2. **Finalidade:** O interesse público em sentido estrito e a finalidade específica da lei. O desvio de finalidade gera nulidade insanável.
-  3. **Forma:** O modo de exteriorização do ato (geralmente escrita).
-  4. **Motivo:** Os pressupostos de fato (a realidade ocorrida) e de direito (a lei aplicável) que determinam a edição do ato.
-  5. **Objeto:** O efeito jurídico imediato que o ato produz (conteúdo).
-- **CUIDADO / EXCEÇÃO (FO-CO):** Apenas os vícios de **Forma** (não essencial) e de **Competência** (não exclusiva) admitem **CONVALIDAÇÃO**. Finalidade, Motivo e Objeto NÃO podem ser convalidados!
-- **COMO PODE SER COBRADO:** A banca afirmará que o motivo do ato discricionário pode ser convalidado pela autoridade superior. Item ERRADO (vício de motivo é sempre insanável).
+Esse resumo estruturado e os conceitos-chave abordam os principais aspectos dos atos administrativos no Direito Administrativo, facilitando a compreensão e a memorização dos conteúdos para fins de concurso público.
 
 ---
 
-### C. Atributos do Ato Administrativo (Mnemônico PATI)
-- **CONCEITO:** Prerrogativas inerentes ao regime jurídico administrativo:
-  - **Presunção de Legitimidade:** Presume-se editado em conformidade com a lei até prova em contrário (ônus da prova é do administrado).
-  - **Autoexecutoriedade:** A administração pode executar suas decisões diretamente, sem autorização prévia judicial (ex: interdição de fábrica).
-  - **Tipicidade:** O ato deve corresponder a figuras previamente definidas em lei.
-  - **Imperatividade:** Capacidade de impor obrigações unilaterais a terceiros independentemente de sua concordância.
-- **CUIDADO / EXCEÇÃO:** A imperatividade NÃO existe em todos os atos! Atos negociais (licenças, autorizações) e enunciativos (certidões, atestados) NÃO possuem imperatividade.
-- **COMO PODE SER COBRADO:** A banca afirmará que todos os atributos estão presentes em todos os atos administrativos indistintamente. Item ERRADO.
+## 2. Raio-X de Banca & Pegadinhas Mais Frequentes
 
----
+### 🚨 Pegadinha 1: A Presunção de Legitimidade é Irreversível
+- **O que a banca afirma para induzir ao erro:** "A presunção de legitimidade dos atos administrativos significa que nunca podem ser considerados inválidos."
+- **Pegadinha desmascarada (Onde está o erro):** Embora a presunção de legitimidade exista, isso não impede que atos administrativos sejam anulados ou considerados nulos em virtude de vícios como incompetência ou ilegalidade. A presunção é uma ficção legal que pode ser desfeita com prova em contrário.
+- **💡 Regra de Ouro / Mnemônico:** "Presunção é ficção, mas vício é contradição."
 
-### D. Extinção do Ato: Anulação vs Revogação
-- **CONCEITO:**
-  - **Anulação (Ilegalidade):** Feita pelo Judiciário ou pela Administração. Efeitos retroativos (**Ex Tunc**).
-  - **Revogação (Conveniência e Oportunidade):** Feita EXCLUSIVAMENTE pela própria Administração. Efeitos prospectivos (**Ex Nunc**).
-- **EXEMPLO:** Revogação de permissão de uso de espaço público por conveniência; anulação de concurso público por fraude.
-- **CUIDADO / EXCEÇÃO:** O Poder Judiciário NUNCA pode revogar um ato administrativo do Poder Executivo em função de conveniência/mérito, apenas anular por ilegalidade.
-- **COMO PODE SER COBRADO:** Dizer que o juiz revogou decreto do prefeito por considerar inoportuno. Item ERRADO: invasão indevida do mérito administrativo.
+### 🚨 Pegadinha 2: Nulidade e Anulação São Sinônimos
+- **O que a banca afirma para induzir ao erro:** "A nulidade e a anulação de atos administrativos têm o mesmo significado e efeitos."
+- **Pegadinha desmascarada (Onde está o erro):** Nulidade se refere a atos que são considerados inválidos desde sua origem (ex tunc), enquanto a anulação se refere a atos válidos que são posteriormente considerados ilegais e perdendo sua validade (com efeitos retroativos). 
+- **💡 Regra de Ouro / Mnemônico:** "Nulo é desde o início, anulado é só depois."
 
----
+### 🚨 Pegadinha 3: Ato Nulo Pode Ser Convalidado
+- **O que a banca afirma para induzir ao erro:** "Todos os atos administrativos podem ser convalidados, mesmo aqueles que são considerados nulos."
+- **Pegadinha desmascarada (Onde está o erro):** Apenas atos que apresentam vícios sanáveis podem ser convalidados. Atos nulos, por definição, não podem ser convalidados, pois são inválidos desde a sua origem.
+- **💡 Regra de Ouro / Mnemônico:** "Nulo não tem volta, só sanável é convalidável."
 
-## 2. Raio-X de Banca & Pegadinhas Mais Frequentes (Cebraspe)
+### 🚨 Pegadinha 4: Vícios do Ato Não Afetam sua Validade
+- **O que a banca afirma para induzir ao erro:** "Um ato administrativo pode ter vícios, mas isso não afeta sua validade até que seja declarado nulo."
+- **Pegadinha desmascarada (Onde está o erro):** A presença de vícios pode afetar a validade do ato, mesmo que não tenha sido declarado nulo ainda. A validade pode ser contestada a qualquer momento, e o vício pode gerar consequências legais.
+- **💡 Regra de Ouro / Mnemônico:** "Vício é como doença, pode afetar a validade."
 
-### 🚨 Pegadinha 1: Convalidação de Elementos Insanáveis
-- **O que a banca afirma para induzir ao erro:** "Havendo vício quanto ao motivo ou à finalidade do ato administrativo discricionário, a autoridade superior poderá convalidá-lo caso não cause prejuízo ao interesse público."
-- **Pegadinha desmascarada (Onde está o erro):** Convalidação é restrita ao mnemônico **FO-CO** (apenas Forma não essencial e Competência não exclusiva). Desvio de finalidade ou falsidade/inexistência de motivo geram nulidade absoluta e insanável.
-- **💡 Regra de Ouro / Mnemônico:** "FO-CO na convalidação: Forma e Competência convalidam; Motivo, Finalidade e Objeto JAMAIS!"
+### 🚨 Pegadinha 5: O Motivo é Irrelevante para a Validade do Ato
+- **O que a banca afirma para induzir ao erro:** "A falta de um motivo não compromete a validade do ato administrativo."
+- **Pegadinha desmascarada (Onde está o erro):** A ausência de motivo pode sim levar à nulidade do ato administrativo, pois o motivo é um dos elementos essenciais que fundamentam a prática do ato. Sem motivo, o ato pode ser considerado inválido.
+- **💡 Regra de Ouro / Mnemônico:** "Motivo é essencial, sem ele, ato é potencial."
 
-### 🚨 Pegadinha 2: Efeitos Temporais da Revogação vs Anulação
-- **O que a banca afirma para induzir ao erro:** "A revogação de um ato administrativo por razões de oportunidade e conveniência opera efeitos ex tunc, desconstituindo os efeitos passados."
-- **Pegadinha desmascarada (Onde está o erro):** Revogação opera SEMPRE efeitos **Ex Nunc** (não retroage, preservando os direitos adquiridos). Quem opera efeitos **Ex Tunc** (retroativos) é a Anulação (ato ilegal nunca deveria ter nascido).
-- **💡 Regra de Ouro / Mnemônico:** "Anulação bate na testa (Tunc = trás, retroage); Revogação bate na nuca (Nunc = para frente, não retroage)!"
+### 🚨 Pegadinha 6: Ato Administrativo Sempre Produz Efeitos Imediatos
+- **O que a banca afirma para induzir ao erro:** "Todo ato administrativo gera efeitos imediatos, independentemente de sua natureza."
+- **Pegadinha desmascarada (Onde está o erro):** A natureza do ato pode determinar se seus efeitos são imediatos ou não. Por exemplo, atos que dependem de regulamentação ou de outros procedimentos administrativos podem ter efeitos diferidos.
+- **💡 Regra de Ouro / Mnemônico:** "Efeito imediato não é regra, depende do ato e da lei."
 
-### 🚨 Pegadinha 3: Revogação de Atos pelo Poder Judiciário
-- **O que a banca afirma para induzir ao erro:** "O Poder Judiciário pode revogar ato administrativo praticado pelo Poder Executivo quando comprovada a inoportunidade da medida para a coletividade."
-- **Pegadinha desmascarada (Onde está o erro):** O Judiciário tem competência exclusiva para ANULAR atos de outros poderes por ilegalidade. O mérito (conveniência/oportunidade) é privativo da autoridade administrativa executiva. O Judiciário só revoga seus próprios atos atípicos de gestão interna.
-- **💡 Regra de Ouro / Mnemônico:** "Juiz julga a LEI, não julga o GOSTO do prefeito! Judiciário anula ilegalidade, nunca revoga mérito alheio."
-
-### 🚨 Pegadinha 4: Atributo da Imperatividade em Atos Negociais
-- **O que a banca afirma para induzir ao erro:** "A imperatividade é atributo inerente a todo e qualquer ato administrativo, inclusive nas licenças e certidões."
-- **Pegadinha desmascarada (Onde está o erro):** Atos negociais (licença, autorização) atendem a requerimento do próprio particular, não impondo obrigações coercitivas contra a vontade dele. Não há imperatividade nesses atos.
-- **💡 Regra de Ouro / Mnemônico:** "Certidão e Licença pedem com carinho: não têm poder de impor nada a ninguém (zero imperatividade)!"

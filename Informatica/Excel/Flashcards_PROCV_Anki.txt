@@ -1,4 +1,21 @@
-Qual é a regra mandatória de posicionamento para o 3º argumento (núm_índice_coluna) da função PROCV?	Deve ser sempre um NÚMERO INTEIRO que representa a posição da coluna na matriz (ex: 1, 2, 3), NUNCA a letra da coluna (como 'B' ou 'C').
-O que acontece na função PROCV quando o 4º argumento (procurar_intervalo) é omitido?	Assume por padrão o valor VERDADEIRO (busca aproximada), exigindo que a primeira coluna da matriz esteja classificada em ordem crescente.
-Qual o mnemônico de direção de busca da função PROCV no Excel?	'Quem PROCV Procura para a DIREITA': O valor procurado deve estar na 1ª coluna e a resposta sempre em coluna à direita. Não busca para a esquerda.
-Qual erro o Excel retorna quando o PROCV com busca exata (0) não encontra o valor procurado na matriz?	Erro #N/D (Não Disponível). Diferente de #REF! (quando o índice de coluna é maior que as colunas da matriz).
+No Excel, a quais categorias pertencem as funções PROCV e PROCH?	Pertencem à categoria Pesquisa e Referência (localizada na guia Fórmulas).
+Quais são os 4 argumentos da função PROCV na ordem exata?	=PROCV(valor_procurado ; matriz_tabela ; núm_índice_coluna ; [procurar_intervalo])
+No 4º argumento de PROCV, o que significam 0 (ou FALSO) e 1 (ou VERDADEIRO)?	0 ou FALSO = busca EXATA (retorna #N/D se não achar); 1 ou VERDADEIRO = busca APROXIMADA.
+Qual a diferença fundamental entre o 3º argumento do PROCV e do PROCH?	No PROCV é o número da COLUNA (núm_índice_coluna); no PROCH é o número da LINHA (núm_índice_lin).
+Se for inserida a fórmula =PROCV(A1; A1:C10; C; 0), qual será o resultado no Excel?	Erro de fórmula/sintaxe (#NOME?), pois o 3º argumento exige um número inteiro ordinal (ex: 3), e nunca a letra da coluna.
+Em qual coluna da matriz o valor procurado do PROCV deve obrigatoriamente estar?	Sempre na PRIMEIRA coluna (mais à esquerda) da matriz selecionada.
+Qual mnemônico ajuda a memorizar a ordem dos argumentos do PROCV?	Você Me Indica a Coisa (V: Valor procurado; M: Matriz; I: Índice; C: Correspondência).
+Se o 4º argumento do PROCV for totalmente OMITIDO (ex: =PROCV(A1; A1:B10; 2)), qual tipo de busca o Excel executará por padrão?	Assumirá por padrão o valor 1 (ou VERDADEIRO), executando busca APROXIMADA (pegadinha frequente de bancas!).
+Em que situação o PROCV exige obrigatoriamente que a 1ª coluna da matriz esteja em ORDEM CRESCENTE?	Apenas quando a busca for APROXIMADA (1 ou VERDADEIRO). Na busca exata (0 ou FALSO), a ordem das linhas é irrelevante.
+O que acontece se no 3º argumento do PROCV for colocado um número de coluna maior do que o total de colunas da matriz selecionada (ex: matriz A1:B10 e índice 3)?	O Excel retornará o erro #REF! (Referência Inválida), pois a coluna indicada não existe no intervalo selecionado.
+Como resolver questões em que a banca coloca funções aninhadas no 1º argumento, como =PROCV(MAIOR(A1:A5; 1); A1:B5; 2; FALSO)?	Resolve-se de dentro para fora: primeiro calcula o resultado da função interna MAIOR(A1:A5; 1) e depois utiliza o valor resultante como o valor_procurado no PROCV.
+Por que a nova função PROCX é considerada superior ao PROCV clássico em provas recentes?	Porque o PROCX é bidirecional (busca para esquerda ou direita), não exige número ordinal de coluna, não exige ordenação e seu padrão já é busca exata sem precisar de FALSO.
+
+O que acontece se a função PROCV for utilizada com uma matriz onde o valor procurado não está presente na primeira coluna e o quarto argumento for 0 (ou FALSO)?	O Excel retornará o erro #N/D, indicando que o valor procurado não foi encontrado na matriz.
+Na fórmula PROCV, como a ausência de um argumento pode alterar o resultado da busca?	Se o quarto argumento for omitido, o Excel considera uma busca aproximada (1 ou VERDADEIRO) por padrão, que pode levar a resultados inesperados se a matriz não estiver ordenada.
+Qual é a consequência de usar um índice de coluna (3º argumento) que é igual ao número de colunas da matriz na função PROCV?	O Excel retornará o valor da última coluna da matriz, mas se o índice for maior que o número de colunas, resultará em um erro #REF!.
+Como a função PROCV se comporta quando o valor procurado é um texto que contém espaços adicionais ou caracteres invisíveis?	Se o texto não corresponder exatamente ao valor na primeira coluna da matriz, mesmo com espaços adicionais, o PROCV não encontrará o valor e retornará #N/D.
+O que é o Princípio da Impessoalidade?	A atuação administrativa visa exclusivamente ao interesse público.
+O que é o Princípio da Impessoalidade?	A atuação administrativa visa exclusivamente ao interesse público.
+O que é o Princípio da Impessoalidade?	A atuação administrativa visa exclusivamente ao interesse público.
+O que é o Princípio da Impessoalidade?	A atuação administrativa visa exclusivamente ao interesse público.

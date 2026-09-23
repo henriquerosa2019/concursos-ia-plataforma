@@ -1,48 +1,47 @@
-# DIREITO CONSTITUCIONAL - Direito Constitucional • Artigo 5º da CF/88
-**Professor:** Prof. Titular Especialista  
-**Duração:** 50 minutos  
-**Categoria:** Edital de Concursos Públicos  
+# Direito Constitucional • Artigo 5º da CF/88
+## Direitos e Garantias Fundamentais • Remédios Constitucionais e Inviolabilidades
 
 ---
 
-## 1. Resumo Estruturado e Conceitos-Chave
+### Pilar 1: Resumo Estruturado & Conceitos-Chave
 
-### A. Destinatários e Inviolabilidade de Domicílio
-- **CONCEITO:** O art. 5º consagra os Direitos e Garantias Fundamentais da pessoa humana. Aplica-se a brasileiros natos, naturalizados e a estrangeiros (residentes ou em trânsito no país), além de pessoas jurídicas (no que couber).
-- **INVIOLABILIDADE DOMICILIAR (Art. 5º, XI):**
-  - "A casa é asilo inviolável do indivíduo, ninguém nela podendo penetrar sem consentimento do morador..."
-  - **Exceções a QUALQUER HORA (Dia e Noite):** Flagrante delito, desastre ou prestar socorro.
-  - **Exceção EXCLUSIVAMENTE DURANTE O DIA:** Determinação judicial!
-- **CUIDADO / EXCEÇÃO DE OURO:** Mandado judicial NUNCA pode ser cumprido à noite em residência sem consentimento, mesmo em crimes graves.
-- **COMO PODE SER COBRADO:** Cebraspe dirá que a polícia cumpriu mandado judicial às 22h com ordem de juiz. Item ERRADO.
+O **Artigo 5º da Constituição Federal de 1988** consagra os Direitos e Deveres Individuais e Coletivos. O caput assegura a inviolabilidade do direito à **vida, à liberdade, à igualdade, à segurança e à propriedade**.
 
----
+#### 1. Destinatários dos Direitos Fundamentais
+- **Brasileiros** (natos ou naturalizados).
+- **Estrangeiros residentes no país** e também **estrangeiros em trânsito (turistas)** (jurisprudência pacífica do STF).
+- **Pessoas jurídicas** (no que for compatível com sua natureza, ex: honra objetiva, inviolabilidade de domicílio em locais reservados).
 
-### B. Crimes Inafiançáveis, Imprescritíveis e Insuscetíveis de Graça (Mnemônicos RAÇÃO e 3T+H)
-- **CONCEITO:** Classificação constitucional da gravidade das infrações penais:
-  1. **IMPRESCRITÍVEIS e Inafiançáveis (Mnemônico RAÇÃO):**
-     - **RA:** Racismo (art. 5º, XLII - inclui injúria racial conforme STF).
-     - **ÇÃO:** Ação de grupos armados, civis ou militares, contra a ordem constitucional e o Estado Democrático (art. 5º, XLIV).
-  2. **INSUSCETÍVEIS DE GRAÇA/ANISTIA e Inafiançáveis (Mnemônico 3T + H):**
-     - Tortura, Tráfico ilícito de entorpecentes, Terrorismo e Hediondos (art. 5º, XLIII).
-- **CUIDADO / EXCEÇÃO CRÍTICA:** Os crimes do grupo 3T+H **SÃO PRESCRITÍVEIS**! Apenas o Racismo e Grupos Armados são imprescritíveis na CF/88.
-- **COMO PODE SER COBRADO:** A banca afirmará que o crime de tortura é inafiançável e imprescritível. Item ERRADO: tortura é prescritível!
 
----
+## 2. Raio-X de Banca & Pegadinhas Mais Frequentes
 
-## 2. Raio-X de Banca & Pegadinhas Mais Frequentes (Cebraspe)
+### 🚨 Pegadinha 1: Invasão Noturna de Domicílio
+- **O que a banca afirma para induzir ao erro:** Afirmar que um mandado judicial pode autorizar a invasão de domicílio à noite.
+- **Pegadinha desmascarada (Onde está o erro):** O Art. 5º, XI, da Constituição estabelece que a invasão do domicílio só é permitida durante o dia por mandado judicial. À noite, a entrada é permitida apenas em caso de flagrante delito, desastre ou para prestar socorro.
+- **💡 Regra de Ouro / Mnemônico:** **Mandado Judicial = Sol** (somente durante o dia).
 
-### 🚨 Pegadinha 1: Mandado Judicial no Domicílio Durante a Noite
-- **O que a banca afirma para induzir ao erro:** "Diante da gravidade concreta dos fatos e munida de mandado judicial de busca e apreensão expedido por juiz competente, a autoridade policial pôde ingressar licitamente no domicílio do investigado às 23 horas."
-- **Pegadinha desmascarada (Onde está o erro):** Ordem judicial NUNCA autoriza entrada domiciliar à noite sem o consentimento do morador. Durante a noite, somente se admite entrada para prestar socorro, em caso de desastre ou de flagrante delito.
-- **💡 Regra de Ouro / Mnemônico:** "Mandado com o Sol (de dia); Socorro, Desastre e Flagrante a qualquer hora (com ou sem Sol)!"
+### 🚨 Pegadinha 2: Direitos dos Estrangeiros em Trânsito
+- **O que a banca afirma para induzir ao erro:** Afirmar que estrangeiros em trânsito não têm direitos garantidos pelo Art. 5º da Constituição.
+- **Pegadinha desmascarada (Onde está o erro):** O STF reconhece que os direitos fundamentais são extensíveis a estrangeiros residentes e em trânsito no Brasil. Portanto, essa afirmativa é incorreta.
+- **💡 Regra de Ouro / Mnemônico:** **Estrangeiro em Trânsito = Direitos Garantidos**.
 
-### 🚨 Pegadinha 2: Imprescritibilidade Estendida a Crimes Hediondos e Tortura
-- **O que a banca afirma para induzir ao erro:** "O crime de tortura e os crimes hediondos são insuscetíveis de fiança, anistia, graça e indulto, sendo igualmente imprescritíveis na ordem constitucional vigente."
-- **Pegadinha desmascarada (Onde está o erro):** Tortura e Hediondos são inafiançáveis e insuscetíveis de graça/anistia, mas ELES PRESCREVEM! Apenas dois crimes são imprescritíveis na CF: Racismo e Ação de Grupos Armados.
-- **💡 Regra de Ouro / Mnemônico:** "Imprescritível é só a RAÇÃO! 3T+H prescreve normalmente!"
+### 🚨 Pegadinha 3: Uso do Habeas Data
+- **O que a banca afirma para induzir ao erro:** Afirmar que o Habeas Data pode ser utilizado para obter dados de terceiros.
+- **Pegadinha desmascarada (Onde está o erro):** O Habeas Data é uma ação personalíssima, ou seja, serve apenas para assegurar o conhecimento de informações relativas à pessoa do próprio impetrante. Para dados de terceiros, deve-se utilizar o Mandado de Segurança.
+- **💡 Regra de Ouro / Mnemônico:** **Habeas Data = Dados Próprios**.
 
-### 🚨 Pegadinha 3: Quebra de Sigilo das Comunicações Telefônicas por CPI
-- **O que a banca afirma para induzir ao erro:** "A Comissão Parlamentar de Inquérito (CPI), no exercício de seus poderes instrutórios próprios de autoridades judiciais, determinou a interceptação de comunicações telefônicas (escuta das conversas) de investigado."
-- **Pegadinha desmascarada (Onde está o erro):** CPI tem poderes judiciais para quebrar dados telefônicos (extrato de chamadas), fiscais e bancários. No entanto, a **interceptação telefônica** (escuta em tempo real do áudio) é RESERVA DE JURISDIÇÃO ABSOLUTA (exclusiva de juiz de direito).
-- **💡 Regra de Ouro / Mnemônico:** "CPI quebra o DADO (extrato); quem ouve a VOZ é só o JUIZ!"
+### 🚨 Pegadinha 4: Limitação da Ação Popular
+- **O que a banca afirma para induzir ao erro:** Afirmar que apenas cidadãos com título de eleitor podem propor Ação Popular.
+- **Pegadinha desmascarada (Onde está o erro):** Embora seja verdade que a Ação Popular é proposta por qualquer cidadão, a exigência do título de eleitor pode ser confundida. Qualquer cidadão no gozo dos direitos políticos pode propor, independentemente da posse do título.
+- **💡 Regra de Ouro / Mnemônico:** **Ação Popular = Qualquer Cidadão**.
+
+### 🚨 Pegadinha 5: Regulação do Direito de Reunião
+- **O que a banca afirma para induzir ao erro:** Afirmar que o direito de reunião em locais abertos ao público exige autorização prévia da autoridade competente.
+- **Pegadinha desmascarada (Onde está o erro):** O Art. 5º, XVI, garante o direito de reunião, que apenas requer um prévio aviso à autoridade, e não autorização.
+- **💡 Regra de Ouro / Mnemônico:** **Direito de Reunião = Prévio Aviso**.
+
+### 🚨 Pegadinha 6: Mandado de Injunção e Omissão Legislativa
+- **O que a banca afirma para induzir ao erro:** Afirmar que o Mandado de Injunção pode ser usado para qualquer falta de norma regulamentadora.
+- **Pegadinha desmascarada (Onde está o erro):** O Mandado de Injunção é cabível apenas quando a falta de norma inviabiliza o exercício de direitos constitucionais, não para qualquer omissão legislativa.
+- **💡 Regra de Ouro / Mnemônico:** **Mandado de Injunção = Falta que Impede Direitos**.
+

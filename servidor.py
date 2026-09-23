@@ -39,13 +39,6 @@ try:
     from http.server import ThreadingHTTPServer as HTTPServer, BaseHTTPRequestHandler
 except ImportError:
     from http.server import HTTPServer, BaseHTTPRequestHandler
-from master_study_engine import (
-    MASTER_STUDY_ENGINE_INSTRUCTION,
-    get_pilar1_prompt,
-    get_pilar2_prompt,
-    get_pilar3_prompt,
-    get_pilar4_prompt
-)
 
 if hasattr(sys.stdout, "reconfigure"):
     try:
@@ -643,33 +636,6 @@ def reset_master_user_data(user_id_or_email):
         "message": f"Dados de estudos de {target_email} foram 100% zerados com sucesso ({deleted_files} arquivos de revisão limpos, {sb_msg})!",
         "email": target_email
     }
-
-def check_user_can_delete(payload):
-    """
-    Regra de Negócio Obrigatória:
-    - Alunos do Plano Vitalício e usuários Master podem excluir matérias e aulas.
-    - Contas em período de Teste (Trial) NÃO têm permissão para excluir aulas do sistema.
-    """
-    user_plan = str(payload.get("user_plan", "")).strip().lower()
-    is_master = bool(payload.get("is_master", False) or payload.get("role") == "master")
-    email = str(payload.get("email", "")).strip().lower()
-    
-    if is_master or email in ("master@aprovacao.com", "henriquerosa2019"):
-        return True, ""
-        
-    if email:
-        users = load_users()
-        u = users.get(email)
-        if u:
-            if u.get("role") == "master" or u.get("plano") == "vitalicio":
-                return True, ""
-            if u.get("plano") in ("trial", "teste"):
-                return False, "Contas em período de teste não têm permissão para excluir aulas. Recurso exclusivo do Plano Vitalício."
-
-    if user_plan == "vitalicio":
-        return True, ""
-        
-    return False, "Contas em período de teste não têm permissão para excluir aulas. Recurso exclusivo do Plano Vitalício."
 
 def get_master_aulas_list():
     tree_data = scan_concursos_tree()
@@ -2047,260 +2013,50 @@ def save_quiz_questions(discipline, subarea, questions):
 
 
 # ==============================================================================
-# MOTOR MESTRE DE INGESTÃO E PREPARAÇÃO DO CONTEÚDO (MASTER_INGESTION_ENGINE)
-# ==============================================================================
-
-MASTER_INGESTION_ENGINE_PROMPT = """
-Você é o MOTOR MESTRE DE INGESTÃO E PREPARAÇÃO DE CONTEÚDO (MASTER_INGESTION_ENGINE) do Projeto Aprovação.
-Sua missão é transformar qualquer material bruto de estudo importado (videoaula YouTube, PDF, texto ou transcrição) em uma FONTE DE CONHECIMENTO ESTRUTURADA, CONFIÁVEL, RASTREÁVEL E NORMALIZADA para alimentar os 4 Pilares Pedagógicos:
-1. Resumo & Síntese
-2. Raio-X das Bancas & Pegadinhas
-3. Flashcards Anki (com mnemônicos obrigatórios)
-4. Mini-Simulado de Fixação
-
-PRINCÍPIO FUNDAMENTAL E REGRAS INEGOCIÁVEIS:
-1. ORGANIZAR ≠ INVENTAR: Reordene e estruture com alto valor pedagógico, mas JAMAIS invente fatos, regras ou jurisprudências não sustentadas pela fonte.
-2. CORRIGIR TRANSCRIÇÃO ≠ MODIFICAR CONCEITO: Corrija apenas ruídos fonéticos de OCR/ASR, preservando termos técnicos e jargões originais.
-3. RESUMIR ≠ OMITIR: Não descarte exceções, prazos, mnemônicos ou ressalvas ditas pelo professor ou texto.
-4. INTERPRETAR ≠ ATRIBUIR: Nunca atribua afirmações não feitas pela fonte.
-5. RASTREABILIDADE TOTAL: Toda unidade de conhecimento deve manter sua origem (timestamp [MM:SS] ou número de página).
-6. MNEMÔNICOS OBRIGATÓRIOS: Identifique e destaque sempre mnemônicos citados ou crie mnemônicos de alta retenção quando aplicável.
-"""
-
-GOLD_WORDS = [
-    "atenção", "cuidado", "não confunda", "importante", "cai muito", "banca",
-    "prova", "pegadinha", "exceto", "somente", "sempre", "nunca", "principalmente",
-    "diferentemente", "ao contrário", "repare", "olho na tela", "mnemônico", "regra de ouro"
-]
-
-def normalize_text_content(raw_text):
-    if not raw_text:
-        return ""
-    text = re.sub(r'\[(?:Música|musica|Aplausos|Risos)\]', '', raw_text, flags=re.IGNORECASE)
-    lines = []
-    for line in text.split('\n'):
-        clean = re.sub(r'[ \t]+', ' ', line).strip()
-        lines.append(clean)
-    return '\n'.join(lines).strip()
-
-def detect_gold_content(text, timed_segments=None, pages=None):
-    gold_items = []
-    pattern = re.compile(r'\b(' + '|'.join(re.escape(w) for w in GOLD_WORDS) + r')\b', re.IGNORECASE)
-
-    if timed_segments:
-        for seg in timed_segments:
-            txt = seg.get("texto", "")
-            matches = list(pattern.finditer(txt))
-            if matches:
-                trigger_words = list(set(m.group(0).lower() for m in matches))
-                gold_items.append({
-                    "gatilho": trigger_words[0],
-                    "palavras_encontradas": trigger_words,
-                    "trecho": txt,
-                    "timestamp": seg.get("tempoLabel", "00:00"),
-                    "sec": seg.get("tempoSegundos", 0),
-                    "tipo": "video"
-                })
-    elif pages:
-        for pg in pages:
-            txt = pg.get("texto", "")
-            pnum = pg.get("pagina", 1)
-            for paragraph in txt.split('\n\n'):
-                m = pattern.search(paragraph)
-                if m:
-                    gold_items.append({
-                        "gatilho": m.group(0).lower(),
-                        "trecho": paragraph.strip()[:250],
-                        "pagina": pnum,
-                        "time_str": f"Pág. {pnum}",
-                        "tipo": "pdf"
-                    })
-    else:
-        for paragraph in text.split('\n\n'):
-            m = pattern.search(paragraph)
-            if m:
-                gold_items.append({
-                    "gatilho": m.group(0).lower(),
-                    "trecho": paragraph.strip()[:250],
-                    "tipo": "texto"
-                })
-    return gold_items[:15]
-
-def compute_source_quality(raw_text, gold_items, timed_segments=None, pages=None):
-    chars = len(raw_text or "")
-    completude = min(100, max(20, int(chars / 50))) if chars < 4000 else 98
-    
-    if timed_segments:
-        rastreabilidade = 100 if len(timed_segments) > 10 else 85
-    elif pages:
-        rastreabilidade = 100 if len(pages) > 0 else 80
-    else:
-        rastreabilidade = 75
-
-    clean_words = len(re.findall(r'\b[A-Za-zÀ-ÿ]{3,}\b', raw_text or ""))
-    clareza = 95 if clean_words > 100 else 70
-
-    score_geral = int((completude * 0.35) + (rastreabilidade * 0.35) + (clareza * 0.30))
-    status = "EXCELENTE" if score_geral >= 90 else ("BOM" if score_geral >= 75 else "REGULAR")
-
-    return {
-        "score_geral": score_geral,
-        "completude_pct": completude,
-        "clareza_pct": clareza,
-        "rastreabilidade_pct": rastreabilidade,
-        "possiveis_ambiguidades": 0,
-        "total_caracteres": chars,
-        "total_pontos_ouro": len(gold_items),
-        "status": status
-    }
-
-def build_knowledge_units(discipline, subarea, normalized_text, timed_segments=None, pages=None, banca="Cebraspe"):
-    sys_prompt = (
-        f"{MASTER_INGESTION_ENGINE_PROMPT}\n\n"
-        f"Extraia de 4 a 8 UNIDADES DE CONHECIMENTO (#UK) atômicas do material de estudo sobre {subarea} ({discipline}) para a banca {banca}.\n"
-        "Retorne EXATAMENTE um JSON com o campo 'units': [\n"
-        "  {\n"
-        "    \"id\": \"UK-001\",\n"
-        "    \"tipo\": \"Conceito | Regra | Exceção | Pegadinha potencial | Mnemônico\",\n"
-        "    \"titulo\": \"Título claro do conceito\",\n"
-        "    \"conteudo\": \"Explicação conceitual\",\n"
-        "    \"exemplo\": \"Exemplo prático\",\n"
-        "    \"confusao_comum\": \"Diferença que a banca explora\",\n"
-        "    \"importancia_pedagogica\": \"CRÍTICA | ALTA | MÉDIA\",\n"
-        "    \"potencial_cobranca\": \"ALTO | MÉDIO\"\n"
-        "  }\n"
-        "]"
-    )
-    user_prompt = f"Disciplina: {discipline} | Subárea: {subarea}\n\nTexto Normalizado:\n{normalized_text[:10000]}"
-    raw_ai, _ = call_ai_service(sys_prompt, user_prompt, json_mode=True, temperature=0.3)
-    units = []
-    if raw_ai:
-        try:
-            parsed = json.loads(raw_ai)
-            if isinstance(parsed, dict) and isinstance(parsed.get("units"), list):
-                units = parsed["units"]
-            elif isinstance(parsed, list):
-                units = parsed
-        except Exception:
-            pass
-
-    if not units:
-        paragraphs = [p.strip() for p in normalized_text.split('\n') if len(p.strip()) > 35]
-        unit_id = 1
-        for i, p in enumerate(paragraphs[:10]):
-            p_lower = p.lower()
-            if "mnemônico" in p_lower or "mnemonico" in p_lower:
-                tipo, imp, pot = "Mnemônico", "CRÍTICA", "ALTO"
-            elif any(w in p_lower for w in ["cuidado", "pegadinha", "atenção", "não confunda"]):
-                tipo, imp, pot = "Pegadinha potencial", "CRÍTICA", "ALTO"
-            elif any(w in p_lower for w in ["exceção", "salvo", "exceto"]):
-                tipo, imp, pot = "Exceção", "ALTA", "ALTO"
-            elif any(w in p_lower for w in ["regra", "requisito", "deve", "obrigatório"]):
-                tipo, imp, pot = "Regra", "ALTA", "ALTO"
-            elif any(w in p_lower for w in ["é", "define-se", "conceito", "entende-se"]):
-                tipo, imp, pot = "Conceito", "ALTA", "MÉDIO"
-            else:
-                tipo, imp, pot = "Classificação", "MÉDIA", "MÉDIO"
-
-            first_sentence = p.split('.')[0]
-            title = first_sentence[:60].strip()
-            if len(first_sentence) > 60:
-                title += "..."
-
-            units.append({
-                "id": f"UK-{unit_id:03d}",
-                "tipo": tipo,
-                "titulo": title,
-                "conteudo": p[:300],
-                "exemplo": f"Aplicação de {subarea.replace('_', ' ')} em questões de {banca}.",
-                "confusao_comum": "A banca explora termos absolutos e troca conceitos correlatos.",
-                "importancia_pedagogica": imp,
-                "potencial_cobranca": pot
-            })
-            unit_id += 1
-
-    for idx, u in enumerate(units):
-        u["tema"] = discipline.replace('_', ' ')
-        u["subtema"] = subarea.replace('_', ' ')
-        if timed_segments and idx < len(timed_segments):
-            seg = timed_segments[idx]
-            u["origem"] = {
-                "tipo": "video",
-                "timestamp_inicio": seg.get("tempoLabel", "00:00"),
-                "sec_inicio": seg.get("tempoSegundos", 0),
-                "timestamp_fim": seg.get("tempoLabel", "00:00"),
-                "sec_fim": seg.get("tempoSegundos", 0) + 60
-            }
-        elif pages and idx < len(pages):
-            pg_val = pages[min(idx, len(pages)-1)].get("pagina", 1)
-            u["origem"] = {
-                "tipo": "pdf",
-                "pagina": pg_val,
-                "time_str": f"Pág. {pg_val}"
-            }
-        else:
-            u["origem"] = {"tipo": "texto"}
-
-    return units
-
-def prepare_knowledge_base(discipline, subarea, raw_text, timed_segments=None, pages=None, banca="Cebraspe", title="", professor="", yt_url=""):
-    normalized_text = normalize_text_content(raw_text)
-    gold_items = detect_gold_content(normalized_text, timed_segments=timed_segments, pages=pages)
-    quality = compute_source_quality(normalized_text, gold_items, timed_segments=timed_segments, pages=pages)
-    units = build_knowledge_units(discipline, subarea, normalized_text, timed_segments=timed_segments, pages=pages, banca=banca)
-
-    kb = {
-        "discipline": discipline,
-        "subarea": subarea,
-        "title": title or subarea.replace('_', ' '),
-        "professor": professor or "Prof. Titular",
-        "banca": banca,
-        "source_type": "video" if yt_url else ("pdf" if pages else "texto"),
-        "source_quality": quality,
-        "gold_content": gold_items,
-        "knowledge_units": units,
-        "total_units": len(units),
-        "normalized_text": normalized_text
-    }
-    return kb
-
-
-# ==============================================================================
 # MOTOR DOS 4 PILARES DE ALTA RETENÇÃO (MÉTODO CONCURSOS PÚBLICOS)
 # ==============================================================================
 
 def extract_text_from_pdf_bytes(pdf_bytes):
     """
     Extrai texto completo de todas as páginas de um PDF em memória usando pypdf.
-    Retorna (num_pages, full_text, pages_list)
     """
     if not pypdf:
-        return 0, "Biblioteca pypdf não instalada.", []
+        return 0, "Biblioteca pypdf não instalada."
     try:
         reader = pypdf.PdfReader(io.BytesIO(pdf_bytes))
         num_pages = len(reader.pages)
         pages_text = []
-        pages_list = []
         for i, page in enumerate(reader.pages):
             t = page.extract_text() or ""
             if t.strip():
                 pages_text.append(f"--- PÁGINA {i+1} ---\n{t.strip()}")
-                pages_list.append({"pagina": i+1, "texto": t.strip()})
-        return num_pages, "\n\n".join(pages_text), pages_list
+        return num_pages, "\n\n".join(pages_text)
     except Exception as e:
-        return 0, f"Erro ao extrair texto do PDF: {str(e)}", []
+        return 0, f"Erro ao extrair texto do PDF: {str(e)}"
 
 def generate_raiox_content(discipline, subarea, context_text, banca="Cebraspe", focus=""):
     """
     Pilar 2: Raio-X de Banca & Pegadinhas Mais Frequentes (Cebraspe, FGV, FCC, Vunesp).
-    Gera via IA com base na MASTER_STUDY_ENGINE, ou extrai as pegadinhas reais da aula existente, ou consulta o banco curado.
+    Gera via IA se disponível, ou extrai as pegadinhas reais da aula existente, ou consulta o banco curado.
     """
-    sys_prompt = get_pilar2_prompt(discipline, subarea, banca=banca, focus=focus)
+    sys_prompt = (
+        f"Você é um especialista sênior em bancas examinadoras de concursos públicos ({banca}, FGV, FCC, Vunesp).\n"
+        f"Seu objetivo é gerar uma análise aprofundada de RAIO-X DE BANCA & PEGADINHAS (Pilar 2) sobre o tema solicitado.\n\n"
+        "Estruture a saída EXATAMENTE em Markdown no formato:\n"
+        "## 2. Raio-X de Banca & Pegadinhas Mais Frequentes\n\n"
+        "### 🚨 Pegadinha 1: [Título Curto e Impactante da Armadilha]\n"
+        "- **O que a banca afirma para induzir ao erro:** [Exemplo de afirmativa falaciosa ou pegadinha típica]\n"
+        "- **Pegadinha desmascarada (Onde está o erro):** [Explicação técnica direta de por que a banca induz ao erro]\n"
+        "- **💡 Regra de Ouro / Mnemônico:** [Mnemônico ou regra definitiva para o candidato gabaritar]\n\n"
+        "### 🚨 Pegadinha 2: [Título Curto e Impactante]\n"
+        "..."
+        "\n\nGere de 4 a 6 pegadinhas críticas e armadilhas clássicas da matéria."
+    )
     user_prompt = (
         f"Disciplina: {discipline} | Assunto: {subarea}\n"
         f"Banca examinadora foco: {banca}\n"
-        f"Foco específico solicitado: {focus if focus else 'Principais pegadinhas, inversões conceituais, termos absolutos, prazos e exceções'}\n\n"
-        f"Conteúdo de referência / Transcrição da Aula:\n{context_text[:14000]}"
+        f"Foco específico solicitado: {focus if focus else 'Principais pegadinhas, inversões conceituais, prazos e exceções'}\n\n"
+        f"Conteúdo de referência:\n{context_text[:12000]}"
     )
     
     raw_md, prov = call_ai_service(sys_prompt, user_prompt, json_mode=False, temperature=0.7)
@@ -2411,14 +2167,22 @@ def update_lesson_markdown_with_raiox(discipline, subarea, raiox_markdown):
 
 def generate_pilar1_summary(discipline, subarea, title, professor, context_text):
     """
-    Pilar 1: Resumo Estruturado e Conceitos-Chave (Apostila condensada).
-    Aplica a sequência: CONCEITO -> EXPLICAÇÃO -> EXEMPLO -> CUIDADO/EXCEÇÃO -> COMO PODE SER COBRADO.
+    Pilar 1: Resumo Estruturado com definições, conceitos-chave e tabelas comparativas.
     """
-    sys_prompt = get_pilar1_prompt(discipline, subarea, title, professor)
+    sys_prompt = (
+        "Você é um professor titular e elaborador sênior para concursos públicos de alto nível.\n"
+        "Seu objetivo é criar o PILAR 1: RESUMO ESTRUTURADO E CONCEITOS-CHAVE com base no conteúdo fornecido.\n\n"
+        "Estruture em Markdown impecável contendo:\n"
+        "- Definições formais, regras gerais e requisitos\n"
+        "- Subseções lógicas (### A. ..., ### B. ...)\n"
+        "- Tabelas comparativas em markdown quando houver termos confrontados\n"
+        "- Mnemônicos e destaques em negrito\n\n"
+        "Inicie obrigatoriamente em:\n"
+        "## 1. Resumo Estruturado e Conceitos-Chave"
+    )
     user_prompt = (
-        f"Disciplina: {discipline} | Subárea: {subarea} | Título: {title}\n"
-        f"Professor: {professor}\n\n"
-        f"Conteúdo de Estudo / Transcrição da Aula:\n{context_text[:15000]}"
+        f"Disciplina: {discipline} | Subárea: {subarea} | Título: {title}\n\n"
+        f"Conteúdo de Estudo / Transcrição / PDF:\n{context_text[:14000]}"
     )
     raw_md, _ = call_ai_service(sys_prompt, user_prompt, json_mode=False, temperature=0.6)
     if raw_md and "## 1." in raw_md:
@@ -2435,15 +2199,15 @@ def generate_pilar1_summary(discipline, subarea, title, professor, context_text)
 
 def generate_flashcards_from_text(discipline, subarea, context_text, count=6):
     """
-    Pilar 3: Flashcards de Alta Retenção no padrão Anki com Mnemônicos Obrigatórios.
+    Pilar 3: Flashcards de Alta Retenção no padrão Anki.
     """
-    sys_prompt = get_pilar3_prompt(discipline, subarea, focus="", count=count)
-    user_prompt = (
-        f"Disciplina: {discipline} | Assunto: {subarea}\n\n"
-        f"Material de Estudo / Transcrição da Aula:\n{context_text[:14000]}\n\n"
-        f"Gere exatamente {count} flashcards de alta retenção no formato JSON. "
-        f"Lembre-se da regra mandatória: Você deverá criar sempre mnemônicos, dadas as importâncias deles para os alunos, em especial em Direito Administrativo, Direito Constitucional, Direito Penal e demais matérias onde os mnemônicos são muito utilizados."
+    sys_prompt = (
+        "Você é um especialista em memorização e flashcards Anki para concursos públicos.\n"
+        "Crie perguntas e respostas cirúrgicas, focadas em prazos, mnemônicos, exceções e pegadinhas.\n"
+        "Retorne SEMPRE um JSON no formato:\n"
+        "{\"cards\": [{\"q\": \"Pergunta desafiadora\", \"a\": \"Resposta fundamentada com a regra de prova\"}]}"
     )
+    user_prompt = f"Disciplina: {discipline} | Assunto: {subarea}\n\nMaterial de Estudo:\n{context_text[:12000]}\n\nGere exatamente {count} flashcards de alta retenção."
     raw_json, _ = call_ai_service(sys_prompt, user_prompt, json_mode=True)
     cards = []
     if raw_json:
@@ -2462,14 +2226,17 @@ def generate_flashcards_from_text(discipline, subarea, context_text, count=6):
 
 def generate_quiz_from_text(discipline, subarea, context_text, banca="Cebraspe", count=5):
     """
-    Pilar 4: Mini-Simulado de Fixação com Distratores Plausíveis e Gabarito Fundamentado.
+    Pilar 4: Mini-Simulado de Fixação (Cebraspe Certo/Errado ou Múltipla Escolha).
     """
-    sys_prompt = get_pilar4_prompt(discipline, subarea, banca=banca, focus="", count=count)
-    user_prompt = (
-        f"Banca: {banca} | Disciplina: {discipline} | Assunto: {subarea}\n\n"
-        f"Material de Estudo / Transcrição da Aula:\n{context_text[:14000]}\n\n"
-        f"Gere exatamente {count} questões completas no formato JSON especificado com gabarito fundamentado, análise de distratores e ponto de aprendizagem."
+    sys_prompt = (
+        f"Você é um examinador de bancas de concursos ({banca}).\n"
+        f"Crie {count} questões de fixação inéditas e desafiadoras com base no material fornecido.\n"
+        "Se Cebraspe: 'options' DEVE ser estritamente [\"A) CERTO\", \"B) ERRADO\"].\n"
+        "Se FGV, FCC ou Vunesp: 'options' com 4 ou 5 alternativas (A, B, C, D, E).\n"
+        "Retorne SEMPRE um JSON válido:\n"
+        "{\"questions\": [{\"enunciado\": \"...\", \"options\": [...], \"correct_index\": 0, \"comentario\": \"...\"}]}"
     )
+    user_prompt = f"Banca: {banca} | Disciplina: {discipline} | Assunto: {subarea}\n\nMaterial:\n{context_text[:12000]}"
     raw_json, _ = call_ai_service(sys_prompt, user_prompt, json_mode=True, temperature=0.7)
     questions = []
     if raw_json:
@@ -2508,73 +2275,30 @@ def generate_quiz_from_text(discipline, subarea, context_text, banca="Cebraspe",
         q["banca"] = q.get("banca", banca)
     return questions
 
-def auto_generate_all_4_pillars(discipline, subarea, title, professor, text_corpus, yt_url="", banca="Cebraspe", timed_segments=None, pages=None):
+def auto_generate_all_4_pillars(discipline, subarea, title, professor, text_corpus, yt_url="", banca="Cebraspe"):
     """
-    Executa a geração completa ponta a ponta dos 4 Pilares de Alta Retenção orientada pelo MASTER_INGESTION_ENGINE:
-    1. Preparação da Base de Conhecimento e Unidades de Conhecimento (#UK)
-    2. Resumo Estruturado (Aula_01_[Tema].md)
-    3. Raio-X de Banca & Pegadinhas (Aula_01_[Tema].md)
-    4. Flashcards Anki com Mnemônicos Obrigatórios (Flashcards_[Tema]_Anki.txt)
-    5. Mini-Simulado de Fixação (Simulado_[Tema]_Questoes.json)
-    6. Rastreabilidade com Ponto Exato (Base_Conhecimento_[Tema].json e Momentos_Chave_[Tema].json)
+    Executa a geração completa ponta a ponta dos 4 Pilares de Alta Retenção:
+    1. Resumo Estruturado (Aula_01_[Tema].md)
+    2. Raio-X de Banca & Pegadinhas (Aula_01_[Tema].md)
+    3. Flashcards Anki (Flashcards_[Tema]_Anki.txt)
+    4. Mini-Simulado de Fixação (Simulado_[Tema]_Questoes.json)
     """
     folder = os.path.join(BASE_DIR, discipline, subarea)
     os.makedirs(folder, exist_ok=True)
-
-    # Ingestão Mestra do Conteúdo via MASTER_INGESTION_ENGINE
-    kb = prepare_knowledge_base(
-        discipline=discipline,
-        subarea=subarea,
-        raw_text=text_corpus,
-        timed_segments=timed_segments,
-        pages=pages,
-        banca=banca,
-        title=title,
-        professor=professor,
-        yt_url=yt_url
-    )
-
-    # Salvar Base_Conhecimento_[Tema].json
-    kb_path = os.path.join(folder, f"Base_Conhecimento_{subarea}.json")
-    with open(kb_path, "w", encoding="utf-8") as f_kb:
-        json.dump(kb, f_kb, ensure_ascii=False, indent=2)
-
-    # Extrair momentos-chave rastreáveis a partir dos pontos de ouro e unidades
-    derived_moments = []
-    for g in kb.get("gold_content", []):
-        sec = g.get("sec", 0)
-        t_label = g.get("timestamp") or g.get("time_str", "00:00")
-        derived_moments.append({
-            "title": f"{g.get('gatilho', 'Ponto').capitalize()}: {g.get('trecho', '')[:50]}...",
-            "category": "PEGADINHA DE BANCA" if any(w in g.get('gatilho', '') for w in ["cuidado", "pegadinha", "atenção", "não confunda"]) else "RESUMO & CONCEITO",
-            "sec": sec,
-            "time_str": t_label,
-            "quote": g.get("trecho", ""),
-            "importance": f"Ponto de ouro enfatizado com gatilho '{g.get('gatilho')}' relevante para {banca}."
-        })
-    if derived_moments:
-        mom_path = os.path.join(folder, f"Momentos_Chave_{subarea}.json")
-        with open(mom_path, "w", encoding="utf-8") as f_mom:
-            json.dump(derived_moments[:10], f_mom, ensure_ascii=False, indent=2)
-
-    # Contexto Unificado Normalizado para os 4 Pilares
-    effective_corpus = kb["normalized_text"]
     
     # 1. Resumo Estruturado
-    pilar1_text = generate_pilar1_summary(discipline, subarea, title, professor, effective_corpus)
+    pilar1_text = generate_pilar1_summary(discipline, subarea, title, professor, text_corpus)
     
     # 2. Raio-X de Banca & Pegadinhas
-    raiox_text, _ = generate_raiox_content(discipline, subarea, effective_corpus, banca=banca)
+    raiox_text, _ = generate_raiox_content(discipline, subarea, text_corpus, banca=banca)
     
-    # Montar e salvar Aula_01_[Tema].md com Badge de Qualidade da Fonte
+    # Montar e salvar Aula_01_[Tema].md
     aula_md = f"# {discipline.replace('_', ' ').upper()} - {title}\n"
     aula_md += f"**Professor:** {professor}  \n"
     if yt_url:
         aula_md += f"**Link da Aula:** [Assistir no YouTube]({yt_url})  \n"
     aula_md += "**Duração:** 50 minutos  \n"
-    aula_md += f"**Categoria:** Edital de Concursos Públicos ({banca})  \n"
-    sq = kb['source_quality']
-    aula_md += f"**Qualidade da Fonte:** {sq['score_geral']}% ({sq['status']}) • {len(kb['knowledge_units'])} Unidades de Conhecimento Rastreáveis  \n\n---\n\n"
+    aula_md += f"**Categoria:** Edital de Concursos Públicos ({banca})  \n\n---\n\n"
     aula_md += pilar1_text.strip() + "\n\n---\n\n"
     aula_md += raiox_text.strip() + "\n"
     
@@ -2582,22 +2306,22 @@ def auto_generate_all_4_pillars(discipline, subarea, title, professor, text_corp
     with open(lesson_path, "w", encoding="utf-8") as fm:
         fm.write(aula_md)
         
-    # 3. Flashcards Anki com mnemônicos obrigatórios
-    cards = generate_flashcards_from_text(discipline, subarea, effective_corpus, count=6)
+    # 3. Flashcards Anki
+    cards = generate_flashcards_from_text(discipline, subarea, text_corpus, count=6)
     anki_path = os.path.join(folder, f"Flashcards_{subarea}_Anki.txt")
     with open(anki_path, "w", encoding="utf-8") as fa:
         for c in cards:
             fa.write(f"{c['q']}\t{c['a']}\n")
             
     # 4. Mini-Simulado de Fixação
-    questions = generate_quiz_from_text(discipline, subarea, effective_corpus, banca=banca, count=5)
+    questions = generate_quiz_from_text(discipline, subarea, text_corpus, banca=banca, count=5)
     save_quiz_questions(discipline, subarea, questions)
     
-    # Salvar Transcrição Completa Normalizada
-    if effective_corpus:
+    # Salvar Transcrição Completa / Texto Fonte
+    if text_corpus:
         full_text_path = os.path.join(folder, f"Transcricao_Completa_{subarea}.txt")
         with open(full_text_path, "w", encoding="utf-8") as ft:
-            ft.write(effective_corpus)
+            ft.write(text_corpus)
             
     # Inicializar Caderno de Erros
     rfile = os.path.join(folder, "revisoes_erros.json")
@@ -2608,8 +2332,7 @@ def auto_generate_all_4_pillars(discipline, subarea, title, professor, text_corp
     return {
         "lesson_path": lesson_path,
         "cards_count": len(cards),
-        "quiz_count": len(questions),
-        "knowledge_base": kb
+        "quiz_count": len(questions)
     }
 
 # ==============================================================================
@@ -2812,47 +2535,6 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             return
 
         # 2. Árvore Completa e Métricas
-        elif path == "/api/knowledge-base":
-            disc = query.get("discipline", ["Informatica"])[0]
-            sub = query.get("subarea", ["Excel"])[0]
-            folder = find_subarea_folder(disc, sub)
-            kb_file = os.path.join(folder, f"Base_Conhecimento_{sub}.json")
-            if os.path.exists(kb_file):
-                try:
-                    with open(kb_file, "r", encoding="utf-8") as f_kb:
-                        kb_data = json.load(f_kb)
-                    self.send_response(200)
-                    self.send_header("Content-type", "application/json; charset=utf-8")
-                    self.end_headers()
-                    self.wfile.write(json.dumps(kb_data, ensure_ascii=False).encode("utf-8"))
-                    return
-                except Exception:
-                    pass
-            # Fallback para o catálogo pré-semeado
-            catalog = {}
-            cat_path = os.path.join(BASE_DIR, "preseeded_topics.json")
-            if os.path.exists(cat_path):
-                try:
-                    with open(cat_path, "r", encoding="utf-8") as f_cat:
-                        catalog = json.load(f_cat)
-                except Exception:
-                    pass
-            kb_cat = catalog.get(disc, {}).get(sub, {}).get("knowledge_base")
-            if kb_cat:
-                self.send_response(200)
-                self.send_header("Content-type", "application/json; charset=utf-8")
-                self.end_headers()
-                self.wfile.write(json.dumps(kb_cat, ensure_ascii=False).encode("utf-8"))
-                return
-            # Gerar dinamicamente caso não exista
-            meta = get_lesson_metadata(disc, sub)
-            kb_dyn = prepare_knowledge_base(disc, sub, meta.get("markdown_content", ""), title=meta.get("title", ""), professor=meta.get("professor", ""))
-            self.send_response(200)
-            self.send_header("Content-type", "application/json; charset=utf-8")
-            self.end_headers()
-            self.wfile.write(json.dumps(kb_dyn, ensure_ascii=False).encode("utf-8"))
-            return
-
         elif path == "/api/structure":
             data = scan_concursos_tree()
             self.send_response(200)
@@ -3316,6 +2998,325 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(content.encode("utf-8"))
 
+        # 13. Renomear Disciplina
+        elif path == "/api/discipline/rename":
+            old_name = payload.get("old_name", "").strip().replace(" ", "_")
+            new_name = payload.get("new_name", "").strip().replace(" ", "_")
+            
+            if not old_name or not new_name:
+                self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": "Nome antigo e novo nome da matéria são obrigatórios."}, ensure_ascii=False).encode("utf-8"))
+                return
+                
+            if any(".." in x or "/" in x or "\\" in x for x in [old_name, new_name]):
+                self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": "Caracteres inválidos no nome da matéria."}, ensure_ascii=False).encode("utf-8"))
+                return
+                
+            old_path = os.path.join(BASE_DIR, old_name)
+            new_path = os.path.join(BASE_DIR, new_name)
+            
+            if not os.path.exists(old_path) or not os.path.isdir(old_path):
+                self.send_response(404)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": f"Matéria '{old_name}' não encontrada."}, ensure_ascii=False).encode("utf-8"))
+                return
+                
+            if old_name != new_name:
+                if old_name.lower() == new_name.lower():
+                    # Renomeação apenas de maiúsculas/minúsculas no Windows NTFS
+                    temp_path = old_path + "_tmp_case_" + str(int(time.time() * 1000))
+                    try:
+                        os.rename(old_path, temp_path)
+                        os.rename(temp_path, new_path)
+                    except Exception as e_ren:
+                        self.send_response(500)
+                        self.send_header("Content-type", "application/json; charset=utf-8")
+                        self.end_headers()
+                        self.wfile.write(json.dumps({"success": False, "error": f"Erro ao renomear pasta: {str(e_ren)}"}, ensure_ascii=False).encode("utf-8"))
+                        return
+                else:
+                    if os.path.exists(new_path):
+                        self.send_response(400)
+                        self.send_header("Content-type", "application/json; charset=utf-8")
+                        self.end_headers()
+                        self.wfile.write(json.dumps({"success": False, "error": f"Já existe uma matéria com o nome '{new_name.replace('_', ' ')}'."}, ensure_ascii=False).encode("utf-8"))
+                        return
+                    try:
+                        os.rename(old_path, new_path)
+                    except Exception as e_ren:
+                        self.send_response(500)
+                        self.send_header("Content-type", "application/json; charset=utf-8")
+                        self.end_headers()
+                        self.wfile.write(json.dumps({"success": False, "error": f"Erro ao renomear pasta: {str(e_ren)}"}, ensure_ascii=False).encode("utf-8"))
+                        return
+                    
+                # Atualizar registros em progresso_estudos.json
+                try:
+                    prog = load_progress()
+                    prog_changed = False
+                    for ck, cv in prog.get("cards", {}).items():
+                        if cv.get("discipline") == old_name:
+                            cv["discipline"] = new_name
+                            prog_changed = True
+                    for q in prog.get("quiz_history", []):
+                        if q.get("discipline") == old_name:
+                            q["discipline"] = new_name
+                            prog_changed = True
+                    for s in prog.get("cebraspe_simulados", []):
+                        if s.get("discipline") == old_name:
+                            s["discipline"] = new_name
+                            prog_changed = True
+                    if prog_changed:
+                        save_progress(prog)
+                except Exception:
+                    pass
+
+            self.send_response(200)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "success": True, 
+                "old_name": old_name, 
+                "new_name": new_name,
+                "message": f"Disciplina renomeada para '{new_name.replace('_', ' ')}' com sucesso!"
+            }, ensure_ascii=False).encode("utf-8"))
+
+        # 14. Excluir Disciplina (e todos os seus tópicos)
+        elif path == "/api/discipline/delete":
+            disc = payload.get("discipline", "").strip().replace(" ", "_")
+            if not disc:
+                self.send_response(400)
+                self.end_headers()
+                self.wfile.write(b"Nome da disciplina obrigatorio.")
+                return
+                
+            if ".." in disc or "/" in disc or "\\" in disc:
+                self.send_response(400)
+                self.end_headers()
+                self.wfile.write(b"Nome de disciplina invalido.")
+                return
+                
+            disc_path = os.path.join(BASE_DIR, disc)
+            if not os.path.exists(disc_path) or not os.path.isdir(disc_path):
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(f"Disciplina '{disc}' nao encontrada.".encode("utf-8"))
+                return
+                
+            try:
+                shutil.rmtree(disc_path)
+            except Exception as e_del:
+                self.send_response(500)
+                self.end_headers()
+                self.wfile.write(f"Erro ao remover disciplina: {str(e_del)}".encode("utf-8"))
+                return
+                
+            # Atualizar progresso_estudos.json
+            try:
+                prog = load_progress()
+                cards = prog.get("cards", {})
+                prog["cards"] = {k: v for k, v in cards.items() if v.get("discipline") != disc}
+                prog["quiz_history"] = [q for q in prog.get("quiz_history", []) if q.get("discipline") != disc]
+                prog["cebraspe_simulados"] = [s for s in prog.get("cebraspe_simulados", []) if s.get("discipline") != disc]
+                save_progress(prog)
+            except Exception:
+                pass
+
+            self.send_response(200)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "success": True, 
+                "discipline": disc,
+                "message": f"Disciplina '{disc.replace('_', ' ')}' excluída com sucesso!"
+            }, ensure_ascii=False).encode("utf-8"))
+
+        # 15. Renomear Tópico / Subárea
+        elif path == "/api/subarea/rename":
+            disc = payload.get("discipline", "").strip().replace(" ", "_")
+            old_name = payload.get("old_name", "").strip().replace(" ", "_")
+            new_name = payload.get("new_name", "").strip().replace(" ", "_")
+            
+            if not disc or not old_name or not new_name:
+                self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": "Matéria, nome antigo e novo nome do tópico são obrigatórios."}, ensure_ascii=False).encode("utf-8"))
+                return
+                
+            if any(".." in x or "/" in x or "\\" in x for x in [disc, old_name, new_name]):
+                self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": "Caracteres inválidos detectados no nome do tópico."}, ensure_ascii=False).encode("utf-8"))
+                return
+                
+            old_sub_path = os.path.join(BASE_DIR, disc, old_name)
+            new_sub_path = os.path.join(BASE_DIR, disc, new_name)
+            
+            if not os.path.exists(old_sub_path) or not os.path.isdir(old_sub_path):
+                self.send_response(404)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": f"Tópico '{old_name}' não encontrado em '{disc}'."}, ensure_ascii=False).encode("utf-8"))
+                return
+                
+            if old_name != new_name:
+                if old_name.lower() == new_name.lower():
+                    # Renomeação apenas de maiúsculas/minúsculas no Windows NTFS
+                    temp_sub_path = old_sub_path + "_tmp_case_" + str(int(time.time() * 1000))
+                    try:
+                        os.rename(old_sub_path, temp_sub_path)
+                        os.rename(temp_sub_path, new_sub_path)
+                    except Exception as e_sub_ren:
+                        self.send_response(500)
+                        self.send_header("Content-type", "application/json; charset=utf-8")
+                        self.end_headers()
+                        self.wfile.write(json.dumps({"success": False, "error": f"Erro ao renomear tópico: {str(e_sub_ren)}"}, ensure_ascii=False).encode("utf-8"))
+                        return
+                else:
+                    if os.path.exists(new_sub_path):
+                        self.send_response(400)
+                        self.send_header("Content-type", "application/json; charset=utf-8")
+                        self.end_headers()
+                        self.wfile.write(json.dumps({"success": False, "error": f"Já existe um tópico com o nome '{new_name.replace('_', ' ')}' nesta matéria."}, ensure_ascii=False).encode("utf-8"))
+                        return
+                    try:
+                        os.rename(old_sub_path, new_sub_path)
+                    except Exception as e_sub_ren:
+                        self.send_response(500)
+                        self.send_header("Content-type", "application/json; charset=utf-8")
+                        self.end_headers()
+                        self.wfile.write(json.dumps({"success": False, "error": f"Erro ao renomear tópico: {str(e_sub_ren)}"}, ensure_ascii=False).encode("utf-8"))
+                        return
+                    
+                # Renomear arquivos internos que contenham o nome do tópico antigo
+                try:
+                    for fname in os.listdir(new_sub_path):
+                        if old_name in fname:
+                            new_fname = fname.replace(old_name, new_name)
+                            src_f = os.path.join(new_sub_path, fname)
+                            dst_f = os.path.join(new_sub_path, new_fname)
+                            if not os.path.exists(dst_f):
+                                os.rename(src_f, dst_f)
+                except Exception:
+                    pass
+                    
+                # Atualizar em progresso_estudos.json
+                try:
+                    prog = load_progress()
+                    prog_changed = False
+                    for ck, cv in prog.get("cards", {}).items():
+                        if cv.get("discipline") == disc and cv.get("subarea") == old_name:
+                            cv["subarea"] = new_name
+                            prog_changed = True
+                    for q in prog.get("quiz_history", []):
+                        if q.get("discipline") == disc and q.get("subarea") == old_name:
+                            q["subarea"] = new_name
+                            prog_changed = True
+                    for s in prog.get("cebraspe_simulados", []):
+                        if s.get("discipline") == disc and s.get("subarea") == old_name:
+                            s["subarea"] = new_name
+                            prog_changed = True
+                    if prog_changed:
+                        save_progress(prog)
+                except Exception:
+                    pass
+
+            self.send_response(200)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "success": True, 
+                "discipline": disc,
+                "old_name": old_name, 
+                "new_name": new_name,
+                "message": f"Tópico renomeado para '{new_name.replace('_', ' ')}' com sucesso!"
+            }, ensure_ascii=False).encode("utf-8"))
+
+        # 16. Excluir Tópico / Subárea
+        elif path == "/api/subarea/delete":
+            disc = payload.get("discipline", "").strip().replace(" ", "_")
+            sub = payload.get("subarea", "").strip().replace(" ", "_")
+            
+            if not disc or not sub:
+                self.send_response(400)
+                self.end_headers()
+                self.wfile.write(b"Disciplina e topico sao obrigatorios.")
+                return
+                
+            if any(".." in x or "/" in x or "\\" in x for x in [disc, sub]):
+                self.send_response(400)
+                self.end_headers()
+                self.wfile.write(b"Caracteres invalidos detectados.")
+                return
+                
+            sub_path = os.path.join(BASE_DIR, disc, sub)
+            if not os.path.exists(sub_path) or not os.path.isdir(sub_path):
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(f"Topico '{sub}' nao encontrado em '{disc}'.".encode("utf-8"))
+                return
+                
+            try:
+                shutil.rmtree(sub_path)
+            except Exception as e_del:
+                self.send_response(500)
+                self.end_headers()
+                self.wfile.write(f"Erro ao excluir topico: {str(e_del)}".encode("utf-8"))
+                return
+                
+            # Atualizar progresso_estudos.json
+            try:
+                prog = load_progress()
+                cards = prog.get("cards", {})
+                prog["cards"] = {k: v for k, v in cards.items() if not (v.get("discipline") == disc and v.get("subarea") == sub)}
+                prog["quiz_history"] = [q for q in prog.get("quiz_history", []) if not (q.get("discipline") == disc and q.get("subarea") == sub)]
+                prog["cebraspe_simulados"] = [s for s in prog.get("cebraspe_simulados", []) if not (s.get("discipline") == disc and s.get("subarea") == sub)]
+                save_progress(prog)
+            except Exception:
+                pass
+
+            self.send_response(200)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "success": True, 
+                "discipline": disc,
+                "subarea": sub,
+                "message": f"Tópico '{sub.replace('_', ' ')}' excluído com sucesso!"
+            }, ensure_ascii=False).encode("utf-8"))
+
+        # 17. Criar Nova Disciplina
+        elif path == "/api/discipline/create":
+            disc = payload.get("discipline", "").strip().replace(" ", "_")
+            if not disc:
+                self.send_response(400)
+                self.end_headers()
+                self.wfile.write(b"Nome da disciplina obrigatorio.")
+                return
+            if ".." in disc or "/" in disc or "\\" in disc:
+                self.send_response(400)
+                self.end_headers()
+                self.wfile.write(b"Nome de disciplina invalido.")
+                return
+            disc_path = os.path.join(BASE_DIR, disc)
+            os.makedirs(disc_path, exist_ok=True)
+            self.send_response(200)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "success": True,
+                "discipline": disc,
+                "message": f"Disciplina '{disc.replace('_', ' ')}' criada com sucesso!"
+            }, ensure_ascii=False).encode("utf-8"))
+
         else:
             self.send_response(404)
             self.end_headers()
@@ -3423,6 +3424,7 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             sub = payload.get("subarea", "").strip()
             target_folder = os.path.join(BASE_DIR, disc, sub)
             if os.path.exists(target_folder):
+                import shutil
                 try:
                     shutil.rmtree(target_folder)
                     res = {"success": True, "message": f"Tópico '{sub}' excluído com sucesso."}
@@ -3914,6 +3916,7 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 self.wfile.write(json.dumps({"success": False, "error": str(e_search)}, ensure_ascii=False).encode("utf-8"))
             return
 
+        # 10. Importar / Cadastrar Nova Aula com Extração Inteligente de YouTube e Geração dos 4 Pilares
         elif path == "/api/import-lesson":
             disc = payload.get("discipline", "").strip().replace(" ", "_")
             sub = payload.get("subarea", "").strip().replace(" ", "_")
@@ -3925,9 +3928,8 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             
             if not disc or not sub:
                 self.send_response(400)
-                self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": "Disciplina e Subárea são obrigatórias."}, ensure_ascii=False).encode("utf-8"))
+                self.wfile.write(b"Disciplina e Subarea sao obrigatorias.")
                 return
             if not title:
                 title = sub.replace("_", " ")
@@ -3938,31 +3940,25 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             # Tentar extrair transcrição do YouTube automaticamente se houver link
             auto_transcript_timed = []
             auto_full_text = ""
-            if yt_url:
+            if yt_url and YouTubeTranscriptApi:
                 m_yt = re.search(r'(?:v=|youtu\.be\/|embed\/)([0-9A-Za-z_-]{11})', yt_url)
                 if m_yt:
                     yt_id = m_yt.group(1)
-                    if YouTubeTranscriptApi:
-                        try:
-                            api_yt = YouTubeTranscriptApi()
-                            if hasattr(api_yt, 'fetch'):
-                                tr_data = api_yt.fetch(yt_id, languages=['pt', 'pt-BR', 'en'])
-                            else:
-                                tr_data = YouTubeTranscriptApi.get_transcript(yt_id, languages=['pt', 'pt-BR', 'en'])
-                            snippets_text = []
-                            timed_items = []
-                            for item in tr_data:
-                                start_sec = item.start if hasattr(item, 'start') else item.get('start', 0)
-                                txt = item.text if hasattr(item, 'text') else item.get('text', '')
-                                clean_t = txt.replace('\n', ' ').strip()
-                                mins = int(start_sec // 60)
-                                secs = int(start_sec % 60)
-                                auto_transcript_timed.append(f"[{start_sec:.1f}s] [{mins:02d}:{secs:02d}] {clean_t}")
-                                timed_items.append({"tempoSegundos": int(round(start_sec)), "tempoLabel": f"{mins:02d}:{secs:02d}", "texto": clean_t})
-                                snippets_text.append(clean_t)
-                            auto_full_text = " ".join(snippets_text)
-                        except Exception as e_yt:
-                            print(f"Aviso: Transcrição automática do YouTube não disponível: {e_yt}")
+                    try:
+                        api_yt = YouTubeTranscriptApi()
+                        tr_data = api_yt.fetch(yt_id, languages=['pt', 'pt-BR', 'en'])
+                        snippets_text = []
+                        for item in tr_data:
+                            start_sec = item.start if hasattr(item, 'start') else item.get('start', 0)
+                            txt = item.text if hasattr(item, 'text') else item.get('text', '')
+                            clean_t = txt.replace('\n', ' ').strip()
+                            mins = int(start_sec // 60)
+                            secs = int(start_sec % 60)
+                            auto_transcript_timed.append(f"[{start_sec:.1f}s] [{mins:02d}:{secs:02d}] {clean_t}")
+                            snippets_text.append(clean_t)
+                        auto_full_text = " ".join(snippets_text)
+                    except Exception as e_yt:
+                        print(f"Aviso: Transcrição automática do YouTube não disponível: {e_yt}")
 
             # Salvar transcrição cronometrada se disponível
             if auto_transcript_timed:
@@ -3973,70 +3969,18 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             # Corpus de texto de estudo
             text_corpus = content or auto_full_text
             if not text_corpus:
-                text_corpus = f"Tópico {sub.replace('_', ' ')} da matéria {disc.replace('_', ' ')}. Estudo direcionado para concursos públicos da banca {banca}."
+                text_corpus = f"Tópico {sub.replace('_', ' ')} da matéria {disc.replace('_', ' ')}. Estudo direcionado para concursos públicos."
 
-            # Gerar automaticamente todos os 4 Pilares via MASTER_INGESTION_ENGINE
-            try:
-                pillars_result = auto_generate_all_4_pillars(
-                    discipline=disc,
-                    subarea=sub,
-                    title=title,
-                    professor=professor,
-                    text_corpus=text_corpus,
-                    yt_url=yt_url,
-                    banca=banca,
-                    timed_segments=timed_items if 'timed_items' in locals() and timed_items else None
-                )
-            except Exception as e_pil:
-                print(f"Aviso ao auto-gerar 4 pilares: {e_pil}")
-                pillars_result = {"cards_count": 6, "quiz_count": 5}
-
-            # Atualizar catálogo pré-semeado para sincronizar com todos os ambientes
-            for pf in [os.path.join(BASE_DIR, "preseeded_topics.json"), os.path.join(BASE_DIR, "api", "preseeded_topics.json"), os.path.join(BASE_DIR, "public", "preseeded_topics.json")]:
-                if os.path.exists(pf):
-                    try:
-                        with open(pf, "r", encoding="utf-8") as f_cat:
-                            cdata = json.load(f_cat)
-                        if disc not in cdata:
-                            cdata[disc] = {}
-                        md_content = ""
-                        md_file = os.path.join(folder, f"Aula_01_{sub}.md")
-                        if os.path.exists(md_file):
-                            with open(md_file, "r", encoding="utf-8") as f_md:
-                                md_content = f_md.read()
-                        kb_data = pillars_result.get("knowledge_base", {})
-                        cdata[disc][sub] = {
-                            "meta": {
-                                "title": title,
-                                "professor": professor,
-                                "duration": "50 minutos",
-                                "category": f"Edital de Concursos Públicos ({banca})",
-                                "youtube_url": yt_url,
-                                "markdown_content": md_content,
-                                "has_lesson": True,
-                                "source_quality": kb_data.get("source_quality", {})
-                            },
-                            "flashcards": load_existing_flashcards_file(folder, sub),
-                            "quiz": load_existing_quiz_file(folder, sub),
-                            "knowledge_base": kb_data,
-                            "transcript": {
-                                "full_text": text_corpus,
-                                "timed": timed_items if "timed_items" in locals() and timed_items else []
-                            }
-                        }
-                        with open(pf, "w", encoding="utf-8") as f_cat:
-                            json.dump(cdata, f_cat, ensure_ascii=False, indent=2)
-                    except Exception as e_seed:
-                        print("Aviso ao atualizar catálogo pré-semeado:", e_seed)
-
-            # Quota trial
-            user_plan = payload.get("user_plan", "").strip().lower()
-            user_email = payload.get("email", "").strip().lower()
-            if user_email and user_plan in ("trial", "teste"):
-                users = load_users()
-                if user_email in users:
-                    users[user_email]["trial_imported_count"] = users[user_email].get("trial_imported_count", 0) + 1
-                    save_users(users)
+            # Gerar automaticamente todos os 4 Pilares de Alta Retenção
+            pillars_result = auto_generate_all_4_pillars(
+                discipline=disc,
+                subarea=sub,
+                title=title,
+                professor=professor,
+                text_corpus=text_corpus,
+                yt_url=yt_url,
+                banca=banca
+            )
 
             msg = "Aula cadastrada com sucesso! Todos os 4 Pilares (Resumo, Raio-X & Pegadinhas, Flashcards e Simulado) foram gerados automaticamente."
             if auto_full_text:
@@ -4056,10 +4000,7 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 "success": True, 
                 "message": msg,
                 "cards_count": pillars_result.get("cards_count", 0),
-                "quiz_count": pillars_result.get("quiz_count", 0),
-                "youtube_url": yt_url,
-                "discipline": disc,
-                "subarea": sub
+                "quiz_count": pillars_result.get("quiz_count", 0)
             }, ensure_ascii=False).encode("utf-8"))
 
         # 11. Gerar Momentos-Chave com IA
@@ -4213,10 +4154,10 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 except Exception:
                     pass
 
-                # Extrair texto das páginas usando pypdf com rastreabilidade
-                num_pages, extracted_text, pages_list = extract_text_from_pdf_bytes(pdf_bytes)
+                # Extrair texto das páginas usando pypdf
+                num_pages, extracted_text = extract_text_from_pdf_bytes(pdf_bytes)
 
-                # Gerar automaticamente todos os 4 Pilares via MASTER_INGESTION_ENGINE
+                # Gerar automaticamente todos os 4 Pilares
                 pillars_result = auto_generate_all_4_pillars(
                     discipline=disc,
                     subarea=sub,
@@ -4224,8 +4165,7 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                     professor=professor,
                     text_corpus=extracted_text,
                     yt_url="",
-                    banca=banca,
-                    pages=pages_list
+                    banca=banca
                 )
 
                 # Sincronizar automaticamente com o Supabase se configurado
@@ -4351,52 +4291,33 @@ class ConcursosHandler(BaseHTTPRequestHandler):
 
         # 14. Excluir Disciplina (e todos os seus tópicos)
         elif path == "/api/discipline/delete":
-            can_del, err_msg = check_user_can_delete(payload)
-            if not can_del:
-                self.send_response(403)
-                self.send_header("Content-type", "application/json; charset=utf-8")
-                self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": err_msg}, ensure_ascii=False).encode("utf-8"))
-                return
-
             disc = payload.get("discipline", "").strip().replace(" ", "_")
             if not disc:
                 self.send_response(400)
-                self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": "Nome da disciplina obrigatório."}, ensure_ascii=False).encode("utf-8"))
+                self.wfile.write(b"Nome da disciplina obrigatorio.")
                 return
                 
             if ".." in disc or "/" in disc or "\\" in disc:
                 self.send_response(400)
-                self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": "Nome de disciplina inválido."}, ensure_ascii=False).encode("utf-8"))
+                self.wfile.write(b"Nome de disciplina invalido.")
                 return
                 
             disc_path = os.path.join(BASE_DIR, disc)
-            if os.path.exists(disc_path) and os.path.isdir(disc_path):
-                try:
-                    shutil.rmtree(disc_path)
-                except Exception as e_del:
-                    self.send_response(500)
-                    self.send_header("Content-type", "application/json; charset=utf-8")
-                    self.end_headers()
-                    self.wfile.write(json.dumps({"success": False, "error": f"Erro ao remover disciplina: {str(e_del)}"}, ensure_ascii=False).encode("utf-8"))
-                    return
-
-            # Atualizar catálogo pré-semeado
-            for pf in [os.path.join(BASE_DIR, "preseeded_topics.json"), os.path.join(BASE_DIR, "api", "preseeded_topics.json"), os.path.join(BASE_DIR, "public", "preseeded_topics.json")]:
-                if os.path.exists(pf):
-                    try:
-                        with open(pf, "r", encoding="utf-8") as f_cat:
-                            cdata = json.load(f_cat)
-                        if disc in cdata:
-                            del cdata[disc]
-                            with open(pf, "w", encoding="utf-8") as f_cat:
-                                json.dump(cdata, f_cat, ensure_ascii=False, indent=2)
-                    except Exception:
-                        pass
+            if not os.path.exists(disc_path) or not os.path.isdir(disc_path):
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(f"Disciplina '{disc}' nao encontrada.".encode("utf-8"))
+                return
+                
+            try:
+                shutil.rmtree(disc_path)
+            except Exception as e_del:
+                self.send_response(500)
+                self.end_headers()
+                self.wfile.write(f"Erro ao remover disciplina: {str(e_del)}".encode("utf-8"))
+                return
                 
             # Atualizar progresso_estudos.json
             try:
@@ -4523,54 +4444,35 @@ class ConcursosHandler(BaseHTTPRequestHandler):
 
         # 16. Excluir Tópico / Subárea
         elif path == "/api/subarea/delete":
-            can_del, err_msg = check_user_can_delete(payload)
-            if not can_del:
-                self.send_response(403)
-                self.send_header("Content-type", "application/json; charset=utf-8")
-                self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": err_msg}, ensure_ascii=False).encode("utf-8"))
-                return
-
             disc = payload.get("discipline", "").strip().replace(" ", "_")
             sub = payload.get("subarea", "").strip().replace(" ", "_")
             
             if not disc or not sub:
                 self.send_response(400)
-                self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": "Disciplina e tópico são obrigatórios."}, ensure_ascii=False).encode("utf-8"))
+                self.wfile.write(b"Disciplina e topico sao obrigatorios.")
                 return
                 
             if any(".." in x or "/" in x or "\\" in x for x in [disc, sub]):
                 self.send_response(400)
-                self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": "Caracteres inválidos detectados."}, ensure_ascii=False).encode("utf-8"))
+                self.wfile.write(b"Caracteres invalidos detectados.")
                 return
                 
             sub_path = os.path.join(BASE_DIR, disc, sub)
-            if os.path.exists(sub_path) and os.path.isdir(sub_path):
-                try:
-                    shutil.rmtree(sub_path)
-                except Exception as e_del:
-                    self.send_response(500)
-                    self.send_header("Content-type", "application/json; charset=utf-8")
-                    self.end_headers()
-                    self.wfile.write(json.dumps({"success": False, "error": f"Erro ao excluir tópico: {str(e_del)}"}, ensure_ascii=False).encode("utf-8"))
-                    return
-
-            # Atualizar catálogo pré-semeado
-            for pf in [os.path.join(BASE_DIR, "preseeded_topics.json"), os.path.join(BASE_DIR, "api", "preseeded_topics.json"), os.path.join(BASE_DIR, "public", "preseeded_topics.json")]:
-                if os.path.exists(pf):
-                    try:
-                        with open(pf, "r", encoding="utf-8") as f_cat:
-                            cdata = json.load(f_cat)
-                        if disc in cdata and sub in cdata[disc]:
-                            del cdata[disc][sub]
-                            with open(pf, "w", encoding="utf-8") as f_cat:
-                                json.dump(cdata, f_cat, ensure_ascii=False, indent=2)
-                    except Exception:
-                        pass
+            if not os.path.exists(sub_path) or not os.path.isdir(sub_path):
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(f"Topico '{sub}' nao encontrado em '{disc}'.".encode("utf-8"))
+                return
+                
+            try:
+                shutil.rmtree(sub_path)
+            except Exception as e_del:
+                self.send_response(500)
+                self.end_headers()
+                self.wfile.write(f"Erro ao excluir topico: {str(e_del)}".encode("utf-8"))
+                return
                 
             # Atualizar progresso_estudos.json
             try:
@@ -4598,15 +4500,13 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             disc = payload.get("discipline", "").strip().replace(" ", "_")
             if not disc:
                 self.send_response(400)
-                self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": "Nome da disciplina obrigatório."}, ensure_ascii=False).encode("utf-8"))
+                self.wfile.write(b"Nome da disciplina obrigatorio.")
                 return
             if ".." in disc or "/" in disc or "\\" in disc:
                 self.send_response(400)
-                self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": "Nome de disciplina inválido."}, ensure_ascii=False).encode("utf-8"))
+                self.wfile.write(b"Nome de disciplina invalido.")
                 return
             disc_path = os.path.join(BASE_DIR, disc)
             os.makedirs(disc_path, exist_ok=True)

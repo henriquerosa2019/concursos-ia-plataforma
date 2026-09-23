@@ -1,75 +1,24 @@
 import fs from 'fs';
 import path from 'path';
-import {
-  MASTER_STUDY_ENGINE_INSTRUCTION,
-  MASTER_INGESTION_ENGINE_INSTRUCTION,
-  prepareKnowledgeBase,
-  detectGoldContent,
-  computeSourceQuality,
-  getPilar1Prompt,
-  getPilar2Prompt,
-  getPilar3Prompt,
-  getPilar4Prompt
-} from './master_study_engine.js';
 
 let catalogCache = null;
-let cloudDeletedTopics = new Set();
-let cloudDeletedDisciplines = new Set();
-let cloudCreatedDisciplines = new Set();
-let cloudAddedTopics = {};
-
 function getCatalog() {
-  let baseCat = {};
-  if (catalogCache) {
-    baseCat = catalogCache;
-  } else {
-    const candidates = [
-      path.join(process.cwd(), 'api', 'preseeded_topics.json'),
-      path.join(process.cwd(), 'preseeded_topics.json'),
-      path.join(process.cwd(), 'public', 'preseeded_topics.json'),
-      path.join(process.cwd(), '.vercel', 'output', 'static', 'preseeded_topics.json')
-    ];
-    for (const c of candidates) {
-      try {
-        if (fs.existsSync(c)) {
-          catalogCache = JSON.parse(fs.readFileSync(c, 'utf8'));
-          baseCat = catalogCache;
-          break;
-        }
-      } catch (e) {}
-    }
+  if (catalogCache) return catalogCache;
+  const candidates = [
+    path.join(process.cwd(), 'api', 'preseeded_topics.json'),
+    path.join(process.cwd(), 'preseeded_topics.json'),
+    path.join(process.cwd(), 'public', 'preseeded_topics.json'),
+    path.join(process.cwd(), '.vercel', 'output', 'static', 'preseeded_topics.json')
+  ];
+  for (const c of candidates) {
+    try {
+      if (fs.existsSync(c)) {
+        catalogCache = JSON.parse(fs.readFileSync(c, 'utf8'));
+        return catalogCache;
+      }
+    } catch (e) {}
   }
-
-  // Clona para mesclar overrides dinâmicos sem alterar a fonte física
-  const dynamicCat = {};
-  for (const [disc, subs] of Object.entries(baseCat || {})) {
-    if (cloudDeletedDisciplines.has(disc)) continue;
-    dynamicCat[disc] = {};
-    for (const [sub, data] of Object.entries(subs || {})) {
-      const key = `${disc}/${sub}`;
-      if (cloudDeletedTopics.has(key) || cloudDeletedTopics.has(sub)) continue;
-      dynamicCat[disc][sub] = data;
-    }
-  }
-
-  // Adicionar disciplinas criadas dinamicamente
-  for (const disc of cloudCreatedDisciplines) {
-    if (cloudDeletedDisciplines.has(disc)) continue;
-    if (!dynamicCat[disc]) dynamicCat[disc] = {};
-  }
-
-  // Mesclar tópicos adicionados dinamicamente
-  for (const [key, data] of Object.entries(cloudAddedTopics)) {
-    const [disc, sub] = key.split('/');
-    if (disc && sub) {
-      if (cloudDeletedDisciplines.has(disc)) continue;
-      if (cloudDeletedTopics.has(key) || cloudDeletedTopics.has(sub)) continue;
-      if (!dynamicCat[disc]) dynamicCat[disc] = {};
-      dynamicCat[disc][sub] = data;
-    }
-  }
-
-  return dynamicCat;
+  return catalogCache || {};
 }
 
 let cloudUsersOverrides = {};
@@ -508,263 +457,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ success: true, message: 'Aula promovida para o Catálogo Global com sucesso!' });
   }
 
-  // 5.1 Exclusão de Aula / Subárea na Nuvem (Vercel Serverless)
-  if (pathname === '/api/subarea/delete' && req.method === 'POST') {
-    const body = req.body || {};
-    const disc = (body.discipline || '').trim().replace(/\s+/g, '_');
-    const sub = (body.subarea || '').trim().replace(/\s+/g, '_');
-    const userPlan = (body.user_plan || '').toLowerCase().trim();
-    const isMaster = Boolean(body.is_master || body.role === 'master');
-    const email = (body.email || '').toLowerCase().trim();
-
-    const authorized = isMaster || userPlan === 'vitalicio' || email === 'master@aprovacao.com' || email === 'henriquerosa2019';
-    if (!authorized) {
-      return res.status(403).json({
-        success: false,
-        error: "Contas em período de teste (Trial) não têm permissão para excluir aulas do sistema. Faça upgrade para o Plano Vitalício para gerenciar e excluir conteúdos."
-      });
-    }
-
-    if (!disc || !sub) {
-      return res.status(400).json({ success: false, error: "Disciplina e tópico são obrigatórios." });
-    }
-
-    const key = `${disc}/${sub}`;
-    cloudDeletedTopics.add(key);
-    cloudDeletedTopics.add(sub);
-    delete cloudAddedTopics[key];
-    delete cloudAddedTopics[sub];
-
-    return res.status(200).json({
-      success: true,
-      discipline: disc,
-      subarea: sub,
-      message: `Tópico '${sub.replace(/_/g, ' ')}' excluído com sucesso!`
-    });
-  }
-
-  // 5.2 Exclusão de Disciplina na Nuvem (Vercel Serverless)
-  if (pathname === '/api/discipline/delete' && req.method === 'POST') {
-    const body = req.body || {};
-    const disc = (body.discipline || '').trim().replace(/\s+/g, '_');
-    const userPlan = (body.user_plan || '').toLowerCase().trim();
-    const isMaster = Boolean(body.is_master || body.role === 'master');
-    const email = (body.email || '').toLowerCase().trim();
-
-    const authorized = isMaster || userPlan === 'vitalicio' || email === 'master@aprovacao.com' || email === 'henriquerosa2019';
-    if (!authorized) {
-      return res.status(403).json({
-        success: false,
-        error: "Contas em período de teste (Trial) não têm permissão para excluir matérias do sistema. Faça upgrade para o Plano Vitalício para gerenciar e excluir conteúdos."
-      });
-    }
-
-    if (!disc) {
-      return res.status(400).json({ success: false, error: "Nome da disciplina obrigatório." });
-    }
-
-    cloudDeletedDisciplines.add(disc);
-    return res.status(200).json({
-      success: true,
-      discipline: disc,
-      message: `Disciplina '${disc.replace(/_/g, ' ')}' excluída com sucesso!`
-    });
-  }
-
-  // 5.3 Criar Disciplina na Nuvem
-  if (pathname === '/api/discipline/create' && req.method === 'POST') {
-    const body = req.body || {};
-    const disc = (body.discipline || '').trim().replace(/\s+/g, '_');
-    if (!disc) {
-      return res.status(400).json({ success: false, error: "Nome da disciplina obrigatório." });
-    }
-    cloudDeletedDisciplines.delete(disc);
-    cloudCreatedDisciplines.add(disc);
-    return res.status(200).json({
-      success: true,
-      discipline: disc,
-      message: `Disciplina '${disc.replace(/_/g, ' ')}' criada com sucesso!`
-    });
-  }
-
-  // 5.4 Excluir Aula Master
-  if (pathname === '/api/master/aula/delete' && req.method === 'POST') {
-    const body = req.body || {};
-    const disc = (body.discipline || '').trim().replace(/\s+/g, '_');
-    const sub = (body.subarea || '').trim().replace(/\s+/g, '_');
-    if (!disc || !sub) {
-      return res.status(400).json({ success: false, error: "Disciplina e subárea são obrigatórios." });
-    }
-    const key = `${disc}/${sub}`;
-    cloudDeletedTopics.add(key);
-    cloudDeletedTopics.add(sub);
-    delete cloudAddedTopics[key];
-    delete cloudAddedTopics[sub];
-    return res.status(200).json({ success: true, message: `Tópico '${sub}' excluído com sucesso.` });
-  }
-
-  // 5.5 Importar / Cadastrar Nova Aula com os 4 Pilares (Vercel Serverless)
-  if (pathname === '/api/import-lesson' && req.method === 'POST') {
-    const body = req.body || {};
-    const disc = (body.discipline || '').trim().replace(/\s+/g, '_');
-    const sub = (body.subarea || '').trim().replace(/\s+/g, '_');
-    const title = (body.title || '').trim() || sub.replace(/_/g, ' ');
-    const professor = (body.professor || 'Prof. Especialista').trim();
-    const ytUrl = (body.youtube_url || '').trim();
-    const content = (body.content || '').trim();
-    const banca = (body.banca || 'Cebraspe').trim();
-    const userPlan = (body.user_plan || '').toLowerCase().trim();
-    const email = (body.email || body.user_email || '').toLowerCase().trim();
-
-    if (!disc || !sub) {
-      return res.status(400).json({ success: false, error: "Disciplina e Tópico são obrigatórios." });
-    }
-
-    // Ingestão Mestra e Preparação do Conteúdo via MASTER_INGESTION_ENGINE
-    const rawCorpus = content || `Tópico ${sub.replace(/_/g, ' ')} da matéria ${disc.replace(/_/g, ' ')}. Foco oficial em concursos públicos da banca ${banca}.`;
-    const kb = prepareKnowledgeBase(disc, sub, rawCorpus, null, null, banca, title, professor, ytUrl);
-    const textCorpus = kb.normalized_text;
-
-    let summaryMd = '';
-    let cards = [];
-    let quiz = [];
-    const apiKey = process.env.GEMINI_API_KEY;
-
-    if (apiKey) {
-      try {
-        const p1p2Prompt = `${MASTER_STUDY_ENGINE_INSTRUCTION}\n\n${getPilar1Prompt(disc, sub, title, professor)}\n\n${getPilar2Prompt(disc, sub, banca)}\n\nContexto Base:\n${textCorpus.slice(0, 7000)}`;
-        const gResp1 = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ contents: [{ parts: [{ text: p1p2Prompt }] }] })
-        });
-        if (gResp1.ok) {
-          const gd1 = await gResp1.json();
-          summaryMd = gd1.candidates?.[0]?.content?.parts?.[0]?.text || '';
-        }
-
-        const p3Prompt = `${MASTER_STUDY_ENGINE_INSTRUCTION}\n\n${getPilar3Prompt(disc, sub, 6)}\n\nContexto Base:\n${textCorpus.slice(0, 5000)}`;
-        const gResp3 = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: p3Prompt }] }],
-            generationConfig: { responseMimeType: 'application/json' }
-          })
-        });
-        if (gResp3.ok) {
-          const gd3 = await gResp3.json();
-          const raw3 = gd3.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
-          const p3 = JSON.parse(raw3);
-          if (Array.isArray(p3.flashcards)) cards = p3.flashcards;
-        }
-
-        const p4Prompt = `${MASTER_STUDY_ENGINE_INSTRUCTION}\n\n${getPilar4Prompt(disc, sub, banca, '', 5)}\n\nContexto Base:\n${textCorpus.slice(0, 5000)}`;
-        const gResp4 = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: p4Prompt }] }],
-            generationConfig: { responseMimeType: 'application/json' }
-          })
-        });
-        if (gResp4.ok) {
-          const gd4 = await gResp4.json();
-          const raw4 = gd4.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
-          const p4 = JSON.parse(raw4);
-          if (Array.isArray(p4.questions)) quiz = p4.questions;
-        }
-      } catch (eG) {
-        console.error("Erro na geração Gemini da aula importada:", eG);
-      }
-    }
-
-    if (!summaryMd) {
-      summaryMd = `# ${disc.replace(/_/g, ' ').toUpperCase()} • ${title}\n**Professor:** ${professor}  \n**Duração:** 50 minutos  \n**Categoria:** Edital de Concursos Públicos (${banca})  \n${ytUrl ? `**Link da Aula:** [Assistir no YouTube](${ytUrl})  \n` : ''}\n---\n\n## 1. Resumo Estruturado e Conceitos-Chave\n\n### A. Conceito Nuclear\n- **CONCEITO:** Estudo aprofundado dos institutos essenciais de ${sub.replace(/_/g, ' ')}.\n- **EXPLICAÇÃO:** A matéria aborda preceitos fundamentais cobrados com frequência pela banca ${banca}.\n- **EXEMPLO:** Casos práticos e aplicação em questões de prova.\n- **CUIDADO / EXCEÇÃO:** Atenção às pegadinhas conceituais e inversões de termos.\n- **COMO PODE SER COBRADO:** A banca exige diferenciação clara e aplicação da regra geral vs exceção.\n\n---\n\n## 2. Raio-X da Banca & Pegadinhas Clássicas\n\n### Armadilha 01: Inversão Conceitual\n- **Erro Provável:** O candidato confunde conceitos correlatos.\n- **Regra de Ouro:** Fixe o conceito nuclear e as exceções expressas em lei.`;
-    }
-
-    if (!cards.length) {
-      cards = [
-        { q: `Qual o conceito nuclear de ${sub.replace(/_/g, ' ')}?`, a: `Instituto fundamental da matéria de ${disc.replace(/_/g, ' ')}, com aplicação direta em concursos públicos.` },
-        { q: `Qual a principal regra de ouro para a banca ${banca} neste tema?`, a: `Observar os requisitos essenciais e não confundir regras gerais com hipóteses excepcionais.` },
-        { q: `Mnemônico de memorização rápida para ${sub.replace(/_/g, ' ')}:`, a: `Fixar os elementos centrais e as palavras-chave eliminatórias da banca.` }
-      ];
-    }
-
-    if (!quiz.length) {
-      quiz = [
-        {
-          enunciado: `(Banca ${banca}) No âmbito de ${disc.replace(/_/g, ' ')} (${sub.replace(/_/g, ' ')}), os conceitos e normas regentes possuem observância obrigatória e aplicação direta no serviço público.`,
-          options: ["A) CERTO", "B) ERRADO"],
-          correct_index: 0,
-          comentario: `Item correto. Fundamentação teórica consolidada sobre ${sub.replace(/_/g, ' ')}.`,
-          banca: banca
-        },
-        {
-          enunciado: `(Banca ${banca}) Em relação a ${sub.replace(/_/g, ' ')}, a administração pública pode dispensar as formalidades essenciais prescritas em lei sem previsão expressa.`,
-          options: ["A) CERTO", "B) ERRADO"],
-          correct_index: 1,
-          comentario: `Item errado. É indispensável o cumprimento das formalidades legais estritas.`,
-          banca: banca
-        }
-      ];
-    }
-
-    const fullMarkdown = summaryMd.includes('#') ? summaryMd : `# ${disc.replace(/_/g, ' ').toUpperCase()} • ${title}\n**Professor:** ${professor}\n${ytUrl ? `**Link:** ${ytUrl}\n` : ''}\n\n${summaryMd}`;
-
-    const derivedMoments = (kb.gold_content || []).map(g => ({
-      title: `${g.gatilho.charAt(0).toUpperCase() + g.gatilho.slice(1)}: ${g.trecho.slice(0, 45)}...`,
-      category: ["cuidado", "pegadinha", "atenção", "não confunda"].includes(g.gatilho) ? "PEGADINHA DE BANCA" : "RESUMO & CONCEITO",
-      sec: g.sec || 0,
-      time_str: g.timestamp || g.time_str || "00:00",
-      quote: g.trecho,
-      importance: `Ponto de ouro enfatizado com gatilho '${g.gatilho}' relevante para ${banca}.`
-    }));
-
-    const newTopicData = {
-      meta: {
-        discipline: disc,
-        subarea: sub,
-        title: title,
-        professor: professor,
-        duration: '50 minutos',
-        category: `Edital de Concursos Públicos (${banca})`,
-        youtube_url: ytUrl,
-        markdown_content: fullMarkdown,
-        has_lesson: true,
-        source_quality: kb.source_quality,
-        moments: derivedMoments
-      },
-      flashcards: cards,
-      quiz: quiz,
-      knowledge_base: kb,
-      moments: derivedMoments,
-      transcript: {
-        full_text: textCorpus,
-        timed: []
-      }
-    };
-
-    const key = `${disc}/${sub}`;
-    cloudDeletedTopics.delete(key);
-    cloudDeletedTopics.delete(sub);
-    cloudDeletedDisciplines.delete(disc);
-    cloudCreatedDisciplines.add(disc);
-    cloudAddedTopics[key] = newTopicData;
-
-    return res.status(200).json({
-      success: true,
-      message: "Aula cadastrada com sucesso! Ingestão concluída e todos os 4 Pilares gerados com fidelidade.",
-      cards_count: cards.length,
-      quiz_count: quiz.length,
-      youtube_url: ytUrl,
-      discipline: disc,
-      subarea: sub,
-      knowledge_base: kb,
-      source_quality: kb.source_quality
-    });
-  }
-
   // 6. Webhook de Pagamento (Kiwify, Hotmart, Eduzz, Mercado Pago)
   if (pathname === '/api/webhook-pagamento' || pathname === '/api/pagamento/webhook') {
     const body = req.body || {};
@@ -870,38 +562,13 @@ export default async function handler(req, res) {
     });
   }
 
-  // 7.5 Base de Conhecimento e Unidades de Conhecimento Rastreáveis (#UK)
-  if (pathname === '/api/knowledge-base') {
-    const disc = url.searchParams.get('discipline') || 'Informatica';
-    const sub = url.searchParams.get('subarea') || 'Excel';
-    const key = `${disc}/${sub}`;
-    if (cloudAddedTopics[key]?.knowledge_base) {
-      return res.status(200).json(cloudAddedTopics[key].knowledge_base);
-    }
-    const topic = findTopicData(disc, sub);
-    if (topic && topic.knowledge_base) {
-      return res.status(200).json(topic.knowledge_base);
-    }
-    const md = topic?.meta?.markdown_content || '';
-    const dynKb = prepareKnowledgeBase(disc, sub, md, null, null, 'Cebraspe', topic?.meta?.title, topic?.meta?.professor, topic?.meta?.youtube_url);
-    return res.status(200).json(dynKb);
-  }
-
   // 8. Metadados e Conteúdo da Aula Selecionada
   if (pathname === '/api/lesson') {
     const disc = url.searchParams.get('discipline') || 'Informatica';
     const sub = url.searchParams.get('subarea') || 'Excel';
     const topic = findTopicData(disc, sub);
     if (topic && topic.meta) {
-      const respMeta = { ...topic.meta };
-      if (topic.knowledge_base) {
-        respMeta.knowledge_base = topic.knowledge_base;
-        respMeta.source_quality = topic.knowledge_base.source_quality;
-      }
-      if (topic.moments) {
-        respMeta.moments = topic.moments;
-      }
-      return res.status(200).json(respMeta);
+      return res.status(200).json(topic.meta);
     }
     return res.status(200).json({
       discipline: disc,
@@ -1147,7 +814,9 @@ export default async function handler(req, res) {
       try {
         const topic = findTopicData(disc, sub);
         const context = topic?.meta?.markdown_content || topic?.transcript?.full_text || `${disc} • ${sub}`;
-        const prompt = `${getPilar4Prompt(disc, sub, banca, '', count)}\n\nContexto da Aula / Transcrição:\n${context.slice(0, 8000)}\n\nNão repita estas questões já existentes:\n${existingList}`;
+        const isCebraspe = banca.toLowerCase().includes('cebraspe');
+        const optionsExample = isCebraspe ? '["A) CERTO", "B) ERRADO"]' : '["A) ...", "B) ...", "C) ...", "D) ...", "E) ..."]';
+        const prompt = `Você é um elaborador sênior de concursos da banca ${banca}. Crie exatamente ${count} questões INÉDITAS sobre ${disc} - ${sub}. Contexto: ${context.slice(0, 5000)}. Não repita estas questões: ${existingList}. Formato JSON: { "questions": [{ "enunciado": "...", "options": ${optionsExample}, "correct_index": 0, "comentario": "Fundamentação pedagógica detalhada", "banca": "${banca}" }] }`;
 
         const geminiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
           method: 'POST',
@@ -1243,7 +912,7 @@ export default async function handler(req, res) {
       try {
         const topic = findTopicData(disc, sub);
         const context = topic?.meta?.markdown_content || topic?.transcript?.full_text || `${disc} • ${sub}`;
-        const prompt = `${getPilar3Prompt(disc, sub, focus, count)}\n\nContexto da Aula / Transcrição:\n${context.slice(0, 8000)}`;
+        const prompt = `Crie exatamente ${count} flashcards de alto impacto para concursos públicos sobre ${disc} - ${sub}. Foco: ${focus || 'Pegadinhas e Casos Críticos'}. Contexto: ${context.slice(0, 5000)}. Formato JSON estrito: { "cards": [{ "q": "Pergunta desafiadora inédita", "a": "Resposta fundamentada com a regra de prova" }] }`;
 
         const geminiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
           method: 'POST',
@@ -1318,7 +987,7 @@ export default async function handler(req, res) {
     if (apiKey) {
       try {
         const context = topic?.meta?.markdown_content || topic?.transcript?.full_text || `${disc} • ${sub}`;
-        const prompt = `${getPilar2Prompt(disc, sub, banca, focus)}\n\nContexto da Aula / Transcrição:\n${context.slice(0, 8000)}`;
+        const prompt = `Gere uma seção analítica de 'Raio-X de Banca & Pegadinhas' no estilo da banca ${banca} para ${disc} - ${sub}. Foco: ${focus || 'Armadilhas Frequentes'}. Contexto: ${context.slice(0, 5000)}. Retorne em Markdown claro com pontos críticos numerados, Pegadinha vs Verdade.`;
 
         const geminiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
           method: 'POST',

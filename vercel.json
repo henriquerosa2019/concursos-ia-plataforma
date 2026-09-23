@@ -1,5 +1,10 @@
 {
   "version": 2,
+  "functions": {
+    "api/ai.js": {
+      "maxDuration": 60
+    }
+  },
   "rewrites": [
     { "source": "/api/generate-moments", "destination": "/api/ai.js" },
     { "source": "/api/generate-ai-raiox", "destination": "/api/ai.js" },

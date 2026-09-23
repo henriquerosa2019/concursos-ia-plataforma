@@ -2,6 +2,14 @@ import fs from 'fs';
 import path from 'path';
 import zlib from 'zlib';
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb'
+    }
+  }
+};
+
 let catalogCache = null;
 function getCatalog() {
   if (catalogCache) return catalogCache;
@@ -1406,14 +1414,18 @@ Retorne APENAS um JSON no formato:
   "quiz": [{ "enunciado": "...", "options": ${optionsExample}, "correct_index": 0, "comentario": "...", "banca": "${banca}" }]
 }`;
 
+        const geminiAbort = new AbortController();
+        const geminiTimeout = setTimeout(() => geminiAbort.abort(), 45000);
         const geminiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
+          signal: geminiAbort.signal,
           body: JSON.stringify({
             contents: [{ parts: [{ text: prompt }] }],
             generationConfig: { responseMimeType: 'application/json', temperature: 0.5 }
           })
         });
+        clearTimeout(geminiTimeout);
 
         if (geminiResp.ok) {
           const geminiData = await geminiResp.json();
@@ -1425,6 +1437,7 @@ Retorne APENAS um JSON no formato:
             cards = Array.isArray(parsed.cards) ? parsed.cards : [];
             questions = Array.isArray(parsed.quiz) ? parsed.quiz : [];
           }
+
         }
       } catch (e_gemini) {
         console.warn('Fallback para construtor estruturado offline:', e_gemini.message);

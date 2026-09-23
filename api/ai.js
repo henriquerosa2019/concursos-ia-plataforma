@@ -2,6 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import {
   MASTER_STUDY_ENGINE_INSTRUCTION,
+  MASTER_INGESTION_ENGINE_INSTRUCTION,
+  prepareKnowledgeBase,
+  detectGoldContent,
+  computeSourceQuality,
   getPilar1Prompt,
   getPilar2Prompt,
   getPilar3Prompt,
@@ -616,11 +620,15 @@ export default async function handler(req, res) {
       return res.status(400).json({ success: false, error: "Disciplina e Tópico são obrigatórios." });
     }
 
+    // Ingestão Mestra e Preparação do Conteúdo via MASTER_INGESTION_ENGINE
+    const rawCorpus = content || `Tópico ${sub.replace(/_/g, ' ')} da matéria ${disc.replace(/_/g, ' ')}. Foco oficial em concursos públicos da banca ${banca}.`;
+    const kb = prepareKnowledgeBase(disc, sub, rawCorpus, null, null, banca, title, professor, ytUrl);
+    const textCorpus = kb.normalized_text;
+
     let summaryMd = '';
     let cards = [];
     let quiz = [];
     const apiKey = process.env.GEMINI_API_KEY;
-    const textCorpus = content || `Tópico ${sub.replace(/_/g, ' ')} da matéria ${disc.replace(/_/g, ' ')}. Foco oficial em concursos públicos da banca ${banca}.`;
 
     if (apiKey) {
       try {
@@ -704,6 +712,15 @@ export default async function handler(req, res) {
 
     const fullMarkdown = summaryMd.includes('#') ? summaryMd : `# ${disc.replace(/_/g, ' ').toUpperCase()} • ${title}\n**Professor:** ${professor}\n${ytUrl ? `**Link:** ${ytUrl}\n` : ''}\n\n${summaryMd}`;
 
+    const derivedMoments = (kb.gold_content || []).map(g => ({
+      title: `${g.gatilho.charAt(0).toUpperCase() + g.gatilho.slice(1)}: ${g.trecho.slice(0, 45)}...`,
+      category: ["cuidado", "pegadinha", "atenção", "não confunda"].includes(g.gatilho) ? "PEGADINHA DE BANCA" : "RESUMO & CONCEITO",
+      sec: g.sec || 0,
+      time_str: g.timestamp || g.time_str || "00:00",
+      quote: g.trecho,
+      importance: `Ponto de ouro enfatizado com gatilho '${g.gatilho}' relevante para ${banca}.`
+    }));
+
     const newTopicData = {
       meta: {
         discipline: disc,
@@ -714,10 +731,14 @@ export default async function handler(req, res) {
         category: `Edital de Concursos Públicos (${banca})`,
         youtube_url: ytUrl,
         markdown_content: fullMarkdown,
-        has_lesson: true
+        has_lesson: true,
+        source_quality: kb.source_quality,
+        moments: derivedMoments
       },
       flashcards: cards,
       quiz: quiz,
+      knowledge_base: kb,
+      moments: derivedMoments,
       transcript: {
         full_text: textCorpus,
         timed: []
@@ -733,12 +754,14 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       success: true,
-      message: "Aula cadastrada com sucesso! Todos os 4 Pilares gerados automaticamente.",
+      message: "Aula cadastrada com sucesso! Ingestão concluída e todos os 4 Pilares gerados com fidelidade.",
       cards_count: cards.length,
       quiz_count: quiz.length,
       youtube_url: ytUrl,
       discipline: disc,
-      subarea: sub
+      subarea: sub,
+      knowledge_base: kb,
+      source_quality: kb.source_quality
     });
   }
 
@@ -847,13 +870,38 @@ export default async function handler(req, res) {
     });
   }
 
+  // 7.5 Base de Conhecimento e Unidades de Conhecimento Rastreáveis (#UK)
+  if (pathname === '/api/knowledge-base') {
+    const disc = url.searchParams.get('discipline') || 'Informatica';
+    const sub = url.searchParams.get('subarea') || 'Excel';
+    const key = `${disc}/${sub}`;
+    if (cloudAddedTopics[key]?.knowledge_base) {
+      return res.status(200).json(cloudAddedTopics[key].knowledge_base);
+    }
+    const topic = findTopicData(disc, sub);
+    if (topic && topic.knowledge_base) {
+      return res.status(200).json(topic.knowledge_base);
+    }
+    const md = topic?.meta?.markdown_content || '';
+    const dynKb = prepareKnowledgeBase(disc, sub, md, null, null, 'Cebraspe', topic?.meta?.title, topic?.meta?.professor, topic?.meta?.youtube_url);
+    return res.status(200).json(dynKb);
+  }
+
   // 8. Metadados e Conteúdo da Aula Selecionada
   if (pathname === '/api/lesson') {
     const disc = url.searchParams.get('discipline') || 'Informatica';
     const sub = url.searchParams.get('subarea') || 'Excel';
     const topic = findTopicData(disc, sub);
     if (topic && topic.meta) {
-      return res.status(200).json(topic.meta);
+      const respMeta = { ...topic.meta };
+      if (topic.knowledge_base) {
+        respMeta.knowledge_base = topic.knowledge_base;
+        respMeta.source_quality = topic.knowledge_base.source_quality;
+      }
+      if (topic.moments) {
+        respMeta.moments = topic.moments;
+      }
+      return res.status(200).json(respMeta);
     }
     return res.status(200).json({
       discipline: disc,

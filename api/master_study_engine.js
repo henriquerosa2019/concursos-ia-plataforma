@@ -243,3 +243,202 @@ Retorne SEMPRE um JSON válido no formato:
 Gere exatamente ${count} questões completas.
 `.trim();
 }
+
+// =============================================================================
+// MOTOR MESTRE DE INGESTÃO E PREPARAÇÃO DE CONTEÚDO (MASTER_INGESTION_ENGINE)
+// =============================================================================
+
+export const MASTER_INGESTION_ENGINE_INSTRUCTION = `
+Você é o MOTOR MESTRE DE INGESTÃO E PREPARAÇÃO DE CONTEÚDO (MASTER_INGESTION_ENGINE) do Projeto Aprovação.
+Sua missão é transformar qualquer material bruto de estudo importado (videoaula YouTube, PDF, texto ou transcrição) em uma FONTE DE CONHECIMENTO ESTRUTURADA, CONFIÁVEL, RASTREÁVEL E NORMALIZADA para alimentar os 4 Pilares Pedagógicos:
+1. Resumo & Síntese
+2. Raio-X das Bancas & Pegadinhas
+3. Flashcards Anki (com mnemônicos obrigatórios)
+4. Mini-Simulado de Fixação
+
+PRINCÍPIO FUNDAMENTAL E REGRAS INEGOCIÁVEIS:
+1. ORGANIZAR ≠ INVENTAR: Reordene e estruture com alto valor pedagógico, mas JAMAIS invente fatos, regras ou jurisprudências não sustentadas pela fonte.
+2. CORRIGIR TRANSCRIÇÃO ≠ MODIFICAR CONCEITO: Corrija apenas ruídos fonéticos de OCR/ASR, preservando termos técnicos e jargões originais.
+3. RESUMIR ≠ OMITIR: Não descarte exceções, prazos, mnemônicos ou ressalvas ditas pelo professor ou texto.
+4. INTERPRETAR ≠ ATRIBUIR: Nunca atribua afirmações não feitas pela fonte.
+5. RASTREABILIDADE TOTAL: Toda unidade de conhecimento deve manter sua origem (timestamp [MM:SS] ou número de página).
+6. MNEMÔNICOS OBRIGATÓRIOS: Identifique e destaque sempre mnemônicos citados ou crie mnemônicos de alta retenção quando aplicável.
+`.trim();
+
+export const GOLD_WORDS = [
+  "atenção", "cuidado", "não confunda", "importante", "cai muito", "banca",
+  "prova", "pegadinha", "exceto", "somente", "sempre", "nunca", "principalmente",
+  "diferentemente", "ao contrário", "repare", "olho na tela", "mnemônico", "regra de ouro"
+];
+
+export function normalizeTextContent(rawText) {
+  if (!rawText) return "";
+  let text = String(rawText).replace(/\[(?:Música|musica|Aplausos|Risos)\]/gi, '');
+  return text.split('\n').map(l => l.replace(/[ \t]+/g, ' ').trim()).join('\n').trim();
+}
+
+export function detectGoldContent(text, timedSegments = null, pages = null) {
+  const goldItems = [];
+  const regex = new RegExp(`\\b(${GOLD_WORDS.join('|')})\\b`, 'gi');
+
+  if (Array.isArray(timedSegments) && timedSegments.length > 0) {
+    for (const seg of timedSegments) {
+      const txt = seg.texto || '';
+      const matches = txt.match(regex);
+      if (matches) {
+        const trigger = matches[0].toLowerCase();
+        goldItems.push({
+          gatilho: trigger,
+          trecho: txt,
+          timestamp: seg.tempoLabel || "00:00",
+          sec: seg.tempoSegundos || 0,
+          tipo: "video"
+        });
+      }
+    }
+  } else if (Array.isArray(pages) && pages.length > 0) {
+    for (const pg of pages) {
+      const txt = pg.texto || '';
+      const pnum = pg.pagina || 1;
+      const paragraphs = txt.split('\n\n');
+      for (const p of paragraphs) {
+        const m = p.match(regex);
+        if (m) {
+          goldItems.push({
+            gatilho: m[0].toLowerCase(),
+            trecho: p.trim().slice(0, 250),
+            pagina: pnum,
+            time_str: `Pág. ${pnum}`,
+            tipo: "pdf"
+          });
+        }
+      }
+    }
+  } else {
+    const paragraphs = String(text || '').split('\n\n');
+    for (const p of paragraphs) {
+      const m = p.match(regex);
+      if (m) {
+        goldItems.push({
+          gatilho: m[0].toLowerCase(),
+          trecho: p.trim().slice(0, 250),
+          tipo: "texto"
+        });
+      }
+    }
+  }
+  return goldItems.slice(0, 15);
+}
+
+export function computeSourceQuality(rawText, goldItems, timedSegments = null, pages = null) {
+  const chars = (rawText || '').length;
+  const completude = chars >= 4000 ? 98 : Math.min(100, Math.max(20, Math.floor(chars / 50)));
+  
+  let rastreabilidade = 75;
+  if (Array.isArray(timedSegments) && timedSegments.length > 10) rastreabilidade = 100;
+  else if (Array.isArray(pages) && pages.length > 0) rastreabilidade = 100;
+
+  const words = (rawText || '').split(/\s+/).filter(w => w.length >= 3).length;
+  const clareza = words > 100 ? 95 : 70;
+
+  const scoreGeral = Math.round((completude * 0.35) + (rastreabilidade * 0.35) + (clareza * 0.30));
+  const status = scoreGeral >= 90 ? "EXCELENTE" : (scoreGeral >= 75 ? "BOM" : "REGULAR");
+
+  return {
+    score_geral: scoreGeral,
+    completude_pct: completude,
+    clareza_pct: clareza,
+    rastreabilidade_pct: rastreabilidade,
+    possiveis_ambiguidades: 0,
+    total_caracteres: chars,
+    total_pontos_ouro: (goldItems || []).length,
+    status: status
+  };
+}
+
+export function buildKnowledgeUnits(discipline, subarea, normalizedText, timedSegments = null, pages = null, banca = "Cebraspe") {
+  const units = [];
+  const paragraphs = (normalizedText || '').split('\n').filter(p => p.trim().length > 35);
+  
+  let unitId = 1;
+  for (let i = 0; i < Math.min(10, paragraphs.length); i++) {
+    const p = paragraphs[i].trim();
+    const pLower = p.toLowerCase();
+    let tipo = "Classificação";
+    let imp = "MÉDIA";
+    let pot = "MÉDIO";
+
+    if (pLower.includes("mnemônico") || pLower.includes("mnemonico")) {
+      tipo = "Mnemônico"; imp = "CRÍTICA"; pot = "ALTO";
+    } else if (["cuidado", "pegadinha", "atenção", "não confunda"].some(w => pLower.includes(w))) {
+      tipo = "Pegadinha potencial"; imp = "CRÍTICA"; pot = "ALTO";
+    } else if (["exceção", "salvo", "exceto"].some(w => pLower.includes(w))) {
+      tipo = "Exceção"; imp = "ALTA"; pot = "ALTO";
+    } else if (["regra", "requisito", "deve", "obrigatório"].some(w => pLower.includes(w))) {
+      tipo = "Regra"; imp = "ALTA"; pot = "ALTO";
+    } else if (["é", "define-se", "conceito", "entende-se"].some(w => pLower.includes(w))) {
+      tipo = "Conceito"; imp = "ALTA"; pot = "MÉDIO";
+    }
+
+    const firstSentence = p.split('.')[0] || p;
+    let title = firstSentence.slice(0, 60).trim();
+    if (firstSentence.length > 60) title += "...";
+
+    let origem = { tipo: "texto" };
+    if (Array.isArray(timedSegments) && i < timedSegments.length) {
+      const seg = timedSegments[i];
+      origem = {
+        tipo: "video",
+        timestamp_inicio: seg.tempoLabel || "00:00",
+        sec_inicio: seg.tempoSegundos || 0,
+        timestamp_fim: seg.tempoLabel || "00:00",
+        sec_fim: (seg.tempoSegundos || 0) + 60
+      };
+    } else if (Array.isArray(pages) && i < pages.length) {
+      const pgVal = pages[Math.min(i, pages.length - 1)].pagina || 1;
+      origem = {
+        tipo: "pdf",
+        pagina: pgVal,
+        time_str: `Pág. ${pgVal}`
+      };
+    }
+
+    units.push({
+      id: `UK-${String(unitId).padStart(3, '0')}`,
+      tema: discipline.replace(/_/g, ' '),
+      subtema: subarea.replace(/_/g, ' '),
+      tipo: tipo,
+      titulo: title,
+      conteudo: p.slice(0, 300),
+      exemplo: `Aplicação prática de ${subarea.replace(/_/g, ' ')} em questões da banca ${banca}.`,
+      confusao_comum: "A banca explora termos absolutos e inversões conceituais entre regras gerais e exceções.",
+      origem: origem,
+      importancia_pedagogica: imp,
+      potencial_cobranca: pot
+    });
+    unitId++;
+  }
+
+  return units;
+}
+
+export function prepareKnowledgeBase(discipline, subarea, rawText, timedSegments = null, pages = null, banca = "Cebraspe", title = "", professor = "", ytUrl = "") {
+  const normalizedText = normalizeTextContent(rawText);
+  const goldItems = detectGoldContent(normalizedText, timedSegments, pages);
+  const quality = computeSourceQuality(normalizedText, goldItems, timedSegments, pages);
+  const units = buildKnowledgeUnits(discipline, subarea, normalizedText, timedSegments, pages, banca);
+
+  return {
+    discipline,
+    subarea,
+    title: title || subarea.replace(/_/g, ' '),
+    professor: professor || "Prof. Especialista",
+    banca,
+    source_type: ytUrl ? "video" : (pages ? "pdf" : "texto"),
+    source_quality: quality,
+    gold_content: goldItems,
+    knowledge_units: units,
+    total_units: units.length,
+    normalized_text: normalizedText
+  };
+}

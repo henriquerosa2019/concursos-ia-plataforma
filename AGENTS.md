@@ -119,5 +119,53 @@ Para qualquer aula em vídeo (YouTube ou arquivo) fornecida pelo usuário para e
   - **Pilar 3 (Flashcards Anki & Esquematização):** Unidades atômicas de memória (uma ideia principal por cartão). **REGRA OBRIGATÓRIA DE MNEMÔNICOS:** "Você deverá criar sempre mnemônicos, dadas as importâncias deles para os alunos, em especial em Direito Administrativo, Direito Constitucional, Direito Penal e demais matérias onde os mnemônicos são muito utilizados."
   - **Pilar 4 (Mini-Simulado de Fixação):** Questões inéditas, distratores plenamente plausíveis, com gabarito fundamentado, explicação de por que os distratores estão errados e ponto de aprendizagem nuclear.
 
+---
 
-
+## 11. Instrução-Mestra de Ingestão e Preparação de Conteúdo (MASTER_INGESTION_ENGINE)
+- **Princípio Fundamental Inegociável:** "Nunca gerar diretamente os quatro pilares a partir de uma entrada bruta sem antes realizar a etapa de INGESTÃO, NORMALIZAÇÃO, ESTRUTURAÇÃO e VALIDAÇÃO do conteúdo."
+- **Fluxo Arquitetural Completo:**
+  ```
+  FONTE ORIGINAL (YouTube / PDF / Texto)
+         ↓
+  SOURCE_PROCESSOR (Detecção automática de formato e extração)
+         ↓
+  CONTENT_NORMALIZER (Limpeza de ruídos/vícios sem alterar significado)
+         ↓
+  KNOWLEDGE_EXTRACTOR (Identificação de conceitos, regras, exceções e pegadinhas)
+         ↓
+  KNOWLEDGE_UNIT_BUILDER (Construção das Unidades de Conhecimento #UK atômicas)
+         ↓
+  SOURCE_TRACEABILITY (Vinculação de cada conceito a timestamp [MM:SS] ou página)
+         ↓
+  QUALITY_CONTROL_ENGINE (Score de Qualidade da Fonte e verificação de conflitos)
+         ↓
+  BASE DE CONHECIMENTO DA AULA (Fonte única normalizada)
+         ↓
+  MASTER_STUDY_ENGINE → 4 PILARES (Resumo, Raio-X, Flashcards, Simulado)
+         ↓
+  EXACT_POINT_ENGINE (Navegação imediata ao ponto exato do vídeo/PDF)
+  ```
+- **Regras Mandatórias de Fidelidade e Guardrails:**
+  1. **ORGANIZAR ≠ INVENTAR:** A IA pode reordenar e estruturar pedagogicamente, mas é estritamente proibido inventar fatos, teorias ou regras não sustentadas pela fonte.
+  2. **CORRIGIR TRANSCRIÇÃO ≠ MODIFICAR CONCEITO:** Corrigir apenas falhas fonéticas evidentes de OCR/ASR, preservando termos técnicos e jargões.
+  3. **RESUMIR ≠ OMITIR CONHECIMENTO ESSENCIAL:** Não cortar exceções, prazos, mnemônicos ou ressalvas ditas pelo professor.
+  4. **INTERPRETAR ≠ ATRIBUIR:** Nunca atribuir afirmações não feitas pelo professor ou autor do documento.
+- **Padrão das Unidades de Conhecimento (#UK):**
+  Cada unidade atômica extraída deve conter:
+  - `id`: Sequencial (#001, #002...)
+  - `tema` e `subtema`
+  - `tipo`: Conceito, Definição, Regra, Exceção, Classificação, Comparação, Exemplo, Contraexemplo, Causa/Consequência, Fórmula, Palavra-chave ou Pegadinha potencial
+  - `conteudo`: Explicação clara e objetiva
+  - `exemplo`: Caso concreto
+  - `confusao_comum`: Distinção crítica para prova
+  - `origem`: Tipo ('video' | 'pdf' | 'texto'), `timestamp_inicio` / `timestamp_fim` (ou `pagina`)
+  - `importancia_pedagogica`: CRÍTICA, ALTA, MÉDIA, BAIXA
+  - `potencial_cobranca`: ALTO, MÉDIO, BAIXO
+- **Detecção de Conteúdo de Ouro (GOLD_CONTENT_DETECTION):**
+  Varredura ativa de gatilhos de prova: *"atenção"*, *"cuidado"*, *"não confunda"*, *"importante"*, *"cai muito"*, *"banca"*, *"prova"*, *"pegadinha"*, *"exceto"*, *"somente"*, *"sempre"*, *"nunca"*, *"diferentemente"*, *"ao contrário"*. O sistema registra que o professor enfatizou o ponto sem garantia dogmática de cobrança.
+- **Detecção de Conflitos e Incertezas:**
+  Se duas partes da fonte apresentarem informações divergentes, a IA não escolhe arbitrariamente: registra o conflito, analisa o contexto e sinaliza a ressalva.
+- **Score de Qualidade da Fonte (SOURCE_QUALITY):**
+  Cálculo de métricas internas: completude (%), clareza (%), rastreabilidade (%) e potenciais ambiguidades, orientando o rigor pedagógico do motor.
+- **Consumo Unificado pelos 4 Pilares:**
+  Todos os quatro pilares (Resumo, Raio-X, Flashcards Anki e Simulado) e o recurso Ponto Exato devem OBRIGATORIAMENTE consumir a mesma Base de Conhecimento estruturada, garantindo coerência absoluta de 100% entre todas as ferramentas de estudo.

@@ -2047,26 +2047,248 @@ def save_quiz_questions(discipline, subarea, questions):
 
 
 # ==============================================================================
+# MOTOR MESTRE DE INGESTÃO E PREPARAÇÃO DO CONTEÚDO (MASTER_INGESTION_ENGINE)
+# ==============================================================================
+
+MASTER_INGESTION_ENGINE_PROMPT = """
+Você é o MOTOR MESTRE DE INGESTÃO E PREPARAÇÃO DE CONTEÚDO (MASTER_INGESTION_ENGINE) do Projeto Aprovação.
+Sua missão é transformar qualquer material bruto de estudo importado (videoaula YouTube, PDF, texto ou transcrição) em uma FONTE DE CONHECIMENTO ESTRUTURADA, CONFIÁVEL, RASTREÁVEL E NORMALIZADA para alimentar os 4 Pilares Pedagógicos:
+1. Resumo & Síntese
+2. Raio-X das Bancas & Pegadinhas
+3. Flashcards Anki (com mnemônicos obrigatórios)
+4. Mini-Simulado de Fixação
+
+PRINCÍPIO FUNDAMENTAL E REGRAS INEGOCIÁVEIS:
+1. ORGANIZAR ≠ INVENTAR: Reordene e estruture com alto valor pedagógico, mas JAMAIS invente fatos, regras ou jurisprudências não sustentadas pela fonte.
+2. CORRIGIR TRANSCRIÇÃO ≠ MODIFICAR CONCEITO: Corrija apenas ruídos fonéticos de OCR/ASR, preservando termos técnicos e jargões originais.
+3. RESUMIR ≠ OMITIR: Não descarte exceções, prazos, mnemônicos ou ressalvas ditas pelo professor ou texto.
+4. INTERPRETAR ≠ ATRIBUIR: Nunca atribua afirmações não feitas pela fonte.
+5. RASTREABILIDADE TOTAL: Toda unidade de conhecimento deve manter sua origem (timestamp [MM:SS] ou número de página).
+6. MNEMÔNICOS OBRIGATÓRIOS: Identifique e destaque sempre mnemônicos citados ou crie mnemônicos de alta retenção quando aplicável.
+"""
+
+GOLD_WORDS = [
+    "atenção", "cuidado", "não confunda", "importante", "cai muito", "banca",
+    "prova", "pegadinha", "exceto", "somente", "sempre", "nunca", "principalmente",
+    "diferentemente", "ao contrário", "repare", "olho na tela", "mnemônico", "regra de ouro"
+]
+
+def normalize_text_content(raw_text):
+    if not raw_text:
+        return ""
+    text = re.sub(r'\[(?:Música|musica|Aplausos|Risos)\]', '', raw_text, flags=re.IGNORECASE)
+    lines = []
+    for line in text.split('\n'):
+        clean = re.sub(r'[ \t]+', ' ', line).strip()
+        lines.append(clean)
+    return '\n'.join(lines).strip()
+
+def detect_gold_content(text, timed_segments=None, pages=None):
+    gold_items = []
+    pattern = re.compile(r'\b(' + '|'.join(re.escape(w) for w in GOLD_WORDS) + r')\b', re.IGNORECASE)
+
+    if timed_segments:
+        for seg in timed_segments:
+            txt = seg.get("texto", "")
+            matches = list(pattern.finditer(txt))
+            if matches:
+                trigger_words = list(set(m.group(0).lower() for m in matches))
+                gold_items.append({
+                    "gatilho": trigger_words[0],
+                    "palavras_encontradas": trigger_words,
+                    "trecho": txt,
+                    "timestamp": seg.get("tempoLabel", "00:00"),
+                    "sec": seg.get("tempoSegundos", 0),
+                    "tipo": "video"
+                })
+    elif pages:
+        for pg in pages:
+            txt = pg.get("texto", "")
+            pnum = pg.get("pagina", 1)
+            for paragraph in txt.split('\n\n'):
+                m = pattern.search(paragraph)
+                if m:
+                    gold_items.append({
+                        "gatilho": m.group(0).lower(),
+                        "trecho": paragraph.strip()[:250],
+                        "pagina": pnum,
+                        "time_str": f"Pág. {pnum}",
+                        "tipo": "pdf"
+                    })
+    else:
+        for paragraph in text.split('\n\n'):
+            m = pattern.search(paragraph)
+            if m:
+                gold_items.append({
+                    "gatilho": m.group(0).lower(),
+                    "trecho": paragraph.strip()[:250],
+                    "tipo": "texto"
+                })
+    return gold_items[:15]
+
+def compute_source_quality(raw_text, gold_items, timed_segments=None, pages=None):
+    chars = len(raw_text or "")
+    completude = min(100, max(20, int(chars / 50))) if chars < 4000 else 98
+    
+    if timed_segments:
+        rastreabilidade = 100 if len(timed_segments) > 10 else 85
+    elif pages:
+        rastreabilidade = 100 if len(pages) > 0 else 80
+    else:
+        rastreabilidade = 75
+
+    clean_words = len(re.findall(r'\b[A-Za-zÀ-ÿ]{3,}\b', raw_text or ""))
+    clareza = 95 if clean_words > 100 else 70
+
+    score_geral = int((completude * 0.35) + (rastreabilidade * 0.35) + (clareza * 0.30))
+    status = "EXCELENTE" if score_geral >= 90 else ("BOM" if score_geral >= 75 else "REGULAR")
+
+    return {
+        "score_geral": score_geral,
+        "completude_pct": completude,
+        "clareza_pct": clareza,
+        "rastreabilidade_pct": rastreabilidade,
+        "possiveis_ambiguidades": 0,
+        "total_caracteres": chars,
+        "total_pontos_ouro": len(gold_items),
+        "status": status
+    }
+
+def build_knowledge_units(discipline, subarea, normalized_text, timed_segments=None, pages=None, banca="Cebraspe"):
+    sys_prompt = (
+        f"{MASTER_INGESTION_ENGINE_PROMPT}\n\n"
+        f"Extraia de 4 a 8 UNIDADES DE CONHECIMENTO (#UK) atômicas do material de estudo sobre {subarea} ({discipline}) para a banca {banca}.\n"
+        "Retorne EXATAMENTE um JSON com o campo 'units': [\n"
+        "  {\n"
+        "    \"id\": \"UK-001\",\n"
+        "    \"tipo\": \"Conceito | Regra | Exceção | Pegadinha potencial | Mnemônico\",\n"
+        "    \"titulo\": \"Título claro do conceito\",\n"
+        "    \"conteudo\": \"Explicação conceitual\",\n"
+        "    \"exemplo\": \"Exemplo prático\",\n"
+        "    \"confusao_comum\": \"Diferença que a banca explora\",\n"
+        "    \"importancia_pedagogica\": \"CRÍTICA | ALTA | MÉDIA\",\n"
+        "    \"potencial_cobranca\": \"ALTO | MÉDIO\"\n"
+        "  }\n"
+        "]"
+    )
+    user_prompt = f"Disciplina: {discipline} | Subárea: {subarea}\n\nTexto Normalizado:\n{normalized_text[:10000]}"
+    raw_ai, _ = call_ai_service(sys_prompt, user_prompt, json_mode=True, temperature=0.3)
+    units = []
+    if raw_ai:
+        try:
+            parsed = json.loads(raw_ai)
+            if isinstance(parsed, dict) and isinstance(parsed.get("units"), list):
+                units = parsed["units"]
+            elif isinstance(parsed, list):
+                units = parsed
+        except Exception:
+            pass
+
+    if not units:
+        paragraphs = [p.strip() for p in normalized_text.split('\n') if len(p.strip()) > 35]
+        unit_id = 1
+        for i, p in enumerate(paragraphs[:10]):
+            p_lower = p.lower()
+            if "mnemônico" in p_lower or "mnemonico" in p_lower:
+                tipo, imp, pot = "Mnemônico", "CRÍTICA", "ALTO"
+            elif any(w in p_lower for w in ["cuidado", "pegadinha", "atenção", "não confunda"]):
+                tipo, imp, pot = "Pegadinha potencial", "CRÍTICA", "ALTO"
+            elif any(w in p_lower for w in ["exceção", "salvo", "exceto"]):
+                tipo, imp, pot = "Exceção", "ALTA", "ALTO"
+            elif any(w in p_lower for w in ["regra", "requisito", "deve", "obrigatório"]):
+                tipo, imp, pot = "Regra", "ALTA", "ALTO"
+            elif any(w in p_lower for w in ["é", "define-se", "conceito", "entende-se"]):
+                tipo, imp, pot = "Conceito", "ALTA", "MÉDIO"
+            else:
+                tipo, imp, pot = "Classificação", "MÉDIA", "MÉDIO"
+
+            first_sentence = p.split('.')[0]
+            title = first_sentence[:60].strip()
+            if len(first_sentence) > 60:
+                title += "..."
+
+            units.append({
+                "id": f"UK-{unit_id:03d}",
+                "tipo": tipo,
+                "titulo": title,
+                "conteudo": p[:300],
+                "exemplo": f"Aplicação de {subarea.replace('_', ' ')} em questões de {banca}.",
+                "confusao_comum": "A banca explora termos absolutos e troca conceitos correlatos.",
+                "importancia_pedagogica": imp,
+                "potencial_cobranca": pot
+            })
+            unit_id += 1
+
+    for idx, u in enumerate(units):
+        u["tema"] = discipline.replace('_', ' ')
+        u["subtema"] = subarea.replace('_', ' ')
+        if timed_segments and idx < len(timed_segments):
+            seg = timed_segments[idx]
+            u["origem"] = {
+                "tipo": "video",
+                "timestamp_inicio": seg.get("tempoLabel", "00:00"),
+                "sec_inicio": seg.get("tempoSegundos", 0),
+                "timestamp_fim": seg.get("tempoLabel", "00:00"),
+                "sec_fim": seg.get("tempoSegundos", 0) + 60
+            }
+        elif pages and idx < len(pages):
+            pg_val = pages[min(idx, len(pages)-1)].get("pagina", 1)
+            u["origem"] = {
+                "tipo": "pdf",
+                "pagina": pg_val,
+                "time_str": f"Pág. {pg_val}"
+            }
+        else:
+            u["origem"] = {"tipo": "texto"}
+
+    return units
+
+def prepare_knowledge_base(discipline, subarea, raw_text, timed_segments=None, pages=None, banca="Cebraspe", title="", professor="", yt_url=""):
+    normalized_text = normalize_text_content(raw_text)
+    gold_items = detect_gold_content(normalized_text, timed_segments=timed_segments, pages=pages)
+    quality = compute_source_quality(normalized_text, gold_items, timed_segments=timed_segments, pages=pages)
+    units = build_knowledge_units(discipline, subarea, normalized_text, timed_segments=timed_segments, pages=pages, banca=banca)
+
+    kb = {
+        "discipline": discipline,
+        "subarea": subarea,
+        "title": title or subarea.replace('_', ' '),
+        "professor": professor or "Prof. Titular",
+        "banca": banca,
+        "source_type": "video" if yt_url else ("pdf" if pages else "texto"),
+        "source_quality": quality,
+        "gold_content": gold_items,
+        "knowledge_units": units,
+        "total_units": len(units),
+        "normalized_text": normalized_text
+    }
+    return kb
+
+
+# ==============================================================================
 # MOTOR DOS 4 PILARES DE ALTA RETENÇÃO (MÉTODO CONCURSOS PÚBLICOS)
 # ==============================================================================
 
 def extract_text_from_pdf_bytes(pdf_bytes):
     """
     Extrai texto completo de todas as páginas de um PDF em memória usando pypdf.
+    Retorna (num_pages, full_text, pages_list)
     """
     if not pypdf:
-        return 0, "Biblioteca pypdf não instalada."
+        return 0, "Biblioteca pypdf não instalada.", []
     try:
         reader = pypdf.PdfReader(io.BytesIO(pdf_bytes))
         num_pages = len(reader.pages)
         pages_text = []
+        pages_list = []
         for i, page in enumerate(reader.pages):
             t = page.extract_text() or ""
             if t.strip():
                 pages_text.append(f"--- PÁGINA {i+1} ---\n{t.strip()}")
-        return num_pages, "\n\n".join(pages_text)
+                pages_list.append({"pagina": i+1, "texto": t.strip()})
+        return num_pages, "\n\n".join(pages_text), pages_list
     except Exception as e:
-        return 0, f"Erro ao extrair texto do PDF: {str(e)}"
+        return 0, f"Erro ao extrair texto do PDF: {str(e)}", []
 
 def generate_raiox_content(discipline, subarea, context_text, banca="Cebraspe", focus=""):
     """
@@ -2286,30 +2508,73 @@ def generate_quiz_from_text(discipline, subarea, context_text, banca="Cebraspe",
         q["banca"] = q.get("banca", banca)
     return questions
 
-def auto_generate_all_4_pillars(discipline, subarea, title, professor, text_corpus, yt_url="", banca="Cebraspe"):
+def auto_generate_all_4_pillars(discipline, subarea, title, professor, text_corpus, yt_url="", banca="Cebraspe", timed_segments=None, pages=None):
     """
-    Executa a geração completa ponta a ponta dos 4 Pilares de Alta Retenção:
-    1. Resumo Estruturado (Aula_01_[Tema].md)
-    2. Raio-X de Banca & Pegadinhas (Aula_01_[Tema].md)
-    3. Flashcards Anki (Flashcards_[Tema]_Anki.txt)
-    4. Mini-Simulado de Fixação (Simulado_[Tema]_Questoes.json)
+    Executa a geração completa ponta a ponta dos 4 Pilares de Alta Retenção orientada pelo MASTER_INGESTION_ENGINE:
+    1. Preparação da Base de Conhecimento e Unidades de Conhecimento (#UK)
+    2. Resumo Estruturado (Aula_01_[Tema].md)
+    3. Raio-X de Banca & Pegadinhas (Aula_01_[Tema].md)
+    4. Flashcards Anki com Mnemônicos Obrigatórios (Flashcards_[Tema]_Anki.txt)
+    5. Mini-Simulado de Fixação (Simulado_[Tema]_Questoes.json)
+    6. Rastreabilidade com Ponto Exato (Base_Conhecimento_[Tema].json e Momentos_Chave_[Tema].json)
     """
     folder = os.path.join(BASE_DIR, discipline, subarea)
     os.makedirs(folder, exist_ok=True)
+
+    # Ingestão Mestra do Conteúdo via MASTER_INGESTION_ENGINE
+    kb = prepare_knowledge_base(
+        discipline=discipline,
+        subarea=subarea,
+        raw_text=text_corpus,
+        timed_segments=timed_segments,
+        pages=pages,
+        banca=banca,
+        title=title,
+        professor=professor,
+        yt_url=yt_url
+    )
+
+    # Salvar Base_Conhecimento_[Tema].json
+    kb_path = os.path.join(folder, f"Base_Conhecimento_{subarea}.json")
+    with open(kb_path, "w", encoding="utf-8") as f_kb:
+        json.dump(kb, f_kb, ensure_ascii=False, indent=2)
+
+    # Extrair momentos-chave rastreáveis a partir dos pontos de ouro e unidades
+    derived_moments = []
+    for g in kb.get("gold_content", []):
+        sec = g.get("sec", 0)
+        t_label = g.get("timestamp") or g.get("time_str", "00:00")
+        derived_moments.append({
+            "title": f"{g.get('gatilho', 'Ponto').capitalize()}: {g.get('trecho', '')[:50]}...",
+            "category": "PEGADINHA DE BANCA" if any(w in g.get('gatilho', '') for w in ["cuidado", "pegadinha", "atenção", "não confunda"]) else "RESUMO & CONCEITO",
+            "sec": sec,
+            "time_str": t_label,
+            "quote": g.get("trecho", ""),
+            "importance": f"Ponto de ouro enfatizado com gatilho '{g.get('gatilho')}' relevante para {banca}."
+        })
+    if derived_moments:
+        mom_path = os.path.join(folder, f"Momentos_Chave_{subarea}.json")
+        with open(mom_path, "w", encoding="utf-8") as f_mom:
+            json.dump(derived_moments[:10], f_mom, ensure_ascii=False, indent=2)
+
+    # Contexto Unificado Normalizado para os 4 Pilares
+    effective_corpus = kb["normalized_text"]
     
     # 1. Resumo Estruturado
-    pilar1_text = generate_pilar1_summary(discipline, subarea, title, professor, text_corpus)
+    pilar1_text = generate_pilar1_summary(discipline, subarea, title, professor, effective_corpus)
     
     # 2. Raio-X de Banca & Pegadinhas
-    raiox_text, _ = generate_raiox_content(discipline, subarea, text_corpus, banca=banca)
+    raiox_text, _ = generate_raiox_content(discipline, subarea, effective_corpus, banca=banca)
     
-    # Montar e salvar Aula_01_[Tema].md
+    # Montar e salvar Aula_01_[Tema].md com Badge de Qualidade da Fonte
     aula_md = f"# {discipline.replace('_', ' ').upper()} - {title}\n"
     aula_md += f"**Professor:** {professor}  \n"
     if yt_url:
         aula_md += f"**Link da Aula:** [Assistir no YouTube]({yt_url})  \n"
     aula_md += "**Duração:** 50 minutos  \n"
-    aula_md += f"**Categoria:** Edital de Concursos Públicos ({banca})  \n\n---\n\n"
+    aula_md += f"**Categoria:** Edital de Concursos Públicos ({banca})  \n"
+    sq = kb['source_quality']
+    aula_md += f"**Qualidade da Fonte:** {sq['score_geral']}% ({sq['status']}) • {len(kb['knowledge_units'])} Unidades de Conhecimento Rastreáveis  \n\n---\n\n"
     aula_md += pilar1_text.strip() + "\n\n---\n\n"
     aula_md += raiox_text.strip() + "\n"
     
@@ -2317,22 +2582,22 @@ def auto_generate_all_4_pillars(discipline, subarea, title, professor, text_corp
     with open(lesson_path, "w", encoding="utf-8") as fm:
         fm.write(aula_md)
         
-    # 3. Flashcards Anki
-    cards = generate_flashcards_from_text(discipline, subarea, text_corpus, count=6)
+    # 3. Flashcards Anki com mnemônicos obrigatórios
+    cards = generate_flashcards_from_text(discipline, subarea, effective_corpus, count=6)
     anki_path = os.path.join(folder, f"Flashcards_{subarea}_Anki.txt")
     with open(anki_path, "w", encoding="utf-8") as fa:
         for c in cards:
             fa.write(f"{c['q']}\t{c['a']}\n")
             
     # 4. Mini-Simulado de Fixação
-    questions = generate_quiz_from_text(discipline, subarea, text_corpus, banca=banca, count=5)
+    questions = generate_quiz_from_text(discipline, subarea, effective_corpus, banca=banca, count=5)
     save_quiz_questions(discipline, subarea, questions)
     
-    # Salvar Transcrição Completa / Texto Fonte
-    if text_corpus:
+    # Salvar Transcrição Completa Normalizada
+    if effective_corpus:
         full_text_path = os.path.join(folder, f"Transcricao_Completa_{subarea}.txt")
         with open(full_text_path, "w", encoding="utf-8") as ft:
-            ft.write(text_corpus)
+            ft.write(effective_corpus)
             
     # Inicializar Caderno de Erros
     rfile = os.path.join(folder, "revisoes_erros.json")
@@ -2343,7 +2608,8 @@ def auto_generate_all_4_pillars(discipline, subarea, title, professor, text_corp
     return {
         "lesson_path": lesson_path,
         "cards_count": len(cards),
-        "quiz_count": len(questions)
+        "quiz_count": len(questions),
+        "knowledge_base": kb
     }
 
 # ==============================================================================
@@ -2546,6 +2812,47 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             return
 
         # 2. Árvore Completa e Métricas
+        elif path == "/api/knowledge-base":
+            disc = query.get("discipline", ["Informatica"])[0]
+            sub = query.get("subarea", ["Excel"])[0]
+            folder = find_subarea_folder(disc, sub)
+            kb_file = os.path.join(folder, f"Base_Conhecimento_{sub}.json")
+            if os.path.exists(kb_file):
+                try:
+                    with open(kb_file, "r", encoding="utf-8") as f_kb:
+                        kb_data = json.load(f_kb)
+                    self.send_response(200)
+                    self.send_header("Content-type", "application/json; charset=utf-8")
+                    self.end_headers()
+                    self.wfile.write(json.dumps(kb_data, ensure_ascii=False).encode("utf-8"))
+                    return
+                except Exception:
+                    pass
+            # Fallback para o catálogo pré-semeado
+            catalog = {}
+            cat_path = os.path.join(BASE_DIR, "preseeded_topics.json")
+            if os.path.exists(cat_path):
+                try:
+                    with open(cat_path, "r", encoding="utf-8") as f_cat:
+                        catalog = json.load(f_cat)
+                except Exception:
+                    pass
+            kb_cat = catalog.get(disc, {}).get(sub, {}).get("knowledge_base")
+            if kb_cat:
+                self.send_response(200)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps(kb_cat, ensure_ascii=False).encode("utf-8"))
+                return
+            # Gerar dinamicamente caso não exista
+            meta = get_lesson_metadata(disc, sub)
+            kb_dyn = prepare_knowledge_base(disc, sub, meta.get("markdown_content", ""), title=meta.get("title", ""), professor=meta.get("professor", ""))
+            self.send_response(200)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps(kb_dyn, ensure_ascii=False).encode("utf-8"))
+            return
+
         elif path == "/api/structure":
             data = scan_concursos_tree()
             self.send_response(200)
@@ -3668,7 +3975,7 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             if not text_corpus:
                 text_corpus = f"Tópico {sub.replace('_', ' ')} da matéria {disc.replace('_', ' ')}. Estudo direcionado para concursos públicos da banca {banca}."
 
-            # Gerar automaticamente todos os 4 Pilares de Alta Retenção
+            # Gerar automaticamente todos os 4 Pilares via MASTER_INGESTION_ENGINE
             try:
                 pillars_result = auto_generate_all_4_pillars(
                     discipline=disc,
@@ -3677,7 +3984,8 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                     professor=professor,
                     text_corpus=text_corpus,
                     yt_url=yt_url,
-                    banca=banca
+                    banca=banca,
+                    timed_segments=timed_items if 'timed_items' in locals() and timed_items else None
                 )
             except Exception as e_pil:
                 print(f"Aviso ao auto-gerar 4 pilares: {e_pil}")
@@ -3696,6 +4004,7 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                         if os.path.exists(md_file):
                             with open(md_file, "r", encoding="utf-8") as f_md:
                                 md_content = f_md.read()
+                        kb_data = pillars_result.get("knowledge_base", {})
                         cdata[disc][sub] = {
                             "meta": {
                                 "title": title,
@@ -3704,10 +4013,12 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                                 "category": f"Edital de Concursos Públicos ({banca})",
                                 "youtube_url": yt_url,
                                 "markdown_content": md_content,
-                                "has_lesson": True
+                                "has_lesson": True,
+                                "source_quality": kb_data.get("source_quality", {})
                             },
                             "flashcards": load_existing_flashcards_file(folder, sub),
                             "quiz": load_existing_quiz_file(folder, sub),
+                            "knowledge_base": kb_data,
                             "transcript": {
                                 "full_text": text_corpus,
                                 "timed": timed_items if "timed_items" in locals() and timed_items else []
@@ -3902,10 +4213,10 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 except Exception:
                     pass
 
-                # Extrair texto das páginas usando pypdf
-                num_pages, extracted_text = extract_text_from_pdf_bytes(pdf_bytes)
+                # Extrair texto das páginas usando pypdf com rastreabilidade
+                num_pages, extracted_text, pages_list = extract_text_from_pdf_bytes(pdf_bytes)
 
-                # Gerar automaticamente todos os 4 Pilares
+                # Gerar automaticamente todos os 4 Pilares via MASTER_INGESTION_ENGINE
                 pillars_result = auto_generate_all_4_pillars(
                     discipline=disc,
                     subarea=sub,
@@ -3913,7 +4224,8 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                     professor=professor,
                     text_corpus=extracted_text,
                     yt_url="",
-                    banca=banca
+                    banca=banca,
+                    pages=pages_list
                 )
 
                 # Sincronizar automaticamente com o Supabase se configurado

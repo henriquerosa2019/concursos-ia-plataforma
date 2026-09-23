@@ -1,10 +1,2 @@
-No Microsoft Word (PT-BR), qual atalho de teclado salva o documento ativo?	Ctrl + B (Atenção: Ctrl + S aplica Sublinhado no Word!).
-No LibreOffice Writer (PT-BR), qual atalho salva o documento ativo?	Ctrl + S (do inglês Save).
-Qual atalho aplica Negrito no Word vs. no Writer?	No Word: Ctrl + N. No Writer: Ctrl + B (Bold).
-Qual atalho abre a caixa de diálogo "Substituir" no Microsoft Word?	Ctrl + U.
-Qual recurso deve ser utilizado para que uma única página de um relatório fique em orientação Paisagem e as outras em Retrato?	Quebra de Seção (quebra de página simples não permite alterar orientação).
-Qual o atalho padrão de Quebra de Página no Microsoft Word e Writer?	Ctrl + Enter.
-Qual tipo de Quebra de Seção permite dividir um texto em duas colunas na mesma página?	Quebra de Seção Contínua.
-Qual recurso permite gerar correspondências e etiquetas personalizadas em massa a partir de uma tabela de contatos?	Mala Direta (Mail Merge).
-Qual a diferença entre Quebra de Página e Quebra de Seção no Word?	Quebra de Página apenas pula para a folha seguinte mantendo as mesmas formatações; Quebra de Seção cria partitions com margens, orientações e cabeçalhos independentes.
-No Word, como desvincular o cabeçalho/rodapé de uma nova seção da seção anterior?	Clicando no botão "Vincular ao Anterior" no menu Cabeçalho e Rodapé para desmarcá-lo.
+Qual recurso do Microsoft Word permite que uma folha fique em orientação Paisagem e as demais em Retrato no mesmo arquivo?	Quebra de Seção (Próxima Página). A Quebra de Página comum não permite isolar formatações de página e margens.
+Qual o comando de atalho para SALVAR e para SUBLINHAR no Word em português?	Salvar = Ctrl + B (Mnemônico: Baixar no disco). Sublinhar = Ctrl + S.

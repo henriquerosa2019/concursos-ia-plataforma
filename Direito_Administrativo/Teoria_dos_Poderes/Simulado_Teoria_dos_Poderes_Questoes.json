@@ -1,0 +1,52 @@
+[
+  {
+    "enunciado": "A teoria dos poderes no direito administrativo é fundamentada na separação dos poderes entre os diferentes órgãos da administração pública, sendo que cada um possui competências específicas. Assim, a centralização das funções administrativas em um único órgão é considerada uma violação dessa teoria.",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 0,
+    "comentario": "A centralização das funções administrativas em um único órgão realmente viola a teoria da separação dos poderes, que preconiza a distribuição de competências entre diferentes órgãos.",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "De acordo com a teoria dos poderes no direito administrativo, a discricionariedade administrativa é um limite à atuação da administração pública, uma vez que essa deve sempre agir de maneira vinculada e estrita às normas legais.",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 1,
+    "comentario": "A discricionariedade administrativa permite que a administração pública atue com certa liberdade, não se restringindo apenas ao cumprimento estrito das normas.",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "No contexto da teoria dos poderes, a função executiva da administração pública é caracterizada por sua capacidade de impor sanções e penalidades aos administrados, em virtude do poder de polícia.",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 0,
+    "comentario": "A função executiva da administração pública, de fato, inclui a capacidade de impor sanções, o que é uma característica do exercício do poder de polícia.",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "A teoria dos poderes no direito administrativo estabelece que a função administrativa é sempre subordinada à função legislativa, não tendo autonomia para criar normas ou regulamentos.",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 1,
+    "comentario": "Embora a função administrativa deva respeitar as normas criadas pela função legislativa, ela possui autonomia para criar regulamentos e atos administrativos dentro de sua esfera de competência.",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "O controle da atividade administrativa, segundo a teoria dos poderes, é uma prerrogativa que deve ser exercida exclusivamente pelo Poder Judiciário, sem a possibilidade de intervenção de outros órgãos ou entidades.",
+    "options": [
+      "A) CERTO",
+      "B) ERRADO"
+    ],
+    "correct_index": 1,
+    "comentario": "O controle da atividade administrativa pode ser exercido por diversos órgãos, incluindo o legislativo e o próprio poder administrativo, além do Judiciário.",
+    "banca": "Cebraspe"
+  }
+]

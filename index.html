@@ -3378,11 +3378,7 @@
             <span>🎯 2. Raio-X das Bancas & Pegadinhas Mais Frequentes</span>
             <span id="raioxTopicBadge" class="badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; font-size: 11px; padding: 3px 8px; border-radius: 12px; border: 1px solid rgba(245, 158, 11, 0.3);">Pilar 2</span>
           </div>
-          <div style="display: flex; gap: 8px;">
-            <button class="btn btn-warning" onclick="openAiRaioXModal()" data-help-title="Gerar Raio-X & Pegadinhas com IA" data-help-body="Gera um raio-x sob demanda analisando o histórico da banca escolhida, pontos cegos e armadilhas conceituais sobre o tema estudado." data-help-benefit="Mapeamento estratégico antecipado para não ser surpreendido na prova." style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; font-weight: 600; border: none; box-shadow: 0 2px 8px rgba(217, 119, 6, 0.25);">
-              ⚡ Gerar Raio-X & Pegadinhas com IA
-            </button>
-          </div>
+          
         </div>
         <div id="tab1Content">
           <div class="trap-card critical">
@@ -4284,39 +4280,7 @@
 </div>
 
 
-<!-- Modal: Gerar Raio-X de Banca & Pegadinhas com IA -->
-<div class="modal-overlay" id="modalAiRaioX">
-  <div class="modal-box" style="width: 520px; max-width: 95%;">
-    <div class="modal-title">⚡ Gerar Raio-X & Pegadinhas com IA</div>
-    <p style="font-size: 13px; color: var(--text2); margin-bottom: 14px; line-height: 1.5;">
-      A IA analisará o conteúdo da aula e identificará as armadilhas mais eliminatórias de banca (inversão de conceitos, regras gerais vs. exceções, termos trocados e mnemônicos).
-    </p>
-    <div id="aiRaioXTrialNotice" style="display: none; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 8px; padding: 10px 14px; font-size: 12.5px; color: #f59e0b; margin-bottom: 14px; line-height: 1.4;">
-      ⚡ <b>Plano Teste 7 Dias:</b> Você tem direito a gerar <b>1 Raio-X com IA</b> nesta matéria global.
-    </div>
-    <div class="modal-input-group">
-      <label>Banca Examinadora Foco</label>
-      <select id="raioXBanca">
-        <option value="Cebraspe">Cebraspe / Cespe (Itens Certo ou Errado)</option>
-        <option value="FGV">FGV - Fundação Getulio Vargas</option>
-        <option value="FCC">FCC - Fundação Carlos Chagas</option>
-        <option value="Vunesp">Vunesp</option>
-        <option value="Geral">Geral / Todas as Bancas</option>
-      </select>
-    </div>
-    <div class="modal-input-group">
-      <label>Foco Específico (Opcional)</label>
-      <input type="text" id="raioXFocus" placeholder="Ex: Prazos, exceções, termos absolutos, requisitos vinculados...">
-    </div>
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal('modalAiRaioX')">Cancelar</button>
-      <button class="btn btn-warning" id="btnRunAiRaioX" onclick="generateAiRaioX()" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; font-weight: 600; border: none; box-shadow: 0 2px 8px rgba(217, 119, 6, 0.3);">
-        <span id="raioXSpinner" style="display:none;" class="spinner"></span>
-        <span>🚀 Gerar Raio-X Completo</span>
-      </button>
-    </div>
-  </div>
-</div>
+
 
 <!-- Modal 6: Importar / Cadastrar Nova Prova ou Aula (PDF / YouTube / Texto) -->
 <div class="modal-overlay" id="modalImportLesson">
@@ -7484,11 +7448,7 @@
           <span>🎯 2. Raio-X das Bancas & Pegadinhas Mais Frequentes</span>
           <span class="badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; font-size: 11px; padding: 3px 8px; border-radius: 12px; border: 1px solid rgba(245, 158, 11, 0.3);">Pilar 2</span>
         </div>
-        <div style="display: flex; gap: 8px;">
-          <button class="btn btn-warning" onclick="openAiRaioXModal()" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; font-weight: 600; border: none; box-shadow: 0 2px 8px rgba(217, 119, 6, 0.25);">
-            ⚡ Gerar Raio-X & Pegadinhas com IA
-          </button>
-        </div>
+        
       </div>
       <div id="tab1Content">
         ${parseMarkdownPegadinhas(sec2Text)}
@@ -7979,6 +7939,23 @@
           
           const targetDisc = data.discipline || disc.replace(/\s+/g, '_');
           const targetSub = data.subarea || sub.replace(/\s+/g, '_');
+          // Un-blacklist do tópico e disciplina no localStorage ao importar
+          try {
+            const deletedTopics = JSON.parse(localStorage.getItem('concursos_deleted_topics') || '{}');
+            const dNorm = normalizeKey(targetDisc);
+            const sNorm = normalizeKey(targetSub);
+            delete deletedTopics[`${targetDisc.toLowerCase()}:::${targetSub.toLowerCase()}`];
+            delete deletedTopics[`${dNorm}:::${sNorm}`];
+            delete deletedTopics[`${targetDisc.toLowerCase()}:::${sNorm}`];
+            delete deletedTopics[`${dNorm}:::${targetSub.toLowerCase()}`];
+            localStorage.setItem('concursos_deleted_topics', JSON.stringify(deletedTopics));
+
+            const deletedDiscs = JSON.parse(localStorage.getItem('concursos_deleted_disciplines') || '{}');
+            delete deletedDiscs[targetDisc.toLowerCase()];
+            delete deletedDiscs[dNorm];
+            localStorage.setItem('concursos_deleted_disciplines', JSON.stringify(deletedDiscs));
+          } catch(e) {}
+
 
           if (data.lesson) {
             try {
@@ -8122,7 +8099,8 @@
     },
     "Direito_Administrativo": {
       "Administracao_Direta_e_Indireta": { "cards_count": 6, "quiz_count": 5, "files_count": 6 },
-      "Atos_Administrativos": { "cards_count": 6, "quiz_count": 5, "files_count": 6 }
+      "Atos_Administrativos": { "cards_count": 6, "quiz_count": 5, "files_count": 6 },
+      "Teoria_dos_Poderes": { "cards_count": 6, "quiz_count": 5, "files_count": 5 }
     },
     "Direito_Constitucional": {
       "Artigo_5": { "cards_count": 6, "quiz_count": 5, "files_count": 4 }
@@ -8150,6 +8128,7 @@
     'Word': 'Word e Processadores de Texto',
     'Administracao_Direta_e_Indireta': 'Administração Direta e Indireta',
     'Atos_Administrativos': 'Atos Administrativos',
+    'Teoria_dos_Poderes': 'Teoria dos Poderes',
     'Artigo_5': 'Artigo 5º - Direitos Fundamentais',
     'Interpretacao_de_Textos': 'Interpretação e Tipologia Textual',
     'Tabela_Verdade_e_Proposicoes': 'Tabela Verdade e Proposições Lógicas'
@@ -8162,6 +8141,7 @@
     'Word': '📝',
     'Administracao_Direta_e_Indireta': '🏢',
     'Atos_Administrativos': '📜',
+    'Teoria_dos_Poderes': '⚡',
     'Artigo_5': '⚖️',
     'Interpretacao_de_Textos': '📖',
     'Tabela_Verdade_e_Proposicoes': '🧩'
@@ -8227,21 +8207,35 @@
     try {
       const deletedDiscs = JSON.parse(localStorage.getItem('concursos_deleted_disciplines') || '{}');
       const deletedTopics = JSON.parse(localStorage.getItem('concursos_deleted_topics') || '{}');
+      let topicsChanged = false;
 
       for (const d of Object.keys(globalTreeCache || {})) {
         const dNorm = normalizeKey(d);
         if (deletedDiscs[d.toLowerCase()] || deletedDiscs[dNorm]) {
-          delete globalTreeCache[d];
-          continue;
+          if (Object.keys(globalTreeCache[d] || {}).length > 0) {
+            delete deletedDiscs[d.toLowerCase()];
+            delete deletedDiscs[dNorm];
+            localStorage.setItem('concursos_deleted_disciplines', JSON.stringify(deletedDiscs));
+          } else {
+            delete globalTreeCache[d];
+            continue;
+          }
         }
         for (const s of Object.keys(globalTreeCache[d] || {})) {
           const sNorm = normalizeKey(s);
           const k1 = `${d.toLowerCase()}:::${s.toLowerCase()}`;
           const k2 = `${dNorm}:::${sNorm}`;
           if (deletedTopics[k1] || deletedTopics[k2]) {
-            delete globalTreeCache[d][s];
+            // Se o tópico está presente ativamente na árvore retornada pelo servidor ou localLessons,
+            // desconsiderar a exclusão e limpar o resíduo do localStorage
+            delete deletedTopics[k1];
+            delete deletedTopics[k2];
+            topicsChanged = true;
           }
         }
+      }
+      if (topicsChanged) {
+        localStorage.setItem('concursos_deleted_topics', JSON.stringify(deletedTopics));
       }
     } catch(e) {}
 

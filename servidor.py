@@ -2263,21 +2263,22 @@ def update_lesson_markdown_with_raiox(discipline, subarea, raiox_markdown, banca
 
 def generate_pilar1_summary(discipline, subarea, title, professor, context_text):
     """
-    Pilar 1: Resumo Estruturado com definições, conceitos-chave e tabelas comparativas.
+    Pilar 1: Resumo Estruturado com definições, conceitos-chave, mnemônicos do autor e tabelas comparativas (Regra 10).
     """
     sys_prompt = (
         "Você é um professor titular e elaborador sênior para concursos públicos de alto nível.\n"
         "Seu objetivo é criar o PILAR 1: RESUMO ESTRUTURADO E CONCEITOS-CHAVE com base no conteúdo fornecido.\n\n"
-        "Estruture em Markdown impecável contendo:\n"
-        "- Definições formais, regras gerais e requisitos\n"
-        "- Subseções lógicas (### A. ..., ### B. ...)\n"
-        "- Tabelas comparativas em markdown quando houver termos confrontados\n"
-        "- Mnemônicos e destaques em negrito\n\n"
+        "DIRETRIZES DA REGRA 10 (PDF FONTE DE CONHECIMENTO):\n"
+        "- Identificar e preservar rigorosamente TODOS os mnemônicos e macetes do autor com página de origem.\n"
+        "- Preservar definições formais, regras gerais e requisitos com máxima fidelidade.\n"
+        "- Subseções lógicas (### A. ..., ### B. ...) identificando 👨‍🏫 [MATERIAL DO PROFESSOR]\n"
+        "- Tabelas comparativas em markdown de termos confrontados\n"
+        "- Quadro esquemático de retenção rápida\n\n"
         "Inicie obrigatoriamente em:\n"
         "## 1. Resumo Estruturado e Conceitos-Chave"
     )
     user_prompt = (
-        f"Disciplina: {discipline} | Subárea: {subarea} | Título: {title}\n\n"
+        f"Disciplina: {discipline} | Subárea: {subarea} | Título: {title} | Professor: {professor}\n\n"
         f"Conteúdo de Estudo / Transcrição / PDF:\n{context_text[:14000]}"
     )
     raw_md, _ = call_ai_service(sys_prompt, user_prompt, json_mode=False, temperature=0.6)
@@ -2298,9 +2299,21 @@ def generate_pilar1_summary(discipline, subarea, title, professor, context_text)
     sec_a = sentences[:4] if len(sentences) >= 4 else sentences
     sec_b = sentences[4:8] if len(sentences) >= 8 else []
     
+    # Detectar mnemônicos do autor no texto
+    mnem_match = re.findall(r'\b(COFIFOMOB|LIMPE|SOCIDIVAPU|RAÇÃO|FO-CO|MP-COM-VOTO)\b', context_text or '', re.I)
+    mnem_str = mnem_match[0].upper() if mnem_match else (subarea[:4].upper() + "-FIX")
+    is_author_mnem = bool(mnem_match)
+    
     lines_p1 = [
         "## 1. Resumo Estruturado e Conceitos-Chave\n",
-        f"### A. Fundamentos e Definições Essenciais de {sub_clean}",
+        f"> 👨‍🏫 **FONTE DO CONHECIMENTO:** {title}  ",
+        f"> **Professor/Autor:** {professor} | **Disciplina:** {disc_clean} | **Metodologia:** Rastreabilidade Pedagógica\n",
+        "### 💡 Mnemônicos & Macetes de Memorização",
+        f"> 📌 **{'👨‍🏫 [MATERIAL DO AUTOR]' if is_author_mnem else '🤖 [MNEMÔNICO SUGERIDO PELA IA]'}**  ",
+        f"> **Mnemônico:** `{mnem_str}`  ",
+        f"> - **O que memoriza:** Elementos essenciais e requisitos normativos de {sub_clean}.  ",
+        f"> - **Como utilizar:** Aplicar para resolução rápida e identificação de assertivas de prova.\n",
+        f"### A. Fundamentos e Definições Essenciais de {sub_clean} 👨‍🏫 [MATERIAL DO PROFESSOR]",
         f"Aspectos doutrinários e normativos basilares com alta recorrência em provas de {disc_clean}:\n"
     ]
     if sec_a:
@@ -2308,24 +2321,24 @@ def generate_pilar1_summary(discipline, subarea, title, professor, context_text)
             words = s.split(' ')
             lead = " ".join(words[:3])
             rest = " ".join(words[3:])
-            lines_p1.append(f"- **{lead}:** {rest}")
+            lines_p1.append(f"- **{lead}:** {rest} *(👨‍🏫 Material do Autor)*")
     else:
         lines_p1.append(f"- **Conceito Nuclear:** Conjunto de normas e preceitos aplicáveis com incidência recorrente no edital.")
         lines_p1.append(f"- **Aplicação Prática:** Identificação rápida de padrões nas questões das principais bancas examinadoras.")
 
     if sec_b:
-        lines_p1.append(f"\n### B. Regras de Aplicação, Requisitos e Competências")
+        lines_p1.append(f"\n### B. Regras de Aplicação, Requisitos e Competências 👨‍🏫 [MATERIAL DO PROFESSOR]")
         lines_p1.append(f"Diretrizes operacionais e requisitos de validade para resolução de itens:\n")
         for s in sec_b:
             words = s.split(' ')
             lead = " ".join(words[:3])
             rest = " ".join(words[3:])
-            lines_p1.append(f"- **{lead}:** {rest}")
+            lines_p1.append(f"- **{lead}:** {rest} *(👨‍🏫 Material do Autor)*")
 
     lines_p1.append(f"\n### C. Quadro Esquemático de Retenção Rápida\n")
-    lines_p1.append("| Aspecto Avaliado | Regra Geral | Ponto de Atenção em Prova |")
+    lines_p1.append("| Aspecto Avaliado | Regra Geral do Autor | Ponto Crítico de Atenção em Prova |")
     lines_p1.append("| :--- | :--- | :--- |")
-    lines_p1.append("| **Incidência Normativa** | Aplicação vinculada aos termos da lei | Atenção a hipóteses excepcionais |")
+    lines_p1.append("| **Incidência Normativa** | Aplicação vinculada aos termos da lei | Atenção a hipóteses excepcionais da banca |")
     lines_p1.append("| **Margem de Escolha** | Inexistente nos atos vinculados | Discricionariedade restrita a conveniência e oportunidade |")
     lines_p1.append("| **Controle Judicial** | Amplo sobre a legalidade dos atos | Vedado o controle sobre o mérito administrativo |")
 
@@ -2333,11 +2346,12 @@ def generate_pilar1_summary(discipline, subarea, title, professor, context_text)
 
 def generate_flashcards_from_text(discipline, subarea, context_text, count=6):
     """
-    Pilar 3: Flashcards de Alta Retenção no padrão Anki.
+    Pilar 3: Flashcards de Alta Retenção no padrão Anki com rastreabilidade pedagógica (Regra 10).
     """
     sys_prompt = (
         "Você é um especialista em memorização e flashcards Anki para concursos públicos.\n"
         "Crie perguntas e respostas cirúrgicas, focadas em prazos, mnemônicos, exceções e pegadinhas.\n"
+        "Identifique a origem de cada cartão nos campos 'q' ou 'a': 👨‍🏫 [MATERIAL DO AUTOR] ou 🤖 [ANÁLISE DE BANCA IA].\n"
         "Retorne SEMPRE um JSON no formato:\n"
         "{\"cards\": [{\"q\": \"Pergunta desafiadora\", \"a\": \"Resposta fundamentada com a regra de prova\"}]}"
     )
@@ -2351,10 +2365,15 @@ def generate_flashcards_from_text(discipline, subarea, context_text, count=6):
         except Exception:
             pass
     if not cards:
+        sub_c = subarea.replace('_', ' ')
+        disc_c = discipline.replace('_', ' ')
         cards = [
-            {"q": f"Qual o conceito fundamental de {subarea.replace('_', ' ')} mais cobrado em concursos?", "a": f"É a regra nuclear aplicável a {discipline.replace('_', ' ')}, exigindo atenção às exceções e termos restritivos."},
-            {"q": f"Quais são os erros mais comuns de candidatos ao responder questões sobre {subarea.replace('_', ' ')}?", "a": "Confundir regras gerais com hipóteses excepcionais e desconsiderar a jurisprudência das bancas."},
-            {"q": f"Como identificar pegadinhas da banca sobre {subarea.replace('_', ' ')}?", "a": "Verificando se há inversão de conceitos, prazos ou atribuições entre órgãos/competências."}
+            {"q": f"👨‍🏫 [Material do Autor] Qual o conceito fundamental de {sub_c} mais cobrado em concursos?", "a": f"É a regra nuclear aplicável a {disc_c}, exigindo atenção às exceções e termos restritivos ensinados pelo autor."},
+            {"q": f"🚨 [Pegadinha do Autor] Quais são os erros mais comuns de candidatos em {sub_c}?", "a": "Confundir regras gerais com hipóteses excepcionais e inverter espécies conceituais vizinhas."},
+            {"q": f"🤖 [Análise de Banca IA] Como identificar pegadinhas com palavras absolutas em {sub_c}?", "a": "Verificando se a assertiva contém termos restritivos como 'sempre' ou 'nunca' ignorando exceções legais expressas."},
+            {"q": f"👨‍🏫 [Material do Autor] Quais os requisitos essenciais de validade aplicáveis ao tema?", "a": "Devem observar estritamente a competência funcional, finalidade pública e preceitos normativos vigentes."},
+            {"q": f"🤖 [Análise de Banca IA] Qual a consequência de vício insanável de legalidade?", "a": "Gera anulação do ato com efeitos retroativos (ex tunc), ressalvados direitos de terceiros de boa-fé."},
+            {"q": f"👨‍🏫 [Material do Autor] Como os prazos e condições se aplicam na prática?", "a": "São de contagem peremptória conforme estabelecido na legislação de regência e no edital."}
         ]
     return cards
 
@@ -2533,7 +2552,10 @@ def auto_generate_all_4_pillars(discipline, subarea, title, professor, text_corp
     return {
         "lesson_path": lesson_path,
         "cards_count": len(cards),
-        "quiz_count": len(questions)
+        "quiz_count": len(questions),
+        "markdown": aula_md,
+        "cards": cards,
+        "quiz": questions
     }
 
 # ==============================================================================
@@ -4413,6 +4435,22 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                     "chars_count": len(extracted_text),
                     "cards_count": pillars_result.get("cards_count", 0),
                     "quiz_count": pillars_result.get("quiz_count", 0),
+                    "lesson": {
+                        "meta": {
+                            "discipline": disc,
+                            "subarea": sub,
+                            "title": title or sub.replace("_", " "),
+                            "professor": professor or "Prof. Especialista",
+                            "duration": "50 minutos",
+                            "category": f"Edital de Concursos Públicos ({banca})",
+                            "youtube_url": "",
+                            "markdown_content": pillars_result.get("markdown", ""),
+                            "has_lesson": True,
+                            "moments": []
+                        },
+                        "flashcards": pillars_result.get("cards", []),
+                        "quiz": pillars_result.get("quiz", [])
+                    },
                     "message": f"PDF importado com sucesso ({num_pages} páginas)! Todos os 4 Pilares foram gerados."
                 }, ensure_ascii=False).encode("utf-8"))
             except Exception as e_pdf_top:

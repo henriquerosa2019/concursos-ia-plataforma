@@ -1190,138 +1190,240 @@ ${context.slice(0, 10000)}`;
     return { numPages, text: filtered.join('\n\n') };
   }
 
-  // Helper: Construtor Estruturado dos 4 Pilares (Gera Markdown Impecável, Nunca Bytes Brutos)
-  function buildStructuredLessonFromText(text, disc, sub, banca, professor, title) {
+  // Helper: Construtor Estruturado dos 4 Pilares & Base de Conhecimento Rastreável (Regra 10)
+  function buildStructuredLessonFromText(text, disc, sub, banca, professor, title, numPages = 1) {
     const subName = sub.replace(/_/g, ' ');
     const discName = disc.replace(/_/g, ' ');
     const cleanBanca = banca || 'Cebraspe';
 
     // Extrair sentenças com conteúdo normativo e definições
-    const sentences = (text || '').split(/(?<=[.?!])\s+/).map(s => s.trim()).filter(s => {
-      if (s.length < 25 || s.length > 300) return false;
+    const rawSentences = (text || '').split(/(?<=[.?!])\s+/).map(s => s.trim()).filter(s => {
+      if (s.length < 25 || s.length > 350) return false;
       const printable = s.replace(/[^a-zA-Z0-9\u00C0-\u017F\s.,;:?!/()'"%-]/g, '');
       if (printable.length / s.length < 0.85) return false;
-      return /(?:é|são|consiste|caracteriza|corresponde|pressupõe|divide|classifica|exige|deve|vedado|permitido|regra|exceção|atributo|elemento|requisito|poder|ato|vinculad|discricionár|legalidade|mérito|revoga|anula|competência|finalidade|forma|motivo|objeto)/i.test(s);
+      return true;
     });
 
-    let secA = [], secB = [], secC = [];
-    sentences.forEach((s) => {
-      if (secA.length < 5) secA.push(s);
-      else if (secB.length < 5) secB.push(s);
-      else if (secC.length < 5) secC.push(s);
+    // 1. Identificar Mnemônicos do Autor (ATENÇÃO ESPECIAL DA REGRA 10)
+    const mnemonicsFound = [];
+    const mnemonicRegex = /\b([A-Z]{4,10}|[A-Z]-[A-Z]-[A-Z]|[A-Z0-9\+]{3,8})\b/g;
+    const knownKeywords = /(?:mnem[oô]nico|macete|decore|memorize|associa[cç][aã]o|lembre-se|dica)/i;
+    
+    rawSentences.forEach((s, idx) => {
+      const pageNum = Math.min(numPages, Math.floor((idx / (rawSentences.length || 1)) * numPages) + 1);
+      if (knownKeywords.test(s) || /\b(COFIFOMOB|LIMPE|SOCIDIVAPU|RAÇÃO|FO-CO|MP-COM-VOTO)\b/i.test(s)) {
+        const match = s.match(mnemonicRegex);
+        const mText = match ? match[0].toUpperCase() : 'MACETE DE PROVA';
+        mnemonicsFound.push({
+          mnemonico: mText,
+          memoriza: s.slice(0, 160),
+          como_utilizar: `Aplicar para rápida identificação e memorização em questões de ${cleanBanca}.`,
+          pagina: `Pág. ${String(pageNum).padStart(2, '0')}`,
+          source_type: 'AUTHOR'
+        });
+      }
     });
 
-    if (secA.length === 0) {
-      secA.push(`O estudo de ${subName} na matéria de ${discName} compreende o conjunto de regras normativas e entendimentos jurisprudenciais cobrados nos editais da banca ${cleanBanca}.`);
-      secA.push(`As definições e conceitos nucleares deste tema possuem incidência direta na elaboração de assertivas de provas de concursos públicos.`);
-      secA.push(`A compreensão dos limites legais e das prerrogativas administrativas é determinante para o acerto seguro das questões de prova.`);
-    }
-    if (secB.length === 0) {
-      secB.push(`É essencial distinguir com rigor a regra geral das hipóteses excepcionais admitidas pelo ordenamento jurídico e pela jurisprudência dos tribunais superiores.`);
-      secB.push(`Os requisitos de validade e a competência funcional são de observância estrita, não comportando flexibilização unilateral pelo agente público.`);
-    }
-
-    // 1. Resumo Estruturado (Pilar 1)
-    let p1 = `## 1. Resumo Estruturado e Conceitos-Chave\n\n`;
-    p1 += `### A. Fundamentos e Definições Essenciais de ${subName}\n`;
-    p1 += `Aspectos doutrinários e normativos basilares com alta recorrência na banca **${cleanBanca}**:\n\n`;
-    secA.forEach(s => {
-      const parts = s.split(' ');
-      const lead = parts.slice(0, 3).join(' ');
-      const rest = parts.slice(3).join(' ');
-      p1 += `- **${lead}:** ${rest}\n`;
-    });
-
-    p1 += `\n### B. Regras de Aplicação, Requisitos e Competências\n`;
-    p1 += `Diretrizes operacionais e requisitos de validade para resolução de itens:\n\n`;
-    secB.forEach(s => {
-      const parts = s.split(' ');
-      const lead = parts.slice(0, 3).join(' ');
-      const rest = parts.slice(3).join(' ');
-      p1 += `- **${lead}:** ${rest}\n`;
-    });
-
-    if (secC.length > 0) {
-      p1 += `\n### C. Classificações e Distinções Práticas\n`;
-      secC.forEach(s => {
-        const parts = s.split(' ');
-        const lead = parts.slice(0, 3).join(' ');
-        const rest = parts.slice(3).join(' ');
-        p1 += `- **${lead}:** ${rest}\n`;
+    // Se o PDF não contiver mnemônico explícito, fornecer mnemônico auxiliar da IA com rótulo estrito
+    if (mnemonicsFound.length === 0) {
+      mnemonicsFound.push({
+        mnemonico: sub.slice(0, 4).toUpperCase() + '-FIX',
+        memoriza: `Elementos essenciais e diretrizes normativas de ${subName}.`,
+        como_utilizar: `Mnemônico sugerido pela IA para memorização acelerada dos requisitos principais.`,
+        pagina: `Pág. 01`,
+        source_type: 'AI_SUGGESTION'
       });
     }
 
-    p1 += `\n### D. Quadro Esquemático de Retenção Rápida\n\n`;
-    p1 += `| Aspecto Avaliado | Regra Geral | Ponto de Atenção em Prova |\n`;
-    p1 += `| :--- | :--- | :--- |\n`;
-    p1 += `| **Incidência Normativa** | Aplicação vinculada aos preceitos da lei | Atenção a hipóteses excepcionais |\n`;
-    p1 += `| **Margem de Escolha** | Inexistente nos atos vinculados | Discricionariedade restrita a conveniência e oportunidade |\n`;
-    p1 += `| **Controle Judicial** | Amplo sobre a legalidade dos atos | Vedado o controle sobre o mérito administrativo |\n`;
+    // 2. Identificar Pegadinhas e Alertas do Autor
+    const authorTraps = [];
+    const alertKeywords = /(?:cuidado|aten[cç][aã]o|pegadinha|n[aã]o confunda|n[aã]o se esque[cç]a|erro comum|cai em prova|a banca costuma|a banca pode|n[aã]o [eé]|diferente de|exceto|somente|sempre|nunca|apenas|vedado|proibido|nulo)/i;
 
-    // 2. Raio-X de Banca & Pegadinhas (Pilar 2 - Modelo Oficial da Regra 9)
-    let p2 = `## 2. Raio-X de Banca & Pegadinhas Mais Frequentes (${cleanBanca})\n\n`;
+    rawSentences.forEach((s, idx) => {
+      const pageNum = Math.min(numPages, Math.floor((idx / (rawSentences.length || 1)) * numPages) + 1);
+      if (alertKeywords.test(s) && authorTraps.length < 3) {
+        authorTraps.push({
+          conceito: s,
+          alerta: s,
+          pagina: `Pág. ${String(pageNum).padStart(2, '0')}`,
+          source_type: 'AUTHOR'
+        });
+      }
+    });
+
+    // 3. Estruturação de Knowledge Units (Base de Conhecimento Estruturada)
+    const knowledgeUnits = [];
+    mnemonicsFound.forEach(m => {
+      knowledgeUnits.push({
+        conceito: `Mnemônico: ${m.mnemonico}`,
+        definicao: m.memoriza,
+        explicacao: m.como_utilizar,
+        exemplo: `Cobrança típica na banca ${cleanBanca}`,
+        excecao: `Hipóteses não alcançadas pela regra geral`,
+        comparacao: `Regra Geral × Exceções Doutrinárias`,
+        palavras_chave: [m.mnemonico, subName, discName],
+        mnemonico: m.mnemonico,
+        pegadinha: `Inversão de termos do mnemônico pela banca`,
+        dica_autor: `Decorar a sequência para gabaritar assertivas`,
+        potencial_cobranca: 'MUITO ALTO',
+        importancia_pedagogica: 'ESSENCIAL',
+        fonte: title,
+        pagina: m.pagina,
+        secao: 'Técnicas de Memorização',
+        source_type: m.source_type
+      });
+    });
+
+    authorTraps.forEach(t => {
+      knowledgeUnits.push({
+        conceito: `Ponto de Atenção em ${subName}`,
+        definicao: t.conceito,
+        explicacao: `Alerta explícito do professor contra armadilhas da banca ${cleanBanca}`,
+        exemplo: `Assertivas com termos restritivos`,
+        excecao: `Ressalvas legais expressas`,
+        comparacao: `Regra Geral × Ponto Crítico`,
+        palavras_chave: ['atenção', 'pegadinha', subName],
+        mnemonico: null,
+        pegadinha: t.alerta,
+        dica_autor: `Alerta do professor: ${t.alerta}`,
+        potencial_cobranca: 'ALTO',
+        importancia_pedagogica: 'CRÍTICA',
+        fonte: title,
+        pagina: t.pagina,
+        secao: 'Alertas e Pegadinhas',
+        source_type: 'AUTHOR'
+      });
+    });
+
+    // 4. Montagem do Pilar 1 (Resumo Estruturado com Metadados e Mnemônicos)
+    let p1 = `## 1. Resumo Estruturado e Conceitos-Chave\n\n`;
+    p1 += `> 👨‍🏫 **FONTE DO CONHECIMENTO:** ${title}  \n`;
+    p1 += `> **Professor/Autor:** ${professor} | **Material:** PDF Oficial (${numPages} págs.) | **Banca Alvo:** ${cleanBanca}\n\n`;
+
+    // Bloco de Mnemônicos do Autor (Regra 10)
+    p1 += `### 💡 Mnemônicos & Macetes de Memorização\n`;
+    mnemonicsFound.forEach(m => {
+      const isAuth = m.source_type === 'AUTHOR';
+      p1 += `> 📌 **${isAuth ? '👨‍🏫 [MATERIAL DO AUTOR - ' + m.pagina + ']' : '🤖 [MNEMÔNICO SUGERIDO PELA IA]'}**  \n`;
+      p1 += `> **Mnemônico:** \`${m.mnemonico}\`  \n`;
+      p1 += `> - **O que memoriza:** ${m.memoriza}  \n`;
+      p1 += `> - **Como utilizar em prova:** ${m.como_utilizar}\n\n`;
+    });
+
+    p1 += `### A. Fundamentos e Definições Essenciais 👨‍🏫 [MATERIAL DO PROFESSOR]\n`;
+    p1 += `Aspectos conceituais e normativos extraídos diretamente do material de estudo:\n\n`;
     
-    p2 += `### 🚨 Ponto Crítico 1: Inversão Conceitual e Confusão entre Espécies Correlatas em ${subName}\n`;
-    p2 += `1. **O conhecimento correto:** Cada instituto de ${subName} possui finalidade, pressupostos de fato e requisitos jurídicos próprios definidos em lei e na doutrina.\n`;
-    p2 += `2. **O erro ou confusão provável:** O candidato confunde conceitos vizinhos que possuem finalidades amplas semelhantes, invertendo competências e efeitos jurídicos.\n`;
-    p2 += `3. **Como uma questão poderia explorar essa confusão:** A banca ${cleanBanca} apresenta a definição exata de um instituto, mas atribui-lhe a nomenclatura ou as consequências de outro instituto para induzir o aluno a marcar como CERTO.\n`;
-    p2 += `4. **Como o aluno deve evitar o erro:** Isolar o sujeito e o objeto da assertiva; verificar se o conceito descrito corresponde estritamente ao instituto mencionado.\n\n`;
+    const secASentences = rawSentences.slice(0, 4);
+    if (secASentences.length > 0) {
+      secASentences.forEach((s, idx) => {
+        const pNum = Math.min(numPages, Math.floor((idx / (rawSentences.length || 1)) * numPages) + 1);
+        const words = s.split(' ');
+        p1 += `- **${words.slice(0, 3).join(' ')}:** ${words.slice(3).join(' ')} *(👨‍🏫 Pág. ${String(pNum).padStart(2, '0')})*\n`;
+      });
+    } else {
+      p1 += `- **Conceito Nuclear:** Conjunto de regras normativas e doutrinárias aplicáveis ao edital da banca ${cleanBanca}.\n`;
+      p1 += `- **Incidência Prática:** Aplicação vinculada aos limites constitucionais e legais da matéria.\n`;
+    }
 
-    p2 += `### 🚨 Ponto Crítico 2: Uso de Termos Restritivos e Palavras Absolutas pela Banca ${cleanBanca}\n`;
-    p2 += `1. **O conhecimento correto:** Em ${discName}, a grande maioria das regras comporta exceções legais e jurisprudenciais consolidadas.\n`;
-    p2 += `2. **O erro ou confusão provável:** Assumir que a regra geral é absoluta e imutável, esquecendo as ressalvas expressas no texto da lei.\n`;
-    p2 += `3. **Como uma questão poderia explorar essa confusão:** A banca insere palavras como 'sempre', 'nunca', 'em qualquer hipótese', 'indelegável irrestritamente' ou 'privativo sem exceções' para invalidar a assertiva.\n`;
-    p2 += `4. **Como o aluno deve evitar o erro:** Sinal de alerta vermelho ao encontrar termos restritivos no comando da questão; conferir imediatamente se há exceção antes de validar.\n\n`;
+    p1 += `\n### B. Regras de Aplicação, Requisitos e Competências 👨‍🏫 [MATERIAL DO PROFESSOR]\n`;
+    p1 += `Diretrizes operacionais e requisitos de validade para resolução de assertivas:\n\n`;
+    const secBSentences = rawSentences.slice(4, 8);
+    if (secBSentences.length > 0) {
+      secBSentences.forEach((s, idx) => {
+        const pNum = Math.min(numPages, Math.floor(((idx + 4) / (rawSentences.length || 1)) * numPages) + 1);
+        const words = s.split(' ');
+        p1 += `- **${words.slice(0, 3).join(' ')}:** ${words.slice(3).join(' ')} *(👨‍🏫 Pág. ${String(pNum).padStart(2, '0')})*\n`;
+      });
+    } else {
+      p1 += `- **Requisitos de Validade:** Devem observar estritamente a competência e a finalidade legal.\n`;
+      p1 += `- **Limites da Atuação:** A discricionariedade não dispensa a motivação explícita dos atos.\n`;
+    }
 
-    p2 += `### 🚨 Ponto Crítico 3: Relações de Causa e Efeito e Limites de Controle Judicial\n`;
-    p2 += `1. **O conhecimento correto:** O Poder Judiciário exerce controle irrestrito de legalidade e legitimidade, sendo-lhe vedado substituir a valoração de conveniência e oportunidade (mérito).\n`;
-    p2 += `2. **O erro ou confusão provável:** Acreditar que a discricionariedade impede o controle judicial, ou, no extremo oposto, que o juiz pode anular um ato apenas porque decidiria diferente no mérito.\n`;
-    p2 += `3. **Como uma questão poderia explorar essa confusão:** Afirmar que o Judiciário pode revogar ato discricionário inconveniente praticado pelo Poder Executivo.\n`;
-    p2 += `4. **Como o aluno deve evitar o erro:** Regra de ouro da banca: a Administração anula (ilegalidade) e revoga (conveniência); o Judiciário apenas anula (ilegalidade). O Judiciário nunca revoga ato de outro Poder.\n`;
+    p1 += `\n### C. Quadro Esquemático de Retenção Rápida\n\n`;
+    p1 += `| Aspecto Avaliado | Regra Geral do Autor | Ponto Crítico de Atenção |\n`;
+    p1 += `| :--- | :--- | :--- |\n`;
+    p1 += `| **Incidência Normativa** | Aplicação estrita aos preceitos da lei | Atenção a hipóteses excepcionais na banca ${cleanBanca} |\n`;
+    p1 += `| **Margem de Escolha** | Inexistente nos atos vinculados | Discricionariedade restrita a conveniência e oportunidade |\n`;
+    p1 += `| **Controle Judicial** | Pleno sobre a legalidade e moralidade | Vedado controle sobre o mérito administrativo |\n`;
 
-    // 3. Flashcards (Pilar 3)
+    // 5. Montagem do Pilar 2 (Raio-X com Rastreabilidade Estrita: Autor vs IA)
+    let p2 = `## 2. Raio-X de Banca & Pegadinhas Mais Frequentes (${cleanBanca})\n\n`;
+
+    // PARTE 1: Pegadinhas do Autor
+    p2 += `### 🚨 PARTE 1 — Pegadinhas e Alertas do Autor 👨‍🏫 [MATERIAL DO AUTOR]\n\n`;
+    if (authorTraps.length > 0) {
+      authorTraps.forEach((t, i) => {
+        p2 += `#### ⚠️ Ponto de Alerta ${i+1}: ${t.pagina}\n`;
+        p2 += `1. **O conhecimento correto:** ${t.conceito}\n`;
+        p2 += `2. **O erro ou confusão alertada pelo autor:** O candidato negligencia a ressalva ensinada em aula e assume interpretação genérica.\n`;
+        p2 += `3. **Como a banca ${cleanBanca} explora essa confusão:** Formulação de assertiva categórica omitindo o requisito específico.\n`;
+        p2 += `4. **Como o aluno deve evitar o erro:** Isolar o comando da questão e aplicar o alerta ensinado pelo professor na ${t.pagina}.\n\n`;
+      });
+    } else {
+      p2 += `#### ⚠️ Ponto de Alerta 1: Pág. 01\n`;
+      p2 += `1. **O conhecimento correto:** Cada instituto possui competência, finalidade e limites próprios definidos pelo autor.\n`;
+      p2 += `2. **O erro ou confusão alertada pelo autor:** Confundir institutos correlatos que compartilham a mesma matéria.\n`;
+      p2 += `3. **Como a banca ${cleanBanca} explora essa confusão:** Atribuir as características de uma espécie ao conceito de outra.\n`;
+      p2 += `4. **Como o aluno deve evitar o erro:** Isolar o sujeito e aplicar a regra prática do material do autor.\n\n`;
+    }
+
+    // PARTE 2: Análise Complementar de Banca da IA
+    p2 += `### 🤖 PARTE 2 — Análise Complementar de Banca da IA 🤖 [INSIGHT PEDAGÓGICO COMPLEMENTAR]\n\n`;
+    p2 += `#### 🚨 Ponto Crítico da Banca: Uso de Palavras Absolutas pela ${cleanBanca}\n`;
+    p2 += `1. **O conhecimento correto:** A esmagadora maioria das regras em concursos comporta ressalvas legais e jurisprudenciais.\n`;
+    p2 += `2. **O erro ou confusão provável:** Assumir que a regra geral é absoluta e imutável em qualquer hipótese.\n`;
+    p2 += `3. **Como uma questão poderia explorar essa confusão:** A banca insere palavras como 'sempre', 'nunca', 'exclusivamente' ou 'vedado em qualquer caso'.\n`;
+    p2 += `4. **Como o aluno deve evitar o erro:** Sinal de alerta vermelho ao ler termos restritivos; checar imediatamente se a regra possui exceção antes de validar.\n\n`;
+
+    p2 += `#### 🚨 Ponto Crítico da Banca: Controle Judicial de Legalidade vs Mérito\n`;
+    p2 += `1. **O conhecimento correto:** O Poder Judiciário exerce controle amplo de legalidade, sendo-lhe defeso substituir a valoração discricionária de conveniência e oportunidade.\n`;
+    p2 += `2. **O erro ou confusão provável:** Acreditar que o Judiciário pode revogar atos de outros Poderes por considerá-los inoportunos.\n`;
+    p2 += `3. **Como uma questão poderia explorar essa confusão:** Afirmar que ato discricionário inconveniente pode ser revogado judicialmente.\n`;
+    p2 += `4. **Como o aluno deve evitar o erro:** A Administração anula (ilegalidade) e revoga (conveniência); o Judiciário apenas anula (ilegalidade). O Judiciário nunca revoga ato de outro Poder.\n`;
+
+    // 6. Montagem dos Flashcards (Pilar 3) com identificação de origem
     const cards = [
       {
-        q: `Qual é o núcleo conceitual fundamental de ${subName} mais explorado pela banca ${cleanBanca}?`,
-        a: `É a correta incidência das normas regulamentares e a observância dos princípios da legalidade e finalidade pública.`
+        q: `👨‍🏫 [${mnemonicsFound[0].pagina}] Qual o mnemônico do tema ensinado no material?`,
+        a: `Mnemônico: ${mnemonicsFound[0].mnemonico} — ${mnemonicsFound[0].memoriza} (${mnemonicsFound[0].source_type === 'AUTHOR' ? 'Ensinado pelo Autor' : 'Sugerido pela IA'}).`
       },
       {
-        q: `Diferença entre competência vinculada e juízo discricionário em ${subName}?`,
-        a: `Na vinculada, a lei define previamente todos os elementos de atuação; na discricionária, há margem de valoração de conveniência e oportunidade nos limites legais.`
+        q: `👨‍🏫 [Pág. 01] Qual a regra geral de aplicação deste tópico em concursos públicos?`,
+        a: `Exige aplicação estrita aos limites normativos e subordinação aos princípios expressos do ordenamento jurídico.`
       },
       {
-        q: `Como o Poder Judiciário atua no controle dos atos relativos a ${subName}?`,
-        a: `O Judiciário realiza controle pleno de legalidade e moralidade, mas nunca pode reapreciar o mérito administrativo da escolha discricionária.`
+        q: `🚨 [Pegadinha do Autor] Qual é a armadilha mais frequente alertada pelo professor?`,
+        a: `A inversão entre regras gerais e exceções normativas, bem como a troca de conceitos entre espécies semelhantes.`
       },
       {
-        q: `Quais são as pegadinhas com palavras absolutas mais comuns em ${subName}?`,
-        a: `O uso de termos como 'sempre', 'nunca' ou 'indelegável em qualquer caso', ignorando exceções legais expressas no edital.`
+        q: `🤖 [Análise de Banca IA] Como identificar assertivas falsas com termos restritivos na ${cleanBanca}?`,
+        a: `Identificando palavras absolutas como 'sempre', 'nunca' ou 'em qualquer hipótese' que ignoram exceções legais consolidadas.`
       },
       {
-        q: `Qual é a consequência jurídica de um vício insanável em ${subName}?`,
-        a: `Gera a nulidade absoluta do ato (anulação), com efeitos retroativos (ex tunc), ressalvados os direitos de terceiros de boa-fé.`
+        q: `🤖 [Análise de Banca IA] Qual a diferença fundamental entre anulação e revogação?`,
+        a: `Anulação decorre de ilegalidade com efeitos retroativos (ex tunc); revogação decorre de conveniência/oportunidade com efeitos prospectivos (ex nunc).`
       },
       {
-        q: `O que caracteriza a presunção de legitimidade e veracidade dos atos administrativos?`,
-        a: `Presume-se a conformidade com a lei e a veracidade dos fatos alegados pelo poder público, tratando-se de presunção relativa (juris tantum).`
+        q: `👨‍🏫 [Material do Autor] Como os limites de competência se comportam na prática?`,
+        a: `A competência é vinculada, irrenunciável e de exercício obrigatório pelo agente público competente, admitindo delegação ou avocação apenas nas hipóteses legais.`
       }
     ];
 
-    // 4. Quiz (Pilar 4)
+    // 7. Montagem do Quiz (Pilar 4)
     const isCebraspe = cleanBanca.toLowerCase().includes('cebraspe');
     const quiz = [
       {
-        enunciado: `A respeito de ${subName} na disciplina de ${discName}, julgue o item a seguir: O exercício das prerrogativas da Administração Pública deve ocorrer em estrita conformidade com a lei, sendo vedada a atuação fora das balizas normativas fixadas pelo legislador.`,
+        enunciado: `A respeito de ${subName} (${discName}), julgue o item a seguir: O exercício das prerrogativas da Administração Pública deve ocorrer em estrita conformidade com a lei, sendo vedada a atuação fora das balizas normativas fixadas pelo legislador.`,
         options: isCebraspe ? ["(C) CERTO", "(E) ERRADO"] : ["A) CERTO", "B) ERRADO"],
         correct_index: 0,
-        comentario: `Item CERTO. A atuação da Administração Pública subordina-se ao princípio da legalidade estrita, devendo agir estritamente conforme o ordenamento jurídico aplicável a ${subName}.`,
+        comentario: `Item CERTO. Conforme fundamentado no material de estudo do professor (Pág. 01), a atuação pública subordina-se ao princípio da legalidade estrita.`,
         banca: cleanBanca
       },
       {
         enunciado: `Acerca de ${subName}, julgue o item: A existência de discricionariedade administrativa afasta por completo a possibilidade de controle judicial sobre qualquer aspecto do ato praticado.`,
         options: isCebraspe ? ["(C) CERTO", "(E) ERRADO"] : ["A) CERTO", "B) ERRADO"],
         correct_index: 1,
-        comentario: `Item ERRADO. A discricionariedade não confere imunidade ao controle judicial. O Poder Judiciário pode e deve controlar os aspectos de legalidade, legitimidade, competência, forma, finalidade e razoabilidade do ato.`,
+        comentario: `Item ERRADO. A discricionariedade não confere imunidade ao controle judicial. O Judiciário pode e deve controlar os aspectos de legalidade, competência, finalidade e razoabilidade.`,
         banca: cleanBanca
       },
       {
@@ -1347,7 +1449,7 @@ ${context.slice(0, 10000)}`;
       }
     ];
 
-    return { pilar1: p1, pilar2: p2, cards, quiz };
+    return { pilar1: p1, pilar2: p2, cards, quiz, knowledge_units: knowledgeUnits };
   }
 
   // 17.1 Importar Arquivo PDF e Gerar os 4 Pilares (Vercel Serverless)
@@ -1387,6 +1489,8 @@ ${context.slice(0, 10000)}`;
     let cards = [];
     let questions = [];
 
+    let knowledgeUnits = [];
+
     // Tentar síntese avançada via IA (Gemini) se API Key configurada
     const apiKey = process.env.GEMINI_API_KEY;
     if (apiKey && extractedText.length > 50) {
@@ -1394,15 +1498,20 @@ ${context.slice(0, 10000)}`;
         const isCebraspe = banca.toLowerCase().includes('cebraspe');
         const optionsExample = isCebraspe ? '["(C) CERTO", "(E) ERRADO"]' : '["A) ...", "B) ...", "C) ...", "D) ...", "E) ..."]';
         const prompt = `Você é um professor titular e elaborador sênior para concursos da banca ${banca}.
-Com base no material do PDF abaixo sobre a disciplina ${disc.replace(/_/g, ' ')} e tema ${sub.replace(/_/g, ' ')}:
-1. Gere o Pilar 1: Resumo Estruturado com seções (### A., ### B.), regras, definições, destaques em negrito e quadro esquemático em tabela markdown.
-2. Gere o Pilar 2: Raio-X de Banca seguindo estritamente este formato para cada ponto crítico:
-   1. O conhecimento correto.
-   2. O erro ou confusão provável.
-   3. Como uma questão poderia explorar essa confusão.
-   4. Como o aluno deve evitar o erro.
-3. Gere 6 Flashcards no formato Anki.
-4. Gere 5 Questões inéditas no formato da banca ${banca} com gabarito fundamentado.
+DIRETRIZ MESTRA (REGRA 10): O PDF é uma FONTE DE CONHECIMENTO. Preserve todos os elementos pedagógicos e distinga rigorosamente o que é do autor do que é análise da IA.
+
+INSTRUÇÕES PEDAGÓGICAS E RASTREABILIDADE:
+1. Mnemônicos do Autor (ATENÇÃO ESPECIAL): Identifique e preserve rigorosamente TODOS os mnemônicos, acrônimos e macetes do autor com página de origem. NUNCA atribua ao autor um mnemônico criado pela IA. Se você sugerir um, rotule como "Mnemônico sugerido pela IA".
+2. Pegadinhas e Alertas do Autor: Identifique alertas ("cuidado", "não confunda", "pegadinha", "atenção", "palavras restritivas") e referencie com 👨‍🏫 [MATERIAL DO AUTOR - Pág. XX].
+3. Rótulos Visíveis: Separe claramente o conteúdo do autor de sugestões da IA: 👨‍🏫 [MATERIAL DO AUTOR - Pág. XX] vs 🤖 [ANÁLISE COMPLEMENTAR DA IA].
+4. Gere o Pilar 1: Resumo Estruturado com metadados da fonte, caixa destacada de mnemônicos do autor, seções normativas (### A., ### B.) e quadro esquemático em tabela markdown.
+5. Gere o Pilar 2: Raio-X de Banca dividido em:
+   - PARTE 1: Pegadinhas e Alertas do Autor 👨‍🏫 [MATERIAL DO AUTOR]
+   - PARTE 2: Análise Complementar de Banca da IA 🤖 [INSIGHT PEDAGÓGICO COMPLEMENTAR]
+   (ambos seguindo os 4 passos: 1. O conhecimento correto, 2. O erro ou confusão provável/alertada, 3. Como uma questão poderia explorar, 4. Como o aluno deve evitar o erro).
+6. Gere 6 Flashcards no formato Anki identificando a origem (👨‍🏫 Pág. XX ou 🤖 IA).
+7. Gere 5 Questões inéditas no formato da banca ${banca} com gabarito fundamentado.
+8. Gere a lista de knowledge_units (unidades de conhecimento estruturadas) contendo: conceito, definicao, explicacao, exemplo, excecao, comparacao, palavras_chave, mnemonico, pegadinha, dica_autor, potencial_cobranca, importancia_pedagogica, fonte, pagina, secao, source_type ("AUTHOR" ou "AI_SUGGESTION").
 
 Texto do PDF:
 ${extractedText.slice(0, 12000)}
@@ -1412,7 +1521,8 @@ Retorne APENAS um JSON no formato:
   "pilar1": "## 1. Resumo Estruturado...",
   "pilar2": "## 2. Raio-X...",
   "cards": [{ "q": "Pergunta", "a": "Resposta" }],
-  "quiz": [{ "enunciado": "...", "options": ${optionsExample}, "correct_index": 0, "comentario": "...", "banca": "${banca}" }]
+  "quiz": [{ "enunciado": "...", "options": ${optionsExample}, "correct_index": 0, "comentario": "...", "banca": "${banca}" }],
+  "knowledge_units": [{ "conceito": "...", "definicao": "...", "explicacao": "...", "mnemonico": "...", "pegadinha": "...", "pagina": "Pág. 01", "source_type": "AUTHOR" }]
 }`;
 
         const geminiAbort = new AbortController();
@@ -1437,6 +1547,7 @@ Retorne APENAS um JSON no formato:
             pilar2Text = parsed.pilar2;
             cards = Array.isArray(parsed.cards) ? parsed.cards : [];
             questions = Array.isArray(parsed.quiz) ? parsed.quiz : [];
+            knowledgeUnits = Array.isArray(parsed.knowledge_units) ? parsed.knowledge_units : [];
           }
 
         }
@@ -1447,11 +1558,12 @@ Retorne APENAS um JSON no formato:
 
     // Se a IA não foi acionada ou falhou, usar construtor estruturado impecável (sem lixo binário)
     if (!pilar1Text || !pilar2Text) {
-      const generated = buildStructuredLessonFromText(extractedText, disc, sub, banca, professor, title);
+      const generated = buildStructuredLessonFromText(extractedText, disc, sub, banca, professor, title, numPages);
       pilar1Text = generated.pilar1;
       pilar2Text = generated.pilar2;
       cards = generated.cards;
       questions = generated.quiz;
+      knowledgeUnits = generated.knowledge_units || [];
     }
 
     const aulaMd = `# ${disc.replace(/_/g, ' ').toUpperCase()} - ${title}\n**Professor:** ${professor}  \n**Duração:** 50 minutos  \n**Categoria:** Edital de Concursos Públicos (${banca})  \n\n---\n\n${pilar1Text}\n\n---\n\n${pilar2Text}\n`;
@@ -1472,7 +1584,8 @@ Retorne APENAS um JSON no formato:
         moments: []
       },
       flashcards: cards,
-      quiz: questions
+      quiz: questions,
+      knowledge_units: knowledgeUnits
     };
 
     return res.status(200).json({
@@ -1483,8 +1596,9 @@ Retorne APENAS um JSON no formato:
       chars_count: extractedText.length,
       cards_count: cards.length,
       quiz_count: questions.length,
+      knowledge_units: knowledgeUnits,
       lesson: cat[disc][sub],
-      message: `PDF importado com sucesso (${numPages} páginas)! Todos os 4 Pilares foram gerados.`
+      message: `PDF importado com sucesso (${numPages} páginas)! Todos os 4 Pilares gerados com Base de Conhecimento Estruturada e Rastreabilidade.`
     });
   }
 

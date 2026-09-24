@@ -111,5 +111,25 @@ Para qualquer aula em vídeo (YouTube ou arquivo) fornecida pelo usuário para e
   4. **Redes e Informática:** TCP (orientado à conexão, handshake em 3 vias) vs UDP (não orientado, sem confirmação, veloz), Portas padrão (HTTP 80 vs HTTPS 443, SSH 22, DNS 53).
   5. **Proibição de Templates Genéricos:** Nunca exibir textos ou fallbacks genéricos de direito administrativo em tópicos de informática ou exatas. Priorizar sempre a Seção 2 da aula existente ou o banco curado específico da matéria.
 
+---
 
-
+## 10. Processamento Master de PDFs para Concursos (Base de Conhecimento Estruturada & Rastreabilidade)
+Quando a fonte for um arquivo PDF:
+- **O PDF é uma FONTE DE CONHECIMENTO**, não apenas um texto corrido para resumo superficial.
+- **Rastreabilidade Pedagógica & Distinção Rigorosa:**
+  - `source_type: AUTHOR`: Conteúdo explicitamente ensinado pelo professor/autor no PDF (com número da página e seção de origem).
+  - `source_type: AI_INFERENCE`: Organização, agrupamento e deduções lógicas estruturadas diretamente do texto do material.
+  - `source_type: AI_SUGGESTION`: Insights inéditos, questões e mnemônicos complementares sugeridos pela IA para prova.
+- **Mnemônicos do Autor (ATENÇÃO ESPECIAL):**
+  - Identificar e preservar rigorosamente TODOS os mnemônicos, acrônimos e macetes do autor com página de origem.
+  - NUNCA atribuir ao autor um mnemônico criado pela IA. Se a IA sugerir um, rotular como *"Mnemônico sugerido pela IA"*.
+- **Pegadinhas e Alertas do Autor:**
+  - Capturar alertas ("cuidado", "não confunda", "pegadinha", "atenção", palavras restritivas).
+  - Rótulo visível na plataforma: 👨‍🏫 `[MATERIAL DO AUTOR - Pág. XX]` vs 🤖 `[ANÁLISE COMPLEMENTAR DA IA]`.
+- **Estrutura de Unidades de Conhecimento (`knowledge_unit`):**
+  - `conceito`, `definicao`, `explicacao`, `exemplo`, `excecao`, `comparacao`, `palavras_chave`, `mnemonico`, `pegadinha`, `dica_autor`, `potencial_cobranca`, `importancia_pedagogica`, `fonte`, `pagina`, `secao`, `source_type`.
+- **Alimentação dos 4 Pilares:**
+  - Pilar 1: Resumo hierárquico com definições formais, regras, tabelas comparativas e mnemônicos do autor.
+  - Pilar 2: Raio-X separando as pegadinhas explícitas do autor das pegadinhas mapeadas para a banca.
+  - Pilar 3: Flashcards de alta retenção contendo a origem (Pág. XX) e os mnemônicos do material.
+  - Pilar 4: Mini-simulado inédito focado nos pontos críticos e armadilhas identificadas.

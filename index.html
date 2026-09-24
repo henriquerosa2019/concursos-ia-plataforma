@@ -7559,6 +7559,8 @@
         html.push(`<div style="margin-left: 18px; margin-bottom: 6px; display: flex; gap: 8px;"><span>•</span><span>${formatInline(trimmed.slice(2))}</span></div>`);
       } else if (/^\d+\.\s/.test(trimmed)) {
         html.push(`<div style="margin-left: 18px; margin-bottom: 6px;"><strong>${trimmed.match(/^\d+\./)[0]}</strong> ${formatInline(trimmed.replace(/^\d+\.\s*/, ''))}</div>`);
+      } else if (trimmed.startsWith('> ')) {
+        html.push(`<blockquote style="border-left: 3px solid #58a6ff; background: rgba(56, 139, 253, 0.08); padding: 8px 14px; margin: 8px 0; border-radius: 0 6px 6px 0; font-size: 13.5px; line-height: 1.5;">${formatInline(trimmed.slice(2))}</blockquote>`);
       } else if (trimmed === '---') {
         html.push('<hr style="border:0; border-top:1px solid var(--border); margin: 18px 0;">');
       } else if (trimmed) {
@@ -7616,7 +7618,7 @@
 
       html.push(`
         <div class="trap-card ${isCritical ? 'critical' : ''}">
-          <div class="trap-title">${title}</div>
+          <div class="trap-title">${formatInline(title)}</div>
           <div>${parseMarkdownToHtml(body)}</div>
         </div>
       `);
@@ -7627,13 +7629,20 @@
 
   function formatInline(text) {
     if (!text) return '';
-    return text
+    let res = text
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/`([^`]+)`/g, '<code>$1</code>');
+      .replace(/`([^`]+)`/g, '<code style="background: rgba(110,118,129,0.25); padding: 2px 6px; border-radius: 4px; font-family: monospace;">$1</code>');
+
+    // Badges de Rastreabilidade Pedagógica (Regra 10)
+    res = res.replace(/(👨‍🏫\s*\[MATERIAL DO (?:AUTOR|PROFESSOR)(?: - Pág\.[^\]]*)?\])/gi, '<span style="display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:10px; background:rgba(56,139,253,0.15); border:1px solid rgba(56,139,253,0.4); color:#58a6ff; font-weight:700; font-size:11px;">$1</span>');
+    res = res.replace(/(🤖\s*\[(?:ANÁLISE|INSIGHT|MNEMÔNICO)[^\]]*IA\])/gi, '<span style="display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:10px; background:rgba(187,128,255,0.15); border:1px solid rgba(187,128,255,0.4); color:#d2a8ff; font-weight:700; font-size:11px;">$1</span>');
+    res = res.replace(/(💡\s*\[MNEMÔNICO[^\]]*\])/gi, '<span style="display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:10px; background:rgba(210,153,34,0.15); border:1px solid rgba(210,153,34,0.4); color:#e3b341; font-weight:700; font-size:11px;">$1</span>');
+
+    return res;
   }
 
   

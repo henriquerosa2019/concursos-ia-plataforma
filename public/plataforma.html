@@ -8179,6 +8179,10 @@
     return globalPreseededCatalog || {};
   }
 
+  function normalizeKey(s) {
+    return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  }
+
   // Carregar Estrutura e Preencher Sidebar Dinamicamente
   async function loadStructureAndSidebar() {
     try {
@@ -8188,14 +8192,14 @@
         if (data && data.tree && Object.keys(data.tree).length > 0) {
           globalTreeCache = data.tree;
         } else {
-          globalTreeCache = DEFAULT_CONCURSOS_TREE;
+          globalTreeCache = JSON.parse(JSON.stringify(DEFAULT_CONCURSOS_TREE));
         }
       } else {
-        globalTreeCache = DEFAULT_CONCURSOS_TREE;
+        globalTreeCache = JSON.parse(JSON.stringify(DEFAULT_CONCURSOS_TREE));
       }
     } catch(e) {
       console.warn("Falha ao carregar estrutura do backend, usando catalogo padrao:", e);
-      globalTreeCache = DEFAULT_CONCURSOS_TREE;
+      globalTreeCache = JSON.parse(JSON.stringify(DEFAULT_CONCURSOS_TREE));
     }
 
     try {
@@ -8215,6 +8219,28 @@
               { name: `Simulado_${lsub}_Questoes.json`, type: 'quiz', quiz_count: qCount }
             ]
           };
+        }
+      }
+    } catch(e) {}
+
+    // Filtrar exclusões persistentes registradas no localStorage
+    try {
+      const deletedDiscs = JSON.parse(localStorage.getItem('concursos_deleted_disciplines') || '{}');
+      const deletedTopics = JSON.parse(localStorage.getItem('concursos_deleted_topics') || '{}');
+
+      for (const d of Object.keys(globalTreeCache || {})) {
+        const dNorm = normalizeKey(d);
+        if (deletedDiscs[d.toLowerCase()] || deletedDiscs[dNorm]) {
+          delete globalTreeCache[d];
+          continue;
+        }
+        for (const s of Object.keys(globalTreeCache[d] || {})) {
+          const sNorm = normalizeKey(s);
+          const k1 = `${d.toLowerCase()}:::${s.toLowerCase()}`;
+          const k2 = `${dNorm}:::${sNorm}`;
+          if (deletedTopics[k1] || deletedTopics[k2]) {
+            delete globalTreeCache[d][s];
+          }
         }
       }
     } catch(e) {}
@@ -8347,29 +8373,94 @@
       alert("Informe o nome da nova disciplina.");
       return;
     }
+    const cleanName = name.replace(/[\s/]/g, '_');
+    // Desmarcar da lista de exclusões caso tenha sido excluída anteriormente
+    try {
+      const deletedDiscs = JSON.parse(localStorage.getItem('concursos_deleted_disciplines') || '{}');
+      delete deletedDiscs[cleanName.toLowerCase()];
+      delete deletedDiscs[name.toLowerCase()];
+      delete deletedDiscs[normalizeKey(cleanName)];
+      delete deletedDiscs[normalizeKey(name)];
+      localStorage.setItem('concursos_deleted_disciplines', JSON.stringify(deletedDiscs));
+    } catch(e) {}
+
     try {
       const resp = await fetch('/api/discipline/create', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ discipline: name })
+        body: JSON.stringify({ discipline: cleanName })
       });
-      const data = await resp.json();
-      if (data.success) {
+      const data = await resp.json().catch(() => ({ success: true }));
+      if (data.success !== false) {
         showToast(`Disciplina "${name}" criada com sucesso!`, "🏛️");
         closeModal('modalNewDiscipline');
+        if (!globalTreeCache[cleanName]) globalTreeCache[cleanName] = {};
         await loadStructureAndSidebar();
       } else {
-        alert(data.message || "Erro ao criar disciplina.");
+        alert(data.error || data.message || "Erro ao criar disciplina.");
       }
     } catch(e) {
       alert("Erro na requisição: " + e.message);
     }
   }
 
+  function openNewTopicModal() {
+    const input = document.getElementById('newTopicSub');
+    if (input) input.value = '';
+    const modal = document.getElementById('modalNewTopic');
+    if (modal) modal.style.display = 'flex';
+    if (input) setTimeout(() => input.focus(), 60);
+  }
+
   function openNewTopicModalFor(disc) {
     openNewTopicModal();
     const sel = document.getElementById('newTopicDisc');
     if (sel && disc) sel.value = disc;
+  }
+
+  async function submitCreateTopic() {
+    const discEl = document.getElementById('newTopicDisc');
+    const subEl = document.getElementById('newTopicSub');
+    const disc = discEl ? discEl.value.trim() : '';
+    const rawSub = subEl ? subEl.value.trim() : '';
+    if (!disc || !rawSub) {
+      alert("Selecione a matéria e informe o nome do tópico.");
+      return;
+    }
+    const sub = rawSub.replace(/[\s/]/g, '_');
+
+    // Desmarcar da lista de exclusões persistentes caso tenha sido excluído anteriormente
+    try {
+      const deletedTopics = JSON.parse(localStorage.getItem('concursos_deleted_topics') || '{}');
+      delete deletedTopics[`${disc.toLowerCase()}:::${sub.toLowerCase()}`];
+      delete deletedTopics[`${normalizeKey(disc)}:::${normalizeKey(sub)}`];
+      localStorage.setItem('concursos_deleted_topics', JSON.stringify(deletedTopics));
+    } catch(e) {}
+
+    try {
+      const resp = await fetch('/api/subarea/create', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ discipline: disc, subarea: sub })
+      });
+      const data = await resp.json().catch(() => ({ success: true }));
+      if (data.success !== false) {
+        showToast(`Tópico "${sub.replace(/_/g, ' ')}" criado com sucesso!`, "📁");
+        closeModal('modalNewTopic');
+        if (!globalTreeCache[disc]) globalTreeCache[disc] = {};
+        globalTreeCache[disc][sub] = {
+          cards_count: 1,
+          quiz_count: 1,
+          files_count: 3
+        };
+        await loadStructureAndSidebar();
+        selectSubarea(disc, sub);
+      } else {
+        alert(data.error || data.message || "Erro ao criar tópico.");
+      }
+    } catch(e) {
+      alert("Erro na requisição: " + e.message);
+    }
   }
 
   function openRenameDisciplineModal(disc) {
@@ -8523,53 +8614,126 @@
 
     try {
       if (actionTargetType === 'discipline') {
-        const resp = await fetch('/api/discipline/delete', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ discipline: actionDiscipline })
-        });
-        const data = await resp.json();
-        if (data.success) {
-          showToast(`Disciplina "${actionDiscipline.replace(/_/g, ' ')}" excluída!`, "🗑️");
-          closeModal('modalActionDelete');
-          
-          const wasActive = (currentDiscipline === actionDiscipline);
-          await loadStructureAndSidebar();
-          
-          if (wasActive) {
-            selectFirstAvailableTopic(globalTreeCache);
+        const discToDelete = actionDiscipline;
+        if (!discToDelete) return;
+
+        // 1. Notificar servidor (tolerante a offline ou serverless)
+        try {
+          await fetch('/api/discipline/delete', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ discipline: discToDelete })
+          });
+        } catch(e_net) {
+          console.warn("Aviso na chamada de exclusão da disciplina no servidor:", e_net);
+        }
+
+        // 2. Gravar na lista de exclusões persistentes do localStorage
+        try {
+          const deletedDiscs = JSON.parse(localStorage.getItem('concursos_deleted_disciplines') || '{}');
+          deletedDiscs[discToDelete.toLowerCase()] = true;
+          deletedDiscs[normalizeKey(discToDelete)] = true;
+          localStorage.setItem('concursos_deleted_disciplines', JSON.stringify(deletedDiscs));
+
+          // Remover de aulas locais
+          const localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
+          delete localLessons[discToDelete];
+          for (const k of Object.keys(localLessons)) {
+            if (normalizeKey(k) === normalizeKey(discToDelete)) delete localLessons[k];
           }
-        } else {
-          alert(data.message || "Erro ao excluir disciplina.");
+          localStorage.setItem('concursos_local_lessons', JSON.stringify(localLessons));
+        } catch(e_ls) {}
+
+        // 3. Remover de globalTreeCache imediatamente
+        if (globalTreeCache) {
+          delete globalTreeCache[discToDelete];
+          for (const k of Object.keys(globalTreeCache)) {
+            if (normalizeKey(k) === normalizeKey(discToDelete)) delete globalTreeCache[k];
+          }
+        }
+
+        showToast(`Disciplina "${discToDelete.replace(/_/g, ' ')}" excluída!`, "🗑️");
+        closeModal('modalActionDelete');
+
+        const wasActive = (normalizeKey(currentDiscipline) === normalizeKey(discToDelete));
+        await loadStructureAndSidebar();
+
+        if (wasActive) {
+          selectFirstAvailableTopic(globalTreeCache);
         }
       } else if (actionTargetType === 'subarea') {
-        const resp = await fetch('/api/subarea/delete', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            discipline: actionDiscipline,
-            subarea: actionSubarea
-          })
-        });
-        const data = await resp.json();
-        if (data.success) {
-          showToast(`Tópico "${actionSubarea.replace(/_/g, ' ')}" excluído!`, "🗑️");
-          closeModal('modalActionDelete');
-          
-          const wasActive = (currentDiscipline === actionDiscipline && currentSubarea === actionSubarea);
-          await loadStructureAndSidebar();
-          
-          if (wasActive) {
-            const currentDiscSubs = (globalTreeCache && globalTreeCache[actionDiscipline]) || {};
-            const remainingSubs = Object.keys(currentDiscSubs);
-            if (remainingSubs.length > 0) {
-              selectSubarea(actionDiscipline, remainingSubs[0]);
-            } else {
-              selectFirstAvailableTopic(globalTreeCache);
+        const discToDelete = actionDiscipline;
+        const subToDelete = actionSubarea;
+        if (!discToDelete || !subToDelete) return;
+
+        // 1. Notificar servidor (tolerante a offline ou serverless)
+        try {
+          await fetch('/api/subarea/delete', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              discipline: discToDelete,
+              subarea: subToDelete
+            })
+          });
+        } catch(e_net) {
+          console.warn("Aviso na chamada de exclusão do tópico no servidor:", e_net);
+        }
+
+        // 2. Gravar na lista de exclusões persistentes do localStorage
+        try {
+          const deletedTopics = JSON.parse(localStorage.getItem('concursos_deleted_topics') || '{}');
+          const k1 = `${discToDelete.toLowerCase()}:::${subToDelete.toLowerCase()}`;
+          const k2 = `${normalizeKey(discToDelete)}:::${normalizeKey(subToDelete)}`;
+          deletedTopics[k1] = true;
+          deletedTopics[k2] = true;
+          localStorage.setItem('concursos_deleted_topics', JSON.stringify(deletedTopics));
+
+          // Remover de aulas locais no localStorage
+          const localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
+          if (localLessons[discToDelete]) {
+            delete localLessons[discToDelete][subToDelete];
+          }
+          for (const dk of Object.keys(localLessons)) {
+            if (normalizeKey(dk) === normalizeKey(discToDelete) && localLessons[dk]) {
+              for (const sk of Object.keys(localLessons[dk])) {
+                if (normalizeKey(sk) === normalizeKey(subToDelete)) {
+                  delete localLessons[dk][sk];
+                }
+              }
             }
           }
-        } else {
-          alert(data.message || "Erro ao excluir tópico.");
+          localStorage.setItem('concursos_local_lessons', JSON.stringify(localLessons));
+        } catch(e_ls) {}
+
+        // 3. Remover de globalTreeCache imediatamente
+        if (globalTreeCache && globalTreeCache[discToDelete]) {
+          delete globalTreeCache[discToDelete][subToDelete];
+        }
+        for (const dk of Object.keys(globalTreeCache || {})) {
+          if (normalizeKey(dk) === normalizeKey(discToDelete)) {
+            for (const sk of Object.keys(globalTreeCache[dk])) {
+              if (normalizeKey(sk) === normalizeKey(subToDelete)) {
+                delete globalTreeCache[dk][sk];
+              }
+            }
+          }
+        }
+
+        showToast(`Tópico "${subToDelete.replace(/_/g, ' ')}" excluído!`, "🗑️");
+        closeModal('modalActionDelete');
+
+        const wasActive = (normalizeKey(currentDiscipline) === normalizeKey(discToDelete) && normalizeKey(currentSubarea) === normalizeKey(subToDelete));
+        await loadStructureAndSidebar();
+
+        if (wasActive) {
+          const currentDiscSubs = (globalTreeCache && globalTreeCache[discToDelete]) || {};
+          const remainingSubs = Object.keys(currentDiscSubs);
+          if (remainingSubs.length > 0) {
+            selectSubarea(discToDelete, remainingSubs[0]);
+          } else {
+            selectFirstAvailableTopic(globalTreeCache);
+          }
         }
       }
     } catch(e) {

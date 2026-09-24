@@ -35,6 +35,8 @@ let cloudDeletedUsers = new Set();
 let cloudCreatedUsers = [];
 let cloudUserProgress = {};
 let cloudUserReviews = {};
+let cloudDeletedTopics = new Set();
+let cloudDeletedDisciplines = new Set();
 
 const BASE_MOCK_USERS = [
   { id: 'master_001', nome: 'Administrador Master', email: 'master@aprovacao.com', role: 'master', plano: 'vitalicio', status: 'ativo', created_at: '2026-09-15T00:00:00Z', ultimo_login: new Date().toISOString(), aulas_criadas: 9 },
@@ -58,20 +60,30 @@ function computeMasterUsers(baseUsers = BASE_MOCK_USERS) {
 }
 
 function findTopicData(disc, sub) {
-  const cat = getCatalog();
-  if (cat[disc] && cat[disc][sub]) return cat[disc][sub];
-  
   const norm = s => String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
   const dNorm = norm(disc);
   const sNorm = norm(sub);
+
+  if (cloudDeletedDisciplines.has(dNorm) || cloudDeletedDisciplines.has(String(disc || '').toLowerCase())) return null;
+  if (cloudDeletedTopics.has(`${dNorm}:::${sNorm}`) || cloudDeletedTopics.has(`${String(disc || '').toLowerCase()}:::${String(sub || '').toLowerCase()}`)) return null;
+
+  const cat = getCatalog();
+  if (cat[disc] && cat[disc][sub]) return cat[disc][sub];
   
   for (const [dKey, subs] of Object.entries(cat)) {
     if (norm(dKey) === dNorm) {
+      if (cloudDeletedDisciplines.has(norm(dKey)) || cloudDeletedDisciplines.has(dKey.toLowerCase())) continue;
       for (const [sKey, data] of Object.entries(subs)) {
-        if (norm(sKey) === sNorm) return data;
+        if (norm(sKey) === sNorm) {
+          if (cloudDeletedTopics.has(`${dNorm}:::${norm(sKey)}`)) continue;
+          return data;
+        }
       }
-      const firstKey = Object.keys(subs)[0];
-      if (firstKey) return subs[firstKey];
+      for (const [sKey, data] of Object.entries(subs)) {
+        if (!cloudDeletedTopics.has(`${dNorm}:::${norm(sKey)}`)) {
+          return data;
+        }
+      }
     }
   }
   return null;
@@ -542,16 +554,21 @@ export default async function handler(req, res) {
     const cat = getCatalog();
     const tree = {};
     let totalFiles = 0, totalCards = 0, totalQuiz = 0;
+    const norm = s => String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
     for (const [disc, subs] of Object.entries(cat)) {
-      tree[disc] = {};
+      const dNorm = norm(disc);
+      if (cloudDeletedDisciplines.has(dNorm) || cloudDeletedDisciplines.has(disc.toLowerCase())) continue;
+      const subEntries = {};
       for (const [sub, tdata] of Object.entries(subs)) {
+        const sNorm = norm(sub);
+        if (cloudDeletedTopics.has(`${dNorm}:::${sNorm}`) || cloudDeletedTopics.has(`${disc.toLowerCase()}:::${sub.toLowerCase()}`)) continue;
         const cCount = (tdata.flashcards || []).length;
         const qCount = (tdata.quiz || []).length;
         const fCount = (tdata.meta ? 1 : 0) + (cCount ? 1 : 0) + (qCount ? 1 : 0) + (tdata.transcript?.full_text ? 1 : 0);
         totalCards += cCount;
         totalQuiz += qCount;
         totalFiles += fCount;
-        tree[disc][sub] = {
+        subEntries[sub] = {
           cards_count: cCount,
           quiz_count: qCount,
           files_count: fCount,
@@ -562,6 +579,7 @@ export default async function handler(req, res) {
           ]
         };
       }
+      tree[disc] = subEntries;
     }
     return res.status(200).json({
       tree,
@@ -569,6 +587,136 @@ export default async function handler(req, res) {
       total_cards: totalCards,
       total_quiz: totalQuiz,
       base_dir: 'Vercel Cloud'
+    });
+  }
+
+  // 7.1 Excluir Tópico / Subárea na Nuvem
+  if (pathname === '/api/subarea/delete' && req.method === 'POST') {
+    const body = req.body || {};
+    const disc = (body.discipline || '').trim().replace(/[\s/]/g, '_');
+    const sub = (body.subarea || '').trim().replace(/[\s/]/g, '_');
+    if (!disc || !sub) {
+      return res.status(400).json({ success: false, error: 'Disciplina e tópico são obrigatórios.' });
+    }
+    const norm = s => String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const dNorm = norm(disc);
+    const sNorm = norm(sub);
+
+    cloudDeletedTopics.add(`${dNorm}:::${sNorm}`);
+    cloudDeletedTopics.add(`${disc.toLowerCase()}:::${sub.toLowerCase()}`);
+
+    const cat = getCatalog();
+    for (const dKey of Object.keys(cat)) {
+      if (norm(dKey) === dNorm) {
+        for (const sKey of Object.keys(cat[dKey])) {
+          if (norm(sKey) === sNorm) {
+            delete cat[dKey][sKey];
+          }
+        }
+      }
+    }
+
+    return res.status(200).json({
+      success: true,
+      discipline: disc,
+      subarea: sub,
+      message: `Tópico "${sub.replace(/_/g, ' ')}" excluído com sucesso!`
+    });
+  }
+
+  // 7.2 Excluir Disciplina na Nuvem
+  if (pathname === '/api/discipline/delete' && req.method === 'POST') {
+    const body = req.body || {};
+    const disc = (body.discipline || '').trim().replace(/[\s/]/g, '_');
+    if (!disc) {
+      return res.status(400).json({ success: false, error: 'Nome da disciplina é obrigatório.' });
+    }
+    const norm = s => String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const dNorm = norm(disc);
+
+    cloudDeletedDisciplines.add(dNorm);
+    cloudDeletedDisciplines.add(disc.toLowerCase());
+
+    const cat = getCatalog();
+    for (const dKey of Object.keys(cat)) {
+      if (norm(dKey) === dNorm) {
+        delete cat[dKey];
+      }
+    }
+
+    return res.status(200).json({
+      success: true,
+      discipline: disc,
+      message: `Disciplina "${disc.replace(/_/g, ' ')}" excluída com sucesso!`
+    });
+  }
+
+  // 7.3 Criar Novo Tópico na Nuvem
+  if (pathname === '/api/subarea/create' && req.method === 'POST') {
+    const body = req.body || {};
+    const disc = (body.discipline || '').trim().replace(/[\s/]/g, '_');
+    const sub = (body.subarea || '').trim().replace(/[\s/]/g, '_');
+    if (!disc || !sub) {
+      return res.status(400).json({ success: false, error: 'Disciplina e tópico são obrigatórios.' });
+    }
+    const norm = s => String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const dNorm = norm(disc);
+    const sNorm = norm(sub);
+
+    cloudDeletedTopics.delete(`${dNorm}:::${sNorm}`);
+    cloudDeletedTopics.delete(`${disc.toLowerCase()}:::${sub.toLowerCase()}`);
+    cloudDeletedDisciplines.delete(dNorm);
+    cloudDeletedDisciplines.delete(disc.toLowerCase());
+
+    const cat = getCatalog();
+    if (!cat[disc]) cat[disc] = {};
+    if (!cat[disc][sub]) {
+      cat[disc][sub] = {
+        meta: {
+          discipline: disc,
+          subarea: sub,
+          title: sub.replace(/_/g, ' '),
+          professor: 'Prof. Titular',
+          duration: '50 minutos',
+          category: 'Edital de Concursos Públicos',
+          youtube_url: '',
+          markdown_content: `# ${disc.replace(/_/g, ' ').toUpperCase()} - ${sub.replace(/_/g, ' ')}\n**Professor:** Prof. Titular\n\n---\n\n## 1. Resumo Estruturado\nUtilize a IA para gerar flashcards e simulados para este tópico.\n`,
+          has_lesson: true,
+          moments: []
+        },
+        flashcards: [{ front: `O que é ${sub.replace(/_/g, ' ')}?`, back: `Conceito inicial de ${sub.replace(/_/g, ' ')} para concursos.` }],
+        quiz: [{ id: 1, tipo: 'certo_errado', enunciado: `A respeito de ${sub.replace(/_/g, ' ')}, julgue o item a seguir.`, gabarito: 'C', comentario: 'Conceito inicial.' }]
+      };
+    }
+
+    return res.status(200).json({
+      success: true,
+      discipline: disc,
+      subarea: sub,
+      message: `Tópico "${sub.replace(/_/g, ' ')}" criado com sucesso!`
+    });
+  }
+
+  // 7.4 Criar Nova Disciplina na Nuvem
+  if (pathname === '/api/discipline/create' && req.method === 'POST') {
+    const body = req.body || {};
+    const disc = (body.discipline || '').trim().replace(/[\s/]/g, '_');
+    if (!disc) {
+      return res.status(400).json({ success: false, error: 'Nome da disciplina é obrigatório.' });
+    }
+    const norm = s => String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const dNorm = norm(disc);
+
+    cloudDeletedDisciplines.delete(dNorm);
+    cloudDeletedDisciplines.delete(disc.toLowerCase());
+
+    const cat = getCatalog();
+    if (!cat[disc]) cat[disc] = {};
+
+    return res.status(200).json({
+      success: true,
+      discipline: disc,
+      message: `Disciplina "${disc.replace(/_/g, ' ')}" criada com sucesso!`
     });
   }
 
@@ -1569,6 +1717,12 @@ Retorne APENAS um JSON no formato:
     const aulaMd = `# ${disc.replace(/_/g, ' ').toUpperCase()} - ${title}\n**Professor:** ${professor}  \n**Duração:** 50 minutos  \n**Categoria:** Edital de Concursos Públicos (${banca})  \n\n---\n\n${pilar1Text}\n\n---\n\n${pilar2Text}\n`;
 
     const cat = getCatalog();
+    const norm = s => String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    cloudDeletedTopics.delete(`${norm(disc)}:::${norm(sub)}`);
+    cloudDeletedTopics.delete(`${disc.toLowerCase()}:::${sub.toLowerCase()}`);
+    cloudDeletedDisciplines.delete(norm(disc));
+    cloudDeletedDisciplines.delete(disc.toLowerCase());
+
     if (!cat[disc]) cat[disc] = {};
     cat[disc][sub] = {
       meta: {
@@ -1621,6 +1775,12 @@ Retorne APENAS um JSON no formato:
     const aulaMd = `# ${disc.replace(/_/g, ' ').toUpperCase()} - ${title}\n**Professor:** ${professor}  \n${yt_url ? `**Link da Aula:** [Assistir no YouTube](${yt_url})  \n` : ''}**Duração:** 50 minutos  \n**Categoria:** Edital de Concursos Públicos (${banca})  \n\n---\n\n${generated.pilar1}\n\n---\n\n${generated.pilar2}\n`;
 
     const cat = getCatalog();
+    const norm = s => String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    cloudDeletedTopics.delete(`${norm(disc)}:::${norm(sub)}`);
+    cloudDeletedTopics.delete(`${disc.toLowerCase()}:::${sub.toLowerCase()}`);
+    cloudDeletedDisciplines.delete(norm(disc));
+    cloudDeletedDisciplines.delete(disc.toLowerCase());
+
     if (!cat[disc]) cat[disc] = {};
     cat[disc][sub] = {
       meta: {

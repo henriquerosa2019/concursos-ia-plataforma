@@ -1850,6 +1850,59 @@ def find_subarea_folder(discipline, subarea):
             return os.path.join(dp, subarea)
     return folder
 
+def find_discipline_folder(discipline):
+    folder = os.path.join(BASE_DIR, discipline)
+    if os.path.exists(folder) and os.path.isdir(folder):
+        return folder
+    import unicodedata
+    def norm(s):
+        return unicodedata.normalize('NFKD', str(s)).encode('ASCII', 'ignore').decode('ASCII').lower().replace('_', '').replace(' ', '')
+    d_norm = norm(discipline)
+    for d in os.listdir(BASE_DIR):
+        dp = os.path.join(BASE_DIR, d)
+        if os.path.isdir(dp) and norm(d) == d_norm:
+            return dp
+    return folder
+
+def remove_from_preseeded_files(discipline, subarea=None):
+    paths = [
+        os.path.join(BASE_DIR, 'preseeded_topics.json'),
+        os.path.join(BASE_DIR, 'public', 'preseeded_topics.json'),
+        os.path.join(BASE_DIR, 'api', 'preseeded_topics.json'),
+        os.path.join(BASE_DIR, '.vercel', 'output', 'static', 'preseeded_topics.json')
+    ]
+    import unicodedata
+    def norm(s):
+        return unicodedata.normalize('NFKD', str(s)).encode('ASCII', 'ignore').decode('ASCII').lower().replace('_', '').replace(' ', '')
+    d_norm = norm(discipline)
+    s_norm = norm(subarea) if subarea else None
+
+    for p in paths:
+        if os.path.exists(p):
+            try:
+                with open(p, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                changed = False
+                matched_d = None
+                for d_key in list(data.keys()):
+                    if norm(d_key) == d_norm:
+                        matched_d = d_key
+                        break
+                if matched_d:
+                    if s_norm:
+                        for s_key in list(data[matched_d].keys()):
+                            if norm(s_key) == s_norm:
+                                del data[matched_d][s_key]
+                                changed = True
+                    else:
+                        del data[matched_d]
+                        changed = True
+                if changed:
+                    with open(p, 'w', encoding='utf-8') as f:
+                        json.dump(data, f, ensure_ascii=False, indent=2)
+            except Exception:
+                pass
+
 def get_subarea_context(discipline, subarea):
     folder = find_subarea_folder(discipline, subarea)
     if not os.path.exists(folder):
@@ -3186,360 +3239,9 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 return
             self.send_response(200)
             self.send_header("Content-type", "text/plain; charset=utf-8")
-            self.end_headers()
-            self.wfile.write(content.encode("utf-8"))
-
-        # 11. Exportar Todos os Flashcards para Anki em lote
-        elif path == "/api/export-anki":
-            all_cards = []
-            disc = query.get("discipline", [""])[0]
-            sub = query.get("subarea", [""])[0]
-            
-            tree_data = scan_concursos_tree()["tree"]
-            for d_name, subs in tree_data.items():
-                if disc and d_name != disc:
-                    continue
-                for s_name in subs:
-                    if sub and s_name != sub:
-                        continue
-                    folder = os.path.join(BASE_DIR, d_name, s_name)
-                    if os.path.exists(folder):
-                        for f in os.listdir(folder):
-                            if "anki" in f.lower() and f.endswith(".txt"):
-                                try:
-                                    with open(os.path.join(folder, f), "r", encoding="utf-8", errors="ignore") as fc:
-                                        for line in fc:
-                                            if "\t" in line:
-                                                all_cards.append(line.strip())
-                                except Exception:
-                                    pass
-                                    
-            content = "\n".join(all_cards)
-            filename = f"Deck_{sub if sub else 'Concursos'}_Anki.txt"
-            self.send_response(200)
-            self.send_header("Content-type", "text/plain; charset=utf-8")
             self.send_header("Content-Disposition", f"attachment; filename=\"{filename}\"")
             self.end_headers()
             self.wfile.write(content.encode("utf-8"))
-
-        # 13. Renomear Disciplina
-        elif path == "/api/discipline/rename":
-            old_name = payload.get("old_name", "").strip().replace(" ", "_")
-            new_name = payload.get("new_name", "").strip().replace(" ", "_")
-            
-            if not old_name or not new_name:
-                self.send_response(400)
-                self.send_header("Content-type", "application/json; charset=utf-8")
-                self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": "Nome antigo e novo nome da matéria são obrigatórios."}, ensure_ascii=False).encode("utf-8"))
-                return
-                
-            if any(".." in x or "/" in x or "\\" in x for x in [old_name, new_name]):
-                self.send_response(400)
-                self.send_header("Content-type", "application/json; charset=utf-8")
-                self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": "Caracteres inválidos no nome da matéria."}, ensure_ascii=False).encode("utf-8"))
-                return
-                
-            old_path = os.path.join(BASE_DIR, old_name)
-            new_path = os.path.join(BASE_DIR, new_name)
-            
-            if not os.path.exists(old_path) or not os.path.isdir(old_path):
-                self.send_response(404)
-                self.send_header("Content-type", "application/json; charset=utf-8")
-                self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": f"Matéria '{old_name}' não encontrada."}, ensure_ascii=False).encode("utf-8"))
-                return
-                
-            if old_name != new_name:
-                if old_name.lower() == new_name.lower():
-                    # Renomeação apenas de maiúsculas/minúsculas no Windows NTFS
-                    temp_path = old_path + "_tmp_case_" + str(int(time.time() * 1000))
-                    try:
-                        os.rename(old_path, temp_path)
-                        os.rename(temp_path, new_path)
-                    except Exception as e_ren:
-                        self.send_response(500)
-                        self.send_header("Content-type", "application/json; charset=utf-8")
-                        self.end_headers()
-                        self.wfile.write(json.dumps({"success": False, "error": f"Erro ao renomear pasta: {str(e_ren)}"}, ensure_ascii=False).encode("utf-8"))
-                        return
-                else:
-                    if os.path.exists(new_path):
-                        self.send_response(400)
-                        self.send_header("Content-type", "application/json; charset=utf-8")
-                        self.end_headers()
-                        self.wfile.write(json.dumps({"success": False, "error": f"Já existe uma matéria com o nome '{new_name.replace('_', ' ')}'."}, ensure_ascii=False).encode("utf-8"))
-                        return
-                    try:
-                        os.rename(old_path, new_path)
-                    except Exception as e_ren:
-                        self.send_response(500)
-                        self.send_header("Content-type", "application/json; charset=utf-8")
-                        self.end_headers()
-                        self.wfile.write(json.dumps({"success": False, "error": f"Erro ao renomear pasta: {str(e_ren)}"}, ensure_ascii=False).encode("utf-8"))
-                        return
-                    
-                # Atualizar registros em progresso_estudos.json
-                try:
-                    prog = load_progress()
-                    prog_changed = False
-                    for ck, cv in prog.get("cards", {}).items():
-                        if cv.get("discipline") == old_name:
-                            cv["discipline"] = new_name
-                            prog_changed = True
-                    for q in prog.get("quiz_history", []):
-                        if q.get("discipline") == old_name:
-                            q["discipline"] = new_name
-                            prog_changed = True
-                    for s in prog.get("cebraspe_simulados", []):
-                        if s.get("discipline") == old_name:
-                            s["discipline"] = new_name
-                            prog_changed = True
-                    if prog_changed:
-                        save_progress(prog)
-                except Exception:
-                    pass
-
-            self.send_response(200)
-            self.send_header("Content-type", "application/json; charset=utf-8")
-            self.end_headers()
-            self.wfile.write(json.dumps({
-                "success": True, 
-                "old_name": old_name, 
-                "new_name": new_name,
-                "message": f"Disciplina renomeada para '{new_name.replace('_', ' ')}' com sucesso!"
-            }, ensure_ascii=False).encode("utf-8"))
-
-        # 14. Excluir Disciplina (e todos os seus tópicos)
-        elif path == "/api/discipline/delete":
-            disc = payload.get("discipline", "").strip().replace(" ", "_")
-            if not disc:
-                self.send_response(400)
-                self.end_headers()
-                self.wfile.write(b"Nome da disciplina obrigatorio.")
-                return
-                
-            if ".." in disc or "/" in disc or "\\" in disc:
-                self.send_response(400)
-                self.end_headers()
-                self.wfile.write(b"Nome de disciplina invalido.")
-                return
-                
-            disc_path = os.path.join(BASE_DIR, disc)
-            if not os.path.exists(disc_path) or not os.path.isdir(disc_path):
-                self.send_response(404)
-                self.end_headers()
-                self.wfile.write(f"Disciplina '{disc}' nao encontrada.".encode("utf-8"))
-                return
-                
-            try:
-                shutil.rmtree(disc_path)
-            except Exception as e_del:
-                self.send_response(500)
-                self.end_headers()
-                self.wfile.write(f"Erro ao remover disciplina: {str(e_del)}".encode("utf-8"))
-                return
-                
-            # Atualizar progresso_estudos.json
-            try:
-                prog = load_progress()
-                cards = prog.get("cards", {})
-                prog["cards"] = {k: v for k, v in cards.items() if v.get("discipline") != disc}
-                prog["quiz_history"] = [q for q in prog.get("quiz_history", []) if q.get("discipline") != disc]
-                prog["cebraspe_simulados"] = [s for s in prog.get("cebraspe_simulados", []) if s.get("discipline") != disc]
-                save_progress(prog)
-            except Exception:
-                pass
-
-            self.send_response(200)
-            self.send_header("Content-type", "application/json; charset=utf-8")
-            self.end_headers()
-            self.wfile.write(json.dumps({
-                "success": True, 
-                "discipline": disc,
-                "message": f"Disciplina '{disc.replace('_', ' ')}' excluída com sucesso!"
-            }, ensure_ascii=False).encode("utf-8"))
-
-        # 15. Renomear Tópico / Subárea
-        elif path == "/api/subarea/rename":
-            disc = payload.get("discipline", "").strip().replace(" ", "_")
-            old_name = payload.get("old_name", "").strip().replace(" ", "_")
-            new_name = payload.get("new_name", "").strip().replace(" ", "_")
-            
-            if not disc or not old_name or not new_name:
-                self.send_response(400)
-                self.send_header("Content-type", "application/json; charset=utf-8")
-                self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": "Matéria, nome antigo e novo nome do tópico são obrigatórios."}, ensure_ascii=False).encode("utf-8"))
-                return
-                
-            if any(".." in x or "/" in x or "\\" in x for x in [disc, old_name, new_name]):
-                self.send_response(400)
-                self.send_header("Content-type", "application/json; charset=utf-8")
-                self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": "Caracteres inválidos detectados no nome do tópico."}, ensure_ascii=False).encode("utf-8"))
-                return
-                
-            old_sub_path = os.path.join(BASE_DIR, disc, old_name)
-            new_sub_path = os.path.join(BASE_DIR, disc, new_name)
-            
-            if not os.path.exists(old_sub_path) or not os.path.isdir(old_sub_path):
-                self.send_response(404)
-                self.send_header("Content-type", "application/json; charset=utf-8")
-                self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": f"Tópico '{old_name}' não encontrado em '{disc}'."}, ensure_ascii=False).encode("utf-8"))
-                return
-                
-            if old_name != new_name:
-                if old_name.lower() == new_name.lower():
-                    # Renomeação apenas de maiúsculas/minúsculas no Windows NTFS
-                    temp_sub_path = old_sub_path + "_tmp_case_" + str(int(time.time() * 1000))
-                    try:
-                        os.rename(old_sub_path, temp_sub_path)
-                        os.rename(temp_sub_path, new_sub_path)
-                    except Exception as e_sub_ren:
-                        self.send_response(500)
-                        self.send_header("Content-type", "application/json; charset=utf-8")
-                        self.end_headers()
-                        self.wfile.write(json.dumps({"success": False, "error": f"Erro ao renomear tópico: {str(e_sub_ren)}"}, ensure_ascii=False).encode("utf-8"))
-                        return
-                else:
-                    if os.path.exists(new_sub_path):
-                        self.send_response(400)
-                        self.send_header("Content-type", "application/json; charset=utf-8")
-                        self.end_headers()
-                        self.wfile.write(json.dumps({"success": False, "error": f"Já existe um tópico com o nome '{new_name.replace('_', ' ')}' nesta matéria."}, ensure_ascii=False).encode("utf-8"))
-                        return
-                    try:
-                        os.rename(old_sub_path, new_sub_path)
-                    except Exception as e_sub_ren:
-                        self.send_response(500)
-                        self.send_header("Content-type", "application/json; charset=utf-8")
-                        self.end_headers()
-                        self.wfile.write(json.dumps({"success": False, "error": f"Erro ao renomear tópico: {str(e_sub_ren)}"}, ensure_ascii=False).encode("utf-8"))
-                        return
-                    
-                # Renomear arquivos internos que contenham o nome do tópico antigo
-                try:
-                    for fname in os.listdir(new_sub_path):
-                        if old_name in fname:
-                            new_fname = fname.replace(old_name, new_name)
-                            src_f = os.path.join(new_sub_path, fname)
-                            dst_f = os.path.join(new_sub_path, new_fname)
-                            if not os.path.exists(dst_f):
-                                os.rename(src_f, dst_f)
-                except Exception:
-                    pass
-                    
-                # Atualizar em progresso_estudos.json
-                try:
-                    prog = load_progress()
-                    prog_changed = False
-                    for ck, cv in prog.get("cards", {}).items():
-                        if cv.get("discipline") == disc and cv.get("subarea") == old_name:
-                            cv["subarea"] = new_name
-                            prog_changed = True
-                    for q in prog.get("quiz_history", []):
-                        if q.get("discipline") == disc and q.get("subarea") == old_name:
-                            q["subarea"] = new_name
-                            prog_changed = True
-                    for s in prog.get("cebraspe_simulados", []):
-                        if s.get("discipline") == disc and s.get("subarea") == old_name:
-                            s["subarea"] = new_name
-                            prog_changed = True
-                    if prog_changed:
-                        save_progress(prog)
-                except Exception:
-                    pass
-
-            self.send_response(200)
-            self.send_header("Content-type", "application/json; charset=utf-8")
-            self.end_headers()
-            self.wfile.write(json.dumps({
-                "success": True, 
-                "discipline": disc,
-                "old_name": old_name, 
-                "new_name": new_name,
-                "message": f"Tópico renomeado para '{new_name.replace('_', ' ')}' com sucesso!"
-            }, ensure_ascii=False).encode("utf-8"))
-
-        # 16. Excluir Tópico / Subárea
-        elif path == "/api/subarea/delete":
-            disc = payload.get("discipline", "").strip().replace(" ", "_")
-            sub = payload.get("subarea", "").strip().replace(" ", "_")
-            
-            if not disc or not sub:
-                self.send_response(400)
-                self.end_headers()
-                self.wfile.write(b"Disciplina e topico sao obrigatorios.")
-                return
-                
-            if any(".." in x or "/" in x or "\\" in x for x in [disc, sub]):
-                self.send_response(400)
-                self.end_headers()
-                self.wfile.write(b"Caracteres invalidos detectados.")
-                return
-                
-            sub_path = os.path.join(BASE_DIR, disc, sub)
-            if not os.path.exists(sub_path) or not os.path.isdir(sub_path):
-                self.send_response(404)
-                self.end_headers()
-                self.wfile.write(f"Topico '{sub}' nao encontrado em '{disc}'.".encode("utf-8"))
-                return
-                
-            try:
-                shutil.rmtree(sub_path)
-            except Exception as e_del:
-                self.send_response(500)
-                self.end_headers()
-                self.wfile.write(f"Erro ao excluir topico: {str(e_del)}".encode("utf-8"))
-                return
-                
-            # Atualizar progresso_estudos.json
-            try:
-                prog = load_progress()
-                cards = prog.get("cards", {})
-                prog["cards"] = {k: v for k, v in cards.items() if not (v.get("discipline") == disc and v.get("subarea") == sub)}
-                prog["quiz_history"] = [q for q in prog.get("quiz_history", []) if not (q.get("discipline") == disc and q.get("subarea") == sub)]
-                prog["cebraspe_simulados"] = [s for s in prog.get("cebraspe_simulados", []) if not (s.get("discipline") == disc and s.get("subarea") == sub)]
-                save_progress(prog)
-            except Exception:
-                pass
-
-            self.send_response(200)
-            self.send_header("Content-type", "application/json; charset=utf-8")
-            self.end_headers()
-            self.wfile.write(json.dumps({
-                "success": True, 
-                "discipline": disc,
-                "subarea": sub,
-                "message": f"Tópico '{sub.replace('_', ' ')}' excluído com sucesso!"
-            }, ensure_ascii=False).encode("utf-8"))
-
-        # 17. Criar Nova Disciplina
-        elif path == "/api/discipline/create":
-            disc = payload.get("discipline", "").strip().replace(" ", "_")
-            if not disc:
-                self.send_response(400)
-                self.end_headers()
-                self.wfile.write(b"Nome da disciplina obrigatorio.")
-                return
-            if ".." in disc or "/" in disc or "\\" in disc:
-                self.send_response(400)
-                self.end_headers()
-                self.wfile.write(b"Nome de disciplina invalido.")
-                return
-            disc_path = os.path.join(BASE_DIR, disc)
-            os.makedirs(disc_path, exist_ok=True)
-            self.send_response(200)
-            self.send_header("Content-type", "application/json; charset=utf-8")
-            self.end_headers()
-            self.wfile.write(json.dumps({
-                "success": True,
-                "discipline": disc,
-                "message": f"Disciplina '{disc.replace('_', ' ')}' criada com sucesso!"
-            }, ensure_ascii=False).encode("utf-8"))
 
         else:
             self.send_response(404)
@@ -3648,7 +3350,6 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             sub = payload.get("subarea", "").strip()
             target_folder = os.path.join(BASE_DIR, disc, sub)
             if os.path.exists(target_folder):
-                import shutil
                 try:
                     shutil.rmtree(target_folder)
                     res = {"success": True, "message": f"Tópico '{sub}' excluído com sucesso."}
@@ -4559,30 +4260,27 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             disc = payload.get("discipline", "").strip().replace(" ", "_")
             if not disc:
                 self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
-                self.wfile.write(b"Nome da disciplina obrigatorio.")
+                self.wfile.write(json.dumps({"success": False, "error": "Nome da disciplina é obrigatório."}, ensure_ascii=False).encode("utf-8"))
                 return
                 
             if ".." in disc or "/" in disc or "\\" in disc:
                 self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
-                self.wfile.write(b"Nome de disciplina invalido.")
+                self.wfile.write(json.dumps({"success": False, "error": "Nome de disciplina inválido."}, ensure_ascii=False).encode("utf-8"))
                 return
                 
-            disc_path = os.path.join(BASE_DIR, disc)
-            if not os.path.exists(disc_path) or not os.path.isdir(disc_path):
-                self.send_response(404)
-                self.end_headers()
-                self.wfile.write(f"Disciplina '{disc}' nao encontrada.".encode("utf-8"))
-                return
-                
-            try:
-                shutil.rmtree(disc_path)
-            except Exception as e_del:
-                self.send_response(500)
-                self.end_headers()
-                self.wfile.write(f"Erro ao remover disciplina: {str(e_del)}".encode("utf-8"))
-                return
+            disc_path = find_discipline_folder(disc)
+            if disc_path and os.path.exists(disc_path) and os.path.isdir(disc_path):
+                try:
+                    shutil.rmtree(disc_path)
+                except Exception as e_del:
+                    pass
+            
+            # Remover de preseeded_topics.json e espelhos
+            remove_from_preseeded_files(disc)
                 
             # Atualizar progresso_estudos.json
             try:
@@ -4624,8 +4322,9 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 self.wfile.write(json.dumps({"success": False, "error": "Caracteres inválidos detectados no nome do tópico."}, ensure_ascii=False).encode("utf-8"))
                 return
                 
-            old_sub_path = os.path.join(BASE_DIR, disc, old_name)
-            new_sub_path = os.path.join(BASE_DIR, disc, new_name)
+            old_sub_path = find_subarea_folder(disc, old_name)
+            disc_parent = find_discipline_folder(disc)
+            new_sub_path = os.path.join(disc_parent, new_name)
             
             if not os.path.exists(old_sub_path) or not os.path.isdir(old_sub_path):
                 self.send_response(404)
@@ -4714,30 +4413,34 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             
             if not disc or not sub:
                 self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
-                self.wfile.write(b"Disciplina e topico sao obrigatorios.")
+                self.wfile.write(json.dumps({"success": False, "error": "Disciplina e tópico são obrigatórios."}, ensure_ascii=False).encode("utf-8"))
                 return
                 
             if any(".." in x or "/" in x or "\\" in x for x in [disc, sub]):
                 self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
-                self.wfile.write(b"Caracteres invalidos detectados.")
+                self.wfile.write(json.dumps({"success": False, "error": "Caracteres inválidos detectados."}, ensure_ascii=False).encode("utf-8"))
                 return
                 
-            sub_path = os.path.join(BASE_DIR, disc, sub)
-            if not os.path.exists(sub_path) or not os.path.isdir(sub_path):
-                self.send_response(404)
-                self.end_headers()
-                self.wfile.write(f"Topico '{sub}' nao encontrado em '{disc}'.".encode("utf-8"))
-                return
-                
-            try:
-                shutil.rmtree(sub_path)
-            except Exception as e_del:
-                self.send_response(500)
-                self.end_headers()
-                self.wfile.write(f"Erro ao excluir topico: {str(e_del)}".encode("utf-8"))
-                return
+            sub_path = find_subarea_folder(disc, sub)
+            if sub_path and os.path.exists(sub_path) and os.path.isdir(sub_path):
+                try:
+                    shutil.rmtree(sub_path)
+                except Exception as e_del:
+                    try:
+                        import stat
+                        def on_rm_error(func, path, exc_info):
+                            os.chmod(path, stat.S_IWRITE)
+                            func(path)
+                        shutil.rmtree(sub_path, onerror=on_rm_error)
+                    except Exception:
+                        pass
+
+            # Remover de preseeded_topics.json e espelhos
+            remove_from_preseeded_files(disc, sub)
                 
             # Atualizar progresso_estudos.json
             try:
@@ -4765,13 +4468,15 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             disc = payload.get("discipline", "").strip().replace(" ", "_")
             if not disc:
                 self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
-                self.wfile.write(b"Nome da disciplina obrigatorio.")
+                self.wfile.write(json.dumps({"success": False, "error": "Nome da disciplina é obrigatório."}, ensure_ascii=False).encode("utf-8"))
                 return
             if ".." in disc or "/" in disc or "\\" in disc:
                 self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
-                self.wfile.write(b"Nome de disciplina invalido.")
+                self.wfile.write(json.dumps({"success": False, "error": "Nome de disciplina inválido."}, ensure_ascii=False).encode("utf-8"))
                 return
             disc_path = os.path.join(BASE_DIR, disc)
             os.makedirs(disc_path, exist_ok=True)
@@ -4782,6 +4487,57 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 "success": True,
                 "discipline": disc,
                 "message": f"Disciplina '{disc.replace('_', ' ')}' criada com sucesso!"
+            }, ensure_ascii=False).encode("utf-8"))
+
+        # 18. Criar Novo Tópico / Subárea
+        elif path == "/api/subarea/create" or path == "/api/topic/create":
+            disc = payload.get("discipline", "").strip().replace(" ", "_")
+            sub = payload.get("subarea", "").strip().replace(" ", "_")
+            if not disc or not sub:
+                self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": "Disciplina e tópico são obrigatórios."}, ensure_ascii=False).encode("utf-8"))
+                return
+            if any(".." in x or "/" in x or "\\" in x for x in [disc, sub]):
+                self.send_response(400)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": "Caracteres inválidos detectados."}, ensure_ascii=False).encode("utf-8"))
+                return
+            disc_parent = find_discipline_folder(disc)
+            sub_path = os.path.join(disc_parent, sub)
+            os.makedirs(sub_path, exist_ok=True)
+
+            aula_f = os.path.join(sub_path, f"Aula_01_{sub}.md")
+            if not os.path.exists(aula_f):
+                with open(aula_f, "w", encoding="utf-8") as f:
+                    f.write(f"# {disc.replace('_', ' ').upper()} - {sub.replace('_', ' ')}\n**Professor:** Prof. Titular  \n**Categoria:** Edital de Concursos Públicos  \n\n---\n\n## 1. Resumo Estruturado\nUtilize o assistente de IA ou adicione os materiais desta subárea.\n")
+
+            cards_f = os.path.join(sub_path, f"Flashcards_{sub}_Anki.txt")
+            if not os.path.exists(cards_f):
+                with open(cards_f, "w", encoding="utf-8") as f:
+                    f.write(f"O que é {sub.replace('_', ' ')}?\tConceito fundamental para concursos públicos.\n")
+
+            quiz_f = os.path.join(sub_path, f"Simulado_{sub}_Questoes.json")
+            if not os.path.exists(quiz_f):
+                with open(quiz_f, "w", encoding="utf-8") as f:
+                    json.dump([{
+                        "id": 1,
+                        "tipo": "certo_errado",
+                        "enunciado": f"A respeito de {sub.replace('_', ' ')}, julgue a afirmativa correta.",
+                        "gabarito": "C",
+                        "comentario": f"Conceito inicial de {sub.replace('_', ' ')}."
+                    }], f, ensure_ascii=False, indent=2)
+
+            self.send_response(200)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "success": True,
+                "discipline": disc,
+                "subarea": sub,
+                "message": f"Tópico '{sub.replace('_', ' ')}' criado com sucesso!"
             }, ensure_ascii=False).encode("utf-8"))
 
         else:

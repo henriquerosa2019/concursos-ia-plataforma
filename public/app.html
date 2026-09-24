@@ -7951,20 +7951,36 @@
         });
         let data;
         try {
-          data = await resp.json();
-        } catch(e) {
-          const txt = await resp.text().catch(() => '');
-          data = { success: false, error: txt || "Falha na comunicação com o servidor ao processar o PDF." };
+          const resText = await resp.text();
+          try {
+            data = JSON.parse(resText);
+          } catch(pe) {
+            data = { success: false, error: resText || ("Erro no servidor (HTTP " + resp.status + ")") };
+          }
+        } catch(fe) {
+          data = { success: false, error: fe.message || "Falha na comunicação com o servidor ao processar o PDF." };
         }
+
         if (data.success) {
           if (isTrial && typeof getTrialImportCount === 'function') {
             localStorage.setItem('concursos_trial_imported_count', String(getTrialImportCount() + 1));
           }
           closeModal('modalImportLesson');
           showToast(`🎉 PDF importado! ${data.num_pages || 1} página(s) processadas e os 4 Pilares gerados.`, '📄');
-          await loadStructureAndSidebar();
+          
           const targetDisc = data.discipline || disc.replace(/\s+/g, '_');
           const targetSub = data.subarea || sub.replace(/\s+/g, '_');
+
+          if (data.lesson) {
+            try {
+              let localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
+              if (!localLessons[targetDisc]) localLessons[targetDisc] = {};
+              localLessons[targetDisc][targetSub] = data.lesson;
+              localStorage.setItem('concursos_local_lessons', JSON.stringify(localLessons));
+            } catch(e) {}
+          }
+
+          await loadStructureAndSidebar();
           
           // Expandir grupo na barra lateral para o aluno ver o novo tópico
           const grpId = 'grp-' + targetDisc.toLowerCase().replace(/[^a-z0-9]/g, '-');
@@ -8000,16 +8016,39 @@
             save_to_db: !isTrial
           })
         });
-        const data = await resp.json();
+
+        let data;
+        try {
+          const resText = await resp.text();
+          try {
+            data = JSON.parse(resText);
+          } catch(pe) {
+            data = { success: false, error: resText || ("Erro no servidor (HTTP " + resp.status + ")") };
+          }
+        } catch(fe) {
+          data = { success: false, error: fe.message || "Falha na comunicação com o servidor ao processar a aula." };
+        }
+
         if (data.success) {
           if (isTrial && typeof getTrialImportCount === 'function') {
             localStorage.setItem('concursos_trial_imported_count', String(getTrialImportCount() + 1));
           }
           closeModal('modalImportLesson');
           showToast("🎉 Aula cadastrada! Todos os 4 Pilares gerados com sucesso.", "📥");
-          await loadStructureAndSidebar();
+          
           const targetDisc = data.discipline || disc.replace(/\s+/g, '_');
           const targetSub = data.subarea || sub.replace(/\s+/g, '_');
+
+          if (data.lesson) {
+            try {
+              let localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
+              if (!localLessons[targetDisc]) localLessons[targetDisc] = {};
+              localLessons[targetDisc][targetSub] = data.lesson;
+              localStorage.setItem('concursos_local_lessons', JSON.stringify(localLessons));
+            } catch(e) {}
+          }
+
+          await loadStructureAndSidebar();
           
           const grpId = 'grp-' + targetDisc.toLowerCase().replace(/[^a-z0-9]/g, '-');
           const grpEl = document.getElementById(grpId);
@@ -8149,6 +8188,27 @@
       console.warn("Falha ao carregar estrutura do backend, usando catalogo padrao:", e);
       globalTreeCache = DEFAULT_CONCURSOS_TREE;
     }
+
+    try {
+      const localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
+      for (const [ldisc, lsubs] of Object.entries(localLessons)) {
+        if (!globalTreeCache[ldisc]) globalTreeCache[ldisc] = {};
+        for (const [lsub, ldata] of Object.entries(lsubs)) {
+          const cCount = (ldata.flashcards || []).length;
+          const qCount = (ldata.quiz || []).length;
+          globalTreeCache[ldisc][lsub] = {
+            cards_count: cCount,
+            quiz_count: qCount,
+            files_count: 3,
+            files: [
+              { name: `Aula_01_${lsub}.md`, type: 'markdown', size: (ldata.meta?.markdown_content || '').length },
+              { name: `Flashcards_${lsub}_Anki.txt`, type: 'cards', cards_count: cCount },
+              { name: `Simulado_${lsub}_Questoes.json`, type: 'quiz', quiz_count: qCount }
+            ]
+          };
+        }
+      }
+    } catch(e) {}
 
     renderSidebar(globalTreeCache);
     updateDisciplineSelects(globalTreeCache);
@@ -8575,6 +8635,15 @@
       } catch(e) {}
 
       if (!meta || !meta.markdown_content) {
+        try {
+          const localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
+          if (localLessons[disc] && localLessons[disc][sub]) {
+            meta = localLessons[disc][sub].meta;
+          }
+        } catch(e) {}
+      }
+
+      if (!meta || !meta.markdown_content) {
         if (!globalPreseededCatalog) await loadPreseededCatalog();
         meta = globalPreseededCatalog?.[disc]?.[sub]?.meta;
       }
@@ -8827,6 +8896,13 @@
     } catch(e) {}
 
     if (!cards || cards.length === 0) {
+      try {
+        const localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
+        cards = localLessons?.[currentDiscipline]?.[currentSubarea]?.flashcards;
+      } catch(e) {}
+    }
+
+    if (!cards || cards.length === 0) {
       if (!globalPreseededCatalog) await loadPreseededCatalog();
       cards = globalPreseededCatalog?.[currentDiscipline]?.[currentSubarea]?.flashcards || [];
     }
@@ -8859,6 +8935,13 @@
       const resp = await fetch(`/api/quiz?discipline=${encodeURIComponent(currentDiscipline)}&subarea=${encodeURIComponent(currentSubarea)}`);
       if (resp.ok) questions = await resp.json();
     } catch(e) {}
+
+    if (!questions || questions.length === 0) {
+      try {
+        const localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
+        questions = localLessons?.[currentDiscipline]?.[currentSubarea]?.quiz;
+      } catch(e) {}
+    }
 
     if (!questions || questions.length === 0) {
       if (!globalPreseededCatalog) await loadPreseededCatalog();

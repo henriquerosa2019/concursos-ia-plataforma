@@ -92,8 +92,9 @@ export default async function handler(req, res) {
     return;
   }
 
-  const url = new URL(req.url, `https://${req.headers.host || 'localhost'}`);
-  const pathname = url.pathname;
+  try {
+    const url = new URL(req.url, `https://${req.headers.host || 'localhost'}`);
+    const pathname = url.pathname;
 
   // 1. Status Supabase na Nuvem
   if (pathname === '/api/supabase/status') {
@@ -1346,7 +1347,7 @@ ${context.slice(0, 10000)}`;
       }
     ];
 
-    return { pilar1, pilar2, cards, quiz };
+    return { pilar1: p1, pilar2: p2, cards, quiz };
   }
 
   // 17.1 Importar Arquivo PDF e Gerar os 4 Pilares (Vercel Serverless)
@@ -1482,6 +1483,7 @@ Retorne APENAS um JSON no formato:
       chars_count: extractedText.length,
       cards_count: cards.length,
       quiz_count: questions.length,
+      lesson: cat[disc][sub],
       message: `PDF importado com sucesso (${numPages} páginas)! Todos os 4 Pilares foram gerados.`
     });
   }
@@ -1529,6 +1531,7 @@ Retorne APENAS um JSON no formato:
       subarea: sub,
       cards_count: generated.cards.length,
       quiz_count: generated.quiz.length,
+      lesson: cat[disc][sub],
       message: 'Aula cadastrada com sucesso! Todos os 4 Pilares foram gerados.'
     });
   }
@@ -1633,11 +1636,18 @@ Retorne APENAS um JSON no formato:
     });
   }
 
-  // Default fallback
-  return res.status(200).json({
-    success: true,
-    environment: 'vercel-serverless',
-    timestamp: new Date().toISOString()
-  });
+    // Default fallback
+    return res.status(200).json({
+      success: true,
+      environment: 'vercel-serverless',
+      timestamp: new Date().toISOString()
+    });
+  } catch (err) {
+    console.error('Unhandled API Error in Vercel Serverless:', err);
+    return res.status(500).json({
+      success: false,
+      error: err?.message || 'Erro interno no servidor ao processar a requisição.'
+    });
+  }
 }
 

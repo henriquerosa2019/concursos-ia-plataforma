@@ -1352,38 +1352,48 @@ ${context.slice(0, 10000)}`;
       return true;
     });
 
-    // 1. Identificar Mnemônicos do Autor (ATENÇÃO ESPECIAL DA REGRA 10)
-    const mnemonicsFound = [];
+    // 1. Identificar Mnemônicos do Autor (REGRA 10 - SOMENTE ESTRUTURA DELIBERADA REAL)
+    const authorMnemonics = [];
+    const knownMnemonicAcronyms = /\b(COFIFOMOB|LIMPE|SOCIDIVAPU|RAÇÃO|FO-CO|MP-COM-VOTO)\b/i;
     const mnemonicRegex = /\b([A-Z]{4,10}|[A-Z]-[A-Z]-[A-Z]|[A-Z0-9\+]{3,8})\b/g;
-    const knownKeywords = /(?:mnem[oô]nico|macete|decore|memorize|associa[cç][aã]o|lembre-se|dica)/i;
-    
+
     rawSentences.forEach((s, idx) => {
       const pageNum = Math.min(numPages, Math.floor((idx / (rawSentences.length || 1)) * numPages) + 1);
-      if (knownKeywords.test(s) || /\b(COFIFOMOB|LIMPE|SOCIDIVAPU|RAÇÃO|FO-CO|MP-COM-VOTO)\b/i.test(s)) {
-        const match = s.match(mnemonicRegex);
-        const mText = match ? match[0].toUpperCase() : 'MACETE DE PROVA';
-        mnemonicsFound.push({
-          mnemonico: mText,
-          memoriza: s.slice(0, 160),
-          como_utilizar: `Aplicar para rápida identificação e memorização em questões de ${cleanBanca}.`,
+      const isExplicitMnem = /(?:mnem[oô]nico|acr[oô]nimo|sigla\s+para\s+memorizar)/i.test(s);
+      const hasKnown = knownMnemonicAcronyms.test(s);
+      
+      if (hasKnown || isExplicitMnem) {
+        const matches = s.match(hasKnown ? knownMnemonicAcronyms : mnemonicRegex);
+        if (matches && matches[0]) {
+          const mText = matches[0].toUpperCase();
+          if (mText !== 'MACETE DE PROVA' && !authorMnemonics.some(x => x.mnemonico === mText)) {
+            authorMnemonics.push({
+              mnemonico: mText,
+              memoriza: s.slice(0, 160),
+              como_utilizar: `Aplicar para rápida identificação e memorização em questões de ${cleanBanca}.`,
+              pagina: `Pág. ${String(pageNum).padStart(2, '0')}`,
+              source_type: 'AUTHOR'
+            });
+          }
+        }
+      }
+    });
+
+    // 2. Identificar Dicas do Autor (expressas no texto, sem serem mnemônicos)
+    const authorTips = [];
+    const tipKeywords = /(?:dica\s+do\s+professor|o\s+aluno\s+deve|recomenda-se|lembre-se\s+que|observe\s+que|aten[cç][aã]o\s+ao\s+detalhe)/i;
+    rawSentences.forEach((s, idx) => {
+      const pageNum = Math.min(numPages, Math.floor((idx / (rawSentences.length || 1)) * numPages) + 1);
+      if (tipKeywords.test(s) && authorTips.length < 3) {
+        authorTips.push({
+          dica: s,
           pagina: `Pág. ${String(pageNum).padStart(2, '0')}`,
           source_type: 'AUTHOR'
         });
       }
     });
 
-    // Se o PDF não contiver mnemônico explícito, fornecer mnemônico auxiliar da IA com rótulo estrito
-    if (mnemonicsFound.length === 0) {
-      mnemonicsFound.push({
-        mnemonico: sub.slice(0, 4).toUpperCase() + '-FIX',
-        memoriza: `Elementos essenciais e diretrizes normativas de ${subName}.`,
-        como_utilizar: `Mnemônico sugerido pela IA para memorização acelerada dos requisitos principais.`,
-        pagina: `Pág. 01`,
-        source_type: 'AI_SUGGESTION'
-      });
-    }
-
-    // 2. Identificar Pegadinhas e Alertas do Autor
+    // 3. Identificar Pegadinhas e Alertas do Autor
     const authorTraps = [];
     const alertKeywords = /(?:cuidado|aten[cç][aã]o|pegadinha|n[aã]o confunda|n[aã]o se esque[cç]a|erro comum|cai em prova|a banca costuma|a banca pode|n[aã]o [eé]|diferente de|exceto|somente|sempre|nunca|apenas|vedado|proibido|nulo)/i;
 
@@ -1399,9 +1409,11 @@ ${context.slice(0, 10000)}`;
       }
     });
 
-    // 3. Estruturação de Knowledge Units (Base de Conhecimento Estruturada)
+    // 4. Estruturação de Knowledge Units (Base de Conhecimento Estruturada)
     const knowledgeUnits = [];
-    mnemonicsFound.forEach(m => {
+    
+    // Se houver mnemônico autêntico do autor
+    authorMnemonics.forEach(m => {
       knowledgeUnits.push({
         conceito: `Mnemônico: ${m.mnemonico}`,
         definicao: m.memoriza,
@@ -1418,7 +1430,28 @@ ${context.slice(0, 10000)}`;
         fonte: title,
         pagina: m.pagina,
         secao: 'Técnicas de Memorização',
-        source_type: m.source_type
+        source_type: 'AUTHOR'
+      });
+    });
+
+    authorTips.forEach(tip => {
+      knowledgeUnits.push({
+        conceito: `Dica Pedagógica em ${subName}`,
+        definicao: tip.dica,
+        explicacao: `Orientação expressa do autor para resolução de questões`,
+        exemplo: `Aplicação prática da orientação em itens de prova`,
+        excecao: `Limites de incidência da dica`,
+        comparacao: `Orientação do Autor × Erro do Candidato`,
+        palavras_chave: ['dica', subName, discName],
+        mnemonico: null,
+        pegadinha: null,
+        dica_autor: tip.dica,
+        potencial_cobranca: 'ALTO',
+        importancia_pedagogica: 'ELEVADA',
+        fonte: title,
+        pagina: tip.pagina,
+        secao: 'Dicas do Autor',
+        source_type: 'AUTHOR'
       });
     });
 
@@ -1443,20 +1476,52 @@ ${context.slice(0, 10000)}`;
       });
     });
 
-    // 4. Montagem do Pilar 1 (Resumo Estruturado com Metadados e Mnemônicos)
+    // Se nenhum mnemônico nem alerta do autor for identificado na fonte, adicionar unidade conceitual da matéria
+    if (knowledgeUnits.length === 0) {
+      knowledgeUnits.push({
+        conceito: `Conceito Basilar de ${subName}`,
+        definicao: rawSentences[0] || `Regras e diretrizes fundamentais da matéria.`,
+        explicacao: `Aspectos doutrinários e normativos basilares com alta recorrência.`,
+        exemplo: `Cobrança típica na banca ${cleanBanca}`,
+        excecao: `Hipóteses excepcionais previstas em lei`,
+        comparacao: `Regra Geral × Exceções`,
+        palavras_chave: [subName, discName],
+        mnemonico: null,
+        pegadinha: `Substituição de preceitos normativos por afirmações genéricas`,
+        dica_autor: null,
+        potencial_cobranca: 'ALTO',
+        importancia_pedagogica: 'FUNDAMENTAL',
+        fonte: title,
+        pagina: 'Pág. 01',
+        secao: 'Fundamentos e Definições',
+        source_type: 'AUTHOR'
+      });
+    }
+
+    // 5. Montagem do Pilar 1 (Resumo & Síntese Pedagógica de Alto Valor - Regra 10)
     let p1 = `## 1. Resumo Estruturado e Conceitos-Chave\n\n`;
     p1 += `> 👨‍🏫 **FONTE DO CONHECIMENTO:** ${title}  \n`;
     p1 += `> **Professor/Autor:** ${professor} | **Material:** PDF Oficial (${numPages} págs.) | **Banca Alvo:** ${cleanBanca}\n\n`;
 
-    // Bloco de Mnemônicos do Autor (Regra 10)
-    p1 += `### 💡 Mnemônicos & Macetes de Memorização\n`;
-    mnemonicsFound.forEach(m => {
-      const isAuth = m.source_type === 'AUTHOR';
-      p1 += `> 📌 **${isAuth ? '👨‍🏫 [MATERIAL DO AUTOR - ' + m.pagina + ']' : '🤖 [MNEMÔNICO SUGERIDO PELA IA]'}**  \n`;
-      p1 += `> **Mnemônico:** \`${m.mnemonico}\`  \n`;
-      p1 += `> - **O que memoriza:** ${m.memoriza}  \n`;
-      p1 += `> - **Como utilizar em prova:** ${m.como_utilizar}\n\n`;
-    });
+    // Bloco de Mnemônicos do Autor (INCLUSÃO ESTRITAMENTE DINÂMICA: apenas se existir na fonte)
+    if (authorMnemonics.length > 0) {
+      p1 += `### 🧠 Mnemônicos & Técnicas de Memorização do Autor\n`;
+      authorMnemonics.forEach(m => {
+        p1 += `> 📌 **👨‍🏫 [MATERIAL DO AUTOR - ${m.pagina}]**  \n`;
+        p1 += `> **Mnemônico:** \`${m.mnemonico}\`  \n`;
+        p1 += `> - **O que memoriza:** ${m.memoriza}  \n`;
+        p1 += `> - **Como utilizar em prova:** ${m.como_utilizar}\n\n`;
+      });
+    }
+
+    // Bloco de Dicas do Autor (se houver na fonte)
+    if (authorTips.length > 0) {
+      p1 += `### 💡 Dicas do Autor 👨‍🏫 [MATERIAL DO AUTOR]\n`;
+      authorTips.forEach(t => {
+        p1 += `- **Orientação (${t.pagina}):** ${t.dica}\n`;
+      });
+      p1 += `\n`;
+    }
 
     p1 += `### A. Fundamentos e Definições Essenciais 👨‍🏫 [MATERIAL DO PROFESSOR]\n`;
     p1 += `Aspectos conceituais e normativos extraídos diretamente do material de estudo:\n\n`;
@@ -1487,19 +1552,40 @@ ${context.slice(0, 10000)}`;
       p1 += `- **Limites da Atuação:** A discricionariedade não dispensa a motivação explícita dos atos.\n`;
     }
 
+    // Bloco de Alertas do Autor (se houver na fonte)
+    if (authorTraps.length > 0) {
+      p1 += `\n### ⚠️ Alertas & Pegadinhas do Autor 👨‍🏫 [MATERIAL DO AUTOR]\n`;
+      authorTraps.forEach(tr => {
+        p1 += `- **Ponto Crítico (${tr.pagina}):** ${tr.alerta}\n`;
+      });
+      p1 += `\n`;
+    }
+
+    // Tabela / Quadro Esquemático com rótulo obrigatório de síntese da IA e colunas neutras
     p1 += `\n### C. Quadro Esquemático de Retenção Rápida\n\n`;
-    p1 += `| Aspecto Avaliado | Regra Geral do Autor | Ponto Crítico de Atenção |\n`;
+    p1 += `*Síntese estruturada pela IA a partir do conteúdo da fonte.*\n\n`;
+    p1 += `| Aspecto Avaliado | Conteúdo da Norma / Fonte | Ponto de Atenção para Concurso |\n`;
     p1 += `| :--- | :--- | :--- |\n`;
     p1 += `| **Incidência Normativa** | Aplicação estrita aos preceitos da lei | Atenção a hipóteses excepcionais na banca ${cleanBanca} |\n`;
     p1 += `| **Margem de Escolha** | Inexistente nos atos vinculados | Discricionariedade restrita a conveniência e oportunidade |\n`;
     p1 += `| **Controle Judicial** | Pleno sobre a legalidade e moralidade | Vedado controle sobre o mérito administrativo |\n`;
 
-    // 5. Montagem do Pilar 2 (Raio-X com Rastreabilidade Estrita: Autor vs IA)
+    // Se o autor não forneceu mnemônico, a IA pode sugerir um isolado e rotulado explicitamente
+    if (authorMnemonics.length === 0) {
+      const aiMnem = sub.slice(0, 4).toUpperCase();
+      p1 += `\n### 🤖 Mnemônico Sugerido pela IA\n`;
+      p1 += `> 📌 **🤖 [MNEMÔNICO SUGERIDO PELA IA]**  \n`;
+      p1 += `> **Mnemônico:** \`${aiMnem}-FIX\`  \n`;
+      p1 += `> - **O que memoriza:** Síntese didática dos requisitos e preceitos fundamentais de ${subName}.  \n`;
+      p1 += `> - **Aplicação sugerida:** Mnemônico auxiliar sugerido pela IA para fixação rápida (não presente no PDF original).\n`;
+    }
+
+    // 6. Montagem do Pilar 2 (Raio-X com Rastreabilidade Estrita: Autor vs IA)
     let p2 = `## 2. Raio-X de Banca & Pegadinhas Mais Frequentes (${cleanBanca})\n\n`;
 
-    // PARTE 1: Pegadinhas do Autor
-    p2 += `### 🚨 PARTE 1 — Pegadinhas e Alertas do Autor 👨‍🏫 [MATERIAL DO AUTOR]\n\n`;
+    // PARTE 1: Pegadinhas do Autor (se identificadas no PDF)
     if (authorTraps.length > 0) {
+      p2 += `### 🚨 PARTE 1 — Pegadinhas e Alertas do Autor 👨‍🏫 [MATERIAL DO AUTOR]\n\n`;
       authorTraps.forEach((t, i) => {
         p2 += `#### ⚠️ Ponto de Alerta ${i+1}: ${t.pagina}\n`;
         p2 += `1. **O conhecimento correto:** ${t.conceito}\n`;
@@ -1507,12 +1593,6 @@ ${context.slice(0, 10000)}`;
         p2 += `3. **Como a banca ${cleanBanca} explora essa confusão:** Formulação de assertiva categórica omitindo o requisito específico.\n`;
         p2 += `4. **Como o aluno deve evitar o erro:** Isolar o comando da questão e aplicar o alerta ensinado pelo professor na ${t.pagina}.\n\n`;
       });
-    } else {
-      p2 += `#### ⚠️ Ponto de Alerta 1: Pág. 01\n`;
-      p2 += `1. **O conhecimento correto:** Cada instituto possui competência, finalidade e limites próprios definidos pelo autor.\n`;
-      p2 += `2. **O erro ou confusão alertada pelo autor:** Confundir institutos correlatos que compartilham a mesma matéria.\n`;
-      p2 += `3. **Como a banca ${cleanBanca} explora essa confusão:** Atribuir as características de uma espécie ao conceito de outra.\n`;
-      p2 += `4. **Como o aluno deve evitar o erro:** Isolar o sujeito e aplicar a regra prática do material do autor.\n\n`;
     }
 
     // PARTE 2: Análise Complementar de Banca da IA
@@ -1529,19 +1609,27 @@ ${context.slice(0, 10000)}`;
     p2 += `3. **Como uma questão poderia explorar essa confusão:** Afirmar que ato discricionário inconveniente pode ser revogado judicialmente.\n`;
     p2 += `4. **Como o aluno deve evitar o erro:** A Administração anula (ilegalidade) e revoga (conveniência); o Judiciário apenas anula (ilegalidade). O Judiciário nunca revoga ato de outro Poder.\n`;
 
-    // 6. Montagem dos Flashcards (Pilar 3) com identificação de origem
+    // 7. Montagem dos Flashcards (Pilar 3) com identificação correta de origem
+    const firstCardQuestion = authorMnemonics.length > 0
+      ? `👨‍🏫 [${authorMnemonics[0].pagina}] Qual o mnemônico do tema ensinado pelo autor no material?`
+      : `👨‍🏫 [Pág. 01] Qual a regra geral e conceito basilar de ${subName} segundo a fonte?`;
+    
+    const firstCardAnswer = authorMnemonics.length > 0
+      ? `Mnemônico: ${authorMnemonics[0].mnemonico} — ${authorMnemonics[0].memoriza} (Ensinado pelo Autor).`
+      : `Regra basilar extraída da fonte: subordinação aos limites legais e princípios da administração pública, sem margem discricionária fora da lei.`;
+
     const cards = [
       {
-        q: `👨‍🏫 [${mnemonicsFound[0].pagina}] Qual o mnemônico do tema ensinado no material?`,
-        a: `Mnemônico: ${mnemonicsFound[0].mnemonico} — ${mnemonicsFound[0].memoriza} (${mnemonicsFound[0].source_type === 'AUTHOR' ? 'Ensinado pelo Autor' : 'Sugerido pela IA'}).`
+        q: firstCardQuestion,
+        a: firstCardAnswer
       },
       {
         q: `👨‍🏫 [Pág. 01] Qual a regra geral de aplicação deste tópico em concursos públicos?`,
         a: `Exige aplicação estrita aos limites normativos e subordinação aos princípios expressos do ordenamento jurídico.`
       },
       {
-        q: `🚨 [Pegadinha do Autor] Qual é a armadilha mais frequente alertada pelo professor?`,
-        a: `A inversão entre regras gerais e exceções normativas, bem como a troca de conceitos entre espécies semelhantes.`
+        q: authorTraps.length > 0 ? `👨‍🏫 [${authorTraps[0].pagina}] Qual é a armadilha do tema alertada pelo autor?` : `🚨 [Alerta de Banca] Qual é o erro mais comum em questões de ${cleanBanca}?`,
+        a: authorTraps.length > 0 ? authorTraps[0].alerta : `A inversão entre regras gerais e exceções normativas, bem como a troca de conceitos entre espécies semelhantes.`
       },
       {
         q: `🤖 [Análise de Banca IA] Como identificar assertivas falsas com termos restritivos na ${cleanBanca}?`,
@@ -1557,7 +1645,7 @@ ${context.slice(0, 10000)}`;
       }
     ];
 
-    // 7. Montagem do Quiz (Pilar 4)
+    // 8. Montagem do Quiz (Pilar 4)
     const isCebraspe = cleanBanca.toLowerCase().includes('cebraspe');
     const quiz = [
       {
@@ -1646,31 +1734,81 @@ ${context.slice(0, 10000)}`;
         const isCebraspe = banca.toLowerCase().includes('cebraspe');
         const optionsExample = isCebraspe ? '["(C) CERTO", "(E) ERRADO"]' : '["A) ...", "B) ...", "C) ...", "D) ...", "E) ..."]';
         const prompt = `Você é um professor titular e elaborador sênior para concursos da banca ${banca}.
-DIRETRIZ MESTRA (REGRA 10): O PDF é uma FONTE DE CONHECIMENTO. Preserve todos os elementos pedagógicos e distinga rigorosamente o que é do autor do que é análise da IA.
 
-INSTRUÇÕES PEDAGÓGICAS E RASTREABILIDADE:
-1. Mnemônicos do Autor (ATENÇÃO ESPECIAL): Identifique e preserve rigorosamente TODOS os mnemônicos, acrônimos e macetes do autor com página de origem. NUNCA atribua ao autor um mnemônico criado pela IA. Se você sugerir um, rotule como "Mnemônico sugerido pela IA".
-2. Pegadinhas e Alertas do Autor: Identifique alertas ("cuidado", "não confunda", "pegadinha", "atenção", "palavras restritivas") e referencie com 👨‍🏫 [MATERIAL DO AUTOR - Pág. XX].
-3. Rótulos Visíveis: Separe claramente o conteúdo do autor de sugestões da IA: 👨‍🏫 [MATERIAL DO AUTOR - Pág. XX] vs 🤖 [ANÁLISE COMPLEMENTAR DA IA].
-4. Gere o Pilar 1: Resumo Estruturado com metadados da fonte, caixa destacada de mnemônicos do autor, seções normativas (### A., ### B.) e quadro esquemático em tabela markdown.
-5. Gere o Pilar 2: Raio-X de Banca dividido em:
-   - PARTE 1: Pegadinhas e Alertas do Autor 👨‍🏫 [MATERIAL DO AUTOR]
-   - PARTE 2: Análise Complementar de Banca da IA 🤖 [INSIGHT PEDAGÓGICO COMPLEMENTAR]
-   (ambos seguindo os 4 passos: 1. O conhecimento correto, 2. O erro ou confusão provável/alertada, 3. Como uma questão poderia explorar, 4. Como o aluno deve evitar o erro).
-6. Gere 6 Flashcards no formato Anki identificando a origem (👨‍🏫 Pág. XX ou 🤖 IA).
-7. Gere 5 Questões inéditas no formato da banca ${banca} com gabarito fundamentado.
-8. Gere a lista de knowledge_units (unidades de conhecimento estruturadas) contendo: conceito, definicao, explicacao, exemplo, excecao, comparacao, palavras_chave, mnemonico, pegadinha, dica_autor, potencial_cobranca, importancia_pedagogica, fonte, pagina, secao, source_type ("AUTHOR" ou "AI_SUGGESTION").
+DIRETRIZ MESTRA (REGRA 10): PILAR 1 — RESUMO & SÍNTESE PEDAGÓGICA DE ALTO VALOR PARA CONCURSOS
+O PDF é a autoridade e FONTE DO CONHECIMENTO.
+Sua missão: Transformar o conteúdo do PDF em um material de estudo claro, completo, organizado, didático e de alto valor agregado.
+O resultado NÃO deve ser uma simples redução do PDF, mas uma reconstrução pedagógica do conhecimento presente na fonte.
+Fórmula fundamental: Fidelidade à fonte + reconstrução pedagógica + enriquecimento estrutural − invenção.
+A fonte original é a autoridade. Não invente conteúdo para tornar o resumo aparentemente mais rico.
+
+1. REGRA FUNDAMENTAL DE FIDELIDADE
+Utilize somente informações efetivamente presentes na fonte ou claramente derivadas da organização lógica do conteúdo.
+NÃO:
+- inventar informações, exemplos, mnemônicos, pegadinhas, regras ou exceções;
+- atribuir ao autor uma interpretação criada pela IA;
+- transformar uma informação comum em "dica do autor";
+- transformar qualquer frase curta ou lista em mnemônico.
+
+2. ESTRUTURA DINÂMICA DO RESUMO (SEM SEÇÕES ARTIFICIAIS)
+Organizar em estrutura lógica e progressiva:
+- Visão geral do assunto
+- Conceitos fundamentais e Definições
+- Classificações e Características
+- Regras e requisitos
+- Diferenças entre conceitos e Exceções (destacar com ⚠️ EXCEÇÃO e página de origem)
+- Exemplos presentes na fonte
+- Observações importantes e Dicas expressas do autor
+- Mnemônicos efetivamente presentes na fonte
+- Pegadinhas/alertas efetivamente mencionados pelo autor
+- Pontos de atenção para revisão
+*Não é obrigatório preencher todas as seções. Se determinada categoria não existir na fonte, NÃO criar seção artificial.*
+
+3. DISTINÇÃO RIGOROSA DE CATEGORIAS
+- 🧠 [MNEMÔNICO DO AUTOR - Pág. XX]: Somente quando a fonte apresentar uma estrutura/técnica criada especificamente para facilitar a memorização (ex: ComFiForMob = Competência + Finalidade + Forma + Motivo + Objeto, sigla/acrônimo deliberado ou palavra formada pelas iniciais). Macete de prova, lista de conceitos, ou "atenção cai em prova" NÃO são mnemônicos. Se não houver no PDF, NÃO criar seção de mnemônicos do autor.
+- 💡 [DICA DO AUTOR - Pág. XX]: Orientações e observações expressas do professor/autor no PDF que NÃO sejam mnemônicos.
+- 🤖 [MNEMÔNICO SUGERIDO PELA IA]: Se você sugerir um mnemônico próprio, deve ficar FORA do conteúdo do autor e ser rotulado explicitamente como "🤖 [MNEMÔNICO SUGERIDO PELA IA]".
+- ⚠️ [PEGADINHA/ALERTA DO AUTOR - Pág. XX]: Somente quando o professor/material efetivamente alertar contra armadilha ou confusão no texto (com página).
+- 🔎 [PONTO DE CONFUSÃO IDENTIFICADO PELA IA]: Mapeamento complementar de potenciais confusões realizado pela IA para a banca.
+
+4. REGRA DE TABELAS E QUADROS
+- NUNCA criar uma tabela contendo coluna chamada "Regra Geral do Autor", "Ponto do Professor" ou equivalente se o conteúdo dessa coluna não estiver explicitamente presente na fonte.
+- Quando a tabela for uma síntese construída pela IA, identificá-la obrigatoriamente antes da tabela como:
+  *Síntese estruturada pela IA a partir do conteúdo da fonte.*
+
+5. AUTO-VERIFICAÇÃO OBRIGATÓRIA (CHECK FINAL DO PILAR 1 ANTES DA ENTREGA):
+1. Existe algum mnemônico que não seja realmente um mnemônico? → REMOVER.
+2. Existe alguma informação criada pela IA apresentada como sendo do autor? → CORRIGIR.
+3. Existe algum "macete de prova" classificado como mnemônico? → REMOVER DA CATEGORIA MNEMÔNICO.
+4. Existem frases fragmentadas? → RECONSTRUIR em frases completas e coerentes.
+5. Existem conceitos importantes que foram apenas copiados sem explicação? → EXPLICAR com clareza.
+6. Alguma exceção foi inventada? → REMOVER.
+7. Algum exemplo foi inventado e apresentado como sendo do autor? → CORRIGIR.
+8. Alguma tabela ou quadro foi criado pela IA? → Identificar como "Síntese estruturada pela IA a partir do conteúdo da fonte."
+9. O resumo permite estudar sem voltar imediatamente ao PDF? → Se não, aprofundar os conceitos fundamentais.
+10. O resumo está maior apenas porque repetiu o PDF? → REDUZIR REPETIÇÕES.
+11. O resumo está curto porque eliminou conhecimento relevante? → RECUPERAR conteúdo importante.
+12. Todos os mnemônicos, dicas e alertas existentes no PDF foram preservados? → VERIFICAR.
+
+DEMAIS PILARES:
+- Pilar 2: Raio-X de Banca dividido em:
+   * PARTE 1: Pegadinhas e Alertas do Autor 👨‍🏫 [MATERIAL DO AUTOR] (se existirem na fonte)
+   * PARTE 2: Análise Complementar de Banca da IA 🤖 [INSIGHT PEDAGÓGICO COMPLEMENTAR]
+   (ambos seguindo os 4 passos: 1. O conhecimento correto, 2. O erro ou confusão provável, 3. Como uma questão poderia explorar, 4. Como o aluno deve evitar o erro).
+- Pilar 3: 6 Flashcards no formato Anki identificando a origem (👨‍🏫 Pág. XX ou 🤖 IA).
+- Pilar 4: 5 Questões inéditas no formato da banca ${banca} com gabarito fundamentado.
+- Knowledge Units: Unidades de conhecimento estruturadas (conceito, definicao, explicacao, exemplo, excecao, comparacao, palavras_chave, mnemonico, pegadinha, dica_autor, potencial_cobranca, importancia_pedagogica, fonte, pagina, secao, source_type).
 
 Texto do PDF:
 ${extractedText.slice(0, 12000)}
 
 Retorne APENAS um JSON no formato:
 {
-  "pilar1": "## 1. Resumo Estruturado...",
-  "pilar2": "## 2. Raio-X...",
+  "pilar1": "## 1. Resumo Estruturado e Conceitos-Chave...",
+  "pilar2": "## 2. Raio-X de Banca...",
   "cards": [{ "q": "Pergunta", "a": "Resposta" }],
   "quiz": [{ "enunciado": "...", "options": ${optionsExample}, "correct_index": 0, "comentario": "...", "banca": "${banca}" }],
-  "knowledge_units": [{ "conceito": "...", "definicao": "...", "explicacao": "...", "mnemonico": "...", "pegadinha": "...", "pagina": "Pág. 01", "source_type": "AUTHOR" }]
+  "knowledge_units": [{ "conceito": "...", "definicao": "...", "explicacao": "...", "mnemonico": null, "pegadinha": "...", "pagina": "Pág. 01", "source_type": "AUTHOR" }]
 }`;
 
         const geminiAbort = new AbortController();

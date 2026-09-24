@@ -113,23 +113,58 @@ Para qualquer aula em vídeo (YouTube ou arquivo) fornecida pelo usuário para e
 
 ---
 
-## 10. Processamento Master de PDFs para Concursos (Base de Conhecimento Estruturada & Rastreabilidade)
+## 10. Processamento Master de PDFs para Concursos: Pilar 1 — Resumo & Síntese Pedagógica de Alto Valor
 Quando a fonte for um arquivo PDF:
-- **O PDF é uma FONTE DE CONHECIMENTO**, não apenas um texto corrido para resumo superficial.
-- **Rastreabilidade Pedagógica & Distinção Rigorosa:**
-  - `source_type: AUTHOR`: Conteúdo explicitamente ensinado pelo professor/autor no PDF (com número da página e seção de origem).
-  - `source_type: AI_INFERENCE`: Organização, agrupamento e deduções lógicas estruturadas diretamente do texto do material.
-  - `source_type: AI_SUGGESTION`: Insights inéditos, questões e mnemônicos complementares sugeridos pela IA para prova.
-- **Mnemônicos do Autor (ATENÇÃO ESPECIAL):**
-  - Identificar e preservar rigorosamente TODOS os mnemônicos, acrônimos e macetes do autor com página de origem.
-  - NUNCA atribuir ao autor um mnemônico criado pela IA. Se a IA sugerir um, rotular como *"Mnemônico sugerido pela IA"*.
-- **Pegadinhas e Alertas do Autor:**
-  - Capturar alertas ("cuidado", "não confunda", "pegadinha", "atenção", palavras restritivas).
-  - Rótulo visível na plataforma: 👨‍🏫 `[MATERIAL DO AUTOR - Pág. XX]` vs 🤖 `[ANÁLISE COMPLEMENTAR DA IA]`.
-- **Estrutura de Unidades de Conhecimento (`knowledge_unit`):**
-  - `conceito`, `definicao`, `explicacao`, `exemplo`, `excecao`, `comparacao`, `palavras_chave`, `mnemonico`, `pegadinha`, `dica_autor`, `potencial_cobranca`, `importancia_pedagogica`, `fonte`, `pagina`, `secao`, `source_type`.
-- **Alimentação dos 4 Pilares:**
-  - Pilar 1: Resumo hierárquico com definições formais, regras, tabelas comparativas e mnemônicos do autor.
-  - Pilar 2: Raio-X separando as pegadinhas explícitas do autor das pegadinhas mapeadas para a banca.
-  - Pilar 3: Flashcards de alta retenção contendo a origem (Pág. XX) e os mnemônicos do material.
-  - Pilar 4: Mini-simulado inédito focado nos pontos críticos e armadilhas identificadas.
+- **O PDF é uma FONTE DE CONHECIMENTO**, e a fonte original é a autoridade. O objetivo é transformar o conteúdo extraído do PDF em um material de estudo claro, completo, organizado, didático e de alto valor agregado, reconstruindo pedagogicamente o conhecimento sem inventar nada.
+- **Fórmula do Pilar 1:** `Fidelidade à fonte + reconstrução pedagógica + enriquecimento estrutural − invenção`.
+
+### Regra Fundamental de Fidelidade
+Utilize somente informações efetivamente presentes na fonte ou claramente derivadas da organização lógica do conteúdo.
+NÃO:
+1. inventar informações, exemplos, mnemônicos, pegadinhas, regras ou exceções;
+2. atribuir ao autor uma interpretação criada pela IA;
+3. transformar uma informação comum em "dica do autor";
+4. transformar qualquer frase curta ou lista em mnemônico.
+
+### Estrutura Dinâmica do Resumo (Sem Seções Artificiais)
+Organizar em estrutura lógica e progressiva:
+1. Visão geral do assunto
+2. Conceitos fundamentais
+3. Definições
+4. Classificações
+5. Características
+6. Regras e requisitos
+7. Diferenças entre conceitos
+8. Exceções (`⚠️ EXCEÇÃO:` com origem de página)
+9. Exemplos presentes na fonte
+10. Observações importantes do autor
+11. Mnemônicos efetivamente presentes na fonte
+12. Pegadinhas/alertas efetivamente mencionados pelo autor
+13. Pontos de atenção para revisão
+*Não é obrigatório preencher todas as seções. Se determinada categoria não existir na fonte, NÃO criar seção artificial.*
+
+### Distinção Rigorosa de Categorias de Memorização & Alertas:
+- 🧠 **Mnemônico do autor:** Somente quando a fonte apresentar uma estrutura/técnica criada especificamente para facilitar a memorização (ex: `ComFiForMob = Competência + Finalidade + Forma + Motivo + Objeto`, sigla/acrônimo deliberado ou palavra formada pelas iniciais). MACETE DE PROVA, lista de conceitos, ou frases como "atenção, isso cai em prova" NÃO são mnemônicos. Se não houver no PDF, NÃO criar seção de mnemônicos do autor.
+- 💡 **Dica do autor:** Orientações e observações expressas do professor/autor no PDF que NÃO sejam mnemônicos.
+- 🤖 **Mnemônico sugerido pela IA:** Se a IA considerar útil sugerir um mnemônico próprio, deve ficar FORA do conteúdo do autor e ser rotulado explicitamente como `💡 Mnemônico sugerido pela IA`.
+- ⚠️ **Pegadinha/alerta do autor:** Somente quando o professor/material efetivamente alertar contra armadilha ou confusão (com página).
+- 🔎 **Ponto de confusão identificado pela IA:** Mapeamento complementar de potenciais confusões realizado pela IA para a banca.
+
+### Regra de Tabelas e Quadros
+- NUNCA criar uma tabela contendo coluna chamada "Regra Geral do Autor", "Ponto do Professor" ou equivalente se o conteúdo dessa coluna não estiver explicitamente presente na fonte.
+- Quando a tabela for uma síntese construída pela IA, identificá-la obrigatoriamente como:
+  *"Síntese estruturada pela IA a partir do conteúdo da fonte."*
+
+### Auto-Verificação Obrigatória (Check Final do Pilar 1 antes da entrega)
+1. Existe algum mnemônico que não seja realmente um mnemônico? → REMOVER.
+2. Existe alguma informação criada pela IA apresentada como sendo do autor? → CORRIGIR.
+3. Existe algum "macete de prova" classificado como mnemônico? → REMOVER DA CATEGORIA MNEMÔNICO.
+4. Existem frases fragmentadas? → RECONSTRUIR em frases completas e coerentes.
+5. Existem conceitos importantes que foram apenas copiados sem explicação? → EXPLICAR com clareza.
+6. Alguma exceção foi inventada? → REMOVER.
+7. Algum exemplo foi inventado e apresentado como sendo do autor? → CORRIGIR.
+8. Alguma tabela ou quadro foi criado pela IA? → Identificar como "Síntese da IA".
+9. O resumo permite estudar sem voltar imediatamente ao PDF? → Se não, aprofundar os conceitos fundamentais.
+10. O resumo está maior apenas porque repetiu o PDF? → REDUZIR REPETIÇÕES.
+11. O resumo está curto porque eliminou conhecimento relevante? → RECUPERAR conteúdo importante.
+12. Todos os mnemônicos, dicas e alertas existentes no PDF foram preservados? → VERIFICAR.

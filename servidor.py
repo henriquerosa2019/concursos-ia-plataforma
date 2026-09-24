@@ -2316,18 +2316,33 @@ def update_lesson_markdown_with_raiox(discipline, subarea, raiox_markdown, banca
 
 def generate_pilar1_summary(discipline, subarea, title, professor, context_text):
     """
-    Pilar 1: Resumo Estruturado com definições, conceitos-chave, mnemônicos do autor e tabelas comparativas (Regra 10).
+    Pilar 1: Resumo & Síntese Pedagógica de Alto Valor para Concursos (Regra 10).
+    Fórmula Fundamental: Fidelidade à fonte + reconstrução pedagógica + enriquecimento estrutural - invenção.
     """
     sys_prompt = (
         "Você é um professor titular e elaborador sênior para concursos públicos de alto nível.\n"
-        "Seu objetivo é criar o PILAR 1: RESUMO ESTRUTURADO E CONCEITOS-CHAVE com base no conteúdo fornecido.\n\n"
-        "DIRETRIZES DA REGRA 10 (PDF FONTE DE CONHECIMENTO):\n"
-        "- Identificar e preservar rigorosamente TODOS os mnemônicos e macetes do autor com página de origem.\n"
-        "- Preservar definições formais, regras gerais e requisitos com máxima fidelidade.\n"
-        "- Subseções lógicas (### A. ..., ### B. ...) identificando 👨‍🏫 [MATERIAL DO PROFESSOR]\n"
-        "- Tabelas comparativas em markdown de termos confrontados\n"
-        "- Quadro esquemático de retenção rápida\n\n"
-        "Inicie obrigatoriamente em:\n"
+        "Seu objetivo é criar o PILAR 1 — RESUMO & SÍNTESE PEDAGÓGICA DE ALTO VALOR PARA CONCURSOS.\n\n"
+        "DIRETRIZ MESTRA (REGRA 10): O PDF é a autoridade e FONTE DO CONHECIMENTO.\n"
+        "Fórmula fundamental: Fidelidade à fonte + reconstrução pedagógica + enriquecimento estrutural − invenção.\n"
+        "A fonte original é a autoridade. Não invente conteúdo para tornar o resumo aparentemente mais rico.\n\n"
+        "1. REGRA FUNDAMENTAL DE FIDELIDADE:\n"
+        "Utilize somente informações efetivamente presentes na fonte ou claramente derivadas de sua organização lógica.\n"
+        "NÃO: inventar informações, mnemônicos, pegadinhas ou exceções; atribuir à fonte interpretação da IA; transformar frase comum em mnemônico ou dica.\n\n"
+        "2. ESTRUTURA DINÂMICA DO RESUMO (SEM SEÇÕES ARTIFICIAIS):\n"
+        "Organize em progressão didática: Visão geral, Conceitos fundamentais e Definições, Classificações e Características, Regras de Aplicação e Competências, Diferenças e Exceções (⚠️ EXCEÇÃO com página), Exemplos da fonte, Dicas do autor, Mnemônicos reais do autor, Alertas do autor, Pontos de atenção para revisão.\n"
+        "*Se determinada categoria não existir na fonte, NÃO criar seção artificial.*"
+        "\n\n3. DISTINÇÃO RIGOROSA DE CATEGORIAS:\n"
+        "- 🧠 [MNEMÔNICO DO AUTOR - Pág. XX]: Somente estrutura deliberada da fonte (ex: ComFiForMob, sigla ou acrônimo formado por iniciais). Macete genérico ou listas NÃO são mnemônicos. Se não houver, não crie esta seção.\n"
+        "- 💡 [DICA DO AUTOR - Pág. XX]: Orientações expressas do professor no PDF.\n"
+        "- 🤖 [MNEMÔNICO SUGERIDO PELA IA]: Sugestão pedagógica complementar da IA (fora do conteúdo do autor).\n"
+        "- ⚠️ [PEGADINHA/ALERTA DO AUTOR - Pág. XX]: Alertas expressos do professor no texto contra armadilhas.\n"
+        "- 🔎 [PONTO DE CONFUSÃO IDENTIFICADO PELA IA]: Mapeamento de possíveis armadilhas da banca.\n\n"
+        "4. REGRA DE TABELAS E QUADROS:\n"
+        "- NUNCA criar coluna 'Regra Geral do Autor' ou 'Ponto do Professor' se não estiver explicitamente na fonte.\n"
+        "- Identificar antes da tabela: *Síntese estruturada pela IA a partir do conteúdo da fonte.*\n\n"
+        "5. AUTO-VERIFICAÇÃO OBRIGATÓRIA (CHECK FINAL DO PILAR 1):\n"
+        "Remova falsos mnemônicos, corrija atribuições indevidas ao autor, reconstrua períodos fragmentados, garanta que nada foi inventado e que todas as dicas/alertas reais da fonte foram preservados.\n\n"
+        "Inicie obrigatoriamente com o título:\n"
         "## 1. Resumo Estruturado e Conceitos-Chave"
     )
     user_prompt = (
@@ -2352,23 +2367,33 @@ def generate_pilar1_summary(discipline, subarea, title, professor, context_text)
     sec_a = sentences[:4] if len(sentences) >= 4 else sentences
     sec_b = sentences[4:8] if len(sentences) >= 8 else []
     
-    # Detectar mnemônicos do autor no texto
+    # Detectar mnemônicos autênticos do autor no texto (somente siglas/acrônimos reais)
     mnem_match = re.findall(r'\b(COFIFOMOB|LIMPE|SOCIDIVAPU|RAÇÃO|FO-CO|MP-COM-VOTO)\b', context_text or '', re.I)
-    mnem_str = mnem_match[0].upper() if mnem_match else (subarea[:4].upper() + "-FIX")
-    is_author_mnem = bool(mnem_match)
+    has_author_mnem = bool(mnem_match)
+    
+    # Detectar alertas do autor no texto
+    alert_sentences = [s for s in sentences if re.search(r'(?:cuidado|atenção|pegadinha|não confunda|vedado|proibido|exceção|apenas|somente|nunca|sempre)', s, re.I)]
     
     lines_p1 = [
         "## 1. Resumo Estruturado e Conceitos-Chave\n",
         f"> 👨‍🏫 **FONTE DO CONHECIMENTO:** {title}  ",
-        f"> **Professor/Autor:** {professor} | **Disciplina:** {disc_clean} | **Metodologia:** Rastreabilidade Pedagógica\n",
-        "### 💡 Mnemônicos & Macetes de Memorização",
-        f"> 📌 **{'👨‍🏫 [MATERIAL DO AUTOR]' if is_author_mnem else '🤖 [MNEMÔNICO SUGERIDO PELA IA]'}**  ",
-        f"> **Mnemônico:** `{mnem_str}`  ",
-        f"> - **O que memoriza:** Elementos essenciais e requisitos normativos de {sub_clean}.  ",
-        f"> - **Como utilizar:** Aplicar para resolução rápida e identificação de assertivas de prova.\n",
-        f"### A. Fundamentos e Definições Essenciais de {sub_clean} 👨‍🏫 [MATERIAL DO PROFESSOR]",
-        f"Aspectos doutrinários e normativos basilares com alta recorrência em provas de {disc_clean}:\n"
+        f"> **Professor/Autor:** {professor} | **Disciplina:** {disc_clean} | **Metodologia:** Rastreabilidade Pedagógica\n"
     ]
+    
+    # Se houver mnemônico autêntico do autor, adicionar seção própria
+    if has_author_mnem:
+        mnem_str = mnem_match[0].upper()
+        lines_p1.extend([
+            "### 🧠 Mnemônicos & Técnicas de Memorização do Autor",
+            "> 📌 **👨‍🏫 [MATERIAL DO AUTOR]**  ",
+            f"> **Mnemônico:** `{mnem_str}`  ",
+            f"> - **O que memoriza:** Elementos essenciais e requisitos normativos de {sub_clean}.  ",
+            "> - **Como utilizar:** Aplicar para resolução rápida e identificação de assertivas de prova.\n"
+        ])
+    
+    lines_p1.append(f"### A. Fundamentos e Definições Essenciais de {sub_clean} 👨‍🏫 [MATERIAL DO PROFESSOR]")
+    lines_p1.append(f"Aspectos doutrinários e normativos basilares com alta recorrência em provas de {disc_clean}:\n")
+    
     if sec_a:
         for s in sec_a:
             words = s.split(' ')
@@ -2388,12 +2413,29 @@ def generate_pilar1_summary(discipline, subarea, title, professor, context_text)
             rest = " ".join(words[3:])
             lines_p1.append(f"- **{lead}:** {rest} *(👨‍🏫 Material do Autor)*")
 
+    if alert_sentences:
+        lines_p1.append(f"\n### ⚠️ Alertas & Pegadinhas do Autor 👨‍🏫 [MATERIAL DO AUTOR]")
+        for al in alert_sentences[:2]:
+            lines_p1.append(f"- **Ponto de Atenção:** {al} *(👨‍🏫 Material do Autor)*")
+
     lines_p1.append(f"\n### C. Quadro Esquemático de Retenção Rápida\n")
-    lines_p1.append("| Aspecto Avaliado | Regra Geral do Autor | Ponto Crítico de Atenção em Prova |")
+    lines_p1.append("*Síntese estruturada pela IA a partir do conteúdo da fonte.*\n")
+    lines_p1.append("| Aspecto Avaliado | Conteúdo da Norma / Fonte | Ponto de Atenção em Prova |")
     lines_p1.append("| :--- | :--- | :--- |")
     lines_p1.append("| **Incidência Normativa** | Aplicação vinculada aos termos da lei | Atenção a hipóteses excepcionais da banca |")
     lines_p1.append("| **Margem de Escolha** | Inexistente nos atos vinculados | Discricionariedade restrita a conveniência e oportunidade |")
     lines_p1.append("| **Controle Judicial** | Amplo sobre a legalidade dos atos | Vedado o controle sobre o mérito administrativo |")
+
+    # Se o autor não tiver fornecido mnemônico, a IA pode sugerir um no final rotulado
+    if not has_author_mnem:
+        ai_mnem = subarea[:4].upper()
+        lines_p1.extend([
+            f"\n### 🤖 Mnemônico Sugerido pela IA",
+            f"> 📌 **🤖 [MNEMÔNICO SUGERIDO PELA IA]**  ",
+            f"> **Mnemônico:** `{ai_mnem}-FIX`  ",
+            f"> - **O que memoriza:** Síntese didática dos requisitos e preceitos fundamentais de {sub_clean}.  ",
+            f"> - **Aplicação sugerida:** Auxílio de fixação sugerido pela IA (não presente na fonte original)."
+        ])
 
     return "\n".join(lines_p1)
 

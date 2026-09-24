@@ -2422,9 +2422,9 @@ def generate_pilar1_summary(discipline, subarea, title, professor, context_text)
     lines_p1.append("*Síntese estruturada pela IA a partir do conteúdo da fonte.*\n")
     lines_p1.append("| Aspecto Avaliado | Conteúdo da Norma / Fonte | Ponto de Atenção em Prova |")
     lines_p1.append("| :--- | :--- | :--- |")
-    lines_p1.append("| **Incidência Normativa** | Aplicação vinculada aos termos da lei | Atenção a hipóteses excepcionais da banca |")
-    lines_p1.append("| **Margem de Escolha** | Inexistente nos atos vinculados | Discricionariedade restrita a conveniência e oportunidade |")
-    lines_p1.append("| **Controle Judicial** | Amplo sobre a legalidade dos atos | Vedado o controle sobre o mérito administrativo |")
+    lines_p1.append("| **Incidência Normativa** | Aplicação vinculada aos preceitos da matéria | Atenção a hipóteses excepcionais da banca |")
+    lines_p1.append(f"| **Critério de Validade** | Observância estrita aos requisitos de {sub_clean} | Cuidado com assertivas contendo termos restritivos |")
+    lines_p1.append(f"| **Campo de Atuação** | Delimitação temática no edital de {disc_clean} | Vedada generalização indevida para institutos correlatos |")
 
     # Se o autor não tiver fornecido mnemônico, a IA pode sugerir um no final rotulado
     if not has_author_mnem:
@@ -2465,10 +2465,10 @@ def generate_flashcards_from_text(discipline, subarea, context_text, count=6):
         cards = [
             {"q": f"👨‍🏫 [Material do Autor] Qual o conceito fundamental de {sub_c} mais cobrado em concursos?", "a": f"É a regra nuclear aplicável a {disc_c}, exigindo atenção às exceções e termos restritivos ensinados pelo autor."},
             {"q": f"🚨 [Pegadinha do Autor] Quais são os erros mais comuns de candidatos em {sub_c}?", "a": "Confundir regras gerais com hipóteses excepcionais e inverter espécies conceituais vizinhas."},
-            {"q": f"🤖 [Análise de Banca IA] Como identificar pegadinhas com palavras absolutas em {sub_c}?", "a": "Verificando se a assertiva contém termos restritivos como 'sempre' ou 'nunca' ignorando exceções legais expressas."},
-            {"q": f"👨‍🏫 [Material do Autor] Quais os requisitos essenciais de validade aplicáveis ao tema?", "a": "Devem observar estritamente a competência funcional, finalidade pública e preceitos normativos vigentes."},
-            {"q": f"🤖 [Análise de Banca IA] Qual a consequência de vício insanável de legalidade?", "a": "Gera anulação do ato com efeitos retroativos (ex tunc), ressalvados direitos de terceiros de boa-fé."},
-            {"q": f"👨‍🏫 [Material do Autor] Como os prazos e condições se aplicam na prática?", "a": "São de contagem peremptória conforme estabelecido na legislação de regência e no edital."}
+            {"q": f"🤖 [Análise de Banca IA] Como identificar pegadinhas com palavras absolutas em {sub_c}?", "a": "Verificando se a assertiva contém termos restritivos como 'sempre' ou 'nunca' ignorando exceções normativas expressas."},
+            {"q": f"👨‍🏫 [Material do Autor] Quais os requisitos essenciais de aplicação em {sub_c}?", "a": f"Devem observar estritamente as balizas técnicas e conceituais vigentes no edital de {disc_c}."},
+            {"q": f"🤖 [Análise de Banca IA] Qual o critério diferenciador essencial em {sub_c}?", "a": f"A distinção rigorosa entre a regra geral e as hipóteses de incidência excepcional estabelecidas no material de estudo."},
+            {"q": f"👨‍🏫 [Material do Autor] Como os prazos, condições e parâmetros se aplicam na prática?", "a": "São de contagem peremptória conforme estabelecido na legislação de regência e no edital."}
         ]
     return cards
 
@@ -3988,8 +3988,26 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({
                 "success": True, 
                 "message": msg,
+                "discipline": disc,
+                "subarea": sub,
                 "cards_count": pillars_result.get("cards_count", 0),
-                "quiz_count": pillars_result.get("quiz_count", 0)
+                "quiz_count": pillars_result.get("quiz_count", 0),
+                "lesson": {
+                    "meta": {
+                        "discipline": disc,
+                        "subarea": sub,
+                        "title": title or sub.replace("_", " "),
+                        "professor": professor or "Prof. Titular",
+                        "duration": "50 minutos",
+                        "category": f"Edital de Concursos Públicos ({banca})",
+                        "youtube_url": yt_url,
+                        "markdown_content": pillars_result.get("markdown", ""),
+                        "has_lesson": True,
+                        "moments": []
+                    },
+                    "flashcards": pillars_result.get("cards", []),
+                    "quiz": pillars_result.get("quiz", [])
+                }
             }, ensure_ascii=False).encode("utf-8"))
 
         # 11. Gerar Momentos-Chave com IA

@@ -7939,6 +7939,15 @@
           
           const targetDisc = data.discipline || disc.replace(/\s+/g, '_');
           const targetSub = data.subarea || sub.replace(/\s+/g, '_');
+
+          // Registrar nomes de exibição amigáveis imediatamente
+          if (!DISC_DISPLAY_NAMES[targetDisc]) {
+            DISC_DISPLAY_NAMES[targetDisc] = targetDisc.replace(/_/g, ' ');
+          }
+          if (!TOPIC_DISPLAY_NAMES[targetSub]) {
+            TOPIC_DISPLAY_NAMES[targetSub] = (data.lesson?.meta?.title || title || targetSub.replace(/_/g, ' '));
+          }
+
           // Un-blacklist do tópico e disciplina no localStorage ao importar
           try {
             const deletedTopics = JSON.parse(localStorage.getItem('concursos_deleted_topics') || '{}');
@@ -7956,19 +7965,40 @@
             localStorage.setItem('concursos_deleted_disciplines', JSON.stringify(deletedDiscs));
           } catch(e) {}
 
+          const lessonObj = data.lesson || {
+            meta: {
+              discipline: targetDisc,
+              subarea: targetSub,
+              title: title || targetSub.replace(/_/g, ' '),
+              professor: prof,
+              duration: "50 minutos",
+              category: `Edital de Concursos Públicos (${banca})`,
+              youtube_url: "",
+              markdown_content: `# ${targetDisc.replace(/_/g, ' ')} • ${targetSub.replace(/_/g, ' ')}\n\nMaterial preparado pelo Projeto Aprovação.`,
+              has_lesson: true,
+              moments: []
+            },
+            flashcards: [],
+            quiz: []
+          };
 
-          if (data.lesson) {
-            try {
-              let localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
-              if (!localLessons[targetDisc]) localLessons[targetDisc] = {};
-              localLessons[targetDisc][targetSub] = data.lesson;
-              localStorage.setItem('concursos_local_lessons', JSON.stringify(localLessons));
-            } catch(e) {}
-          }
+          try {
+            let localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
+            if (!localLessons[targetDisc]) localLessons[targetDisc] = {};
+            localLessons[targetDisc][targetSub] = lessonObj;
+            localStorage.setItem('concursos_local_lessons', JSON.stringify(localLessons));
+          } catch(e) {}
+
+          if (!globalTreeCache[targetDisc]) globalTreeCache[targetDisc] = {};
+          globalTreeCache[targetDisc][targetSub] = {
+            cards_count: (lessonObj.flashcards || []).length,
+            quiz_count: (lessonObj.quiz || []).length,
+            files_count: 3
+          };
 
           await loadStructureAndSidebar();
           
-          // Expandir grupo na barra lateral para o aluno ver o novo tópico
+          // Expandir grupo na barra lateral para o aluno ver o novo tópico imediatamente
           const grpId = 'grp-' + targetDisc.toLowerCase().replace(/[^a-z0-9]/g, '-');
           const grpEl = document.getElementById(grpId);
           if (grpEl) grpEl.style.display = 'block';
@@ -8025,14 +8055,61 @@
           const targetDisc = data.discipline || disc.replace(/\s+/g, '_');
           const targetSub = data.subarea || sub.replace(/\s+/g, '_');
 
-          if (data.lesson) {
-            try {
-              let localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
-              if (!localLessons[targetDisc]) localLessons[targetDisc] = {};
-              localLessons[targetDisc][targetSub] = data.lesson;
-              localStorage.setItem('concursos_local_lessons', JSON.stringify(localLessons));
-            } catch(e) {}
+          // Registrar nomes de exibição amigáveis imediatamente
+          if (!DISC_DISPLAY_NAMES[targetDisc]) {
+            DISC_DISPLAY_NAMES[targetDisc] = targetDisc.replace(/_/g, ' ');
           }
+          if (!TOPIC_DISPLAY_NAMES[targetSub]) {
+            TOPIC_DISPLAY_NAMES[targetSub] = (data.lesson?.meta?.title || title || targetSub.replace(/_/g, ' '));
+          }
+
+          // Un-blacklist do tópico e disciplina no localStorage ao importar
+          try {
+            const deletedTopics = JSON.parse(localStorage.getItem('concursos_deleted_topics') || '{}');
+            const dNorm = normalizeKey(targetDisc);
+            const sNorm = normalizeKey(targetSub);
+            delete deletedTopics[`${targetDisc.toLowerCase()}:::${targetSub.toLowerCase()}`];
+            delete deletedTopics[`${dNorm}:::${sNorm}`];
+            delete deletedTopics[`${targetDisc.toLowerCase()}:::${sNorm}`];
+            delete deletedTopics[`${dNorm}:::${targetSub.toLowerCase()}`];
+            localStorage.setItem('concursos_deleted_topics', JSON.stringify(deletedTopics));
+
+            const deletedDiscs = JSON.parse(localStorage.getItem('concursos_deleted_disciplines') || '{}');
+            delete deletedDiscs[targetDisc.toLowerCase()];
+            delete deletedDiscs[dNorm];
+            localStorage.setItem('concursos_deleted_disciplines', JSON.stringify(deletedDiscs));
+          } catch(e) {}
+
+          const lessonObj = data.lesson || {
+            meta: {
+              discipline: targetDisc,
+              subarea: targetSub,
+              title: title || targetSub.replace(/_/g, ' '),
+              professor: prof,
+              duration: "50 minutos",
+              category: `Edital de Concursos Públicos (${banca})`,
+              youtube_url: yt,
+              markdown_content: `# ${targetDisc.replace(/_/g, ' ')} • ${targetSub.replace(/_/g, ' ')}\n\nMaterial preparado pelo Projeto Aprovação.`,
+              has_lesson: true,
+              moments: []
+            },
+            flashcards: [],
+            quiz: []
+          };
+
+          try {
+            let localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
+            if (!localLessons[targetDisc]) localLessons[targetDisc] = {};
+            localLessons[targetDisc][targetSub] = lessonObj;
+            localStorage.setItem('concursos_local_lessons', JSON.stringify(localLessons));
+          } catch(e) {}
+
+          if (!globalTreeCache[targetDisc]) globalTreeCache[targetDisc] = {};
+          globalTreeCache[targetDisc][targetSub] = {
+            cards_count: (lessonObj.flashcards || []).length,
+            quiz_count: (lessonObj.quiz || []).length,
+            files_count: 3
+          };
 
           await loadStructureAndSidebar();
           
@@ -8801,18 +8878,20 @@
         if (resp.ok) meta = await resp.json();
       } catch(e) {}
 
-      if (!meta || !meta.markdown_content) {
+      if (!meta || !meta.markdown_content || meta.has_lesson === false) {
         try {
           const localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
-          if (localLessons[disc] && localLessons[disc][sub]) {
+          if (localLessons[disc] && localLessons[disc][sub] && localLessons[disc][sub].meta) {
             meta = localLessons[disc][sub].meta;
           }
         } catch(e) {}
       }
 
-      if (!meta || !meta.markdown_content) {
+      if (!meta || !meta.markdown_content || meta.has_lesson === false) {
         if (!globalPreseededCatalog) await loadPreseededCatalog();
-        meta = globalPreseededCatalog?.[disc]?.[sub]?.meta;
+        if (globalPreseededCatalog?.[disc]?.[sub]?.meta) {
+          meta = globalPreseededCatalog[disc][sub].meta;
+        }
       }
       if (!meta) {
         meta = {

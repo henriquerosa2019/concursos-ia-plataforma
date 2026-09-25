@@ -8239,8 +8239,8 @@
         </div>
         <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
           ${hasMindmap ? `
-            <button class="btn btn-sm" onclick="document.querySelector('.nlm-graph-container, .nlm-mindmap-wrapper')?.scrollIntoView({ behavior: 'smooth' })" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.4); font-weight: 700; cursor: pointer;">
-              <span>🗺️</span><span>Ver Mapa Mental</span>
+            <button class="btn btn-sm" id="btnToggleMindmapVis" onclick="toggleMindmapVisibility()" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.4); font-weight: 700; cursor: pointer;" title="Exibir ou recolher o mapa mental para liberar espaço na tela">
+              <span id="iconToggleMindmapVis">🗺️</span><span id="textToggleMindmapVis">Ocultar Mapa Mental</span>
             </button>
           ` : ''}
           <button class="btn btn-sm" onclick="openAiMindmapModal()" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(99, 102, 241, 0.22); color: #c7d2fe; border: 1px solid rgba(99, 102, 241, 0.5); font-weight: 700; cursor: pointer;" title="Gerar ou personalizar mapa mental deste tópico com IA">
@@ -8531,6 +8531,7 @@
         <button class="nlm-tool-btn" onclick="fitMindmapGraphView('${id}')" title="Ajustar à Tela">🔲 Ajustar</button>
         <div style="width: 1px; height: 16px; background: rgba(255,255,255,0.15); margin: 0 2px;"></div>
         <button class="nlm-tool-btn" onclick="toggleMindmapGraphFullscreen('${id}')" title="Tela Cheia">🗖</button>
+        <button class="nlm-tool-btn" onclick="closeMindmapGraph('${id}')" title="Fechar / Recolher Mapa para liberar espaço na tela" style="color: #f87171; font-weight: 700; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3);">✖ Fechar</button>
       </div>
     </div>
 
@@ -8595,6 +8596,48 @@
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
+    }
+  };
+
+  window.toggleMindmapVisibility = function() {
+    const container = document.querySelector('.nlm-graph-container, .nlm-mindmap-wrapper');
+    if (!container) return;
+    const isHidden = (container.style.display === 'none');
+    const btnText = document.getElementById('textToggleMindmapVis');
+    const btnIcon = document.getElementById('iconToggleMindmapVis');
+
+    if (isHidden) {
+      container.style.display = 'block';
+      if (btnText) btnText.textContent = 'Ocultar Mapa Mental';
+      if (btnIcon) btnIcon.textContent = '🙈';
+      container.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      if (container.classList.contains('fullscreen') || container.classList.contains('nlm-fullscreen')) {
+        container.classList.remove('fullscreen');
+        container.classList.remove('nlm-fullscreen');
+        document.body.style.overflow = '';
+      }
+      container.style.display = 'none';
+      if (btnText) btnText.textContent = 'Abrir Mapa Mental';
+      if (btnIcon) btnIcon.textContent = '🗺️';
+    }
+  };
+
+  window.closeMindmapGraph = function(id) {
+    const container = id ? document.getElementById(id) : document.querySelector('.nlm-graph-container, .nlm-mindmap-wrapper');
+    if (!container) return;
+    if (container.classList.contains('fullscreen') || container.classList.contains('nlm-fullscreen')) {
+      container.classList.remove('fullscreen');
+      container.classList.remove('nlm-fullscreen');
+      document.body.style.overflow = '';
+    }
+    container.style.display = 'none';
+    const btnText = document.getElementById('textToggleMindmapVis');
+    const btnIcon = document.getElementById('iconToggleMindmapVis');
+    if (btnText) btnText.textContent = 'Abrir Mapa Mental';
+    if (btnIcon) btnIcon.textContent = '🗺️';
+    if (typeof showToast === 'function') {
+      showToast('Mapa mental ocultado para liberar espaço.', '🗺️');
     }
   };
 
@@ -9001,6 +9044,7 @@
         <button class="nlm-tool-btn" onclick="zoomNlmMindmap('${id}', 0.1)" title="Aumentar Zoom">➕</button>
         <button class="nlm-tool-btn" onclick="toggleAllNlmBranches('${id}')" title="Expandir ou Recolher Tudo">📂 Todos</button>
         <button class="nlm-tool-btn" onclick="toggleFullscreenNlmMindmap('${id}')" title="Modo Tela Cheia">🗖</button>
+        <button class="nlm-tool-btn" onclick="closeMindmapGraph('${id}')" title="Fechar / Recolher Mapa para liberar espaço na tela" style="color: #f87171; font-weight: 700; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3);">✖ Fechar</button>
       </div>
     </div>
 

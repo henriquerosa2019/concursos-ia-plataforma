@@ -1,0 +1,52 @@
+[
+  {
+    "enunciado": "Determinado agente pretende matar uma vítima por asfixia e, achando equivocadamente que ela estaria morta, joga o corpo no rio, causando a morte por afogamento. Em tal cenário, o agente responderá por homicídio praticado em dolo geral.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 0,
+    "comentario": "Item CERTO. Trata-se do clássico dolo geral (aberratio causae decorrente de erro sucessivo sobre o nexo de causalidade). O agente responde por homicídio doloso consumado.",
+    "banca": "Cebraspe / FGV"
+  },
+  {
+    "enunciado": "O dolo de segundo grau consiste na incerteza de que o resultado alcance terceiros não atingidos pelo dolo direto, havendo, entretanto, a possibilidade de que ele ocorra com a prática do ato.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 1,
+    "comentario": "Item ERRADO. O dolo de segundo grau baseia-se na certeza das consequências necessárias para a consecução do fim principal, e não na incerteza ou mera possibilidade (que caracterizariam dolo eventual).",
+    "banca": "Cebraspe"
+  },
+  {
+    "enunciado": "O condutor que, mesmo alertado sobre seu estado sonolento, decide pilotar motocicleta confiando sinceramente que o vento no rosto o manterá acordado e que evitará acidentes, vindo a atropelar um pedestre, atua sob culpa consciente e não sob dolo eventual.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 0,
+    "comentario": "Item CERTO. Na culpa consciente, o agente prevê a ocorrência do resultado danoso, porém levianamente rejeita a sua concretização, confiando em suas condições de evitá-lo.",
+    "banca": "Cebraspe / FUNPAR"
+  },
+  {
+    "enunciado": "Nos crimes comissivos por omissão, a posição de garantidor incumbe unicamente àqueles que tenham obrigação legal ou decorrente de contrato de trabalho formal de cuidado, proteção ou vigilância.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 1,
+    "comentario": "Item ERRADO. O rol do Art. 13, § 2º, abrange também aquele que, com seu comportamento anterior, criou o risco da ocorrência do resultado (alínea 'c' - ingerência), além da assunção de fato da responsabilidade (alínea 'b').",
+    "banca": "Cebraspe / FCC"
+  },
+  {
+    "enunciado": "Os genitores que tomam ciência de relações sexuais mantidas com sua filha de 13 anos de idade e autorizam a coabitação sob o mesmo teto respondem pelo crime de estupro de vulnerável na forma da omissão imprópria.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 0,
+    "comentario": "Item CERTO. Por deterem o dever legal de proteção e vigilância (Art. 13, § 2º, 'a'), a omissão dolosa em proteger a menor de 14 anos faz com que respondam pelo crime como partícipes por omissão imprópria.",
+    "banca": "Cebraspe"
+  }
+]

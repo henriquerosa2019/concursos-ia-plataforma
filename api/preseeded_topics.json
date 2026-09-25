@@ -23055,5 +23055,99 @@
         }
       ]
     }
+  },
+  "Direito_Penal": {
+    "Acao_e_Omissao_Dolo_e_Culpa": {
+      "meta": {
+        "discipline": "Direito_Penal",
+        "subarea": "Acao_e_Omissao_Dolo_e_Culpa",
+        "title": "Ação e Omissão / Dolo e Culpa",
+        "professor": "Prof. Especialista em Direito Penal",
+        "duration": "50 minutos",
+        "category": "Edital de Concursos Públicos (Cebraspe, FGV)",
+        "youtube_url": "",
+        "markdown_content": "# DIREITO PENAL - AÇÃO E OMISSÃO / DOLO E CULPA\n**Professor:** Prof. Especialista em Direito Penal  \n**Duração:** 50 minutos  \n**Categoria:** Edital de Concursos Públicos (Cebraspe, FGV, Vunesp, FCC)  \n\n---\n\n> 📋 **VISÃO GERAL DA FONTE (BRIEFING EXECUTIVO — ESTILO NOTEBOOKLM):**  \n> Este material consolida uma seleção estratégica de questões de concursos de alto nível (Magistratura, Ministério Público, Delegado de Polícia, Auditor Fiscal e Carreiras Policiais), focando nos pontos mais sensíveis da teoria do crime: a delimitação da vontade do agente (dolo direto, dolo de 2º grau, dolo eventual e dolo geral) versus culpa (consciente e inconsciente; imprudência, negligência e imperícia), e a sistemática da relevância penal da omissão (Art. 13, § 2º, do CP).  \n> Os exercícios demonstram como as bancas exploram a linha tênue entre prever o risco sem aceitá-lo (culpa consciente) e assumir o risco com indiferença (dolo eventual), além da responsabilidade penal dos agentes garantidores por crimes comissivos por omissão (omissão imprópria), especialmente em casos concretos envolvendo dever legal de proteção familiar.\n\n---\n\n### 🗺️ Mapa Mental Estruturado (Conceitos & Relações)\n\n```text\n[ CONDUTA PENAL (Ação e Omissão) ]\n   │\n   ├──► 1. ESPÉCIES DE DOLO (Art. 18, I, CP)\n   │     ├── Dolo Direto de 1º Grau: Vontade direcionada imediatamente ao resultado fim.\n   │     ├── Dolo de 2º Grau (Consequências Necessárias): Efeitos colaterais certos e inevitáveis da conduta.\n   │     ├── Dolo Eventual (Teoria do Assentimento): Prevê o resultado e assume o risco (indiferença: \"se acontecer, tanto faz\").\n   │     └── Dolo Geral (Aberratio Causae): O agente julga já ter consumado o crime, pratica nova conduta e esta causa a morte.\n   │\n   ├──► 2. CULPA (Art. 18, II, CP)\n   │     ├── Modalidades: Imprudência (ação precipitada), Negligência (omissão prévia), Imperícia (inaptidão técnica).\n   │     ├── Culpa Inconsciente: Resultado previsível, mas não previsto pelo agente.\n   │     └── Culpa Consciente: Resultado previsto, MAS o agente confia sinceramente que NÃO ocorrerá (rejeita o resultado).\n   │\n   └──► 3. OMISSÃO PENALMENTE RELEVANTE (Art. 13, § 2º, CP)\n         ├── Natureza: Omissão Imprópria / Comissivo por Omissão (Norma de Extensão da Tipicidade).\n         ├── Requisitos Cumulativos: O agente DEVIA e PODIA agir para evitar o resultado.\n         └── Posição de Garantidor (Dever de Agir):\n               ├── Alínea 'A' (Dever por Lei): Pais, tutores, policiais em serviço (ex: pais que toleram estupro de vulnerável).\n               ├── Alínea 'B' (Assunção de Responsabilidade): Salva-vidas, enfermeiros, cuidadores contratados.\n               └── Alínea 'C' (Comportamento Anterior / Ingerência): Quem criou o risco da ocorrência do resultado.\n```\n\n---\n\n## 1. Resumo Estruturado e Conceitos-Chave\n\n> 👨‍🏫 **FONTE DO CONHECIMENTO:** Kverna Concursos – Questões Selecionadas de Concursos  \n> **Disciplina:** Direito Penal | **Bancas Analisadas:** Cebraspe, FGV, Vunesp, FCC, Instituto AOCP  \n\n### A. Fundamentos e Definições Essenciais 👨‍🏫 [MATERIAL DO PROFESSOR]\nAspectos conceituais e normativos extraídos diretamente do padrão de cobrança das bancas examinadoras:\n\n- **Dolo Geral (*Aberratio Causae*):** Ocorre quando o agente, acreditando equivocadamente já ter alcançado o resultado visado por sua conduta inicial (ex: asfixia), pratica uma segunda conduta (ex: atirar o corpo em um rio), e é essa segunda conduta que efetivamente causa a morte da vítima por afogamento. A doutrina e a jurisprudência consagram que o agente responde por homicídio doloso consumado com base no dolo inicial (*dolo geral*).\n- **Dolo de Segundo Grau (*Dolo de Consequências Necessárias*):** Não envolve incerteza ou mera possibilidade. Abrange os efeitos secundários cuja ocorrência o agente sabe ser certa, necessária e inafastável para que atinja seu objetivo primário (ex: detonar explosivo em avião para matar passageiro específico).\n- **Distinção Fundamental: Dolo Eventual × Culpa Consciente:**\n  - *Dolo Eventual:* O agente prevê o resultado e assume o risco de sua produção (Teoria do Assentimento / Consentimento). Há conformismo, tolerância e indiferença psicológica (\"tanto faz se o resultado ocorrer\").\n  - *Culpa Consciente:* O agente também prevê o resultado lesivo, mas **rejeita categoricamente a sua superveniência**. Confia leviana, sincera e sinceramente em suas habilidades ou na sorte de que o evento danoso não irá se concretizar.\n- **Relevância Causal da Omissão (Art. 13, § 2º, do CP):**\n  A omissão só é penalmente relevante quando o omitente devia e podia agir para evitar o resultado lesivo. Nos crimes omissivos impróprios (comissivos por omissão), o não agir de quem tem o dever de garantidor é juridicamente equiparado à causação do resultado lesivo, operando como norma de extensão da tipicidade (adequação típica mediata).\n\n### B. O Triplo Rol dos Garantidores (Art. 13, § 2º, do Código Penal) 👨‍🏫 [MATERIAL DO PROFESSOR]\nO dever de agir incumbe expressamente a quem:\n1. **Tenha por lei obrigação de cuidado, proteção ou vigilância (Alínea 'a'):** Aplica-se aos pais em relação aos filhos menores. Se os genitores tomam ciência de abusos sexuais (estupro de vulnerável) ou agressões contínuas praticadas contra a filha e se omitem em protegê-la ou comunicar a autoridade, respondem pelo próprio crime na condição de garantidores por omissão imprópria.\n2. **De outra forma, assumiu a responsabilidade de impedir o resultado (Alínea 'b'):** Não depende de contrato formal de trabalho; basta a assunção de fato da custódia ou proteção (ex: babá, salva-vidas particular, guia de trilha).\n3. **Com seu comportamento anterior, criou o risco da ocorrência do resultado (Alínea 'c' - Ingerência):** Aquele que, por ação anterior dolosa ou culposa, cria uma situação de perigo para bem jurídico de outrem, passa a ter o dever estrito de agir para neutralizar esse perigo.\n\n### C. Quadro Esquemático de Retenção Rápida\n\n*Síntese estruturada pela IA a partir do conteúdo da fonte.*\n\n| Aspecto Avaliado | Dolo Eventual | Culpa Consciente |\n| :--- | :--- | :--- |\n| **Previsão do Resultado** | Presente (o agente prevê que pode acontecer) | Presente (o agente prevê que pode acontecer) |\n| **Atitude Subjetiva** | Assume o risco e tolera o resultado (*\"dane-se\"*) | Não aceita o resultado; confia que não ocorrerá |\n| **Aplicação Típica** | Disputa de racha com alta densidade urbana | Piloto que acredita que sua perícia evitará colisão |\n| **Penalidade** | Punido pelo tipo na modalidade dolosa | Punido na modalidade culposa (se prevista em lei) |\n\n### 🧠 Mnemônico Sugerido pela IA\n> 📌 **🤖 [MNEMÔNICO SUGERIDO PELA IA]**  \n> **Mnemônico:** `LEI-ASSUME-CRIA` (Garantidores do Art. 13, § 2º, CP)  \n> - **LEI:** Obrigação legal de proteção/cuidado (pais, tutores).  \n> - **ASSUME:** Quem de outra forma assumiu a responsabilidade de impedir o dano.  \n> - **CRIA:** Quem com comportamento anterior criou o risco de ocorrência do resultado.  \n\n---\n\n## 2. Raio-X de Banca & Pegadinhas Mais Frequentes (Cebraspe, FGV, Vunesp)\n\n### 🚨 Ponto Crítico 1: A Inversão entre Dolo Eventual e Culpa Consciente (Cebraspe / FGV / Vunesp)\n1. **O conhecimento correto:** Tanto no dolo eventual quanto na culpa consciente há previsibilidade subjetiva (o agente enxerga o perigo). A diferença reside estritamente na anuência com o resultado: no dolo eventual, o agente assume o risco e conforma-se com o resultado; na culpa consciente, o agente prevê, mas repele e acredita sinceramente que o resultado não acontecerá.\n2. **O erro ou confusão provável:** Acreditar que a mera previsibilidade do resultado é suficiente para caracterizar dolo eventual.\n3. **Como a banca explora:** Questões narrando que o motorista estava sonolento ou dirigia em velocidade mas afirmou que \"estava em condições de evitar qualquer acidente\" ou que \"o para-choque era ele mesmo\" (FUNPAR PC-PR e FGV SEFAZ-MG). A banca tenta induzir o aluno a marcar dolo eventual.\n4. **Como o aluno evita o erro:** Se o texto indicar que o agente acreditava que sua habilidade impediria o dano ou que ele não aceitava o risco contra si mesmo, marque **CULPA CONSCIENTE**.\n\n### 🚨 Ponto Crítico 2: Omissão Imprópria de Pais em Estupro de Vulnerável (Cebraspe / IDECAN)\n1. **O conhecimento correto:** Pais têm dever legal de vigilância e proteção (Art. 13, § 2º, 'a', CP). Ao consentirem na coabitação marital de filha menor de 14 anos com parceiro ou tolerarem abusos sexuais do padrasto contra a filha, respondem pelo crime de estupro de vulnerável por **omissão imprópria**.\n2. **O erro ou confusão provável:** Considerar que a conduta dos pais é fato atípico por \"adequação social\", ou que eles respondem apenas por \"omissão de socorro\".\n3. **Como a banca explora:** Narra situação de namoro ou consentimento dos pais na convivência familiar de menor de 14 anos para afirmar que o fato é atípico ou infração meramente administrativa.\n4. **Como o aluno evita o erro:** O consentimento da vítima menor de 14 anos e dos pais é irrelevante (Súmula 593 do STJ). Os pais respondem pelo delito praticado pelo autor direto na forma omissiva imprópria.\n\n### 🚨 Ponto Crítico 3: Dolo Geral e a Aberratio Causae (Cebraspe / FGV)\n1. **O conhecimento correto:** O erro sobre o nexo causal que ocorre entre dois atos sucessivos do mesmo autor (acredita que já matou e executa ocultação/descarte, que na verdade causa a morte) caracteriza dolo geral.\n2. **O erro ou confusão provável:** Classificar a segunda conduta como homicídio culposo isolado ou crime preterdoloso.\n3. **Como a banca explora:** Assertivas dizendo que o agente responderá por tentativa de homicídio em concurso com homicídio culposo, ou por crime culposo puro.\n4. **Como o aluno evita o erro:** Identificou conduta 1 (asfixia/tiro) seguida de conduta 2 (jogar no rio/queimar) com morte na segunda? Marque sem hesitar: **DOLO GERAL** e homicídio doloso consumado.\n",
+        "has_lesson": true,
+        "moments": []
+      },
+      "flashcards": [
+        {
+          "q": "👨‍🏫 [Art. 18, I, CP] O que caracteriza o Dolo Geral (ou Aberratio Causae) em concursos públicos?",
+          "a": "Ocorre quando o agente, acreditando já ter matado a vítima, pratica nova conduta (ex: atirar no rio) que efetivamente causa a morte; o agente responde por homicídio doloso consumado com base no dolo inicial."
+        },
+        {
+          "q": "👨‍🏫 [Doutrina/Jurisprudência] No que consiste o Dolo de Segundo Grau (consequências necessárias)?",
+          "a": "Consiste na certeza prática de que a conduta acarretará efeitos colaterais inevitáveis e necessários para atingir o objetivo principal, não se confundindo com dúvida ou incerteza."
+        },
+        {
+          "q": "🚨 [Ponto Crítico] Qual o critério divisor entre Dolo Eventual e Culpa Consciente?",
+          "a": "No Dolo Eventual o agente assume o risco e tolera o resultado (indiferença); na Culpa Consciente ele prevê o perigo, mas NÃO aceita o resultado, confiando sinceramente que ele não ocorrerá."
+        },
+        {
+          "q": "👨‍🏫 [Art. 13, § 2º, CP] Quais são as três hipóteses legais do dever de agir (Garantidores)?",
+          "a": "Alínea 'a': obrigação de lei de cuidado/proteção; Alínea 'b': quem de outra forma assumiu a responsabilidade; Alínea 'c': quem com comportamento anterior criou o risco (ingerência)."
+        },
+        {
+          "q": "⚖️ [Jurisprudência STJ] Como respondem os pais que se omitem perante estupro de vulnerável praticado contra filho menor?",
+          "a": "Respondem pelo próprio crime de estupro de vulnerável em concurso de pessoas, na modalidade omissiva imprópria (garantidores ex vi legis - Art. 13, § 2º, 'a')."
+        },
+        {
+          "q": "🤖 [Análise de Banca] A omissão imprópria (comissiva por omissão) possui qual natureza jurídica quanto à tipicidade?",
+          "a": "Configura norma de extensão da tipicidade (adequação típica indireta ou mediata), equiparando o não evitar do garantidor à realização da conduta comissiva."
+        }
+      ],
+      "quiz": [
+        {
+          "enunciado": "Determinado agente pretende matar uma vítima por asfixia e, achando equivocadamente que ela estaria morta, joga o corpo no rio, causando a morte por afogamento. Em tal cenário, o agente responderá por homicídio praticado em dolo geral.",
+          "options": [
+            "(C) CERTO",
+            "(E) ERRADO"
+          ],
+          "correct_index": 0,
+          "comentario": "Item CERTO. Trata-se do clássico dolo geral (aberratio causae decorrente de erro sucessivo sobre o nexo de causalidade). O agente responde por homicídio doloso consumado.",
+          "banca": "Cebraspe / FGV"
+        },
+        {
+          "enunciado": "O dolo de segundo grau consiste na incerteza de que o resultado alcance terceiros não atingidos pelo dolo direto, havendo, entretanto, a possibilidade de que ele ocorra com a prática do ato.",
+          "options": [
+            "(C) CERTO",
+            "(E) ERRADO"
+          ],
+          "correct_index": 1,
+          "comentario": "Item ERRADO. O dolo de segundo grau baseia-se na certeza das consequências necessárias para a consecução do fim principal, e não na incerteza ou mera possibilidade (que caracterizariam dolo eventual).",
+          "banca": "Cebraspe"
+        },
+        {
+          "enunciado": "O condutor que, mesmo alertado sobre seu estado sonolento, decide pilotar motocicleta confiando sinceramente que o vento no rosto o manterá acordado e que evitará acidentes, vindo a atropelar um pedestre, atua sob culpa consciente e não sob dolo eventual.",
+          "options": [
+            "(C) CERTO",
+            "(E) ERRADO"
+          ],
+          "correct_index": 0,
+          "comentario": "Item CERTO. Na culpa consciente, o agente prevê a ocorrência do resultado danoso, porém levianamente rejeita a sua concretização, confiando em suas condições de evitá-lo.",
+          "banca": "Cebraspe / FUNPAR"
+        },
+        {
+          "enunciado": "Nos crimes comissivos por omissão, a posição de garantidor incumbe unicamente àqueles que tenham obrigação legal ou decorrente de contrato de trabalho formal de cuidado, proteção ou vigilância.",
+          "options": [
+            "(C) CERTO",
+            "(E) ERRADO"
+          ],
+          "correct_index": 1,
+          "comentario": "Item ERRADO. O rol do Art. 13, § 2º, abrange também aquele que, com seu comportamento anterior, criou o risco da ocorrência do resultado (alínea 'c' - ingerência), além da assunção de fato da responsabilidade (alínea 'b').",
+          "banca": "Cebraspe / FCC"
+        },
+        {
+          "enunciado": "Os genitores que tomam ciência de relações sexuais mantidas com sua filha de 13 anos de idade e autorizam a coabitação sob o mesmo teto respondem pelo crime de estupro de vulnerável na forma da omissão imprópria.",
+          "options": [
+            "(C) CERTO",
+            "(E) ERRADO"
+          ],
+          "correct_index": 0,
+          "comentario": "Item CERTO. Por deterem o dever legal de proteção e vigilância (Art. 13, § 2º, 'a'), a omissão dolosa em proteger a menor de 14 anos faz com que respondam pelo crime como partícipes por omissão imprópria.",
+          "banca": "Cebraspe"
+        }
+      ]
+    }
   }
 }

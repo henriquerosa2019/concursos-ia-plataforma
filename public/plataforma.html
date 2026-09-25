@@ -7519,6 +7519,22 @@
         html.push(`<div style="margin-left: 18px; margin-bottom: 6px; display: flex; gap: 8px;"><span>•</span><span>${formatInline(trimmed.slice(2))}</span></div>`);
       } else if (/^\d+\.\s/.test(trimmed)) {
         html.push(`<div style="margin-left: 18px; margin-bottom: 6px;"><strong>${trimmed.match(/^\d+\./)[0]}</strong> ${formatInline(trimmed.replace(/^\d+\.\s*/, ''))}</div>`);
+      } else if (trimmed.startsWith('> 📋') || trimmed.includes('VISÃO GERAL DA FONTE')) {
+        const cleanContent = trimmed.replace(/^>\s*/, '').replace(/📋\s*/, '').replace(/\*\*VISÃO GERAL DA FONTE[^:]*:\*\*\s*/i, '');
+        html.push(`
+          <div class="notebooklm-briefing-box" style="background: linear-gradient(135deg, rgba(88, 101, 242, 0.1) 0%, rgba(56, 139, 253, 0.05) 100%); border: 1px solid rgba(88, 101, 242, 0.35); border-left: 4px solid #5865F2; border-radius: 8px; padding: 14px 18px; margin: 16px 0; box-shadow: 0 4px 14px rgba(0,0,0,0.18);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 15px;">📋</span>
+                <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #a5b4fc; background: rgba(88, 101, 242, 0.22); padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(88, 101, 242, 0.35);">Visão Geral da Fonte • Estilo NotebookLM</span>
+              </div>
+              <span style="font-size: 11px; color: var(--text3); font-weight: 600;">Síntese Executiva Prévia</span>
+            </div>
+            <div style="font-size: 13.5px; line-height: 1.65; color: var(--text);">
+              ${formatInline(cleanContent)}
+            </div>
+          </div>
+        `);
       } else if (trimmed.startsWith('> ')) {
         html.push(`<blockquote style="border-left: 3px solid #58a6ff; background: rgba(56, 139, 253, 0.08); padding: 8px 14px; margin: 8px 0; border-radius: 0 6px 6px 0; font-size: 13.5px; line-height: 1.5;">${formatInline(trimmed.slice(2))}</blockquote>`);
       } else if (trimmed === '---') {
@@ -8182,6 +8198,9 @@
     "Direito_Constitucional": {
       "Artigo_5": { "cards_count": 6, "quiz_count": 5, "files_count": 4 }
     },
+    "Direito_Penal": {
+      "Acao_e_Omissao_Dolo_e_Culpa": { "cards_count": 6, "quiz_count": 5, "files_count": 4 }
+    },
     "Portugues": {
       "Interpretacao_de_Textos": { "cards_count": 5, "quiz_count": 4, "files_count": 4 }
     },
@@ -8194,6 +8213,7 @@
     'Informatica': 'Informática',
     'Direito_Administrativo': 'Direito Administrativo',
     'Direito_Constitucional': 'Direito Constitucional',
+    'Direito_Penal': 'Direito Penal',
     'Portugues': 'Língua Portuguesa',
     'Raciocinio_Logico': 'Raciocínio Lógico'
   };
@@ -8207,6 +8227,7 @@
     'Atos_Administrativos': 'Atos Administrativos',
     'Teoria_dos_Poderes': 'Teoria dos Poderes',
     'Artigo_5': 'Artigo 5º - Direitos Fundamentais',
+    'Acao_e_Omissao_Dolo_e_Culpa': 'Ação e Omissão / Dolo e Culpa',
     'Interpretacao_de_Textos': 'Interpretação e Tipologia Textual',
     'Tabela_Verdade_e_Proposicoes': 'Tabela Verdade e Proposições Lógicas'
   };
@@ -8220,6 +8241,7 @@
     'Atos_Administrativos': '📜',
     'Teoria_dos_Poderes': '⚡',
     'Artigo_5': '⚖️',
+    'Acao_e_Omissao_Dolo_e_Culpa': '⚖️',
     'Interpretacao_de_Textos': '📖',
     'Tabela_Verdade_e_Proposicoes': '🧩'
   };
@@ -8351,6 +8373,7 @@
       'Portugues': '📖',
       'Direito_Constitucional': '⚖️',
       'Direito_Administrativo': '🏛️',
+      'Direito_Penal': '⚖️',
       'Raciocinio_Logico': '🧠'
     };
 

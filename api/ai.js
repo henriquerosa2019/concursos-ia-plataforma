@@ -1123,6 +1123,117 @@ export default async function handler(req, res) {
     });
   }
 
+  // 16.5 Geração de Mapa Mental com IA estilo NotebookLM Studio (Vercel Serverless)
+  if (pathname === '/api/generate-ai-mindmap' && req.method === 'POST') {
+    const body = req.body || {};
+    const disc = (body.discipline || 'Direito_Penal').trim().replace(/[\s/]/g, '_');
+    const sub = (body.subarea || 'Acao_e_Omissao_Dolo_e_Culpa').trim().replace(/[\s/]/g, '_');
+    const focus = (body.focus || '').trim();
+
+    const topic = findTopicData(disc, sub);
+    const title = topic?.meta?.title || sub.replace(/_/g, ' ');
+    const context = topic?.meta?.markdown_content || topic?.transcript?.full_text || `${disc} • ${sub}`;
+
+    let mindmapText = '';
+    const apiKey = process.env.GEMINI_API_KEY;
+
+    if (apiKey) {
+      try {
+        const prompt = `Você é um especialista em síntese visual e arquitetura de conhecimento para concursos públicos, modelando mapas conceituais idênticos aos gerados pelo Google NotebookLM Studio.
+Seu objetivo é criar um MAPA MENTAL ESTRUTURADO em formato hierárquico claro, elegante e direto ao ponto.
+
+PADRÃO OBRIGATÓRIO (NOTEBOOKLM STUDIO):
+1. Inicie com o Nó Raiz entre colchetes na primeira linha: [ TEMA CENTRAL DO MAPA ]
+2. Crie de 3 a 5 ramificações principais (Eixos temáticos) usando '├──► 1. TÍTULO DO EIXO (Artigo/Referência se houver)' e a última com '└──► X. TÍTULO DO EIXO'.
+3. Em cada eixo, desdobre de 3 a 5 nós filhos usando '├── Nome do Conceito: Explicação sucinta ou regra de prova' e o último do ramo com '└── Nome: Explicação'.
+4. Se houver rol ou sub-hipóteses legais, indente com um subgrupo (ex: '└── Posição de Garantidor (Dever de Agir):' seguido de '├── Alínea A...').
+5. Retorne APENAS o mapa mental estruturado sem blocos de código markdown (sem \`\`\`), sem preâmbulos e sem explicações externas.
+
+Disciplina: ${disc.replace(/_/g, ' ')} | Assunto: ${sub.replace(/_/g, ' ')} | Título: ${title}
+${focus ? `Foco específico solicitado pelo aluno: ${focus}\n` : ''}
+
+Conteúdo de estudo / Transcrição / PDF:
+${context.slice(0, 14000)}`;
+
+        const geminiAbort = new AbortController();
+        const geminiTimeout = setTimeout(() => geminiAbort.abort(), 25000);
+        const geminiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          signal: geminiAbort.signal,
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { temperature: 0.4 }
+          })
+        });
+        clearTimeout(geminiTimeout);
+
+        if (geminiResp.ok) {
+          const geminiData = await geminiResp.json();
+          const raw = geminiData.candidates?.[0]?.content?.parts?.[0]?.text || '';
+          if (raw && raw.includes('[') && (raw.includes('├──') || raw.includes('└──'))) {
+            mindmapText = raw.replace(/```(?:nlm-mindmap|text)?/g, '').replace(/```/g, '').trim();
+          }
+        }
+      } catch (e_ai) {
+        console.error('Erro na chamada Gemini mindmap:', e_ai);
+      }
+    }
+
+    if (!mindmapText) {
+      const cleanTitle = (focus || title || sub.replace(/_/g, ' ')).toUpperCase();
+      mindmapText = `[ ${cleanTitle} ]
+   │
+   ├──► 1. CONCEITOS E DEFINIÇÕES ESSENCIAIS
+   │     ├── Regra Geral: Definição técnica e fundamento normativo aplicável.
+   │     ├── Requisitos Cumulativos: Condições de incidência para prova.
+   │     └── Hipóteses de Aplicação: Casos práticos mais recorrentes em questões.
+   │
+   ├──► 2. CRITÉRIOS DE DISTINÇÃO E ELEMENTOS
+   │     ├── Elemento Volitivo / Subjetivo: Parâmetros objetivos que delimitam a intenção.
+   │     ├── Diferenças Cruciais: Inversões e falsas equivalências que as bancas cobram.
+   │     └── Jurisprudência e Súmulas: Entendimento pacificado dos Tribunais Superiores.
+   │
+   └──► 3. REGRAS DE PROVA E PEGADINHAS DE BANCA
+         ├── Ponto Crítico 1: Inversão conceitual frequentemente explorada pela banca.
+         ├── Ponto Crítico 2: Exceção normativa com palavras restritivas (apenas, somente).
+         └── Regra de Ouro do Aluno: Dica prática para gabaritar assertivas do tema.`;
+    }
+
+    // Atualizar markdown_content do tópico
+    const cat = getCatalog();
+    let currentMd = topic?.meta?.markdown_content || '';
+    const mmBlock = `### 🗺️ Mapa Mental Estruturado (Conceitos & Relações)\n\n\`\`\`nlm-mindmap\n${mindmapText.trim()}\n\`\`\``;
+
+    let updatedMd = '';
+    if (currentMd.includes('### 🗺️ Mapa Mental')) {
+      updatedMd = currentMd.replace(/### 🗺️ Mapa Mental[^\n]*\n+```(?:nlm-mindmap|text|mermaid)?[\s\S]*?```/, mmBlock);
+    } else if (currentMd.includes('> 📋') && currentMd.includes('---')) {
+      const parts = currentMd.split('---');
+      if (parts.length >= 3) {
+        updatedMd = `${parts[0]}---${parts[1]}---\n\n${mmBlock}\n\n---${parts.slice(2).join('---')}`;
+      } else {
+        updatedMd = currentMd.replace('## 1.', `${mmBlock}\n\n---\n\n## 1.`);
+      }
+    } else {
+      updatedMd = currentMd ? currentMd.replace('## 1.', `${mmBlock}\n\n---\n\n## 1.`) : mmBlock;
+    }
+
+    if (cat[disc] && cat[disc][sub]) {
+      if (!cat[disc][sub].meta) cat[disc][sub].meta = {};
+      cat[disc][sub].meta.markdown_content = updatedMd;
+    }
+
+    return res.status(200).json({
+      success: true,
+      discipline: disc,
+      subarea: sub,
+      focus: focus,
+      mindmap_text: mindmapText,
+      markdown: updatedMd
+    });
+  }
+
   // 17. Geração de Raio-X & Pegadinhas com IA (Vercel Serverless)
   if (pathname === '/api/generate-ai-raiox' && req.method === 'POST') {
     const body = req.body || {};
@@ -1835,6 +1946,8 @@ ${extractedText.slice(0, 12000)}
 
 Retorne APENAS um JSON no formato:
 {
+  "briefing": "1 a 2 parágrafos objetivos sintetizando a matéria de forma panorâmica estilo NotebookLM",
+  "mindmap": "[ TEMA CENTRAL ]\\n   ├──► 1. EIXO 1\\n   │     ├── Conceito: Definição\\n   └──► 2. EIXO 2...",
   "pilar1": "## 1. Resumo Estruturado e Conceitos-Chave...",
   "pilar2": "## 2. Raio-X de Banca...",
   "cards": [{ "q": "Pergunta", "a": "Resposta" }],
@@ -1865,6 +1978,8 @@ Retorne APENAS um JSON no formato:
             cards = Array.isArray(parsed.cards) ? parsed.cards : [];
             questions = Array.isArray(parsed.quiz) ? parsed.quiz : [];
             knowledgeUnits = Array.isArray(parsed.knowledge_units) ? parsed.knowledge_units : [];
+            briefingText = parsed.briefing || '';
+            mindmapTree = parsed.mindmap || '';
           }
 
         }
@@ -1872,6 +1987,9 @@ Retorne APENAS um JSON no formato:
         console.warn('Fallback para construtor estruturado offline:', e_gemini.message);
       }
     }
+
+    let briefingText = '';
+    let mindmapTree = '';
 
     // Se a IA não foi acionada ou falhou, usar construtor estruturado impecável (sem lixo binário)
     if (!pilar1Text || !pilar2Text) {
@@ -1883,7 +2001,33 @@ Retorne APENAS um JSON no formato:
       knowledgeUnits = generated.knowledge_units || [];
     }
 
-    const aulaMd = `# ${disc.replace(/_/g, ' ').toUpperCase()} - ${title}\n**Professor:** ${professor}  \n**Duração:** 50 minutos  \n**Categoria:** Edital de Concursos Públicos (${banca})  \n\n---\n\n${pilar1Text}\n\n---\n\n${pilar2Text}\n`;
+    if (!mindmapTree) {
+      const cleanTitle = (title || sub.replace(/_/g, ' ')).toUpperCase();
+      mindmapTree = `[ ${cleanTitle} ]
+   │
+   ├──► 1. CONCEITOS E DEFINIÇÕES ESSENCIAIS
+   │     ├── Regra Geral: Fundamento normativo aplicável.
+   │     ├── Requisitos Cumulativos: Condições de incidência para prova.
+   │     └── Hipóteses de Aplicação: Casos práticos mais recorrentes.
+   │
+   ├──► 2. CRITÉRIOS DE DISTINÇÃO E ELEMENTOS
+   │     ├── Elemento Volitivo / Subjetivo: Parâmetros objetivos de intenção.
+   │     ├── Diferenças Cruciais: Inversões conceituais que as bancas cobram.
+   │     └── Jurisprudência e Súmulas: Entendimento pacificado dos Tribunais.
+   │
+   └──► 3. REGRAS DE PROVA E PEGADINHAS DE BANCA
+         ├── Ponto Crítico 1: Inversão frequentemente explorada pela banca.
+         ├── Ponto Crítico 2: Exceção normativa com palavras restritivas.
+         └── Regra de Ouro do Aluno: Dica prática para gabaritar o tema.`;
+    }
+
+    if (!briefingText) {
+      briefingText = `Este material didático consolida os conceitos fundamentais de ${sub.replace(/_/g, ' ')} para a disciplina de ${disc.replace(/_/g, ' ')}, abordando regras gerais, critérios normativos e pontos de maior incidência para a banca ${banca}.`;
+    }
+
+    const briefingBlock = `> 📋 **VISÃO GERAL DA FONTE (BRIEFING EXECUTIVO — ESTILO NOTEBOOKLM):**  \n> ${briefingText.replace(/^>\s*📋[^\n]*\n?>\s*/, '').trim()}\n\n---\n\n`;
+    const mindmapBlock = `### 🗺️ Mapa Mental Estruturado (Conceitos & Relações)\n\n\`\`\`nlm-mindmap\n${mindmapTree.trim()}\n\`\`\`\n\n---\n\n`;
+    const aulaMd = `# ${disc.replace(/_/g, ' ').toUpperCase()} - ${title}\n**Professor:** ${professor}  \n**Duração:** 50 minutos  \n**Categoria:** Edital de Concursos Públicos (${banca})  \n\n---\n\n${briefingBlock}${mindmapBlock}${pilar1Text}\n\n---\n\n${pilar2Text}\n`;
 
     const cat = getCatalog();
     const norm = s => String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');

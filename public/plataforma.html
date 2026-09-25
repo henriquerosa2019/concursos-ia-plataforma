@@ -4115,6 +4115,31 @@
   </div>
 </div>
 
+<!-- Modal 0: Gerar Mapa Mental por IA (NotebookLM Studio) -->
+<div class="modal-overlay" id="modalAiMindmap" style="display: none;" onclick="if(event.target === this) closeModal('modalAiMindmap')">
+  <div class="modal-box" style="max-width: 520px; width: 92%;">
+    <div class="modal-title" style="display: flex; align-items: center; gap: 8px;">
+      <span>🗺️</span><span>Gerar Mapa Mental com IA • NotebookLM</span>
+    </div>
+    <p style="font-size: 13px; color: var(--text2); margin-bottom: 14px; line-height: 1.5;">
+      A inteligência artificial analisará o material desta aula (PDF ou transcrição) para construir um mapa mental interativo com eixos conceituais, distinções dogmáticas e regras de prova no estilo <strong>NotebookLM Studio</strong>.
+    </p>
+    <div class="modal-input-group" style="margin-bottom: 16px;">
+      <label style="font-weight: 700; font-size: 12.5px; display: block; margin-bottom: 6px;">Foco ou Tema Específico do Mapa Mental (Opcional):</label>
+      <input type="text" id="aiMindmapFocus" placeholder="Ex: Dolo e Culpa, Rol de Garantidores, Regras e Exceções... (ou deixe em branco para toda a matéria)" style="width: 100%; box-sizing: border-box; padding: 10px 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 13px;">
+    </div>
+    <div id="aiMindmapSpinner" style="display: none; background: rgba(99, 102, 241, 0.12); border: 1px solid rgba(99, 102, 241, 0.35); border-radius: 8px; padding: 10px 14px; font-size: 12.5px; color: #a5b4fc; margin-bottom: 14px; line-height: 1.4; text-align: center;">
+      ⏳ <b>A IA está estruturando os nós e eixos conceituais do mapa...</b> Aguarde alguns instantes.
+    </div>
+    <div class="modal-actions" style="display: flex; justify-content: flex-end; gap: 10px;">
+      <button class="btn" onclick="closeModal('modalAiMindmap')">Cancelar</button>
+      <button class="btn btn-purple" id="btnRunAiMindmap" onclick="generateAiMindmap()" style="background: linear-gradient(135deg, #4f46e5, #6366f1); border-color: #6366f1; font-weight: 700;">
+        <span>🚀 Gerar Mapa Mental</span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- Modal 1: Gerar Flashcards por IA -->
 <div class="modal-overlay" id="modalAiCards">
   <div class="modal-box">
@@ -7187,6 +7212,68 @@
   }
 
   // Modals
+  function openAiMindmapModal() {
+    const focusInput = document.getElementById('aiMindmapFocus');
+    if (focusInput) focusInput.value = '';
+    const spinner = document.getElementById('aiMindmapSpinner');
+    if (spinner) spinner.style.display = 'none';
+    const btn = document.getElementById('btnRunAiMindmap');
+    if (btn) btn.disabled = false;
+    openModal('modalAiMindmap');
+  }
+
+  async function generateAiMindmap() {
+    const focus = (document.getElementById('aiMindmapFocus')?.value || '').trim();
+    const spinner = document.getElementById('aiMindmapSpinner');
+    const btn = document.getElementById('btnRunAiMindmap');
+    if (spinner) spinner.style.display = 'block';
+    if (btn) btn.disabled = true;
+
+    try {
+      const resp = await fetch('/api/generate-ai-mindmap', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          discipline: currentDiscipline,
+          subarea: currentSubarea,
+          focus: focus
+        })
+      });
+      const data = await resp.json();
+      if (data.success && data.markdown) {
+        closeModal('modalAiMindmap');
+        showToast('Mapa mental gerado com sucesso!', '🗺️');
+
+        try {
+          const localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
+          if (!localLessons[currentDiscipline]) localLessons[currentDiscipline] = {};
+          if (!localLessons[currentDiscipline][currentSubarea]) localLessons[currentDiscipline][currentSubarea] = { meta: {} };
+          localLessons[currentDiscipline][currentSubarea].meta.markdown_content = data.markdown;
+          localStorage.setItem('concursos_local_lessons', JSON.stringify(localLessons));
+        } catch(e) {}
+
+        renderDynamicLessonTabs(data.markdown, currentDiscipline, currentSubarea);
+
+        if (typeof readerRawContent !== 'undefined') {
+          readerRawContent = data.markdown;
+        }
+
+        switchTab(0);
+        setTimeout(() => {
+          document.querySelector('.nlm-mindmap-wrapper')?.scrollIntoView({ behavior: 'smooth' });
+        }, 300);
+      } else {
+        alert(data.error || 'Erro ao gerar mapa mental com IA.');
+      }
+    } catch (e) {
+      console.error('Erro ao gerar mapa mental:', e);
+      alert('Erro de conexão ao gerar mapa mental.');
+    } finally {
+      if (spinner) spinner.style.display = 'none';
+      if (btn) btn.disabled = false;
+    }
+  }
+
   function openAiFlashcardModal() {
     if (isUserTrial() && hasTrialGeneratedFeatureForDiscipline('cards', currentDiscipline)) {
       showTrialFeatureLimitModal('cards', currentDiscipline);
@@ -7729,13 +7816,16 @@
           <span>📑 1. Resumo Estruturado & Síntese Pedagógica</span>
           <span class="badge" style="background: rgba(88, 166, 255, 0.15); color: #58a6ff; font-size: 11px; padding: 3px 8px; border-radius: 12px; border: 1px solid rgba(88, 166, 255, 0.3);">Pilar 1</span>
         </div>
-        ${hasMindmap ? `
-          <div style="display: flex; align-items: center; gap: 8px;">
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          ${hasMindmap ? `
             <button class="btn btn-sm" onclick="document.querySelector('.nlm-mindmap-wrapper')?.scrollIntoView({ behavior: 'smooth' })" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.4); font-weight: 700; cursor: pointer;">
-              <span>🗺️</span><span>Ver Mapa Mental Interativo</span>
+              <span>🗺️</span><span>Ver Mapa Mental</span>
             </button>
-          </div>
-        ` : ''}
+          ` : ''}
+          <button class="btn btn-sm" onclick="openAiMindmapModal()" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(99, 102, 241, 0.22); color: #c7d2fe; border: 1px solid rgba(99, 102, 241, 0.5); font-weight: 700; cursor: pointer;" title="Gerar ou personalizar mapa mental deste tópico com IA">
+            <span>✨</span><span>Gerar Mapa Mental com IA</span>
+          </button>
+        </div>
       </div>
     `;
 

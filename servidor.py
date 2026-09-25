@@ -2314,6 +2314,127 @@ def update_lesson_markdown_with_raiox(discipline, subarea, raiox_markdown, banca
         
     return final_sec2
 
+def generate_notebooklm_briefing(discipline, subarea, title, context_text, banca="Cebraspe"):
+    """
+    Gera a Visão Geral da Fonte (Briefing Executivo) estilo NotebookLM.
+    """
+    sys_prompt = (
+        "Você é um assistente pedagógico de alto nível estilo Google NotebookLM.\n"
+        "Gere uma VISÃO GERAL DA FONTE (BRIEFING EXECUTIVO) de 1 a 2 parágrafos objetivos sintetizando a matéria de forma panorâmica, destacando escopo, conceitos fundamentais e importância para provas de concurso público.\n"
+        "Inicie obrigatoriamente com:\n"
+        "> 📋 **VISÃO GERAL DA FONTE (BRIEFING EXECUTIVO — ESTILO NOTEBOOKLM):**  \n> "
+    )
+    user_prompt = f"Disciplina: {discipline} | Assunto: {subarea} | Título: {title} | Banca: {banca}\n\nConteúdo da fonte:\n{context_text[:12000]}"
+    res, _ = call_ai_service(sys_prompt, user_prompt, json_mode=False, temperature=0.4)
+    if res and "> 📋" in res:
+        return res.strip()
+    return f"> 📋 **VISÃO GERAL DA FONTE (BRIEFING EXECUTIVO — ESTILO NOTEBOOKLM):**  \n> Este material didático reúne os fundamentos estratégicos de {subarea.replace('_', ' ')} para a disciplina de {discipline.replace('_', ' ')}, consolidando regras essenciais, distinções de prova e pontos de alto impacto para a banca {banca}."
+
+def generate_mindmap_content(discipline, subarea, title, context_text, focus=""):
+    """
+    Gera um mapa mental estruturado em formato NotebookLM Studio para o tópico.
+    Padrão de saída: texto hierárquico pronto para bloco nlm-mindmap.
+    """
+    sys_prompt = (
+        "Você é um especialista em síntese visual e arquitetura de conhecimento para concursos públicos, modelando mapas conceituais idênticos aos gerados pelo Google NotebookLM Studio.\n"
+        "Seu objetivo é criar um MAPA MENTAL ESTRUTURADO em formato hierárquico claro, elegante e direto ao ponto.\n\n"
+        "PADRÃO OBRIGATÓRIO (NOTEBOOKLM STUDIO):\n"
+        "1. Inicie com o Nó Raiz entre colchetes na primeira linha: [ TEMA CENTRAL DO MAPA ]\n"
+        "2. Crie de 3 a 5 ramificações principais (Eixos temáticos) usando '├──► 1. TÍTULO DO EIXO (Artigo/Referência)' e a última com '└──► X. TÍTULO DO EIXO'.\n"
+        "3. Em cada eixo, desdobre de 3 a 5 nós filhos usando '├── Nome do Conceito: Explicação sucinta ou regra de prova' e o último do ramo com '└── Nome: Explicação'.\n"
+        "4. Se houver rol ou sub-hipóteses legais, indente com um subgrupo (ex: '└── Posição de Garantidor (Dever de Agir):' seguido de '├── Alínea A...').\n"
+        "5. Retorne APENAS o mapa mental estruturado sem blocos de código markdown (sem ```), sem preâmbulos e sem explicações externas."
+    )
+    user_prompt = (
+        f"Disciplina: {discipline} | Assunto: {subarea} | Título: {title}\n"
+        f"Foco solicitado: {focus if focus else 'Conceitos Centrais, Desdobramentos e Regras de Prova'}\n\n"
+        f"Conteúdo de estudo / Transcrição / PDF:\n{context_text[:14000]}"
+    )
+    raw_tree, _ = call_ai_service(sys_prompt, user_prompt, json_mode=False, temperature=0.4)
+    if raw_tree and "[" in raw_tree and ("├──" in raw_tree or "└──" in raw_tree):
+        clean = raw_tree.strip().replace("```nlm-mindmap", "").replace("```text", "").replace("```", "").strip()
+        return clean
+
+    clean_title = (focus or title or subarea.replace('_', ' ')).upper()
+    return f"""[ {clean_title} ]
+   │
+   ├──► 1. CONCEITOS E DEFINIÇÕES ESSENCIAIS
+   │     ├── Regra Geral: Definição técnica e fundamento normativo aplicável.
+   │     ├── Requisitos Cumulativos: Condições de incidência para prova.
+   │     └── Hipóteses de Aplicação: Casos práticos mais recorrentes em questões.
+   │
+   ├──► 2. CRITÉRIOS DE DISTINÇÃO E ELEMENTOS
+   │     ├── Elemento Volitivo / Subjetivo: Parâmetros objetivos que delimitam a intenção.
+   │     ├── Diferenças Cruciais: Inversões e falsas equivalências que as bancas cobram.
+   │     └── Jurisprudência e Súmulas: Entendimento pacificado dos Tribunais Superiores.
+   │
+   └──► 3. REGRAS DE PROVA E PEGADINHAS DE BANCA
+         ├── Ponto Crítico 1: Inversão conceitual frequentemente explorada pela banca.
+         ├── Ponto Crítico 2: Exceção normativa com palavras restritivas (apenas, somente).
+         └── Regra de Ouro do Aluno: Dica prática para gabaritar assertivas do tema."""
+
+def update_lesson_mindmap(discipline, subarea, mindmap_tree):
+    folder = find_subarea_folder(discipline, subarea)
+    if not os.path.exists(folder):
+        return None
+
+    lesson_path = None
+    for f in os.listdir(folder):
+        if f.startswith("Aula_") and f.endswith(".md"):
+            lesson_path = os.path.join(folder, f)
+            break
+    if not lesson_path:
+        r = os.path.join(folder, "README.md")
+        if os.path.exists(r):
+            lesson_path = r
+        else:
+            return None
+
+    with open(lesson_path, "r", encoding="utf-8", errors="ignore") as fm:
+        content = fm.read()
+
+    mm_block = f"### 🗺️ Mapa Mental Estruturado (Conceitos & Relações)\n\n```nlm-mindmap\n{mindmap_tree.strip()}\n```"
+
+    if "### 🗺️ Mapa Mental" in content:
+        content = re.sub(
+            r'### 🗺️ Mapa Mental[^\n]*\n+```(?:nlm-mindmap|text|mermaid)?[\s\S]*?```',
+            mm_block,
+            content
+        )
+    else:
+        if "> 📋" in content and "---" in content:
+            parts = content.split("---")
+            if len(parts) >= 3:
+                content = f"{parts[0]}---{parts[1]}---\n\n{mm_block}\n\n---{'---'.join(parts[2:])}"
+            else:
+                content = content.replace("## 1.", f"{mm_block}\n\n---\n\n## 1.")
+        else:
+            content = content.replace("## 1.", f"{mm_block}\n\n---\n\n## 1.")
+
+    with open(lesson_path, "w", encoding="utf-8") as fm:
+        fm.write(content)
+
+    return content
+
+def update_topic_markdown_in_catalog(discipline, subarea, new_markdown):
+    cat_paths = [
+        os.path.join(BASE_DIR, "preseeded_topics.json"),
+        os.path.join(BASE_DIR, "public", "preseeded_topics.json"),
+        os.path.join(BASE_DIR, "api", "preseeded_topics.json")
+    ]
+    for cp in cat_paths:
+        if os.path.exists(cp):
+            try:
+                with open(cp, "r", encoding="utf-8") as f:
+                    cdata = json.load(f)
+                if discipline in cdata and subarea in cdata[discipline]:
+                    if "meta" in cdata[discipline][subarea]:
+                        cdata[discipline][subarea]["meta"]["markdown_content"] = new_markdown
+                    with open(cp, "w", encoding="utf-8") as f:
+                        json.dump(cdata, f, indent=2, ensure_ascii=False)
+            except Exception as e:
+                print(f"Aviso ao sincronizar markdown no catalogo: {e}")
+
 def generate_pilar1_summary(discipline, subarea, title, professor, context_text):
     """
     Pilar 1: Resumo & Síntese Pedagógica de Alto Valor para Concursos (Regra 10).
@@ -2580,24 +2701,30 @@ def auto_generate_all_4_pillars(discipline, subarea, title, professor, text_corp
     folder = os.path.join(BASE_DIR, discipline, subarea)
     os.makedirs(folder, exist_ok=True)
     
-    # 1 a 4. Execução Concorrente em Paralelo dos 4 Pilares para Velocidade Máxima
+    # 1 a 4. Execução Concorrente em Paralelo dos 4 Pilares + Briefing Executivo + Mapa Mental NotebookLM
     pilar1_text = ""
     raiox_text = ""
+    briefing_text = ""
+    mindmap_tree = ""
     cards = []
     questions = []
 
     try:
-        with ThreadPoolExecutor(max_workers=4) as executor:
+        with ThreadPoolExecutor(max_workers=6) as executor:
             f_p1 = executor.submit(generate_pilar1_summary, discipline, subarea, title, professor, text_corpus)
             f_p2 = executor.submit(generate_raiox_content, discipline, subarea, text_corpus, banca=banca)
             f_cards = executor.submit(generate_flashcards_from_text, discipline, subarea, text_corpus, count=6)
             f_quiz = executor.submit(generate_quiz_from_text, discipline, subarea, text_corpus, banca=banca, count=5)
+            f_briefing = executor.submit(generate_notebooklm_briefing, discipline, subarea, title, text_corpus, banca=banca)
+            f_mm = executor.submit(generate_mindmap_content, discipline, subarea, title, text_corpus, focus=subarea.replace('_', ' '))
 
             pilar1_text = f_p1.result()
             raiox_res = f_p2.result()
             raiox_text = raiox_res[0] if isinstance(raiox_res, tuple) else raiox_res
             cards = f_cards.result()
             questions = f_quiz.result()
+            briefing_text = f_briefing.result()
+            mindmap_tree = f_mm.result()
     except Exception as e_par:
         print(f"Aviso no pool paralelo dos 4 pilares: {e_par}. Executando sequencial...")
         pilar1_text = generate_pilar1_summary(discipline, subarea, title, professor, text_corpus)
@@ -2605,14 +2732,23 @@ def auto_generate_all_4_pillars(discipline, subarea, title, professor, text_corp
         raiox_text = raiox_res[0] if isinstance(raiox_res, tuple) else raiox_res
         cards = generate_flashcards_from_text(discipline, subarea, text_corpus, count=6)
         questions = generate_quiz_from_text(discipline, subarea, text_corpus, banca=banca, count=5)
+        briefing_text = generate_notebooklm_briefing(discipline, subarea, title, text_corpus, banca=banca)
+        mindmap_tree = generate_mindmap_content(discipline, subarea, title, text_corpus, focus=subarea.replace('_', ' '))
     
-    # Montar e salvar Aula_01_[Tema].md
+    # Montar e salvar Aula_01_[Tema].md no Padrão Oficial NotebookLM Studio
     aula_md = f"# {discipline.replace('_', ' ').upper()} - {title}\n"
     aula_md += f"**Professor:** {professor}  \n"
     if yt_url:
         aula_md += f"**Link da Aula:** [Assistir no YouTube]({yt_url})  \n"
     aula_md += "**Duração:** 50 minutos  \n"
     aula_md += f"**Categoria:** Edital de Concursos Públicos ({banca})  \n\n---\n\n"
+    
+    if briefing_text and "VISÃO GERAL DA FONTE" not in pilar1_text:
+        aula_md += f"{briefing_text.strip()}\n\n---\n\n"
+        
+    if mindmap_tree and "nlm-mindmap" not in pilar1_text:
+        aula_md += f"### 🗺️ Mapa Mental Estruturado (Conceitos & Relações)\n\n```nlm-mindmap\n{mindmap_tree.strip()}\n```\n\n---\n\n"
+        
     aula_md += pilar1_text.strip() + "\n\n---\n\n"
     aula_md += raiox_text.strip() + "\n"
     
@@ -3642,6 +3778,38 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 "success": True, 
                 "cards": cards_to_save, 
                 "provider": provider_used
+            }, ensure_ascii=False).encode("utf-8"))
+
+        # 6.2 Geração de Mapa Mental com IA estilo NotebookLM Studio
+        elif path == "/api/generate-ai-mindmap":
+            disc = payload.get("discipline", "Direito_Penal")
+            sub = payload.get("subarea", "Acao_e_Omissao_Dolo_e_Culpa")
+            topic_focus = payload.get("focus", "").strip()
+            
+            context = get_subarea_context(disc, sub)
+            folder = find_subarea_folder(disc, sub)
+            title = sub.replace("_", " ")
+            
+            meta = get_lesson_metadata(disc, sub)
+            if meta and meta.get("title"):
+                title = meta.get("title")
+                
+            mindmap_tree = generate_mindmap_content(disc, sub, title, context, focus=topic_focus)
+            updated_md = update_lesson_mindmap(disc, sub, mindmap_tree)
+            
+            if updated_md:
+                update_topic_markdown_in_catalog(disc, sub, updated_md)
+                
+            self.send_response(200)
+            self.send_header("Content-type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({
+                "success": True,
+                "discipline": disc,
+                "subarea": sub,
+                "focus": topic_focus,
+                "mindmap_text": mindmap_tree,
+                "markdown": updated_md or (meta.get("markdown_content", "") if meta else "")
             }, ensure_ascii=False).encode("utf-8"))
 
         # 7. Geração de Novo Simulado com IA + Fallback de Alta Retenção

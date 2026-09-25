@@ -14,26 +14,26 @@
 ### 🗺️ Mapa Mental Estruturado (Conceitos & Relações)
 
 ```nlm-mindmap
-[ CONDUTA PENAL (Ação e Omissão) ]
+[ AÇÃO E OMISSÃO / DOLO E CULPA ]
    │
    ├──► 1. ESPÉCIES DE DOLO (Art. 18, I, CP)
    │     ├── Dolo Direto de 1º Grau: Vontade direcionada imediatamente ao resultado fim.
-   │     ├── Dolo de 2º Grau (Consequências Necessárias): Efeitos colaterais certos e inevitáveis da conduta.
-   │     ├── Dolo Eventual (Teoria do Assentimento): Prevê o resultado e assume o risco (indiferença: "se acontecer, tanto faz").
-   │     └── Dolo Geral (Aberratio Causae): O agente julga já ter consumado o crime, pratica nova conduta e esta causa a morte.
+   │     ├── Dolo de 2º Grau: Efeitos colaterais certos e inevitáveis da conduta.
+   │     ├── Dolo Eventual: Prevê o resultado e assume o risco (indiferença).
+   │     └── Dolo Geral: O agente julga já ter consumado o crime, pratica nova conduta que causa a morte.
    │
    ├──► 2. CULPA (Art. 18, II, CP)
    │     ├── Modalidades: Imprudência (ação precipitada), Negligência (omissão prévia), Imperícia (inaptidão técnica).
    │     ├── Culpa Inconsciente: Resultado previsível, mas não previsto pelo agente.
-   │     └── Culpa Consciente: Resultado previsto, MAS o agente confia sinceramente que NÃO ocorrerá (rejeita o resultado).
+   │     └── Culpa Consciente: Resultado previsto, mas o agente confia que não ocorrerá.
    │
    └──► 3. OMISSÃO PENALMENTE RELEVANTE (Art. 13, § 2º, CP)
-         ├── Natureza: Omissão Imprópria / Comissivo por Omissão (Norma de Extensão da Tipicidade).
-         ├── Requisitos Cumulativos: O agente DEVIA e PODIA agir para evitar o resultado.
+         ├── Natureza: Omissão Imprópria / Comissivo por Omissão.
+         ├── Requisitos: O agente DEVIA e PODIA agir para evitar o resultado.
          └── Posição de Garantidor (Dever de Agir):
-               ├── Alínea 'A' (Dever por Lei): Pais, tutores, policiais em serviço (ex: pais que toleram estupro de vulnerável).
-               ├── Alínea 'B' (Assunção de Responsabilidade): Salva-vidas, enfermeiros, cuidadores contratados.
-               └── Alínea 'C' (Comportamento Anterior / Ingerência): Quem criou o risco da ocorrência do resultado.
+               ├── Alínea 'A' (Dever por Lei): Pais, tutores, policiais em serviço.
+               ├── Alínea 'B' (Assunção de Responsabilidade): Salva-vidas, enfermeiros, cuidadores.
+               └── Alínea 'C' (Comportamento Anterior): Criador do risco da ocorrência do resultado.
 ```
 
 ---

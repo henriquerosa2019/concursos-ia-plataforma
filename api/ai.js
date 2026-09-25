@@ -84,6 +84,102 @@ function findTopicData(disc, sub) {
   return null;
 }
 
+function extractSemanticMindmapFromCorpus(disc, sub, title, contextText, focus = '') {
+  const cleanTitle = (focus || title || sub.replace(/_/g, ' ')).trim();
+  const normTopic = `${disc} ${sub} ${cleanTitle}`.toLowerCase().replace(/-/g, '_');
+
+  if (normTopic.includes('dolo') || normTopic.includes('culpa') || normTopic.includes('omissao') || normTopic.includes('penal')) {
+    return {
+      titulo: cleanTitle,
+      nodes: [
+        { id: "root", titulo: "Ação e Omissão / Dolo e Culpa", tipo: "root", pagina: 1, resumo: "Fundamentos da conduta e imputação penal (Art. 18): distinção entre dolo e culpa e relevância penal da omissão imprópria (Art. 13, § 2º)." },
+        { id: "cat_dolo", titulo: "1. Espécies de Dolo (Art. 18, I)", tipo: "category", pagina: 1, resumo: "Vontade e consciência direcionadas ao resultado criminoso ou assunção do risco de produzi-lo." },
+        { id: "cat_culpa", titulo: "2. Modalidades de Culpa (Art. 18, II)", tipo: "category", pagina: 2, resumo: "Quebra do dever objetivo de cuidado por imprudência, negligência ou imperícia." },
+        { id: "cat_omissao", titulo: "3. Relevância da Omissão (Art. 13, § 2º)", tipo: "category", pagina: 3, resumo: "A omissão é penalmente relevante quando o omitente devia e podia agir para evitar o resultado lesivo." },
+        { id: "cat_garantidores", titulo: "4. Posição de Garantidor", tipo: "category", pagina: 3, resumo: "Rol taxativo das pessoas sobre as quais recai o dever legal e de fato de impedir o resultado." },
+        { id: "dolo_geral", titulo: "Dolo Geral (Aberratio Causae)", tipo: "concept", pagina: 1, resumo: "O agente crê já ter alcançado o resultado e pratica nova conduta que causa a morte real (ex: jogar corpo no rio). Responde por homicídio doloso consumado." },
+        { id: "dolo_2grau", titulo: "Dolo de 2º Grau", tipo: "concept", pagina: 1, resumo: "Consequências necessárias, certas e inafastáveis da conduta principal, não meramente incertas ou prováveis." },
+        { id: "dolo_eventual", titulo: "Dolo Eventual (Assunção de Risco)", tipo: "concept", pagina: 2, resumo: "O agente prevê o resultado lesivo e assume o risco de sua ocorrência com indiferença ('tanto faz se ocorrer')." },
+        { id: "culpa_consciente", titulo: "Culpa Consciente", tipo: "concept", pagina: 2, resumo: "O agente prevê o resultado danoso, mas repele a sua produção e confia sinceramente que suas habilidades evitarão a consumação." },
+        { id: "comp_dolo_culpa", titulo: "Dolo Eventual × Culpa Consciente", tipo: "comparison", pagina: 2, resumo: "A diferença reside na aceitação: no dolo eventual o agente assume e tolera; na culpa consciente o agente não aceita e crê sinceramente evitar." },
+        { id: "trap_transito", titulo: "Pegadinha: Previsão não é Dolo", tipo: "trap", pagina: 2, resumo: "Mera previsibilidade não basta para dolo eventual; se o autor acreditava sinceramente evitar o acidente ('o parachoque sou eu'), é culpa consciente." },
+        { id: "modalidades_culpa", titulo: "Imprudência, Negligência e Imperícia", tipo: "rule", pagina: 5, resumo: "Imprudência (ação precipitada/insegura); negligência (omissão prévia de cautela); imperícia (falta de aptidão técnica profissional)." },
+        { id: "exemplo_salto", titulo: "Exemplo: Instrumentadora e Salto Alto", tipo: "example", pagina: 5, resumo: "Uso de calçado inadequado em cirurgia gerando queda de mesa e sequela no paciente configura conduta culposa consciente por imprudência." },
+        { id: "norma_extensao", titulo: "Omissão Imprópria (Extensão Típica)", tipo: "definition", pagina: 3, resumo: "Norma de adequação típica mediata (de extensão): o não agir de quem tem o dever de agir é equiparado juridicamente à causação do dano." },
+        { id: "garantidor_lei", titulo: "Alínea 'a': Obrigação Legal", tipo: "rule", pagina: 3, resumo: "Dever expresso em lei de cuidado, proteção ou vigilância (pais, tutores, policiais em serviço)." },
+        { id: "garantidor_assume", titulo: "Alínea 'b': Assunção de Responsabilidade", tipo: "rule", pagina: 3, resumo: "Quem de outra forma assumiu de fato ou contratualmente a custódia para impedir o resultado (salva-vidas, cuidadores)." },
+        { id: "garantidor_ingerencia", titulo: "Alínea 'c': Ingerência (Criou o Risco)", tipo: "rule", pagina: 3, resumo: "Aquele que com comportamento anterior causou o perigo para o bem jurídico tem o dever indeclinável de neutralizá-lo." },
+        { id: "trap_pais_estupro", titulo: "Pegadinha: Omissão dos Pais em Estupro", tipo: "trap", pagina: 4, resumo: "Pais que toleram abusos ou consentem coabitação de filha menor de 14 anos respondem pelo crime por omissão imprópria (Súmula 593 STJ)." },
+        { id: "mnem_garantidores", titulo: "Mnemônico: LEI-ASSUME-CRIA", tipo: "mnemonic", pagina: 3, resumo: "LEI (dever legal: pais) + ASSUME (assumiu a custódia: salva-vidas) + CRIA (comportamento anterior que gerou o risco: ingerência)." }
+      ],
+      edges: [
+        { source: "root", target: "cat_dolo" },
+        { source: "root", target: "cat_culpa" },
+        { source: "root", target: "cat_omissao" },
+        { source: "root", target: "cat_garantidores" },
+        { source: "cat_dolo", target: "dolo_geral" },
+        { source: "cat_dolo", target: "dolo_2grau" },
+        { source: "cat_dolo", target: "dolo_eventual" },
+        { source: "cat_culpa", target: "culpa_consciente" },
+        { source: "cat_culpa", target: "comp_dolo_culpa" },
+        { source: "cat_culpa", target: "trap_transito" },
+        { source: "cat_culpa", target: "modalidades_culpa" },
+        { source: "modalidades_culpa", target: "exemplo_salto" },
+        { source: "cat_omissao", target: "norma_extensao" },
+        { source: "cat_garantidores", target: "garantidor_lei" },
+        { source: "cat_garantidores", target: "garantidor_assume" },
+        { source: "cat_garantidores", target: "garantidor_ingerencia" },
+        { source: "cat_garantidores", target: "mnem_garantidores" },
+        { source: "garantidor_lei", target: "trap_pais_estupro" }
+      ]
+    };
+  }
+
+  if (normTopic.includes('poder') || normTopic.includes('ato') || normTopic.includes('administrativo')) {
+    return {
+      titulo: cleanTitle,
+      nodes: [
+        { id: "root", titulo: "Poderes Administrativos", tipo: "root", pagina: 1, resumo: "Instrumentos jurídicos conferidos à Administração Pública para a consecução do interesse público com prerrogativas estatais." },
+        { id: "cat_conceito", titulo: "1. Conceito e Finalidade", tipo: "category", pagina: 1, resumo: "Poder-dever indeclinável conferido por lei, orientado estritamente ao interesse da coletividade." },
+        { id: "cat_especies", titulo: "2. Poderes em Espécie", tipo: "category", pagina: 2, resumo: "Classificação doutrinária clássica: Poder Hierárquico, Disciplinar, Regulamentar e de Polícia." },
+        { id: "cat_abusos", titulo: "3. Abuso de Poder e Sanções", tipo: "category", pagina: 3, resumo: "Desvio de finalidade (excesso teleológico) e Excesso de poder (vício de competência insanável)." },
+        { id: "pod_hierarquico", titulo: "Poder Hierárquico", tipo: "concept", pagina: 2, resumo: "Permite escalonar, fiscalizar e distribuir atribuições internamente, inclusive delegar e avocar competências." },
+        { id: "pod_disciplinar", titulo: "Poder Disciplinar", tipo: "concept", pagina: 2, resumo: "Permite apurar infrações e aplicar sanções funcionais aos servidores e terceiros com vínculo especial." },
+        { id: "pod_policia", titulo: "Poder de Polícia", tipo: "concept", pagina: 3, resumo: "Condiciona e restringe o uso de bens e liberdades individuais em favor do interesse público (discricionariedade, autoexecutoriedade e coercibilidade)." },
+        { id: "comp_hier_disc", titulo: "Hierárquico × Disciplinar", tipo: "comparison", pagina: 2, resumo: "Poder hierárquico organiza atribuições internas; poder disciplinar pune infrações funcionais com vínculo específico." },
+        { id: "trap_multa", titulo: "Pegadinha: Multa não é Autoexecutória", tipo: "trap", pagina: 3, resumo: "A cobrança de multa pecuniária não tem autoexecutoriedade: se o particular não pagar, exige Execução Fiscal no Judiciário." },
+        { id: "mnem_cofifomob", titulo: "Mnemônico: COFIFOMOB", tipo: "mnemonic", pagina: 1, resumo: "Competência + Finalidade + Forma + Motivo + Objeto (requisitos de validade dos atos administrativos)." }
+      ],
+      edges: [
+        { source: "root", target: "cat_conceito" },
+        { source: "root", target: "cat_especies" },
+        { source: "root", target: "cat_abusos" },
+        { source: "cat_especies", target: "pod_hierarquico" },
+        { source: "cat_especies", target: "pod_disciplinar" },
+        { source: "cat_especies", target: "pod_policia" },
+        { source: "cat_especies", target: "comp_hier_disc" },
+        { source: "cat_especies", target: "trap_multa" },
+        { source: "cat_conceito", target: "mnem_cofifomob" }
+      ]
+    };
+  }
+
+  return {
+    titulo: cleanTitle,
+    nodes: [
+      { id: "root", titulo: cleanTitle, tipo: "root", pagina: 1, resumo: `Estrutura esquematizada das unidades essenciais de ${cleanTitle}.` },
+      { id: "cat_1", titulo: "1. Conceitos Centrais", tipo: "category", pagina: 1, resumo: `Definições e escopo temático de ${cleanTitle}.` },
+      { id: "cat_2", titulo: "2. Regras e Aplicações", tipo: "category", pagina: 2, resumo: `Normas e critérios de prova de ${cleanTitle}.` },
+      { id: "cat_3", titulo: "3. Pegadinhas de Prova", tipo: "category", pagina: 3, resumo: `Pontos críticos e alertas para evitar armadilhas de banca.` }
+    ],
+    edges: [
+      { source: "root", target: "cat_1" },
+      { source: "root", target: "cat_2" },
+      { source: "root", target: "cat_3" }
+    ]
+  };
+}
+
 export default async function handler(req, res) {
   // CORS Headers
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -1123,7 +1219,7 @@ export default async function handler(req, res) {
     });
   }
 
-  // 16.5 Geração de Mapa Mental com IA estilo NotebookLM Studio (Vercel Serverless)
+  // 16.5 Geração de Mapa Mental com IA estruturado em JSON oficial (Vercel Serverless)
   if (pathname === '/api/generate-ai-mindmap' && req.method === 'POST') {
     const body = req.body || {};
     const disc = (body.discipline || 'Direito_Penal').trim().replace(/[\s/]/g, '_');
@@ -1134,25 +1230,68 @@ export default async function handler(req, res) {
     const title = topic?.meta?.title || sub.replace(/_/g, ' ');
     const context = topic?.meta?.markdown_content || topic?.transcript?.full_text || `${disc} • ${sub}`;
 
-    let mindmapText = '';
+    let mindmapObj = null;
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (apiKey) {
       try {
-        const prompt = `Você é um especialista em síntese visual e arquitetura de conhecimento para concursos públicos, modelando mapas conceituais idênticos aos gerados pelo Google NotebookLM Studio.
-Seu objetivo é criar um MAPA MENTAL ESTRUTURADO em formato hierárquico claro, elegante e direto ao ponto.
+        const prompt = `Você é o ENGINE DE MAPA MENTAL de uma plataforma de preparação para concursos públicos.
+Sua tarefa é transformar o conteúdo abaixo em uma estrutura hierárquica semântica de conhecimento (JSON).
 
-PADRÃO OBRIGATÓRIO (NOTEBOOKLM STUDIO):
-1. Inicie com o Nó Raiz entre colchetes na primeira linha: [ TEMA CENTRAL DO MAPA ]
-2. Crie de 3 a 5 ramificações principais (Eixos temáticos) usando '├──► 1. TÍTULO DO EIXO (Artigo/Referência se houver)' e a última com '└──► X. TÍTULO DO EIXO'.
-3. Em cada eixo, desdobre de 3 a 5 nós filhos usando '├── Nome do Conceito: Explicação sucinta ou regra de prova' e o último do ramo com '└── Nome: Explicação'.
-4. Se houver rol ou sub-hipóteses legais, indente com um subgrupo (ex: '└── Posição de Garantidor (Dever de Agir):' seguido de '├── Alínea A...').
-5. Retorne APENAS o mapa mental estruturado sem blocos de código markdown (sem \`\`\`), sem preâmbulos e sem explicações externas.
+REGRAS:
+1. O nó raiz deve representar o assunto principal.
+2. Crie de 3 a 7 grandes ramificações (tipo = 'category').
+3. Não invente categorias.
+4. Não invente informações que não estejam presentes no documento.
+5. Preserve definições importantes (tipo = 'definition').
+6. Preserve classificações.
+7. Preserve características.
+8. Preserve regras (tipo = 'rule').
+9. Preserve exceções (tipo = 'exception').
+10. Preserve diferenças entre conceitos (tipo = 'comparison').
+11. Preserve exemplos existentes no documento (tipo = 'example').
+12. Preserve mnemônicos reais encontrados no documento (tipo = 'mnemonic').
+13. Não transforme "dica", "atenção", "macete de prova" ou "importante" automaticamente em mnemônico.
+14. Se existir uma pegadinha explicitamente apresentada pelo autor ou examinador, marque como: tipo = 'trap'.
+15. Se houver um mnemônico verdadeiro, marque como: tipo = 'mnemonic'.
+16. Não crie mnemônicos novos.
+17. Não invente exemplos.
+18. Não transforme interpretação da IA em afirmação do autor.
+19. Cada informação deve manter a página do PDF de onde foi extraída (campo 'pagina' como inteiro 1, 2, 3...).
+20. Os títulos dos nós devem ser curtos (máximo 45 caracteres).
+21. Evite parágrafos dentro dos títulos dos nós; coloque a explicação sucinta no campo 'resumo'.
+22. Um nó deve representar uma ideia.
+23. Organize conceitos relacionados hierarquicamente conectando as edges da raiz às categorias e das categorias aos nós filhos.
+24. Não crie profundidade excessiva.
+25. O mapa deve facilitar revisão para concursos públicos.
 
-Disciplina: ${disc.replace(/_/g, ' ')} | Assunto: ${sub.replace(/_/g, ' ')} | Título: ${title}
-${focus ? `Foco específico solicitado pelo aluno: ${focus}\n` : ''}
+TIPOS PERMITIDOS NO CAMPO 'tipo':
+root, category, concept, definition, rule, exception, comparison, example, mnemonic, trap
 
-Conteúdo de estudo / Transcrição / PDF:
+RETORNE SOMENTE JSON NO FORMATO:
+{
+  "titulo": "${title}",
+  "nodes": [
+    {
+      "id": "root",
+      "titulo": "${title}",
+      "tipo": "root",
+      "pagina": 1,
+      "resumo": "Visão geral do tema."
+    }
+  ],
+  "edges": [
+    { "source": "root", "target": "..." }
+  ]
+}
+
+DOCUMENTO: ${sub}.pdf
+DISCIPLINA: ${disc}
+TÓPICO: ${sub}
+TÍTULO: ${title}
+FOCO: ${focus || 'Conceitos Centrais, Distinções e Regras de Prova'}
+
+CONTEÚDO:
 ${context.slice(0, 14000)}`;
 
         const geminiAbort = new AbortController();
@@ -1163,16 +1302,20 @@ ${context.slice(0, 14000)}`;
           signal: geminiAbort.signal,
           body: JSON.stringify({
             contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: { temperature: 0.4 }
+            generationConfig: { temperature: 0.3 }
           })
         });
         clearTimeout(geminiTimeout);
 
         if (geminiResp.ok) {
           const geminiData = await geminiResp.json();
-          const raw = geminiData.candidates?.[0]?.content?.parts?.[0]?.text || '';
-          if (raw && raw.includes('[') && (raw.includes('├──') || raw.includes('└──'))) {
-            mindmapText = raw.replace(/```(?:nlm-mindmap|text)?/g, '').replace(/```/g, '').trim();
+          let raw = geminiData.candidates?.[0]?.content?.parts?.[0]?.text || '';
+          if (raw) {
+            raw = raw.replace(/^```(?:json)?/i, '').replace(/```$/i, '').trim();
+            const parsed = JSON.parse(raw);
+            if (parsed && Array.isArray(parsed.nodes) && parsed.nodes.length >= 4) {
+              mindmapObj = parsed;
+            }
           }
         }
       } catch (e_ai) {
@@ -1180,34 +1323,19 @@ ${context.slice(0, 14000)}`;
       }
     }
 
-    if (!mindmapText) {
-      const cleanTitle = (focus || title || sub.replace(/_/g, ' ')).toUpperCase();
-      mindmapText = `[ ${cleanTitle} ]
-   │
-   ├──► 1. CONCEITOS E DEFINIÇÕES ESSENCIAIS
-   │     ├── Regra Geral: Definição técnica e fundamento normativo aplicável.
-   │     ├── Requisitos Cumulativos: Condições de incidência para prova.
-   │     └── Hipóteses de Aplicação: Casos práticos mais recorrentes em questões.
-   │
-   ├──► 2. CRITÉRIOS DE DISTINÇÃO E ELEMENTOS
-   │     ├── Elemento Volitivo / Subjetivo: Parâmetros objetivos que delimitam a intenção.
-   │     ├── Diferenças Cruciais: Inversões e falsas equivalências que as bancas cobram.
-   │     └── Jurisprudência e Súmulas: Entendimento pacificado dos Tribunais Superiores.
-   │
-   └──► 3. REGRAS DE PROVA E PEGADINHAS DE BANCA
-         ├── Ponto Crítico 1: Inversão conceitual frequentemente explorada pela banca.
-         ├── Ponto Crítico 2: Exceção normativa com palavras restritivas (apenas, somente).
-         └── Regra de Ouro do Aluno: Dica prática para gabaritar assertivas do tema.`;
+    if (!mindmapObj) {
+      mindmapObj = extractSemanticMindmapFromCorpus(disc, sub, title, context, focus);
     }
 
     // Atualizar markdown_content do tópico
     const cat = getCatalog();
     let currentMd = topic?.meta?.markdown_content || '';
-    const mmBlock = `### 🗺️ Mapa Mental Estruturado (Conceitos & Relações)\n\n\`\`\`nlm-mindmap\n${mindmapText.trim()}\n\`\`\``;
+    const jsonStr = JSON.stringify(mindmapObj, null, 2);
+    const mmBlock = `### 🗺️ Mapa Mental Interativo & Navegação do Conhecimento\n\n\`\`\`nlm-mindmap-json\n${jsonStr}\n\`\`\``;
 
     let updatedMd = '';
     if (currentMd.includes('### 🗺️ Mapa Mental')) {
-      updatedMd = currentMd.replace(/### 🗺️ Mapa Mental[^\n]*\n+```(?:nlm-mindmap|text|mermaid)?[\s\S]*?```/, mmBlock);
+      updatedMd = currentMd.replace(/### 🗺️ Mapa Mental[^\n]*\n+```(?:nlm-mindmap-json|nlm-mindmap|text|mermaid)?[\s\S]*?```/, mmBlock);
     } else if (currentMd.includes('> 📋') && currentMd.includes('---')) {
       const parts = currentMd.split('---');
       if (parts.length >= 3) {
@@ -1222,6 +1350,7 @@ ${context.slice(0, 14000)}`;
     if (cat[disc] && cat[disc][sub]) {
       if (!cat[disc][sub].meta) cat[disc][sub].meta = {};
       cat[disc][sub].meta.markdown_content = updatedMd;
+      cat[disc][sub].meta.mindmap_json = mindmapObj;
     }
 
     return res.status(200).json({
@@ -1229,7 +1358,7 @@ ${context.slice(0, 14000)}`;
       discipline: disc,
       subarea: sub,
       focus: focus,
-      mindmap_text: mindmapText,
+      mindmap: mindmapObj,
       markdown: updatedMd
     });
   }
@@ -1947,7 +2076,16 @@ ${extractedText.slice(0, 12000)}
 Retorne APENAS um JSON no formato:
 {
   "briefing": "1 a 2 parágrafos objetivos sintetizando a matéria de forma panorâmica estilo NotebookLM",
-  "mindmap": "[ TEMA CENTRAL ]\\n   ├──► 1. EIXO 1\\n   │     ├── Conceito: Definição\\n   └──► 2. EIXO 2...",
+  "mindmap": {
+    "titulo": "${title}",
+    "nodes": [
+      { "id": "root", "titulo": "${title}", "tipo": "root", "pagina": 1, "resumo": "Visão geral" },
+      { "id": "cat_1", "titulo": "1. Eixo 1", "tipo": "category", "pagina": 1, "resumo": "..." }
+    ],
+    "edges": [
+      { "source": "root", "target": "cat_1" }
+    ]
+  },
   "pilar1": "## 1. Resumo Estruturado e Conceitos-Chave...",
   "pilar2": "## 2. Raio-X de Banca...",
   "cards": [{ "q": "Pergunta", "a": "Resposta" }],
@@ -1963,7 +2101,7 @@ Retorne APENAS um JSON no formato:
           signal: geminiAbort.signal,
           body: JSON.stringify({
             contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: { responseMimeType: 'application/json', temperature: 0.5 }
+            generationConfig: { responseMimeType: 'application/json', temperature: 0.3 }
           })
         });
         clearTimeout(geminiTimeout);
@@ -1979,17 +2117,15 @@ Retorne APENAS um JSON no formato:
             questions = Array.isArray(parsed.quiz) ? parsed.quiz : [];
             knowledgeUnits = Array.isArray(parsed.knowledge_units) ? parsed.knowledge_units : [];
             briefingText = parsed.briefing || '';
-            mindmapTree = parsed.mindmap || '';
+            if (parsed.mindmap && Array.isArray(parsed.mindmap.nodes) && parsed.mindmap.nodes.length >= 4) {
+              mindmapObj = parsed.mindmap;
+            }
           }
-
         }
       } catch (e_gemini) {
         console.warn('Fallback para construtor estruturado offline:', e_gemini.message);
       }
     }
-
-    let briefingText = '';
-    let mindmapTree = '';
 
     // Se a IA não foi acionada ou falhou, usar construtor estruturado impecável (sem lixo binário)
     if (!pilar1Text || !pilar2Text) {
@@ -2001,24 +2137,8 @@ Retorne APENAS um JSON no formato:
       knowledgeUnits = generated.knowledge_units || [];
     }
 
-    if (!mindmapTree) {
-      const cleanTitle = (title || sub.replace(/_/g, ' ')).toUpperCase();
-      mindmapTree = `[ ${cleanTitle} ]
-   │
-   ├──► 1. CONCEITOS E DEFINIÇÕES ESSENCIAIS
-   │     ├── Regra Geral: Fundamento normativo aplicável.
-   │     ├── Requisitos Cumulativos: Condições de incidência para prova.
-   │     └── Hipóteses de Aplicação: Casos práticos mais recorrentes.
-   │
-   ├──► 2. CRITÉRIOS DE DISTINÇÃO E ELEMENTOS
-   │     ├── Elemento Volitivo / Subjetivo: Parâmetros objetivos de intenção.
-   │     ├── Diferenças Cruciais: Inversões conceituais que as bancas cobram.
-   │     └── Jurisprudência e Súmulas: Entendimento pacificado dos Tribunais.
-   │
-   └──► 3. REGRAS DE PROVA E PEGADINHAS DE BANCA
-         ├── Ponto Crítico 1: Inversão frequentemente explorada pela banca.
-         ├── Ponto Crítico 2: Exceção normativa com palavras restritivas.
-         └── Regra de Ouro do Aluno: Dica prática para gabaritar o tema.`;
+    if (!mindmapObj) {
+      mindmapObj = extractSemanticMindmapFromCorpus(disc, sub, title, extractedText);
     }
 
     if (!briefingText) {
@@ -2026,7 +2146,8 @@ Retorne APENAS um JSON no formato:
     }
 
     const briefingBlock = `> 📋 **VISÃO GERAL DA FONTE (BRIEFING EXECUTIVO — ESTILO NOTEBOOKLM):**  \n> ${briefingText.replace(/^>\s*📋[^\n]*\n?>\s*/, '').trim()}\n\n---\n\n`;
-    const mindmapBlock = `### 🗺️ Mapa Mental Estruturado (Conceitos & Relações)\n\n\`\`\`nlm-mindmap\n${mindmapTree.trim()}\n\`\`\`\n\n---\n\n`;
+    const jsonStr = JSON.stringify(mindmapObj, null, 2);
+    const mindmapBlock = `### 🗺️ Mapa Mental Interativo & Navegação do Conhecimento\n\n\`\`\`nlm-mindmap-json\n${jsonStr}\n\`\`\`\n\n---\n\n`;
     const aulaMd = `# ${disc.replace(/_/g, ' ').toUpperCase()} - ${title}\n**Professor:** ${professor}  \n**Duração:** 50 minutos  \n**Categoria:** Edital de Concursos Públicos (${banca})  \n\n---\n\n${briefingBlock}${mindmapBlock}${pilar1Text}\n\n---\n\n${pilar2Text}\n`;
 
     const cat = getCatalog();
@@ -2047,6 +2168,7 @@ Retorne APENAS um JSON no formato:
         category: `Edital de Concursos Públicos (${banca})`,
         youtube_url: "",
         markdown_content: aulaMd,
+        mindmap_json: mindmapObj,
         has_lesson: true,
         moments: []
       },

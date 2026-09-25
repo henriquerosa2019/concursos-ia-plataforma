@@ -1,3 +1,210 @@
-KVERNA CONCURSOS – AÇÃO E OMISSÃO / DOLO E CULPA
-DIREITO PENAL
-Material completo de 16 questões de concursos (Cebraspe, FGV, Vunesp, FCC, AOCP, IDECAN).
+--- PÁGINA 1 ---
+KVERNA CONCURSOS – AÇÃO E OMISSÃO / DOLO E CULPA  
+ 
+DIREITO PENAL 
+1) Prova: CESPE/CEBRASPE - TJ MA - Juiz de Direito Substituto - 2022 
+O agente que imagina já ter obtido o resultado pensado por ele, sem tê-lo alcançado, e, por isso, pratica outra 
+conduta que efetivamente alcança o objetivo primário realiza a conduta em dolo 
+A  geral. 
+B  de segundo grau. 
+C  eventual. 
+D  alternativo. 
+E  cumulativo. 
+ 
+1-A) Prova: FGV - PC RJ - Investigador de Polícia - 2022 
+Determinado agente pretende matar uma vítima por asfixia e, achando equivocadamente que ela estaria morta, 
+joga o corpo no rio, causando a morte por afogamento. 
+Em tal cenário, o agente responderá por: 
+A  crime culposo; 
+B  crime preterdoloso; 
+C  dolo genérico; 
+D  dolo de perigo; 
+E  dolo geral. 
+ 
+2)Prova: CESPE/CEBRASPE - DPDF - Analista de Apoio à Assistência Judiciária - Área: Judiciária - 
+Especialidade: Direito e Legislação - 2022 
+Texto associado  
+Com relação a aspectos do direito penal, julgue os itens a seguir. 
+O dolo de segundo grau consiste na incerteza de que o resultado alcance terceiros não atingidos pelo dolo 
+direto, havendo, entretanto, a possibilidade de que ele ocorra com a prática do ato. 
+CERTO      ERRADO 
+ 
+3)Prova: FUNPAR NC/UFPR - PC PR - Delegado de Polícia Civil - 2021 
+Examine o caso hipotético narrado a seguir: 
+A.A. saiu de uma festa um pouco sonolento, pretendendo ir para casa conduzindo sua motocicleta. Na ocasião, 
+foi advertido pelo sujeito B.B., que disse: “pilotando neste estado você pode matar alguém”. A.A., porém, 
+afirmou que estava em condições de evitar qualquer acidente, até porque as ruas estariam quase desertas e o 
+vento no rosto o manteria acordado. Afirmou, ainda, que não se arriscaria a sofrer um acidente, porque de 
+moto “o para-choque era ele mesmo”. No trajeto para casa, porém, por estar com os reflexos mais lentos, A.A. 
+não percebeu um pedestre que atravessava a rua e o atropelou, causando-lhe a morte. Embora tenha ficado 
+bastante ferido, A.A. sobreviveu ao acidente e foi acusado de cometer crime.  
+A partir das noções de dolo e culpa aplicadas ao caso, é correto afirmar que A.A. agiu com: 
+A   dolo eventual porque basta a previsibilidade do resultado para configurá-lo. 
+B   dolo eventual porque expressamente consentiu com a possibilidade de causar o resultado.
+
+--- PÁGINA 2 ---
+C   culpa inconsciente porque o resultado era imprevisível, mas cabe responsabilidade objetiva em delitos de 
+trânsito. 
+D   culpa consciente porque levianamente subestimou o risco de causar o resultado e confiou que ele não 
+ocorreria. 
+E   culpa imprópria, pois embora não esperasse o resultado tinha o dever de antecipá-lo e evitá-lo. 
+ 
+4)Prova: SELECON - Secretaria Municipal da Ordem Pública de Niterói - Guarda Civil - 2019 
+Paul Polônio é motorista profissional e apreciador das corridas de alta velocidade. Conduzindo seu próprio 
+automóvel, tem o hábito de reunir-se com amigos para realizar corridas ilícitas em vias públicas conhecidas 
+como “rachas”. Em um desses eventos, uma das pessoas presentes vem a ser atingida pelo veículo conduzido 
+por Paul, vindo a falecer. Nesse caso, aplicando-se a parte geral do Código Penal e adequada interpretação 
+jurisprudencial, o crime ocorrido deve ser caracterizado como doloso:  
+A  direto   B  aberto   C  presente  D  negligente   E   eventual 
+ 
+5) Prova: IBADE - SEJUC SE - Guarda de Segurança do Sistema Prisional - 2018 
+Quando o agente quis o resultado ou assumiu o risco de produzi-lo, ele comete o crime de forma: 
+A   agravada.   B   culposa.  C   punível. D   dolosa. E    tentada. 
+ 
+6) Prova: VUNESP - PC SP - Delegado de Polícia - 2018 
+ 
+Assinale a alternativa que correta e respectivamente completa as lacunas.  
+ 
+A  dolo indireto ... dolo alternativo 
+B  dolo eventual ... culpa consciente 
+C  culpa inconsciente ... culpa consciente 
+D  culpa consciente ... dolo eventual 
+E  culpa inconsciente ... dolo eventual 
+ 
+7) Prova: IDIB - PM ES - Sargento da Polícia Militar - 2023 
+Ao tratarmos da relevância da omissão, é possível afirmar, do ponto de vista do Direito Penal, que a omissão 
+é penalmente relevante quando o omitente devia e podia agir para evitar o resultado. Com isso, assinale a 
+alternativa que representa quem tem o dever de agir.  
+A   O cidadão que deixa de comunicar delito que presenciou ou tomou conhecimento. 
+B   Aquele que devido a contrato de trabalho em empresa privada, que contenha deveres expressos, tenha 
+obrigação de vigilância. 
+C   O sujeito que, com seu comportamento anterior, criou o risco da ocorrência do resultado.
+
+--- PÁGINA 3 ---
+D   O sujeito que, devido a detenção de conhecimento técnico, tenha plena capacidade de apontar o risco da 
+ocorrência do resultado. 
+E   Aquele que devido a contrato de trabalho em empresa privada, independente da previsão expressa no 
+instrumento, tenha obrigação de vigilância. 
+ 
+8) Prova: Instituto AOCP - MPE RR - Promotor de Justiça Substituto - 2023 
+Em relação à omissão, é correto afirmar que  
+A   todos os crimes omissivos não admitem tentativa. 
+B  a omissão é penalmente relevante somente quando o agente tem o dever de evitar o resultado, 
+independentemente das condições e circunstâncias do caso concreto. 
+C   a omissão imprópria configura uma norma de extensão da tipicidade. 
+D   quem causou a situação de risco não pode responder por crime comissivo em caso de omissão em evitar o 
+resultado. 
+ 
+9) Prova: Fundação La Salle - Prefeitura de Bento Gonçalves - Guarda Civil - 2022 
+Segundo dispõe a parte geral do Código Penal:   
+A   A superveniência de causa relativamente independente nunca exclui a imputação. 
+B   A omissão é penalmente relevante quando o omitente devia e podia agir para evitar o resultado. 
+C  O crime é tentado quando, ainda não iniciada a execução, o agente desiste de praticar o delito. 
+D  O crime é culposo quando o agente agiu buscando o resultado. 
+E  Salvo os casos expressos em lei, ninguém pode ser punido por fato previsto como crime, senão quando o 
+pratica culposamente. 
+ 
+10) Prova: FCC - MPE PE - Promotor de Justiça - 2022 
+O Código Penal estabelece que a omissão é penalmente relevante quando o omitente devia e podia agir para 
+evitar o resultado. Sobre a relevância da omissão, o dever de agir incumbe a quem 
+ 
+I. tenha por lei obrigação de cuidado, proteção ou vigilância. 
+II. tenha assumido a responsabilidade de impedir o resultado. 
+III. criou, com seu comportamento anterior, o risco da ocorrência do resultado. 
+IV. impede que o resultado se produza. 
+Está correto o que se afirma APENAS em  
+ 
+A   II, III e IV.  B   I e II.  C   I, II e III.  D   I, II e IV. E   III e IV. 
+ 
+11)Prova: CESPE/CEBRASPE - PC PB - Escrivão de Polícia - 2022 
+Lucas, com 15 anos de idade, conheceu Lívia, com 13 anos de idade, na escola onde estudavam. Com o 
+tempo, ambos se apaixonaram e começaram a namorar. Após terem a primeira relação sexual, Lívia 
+comunicou o fato aos seus pais, os quais, por gostarem de Lucas, convidaram-no a morar junto com Lívia, na 
+casa da família. Lucas, ainda com 15 anos de idade, aceitou prontamente o convite e imediatamente passou a 
+conviver com Lívia, que ainda tinha 13 anos de idade, como marido e mulher, na casa dos pais dela, mantendo, 
+continuamente, relação sexual consentida por Lívia e com a ciência dos pais desta.
+
+--- PÁGINA 4 ---
+Considerando essa situação hipotética e o conceito tripartite de crime, assinale a opção correta. 
+A    Apenas os pais de Lívia responderão por crime de estupro de vulnerável, na forma da omissão imprópria, 
+por serem autores mediatos do delito. 
+B   Apenas Lucas cometeu crime de estupro de vulnerável, pois os pais de Lívia não tiveram conhecimento 
+prévio da primeira relação sexual dos menores. 
+C   Lucas é autor do crime de estupro de vulnerável e os pais de Lívia são partícipes pela omissão própria, e 
+cada um deles responderá na medida de sua culpabilidade. 
+D   Lucas é autor do crime de estupro de vulnerável e os pais de Lívia são partícipes pela omissão imprópria, 
+e cada um deles responderá na medida de sua culpabilidade. 
+E   O fato é atípico, em razão do princípio da adequação social, que suprime a tipicidade material. 
+ 
+12) Prova: IDECAN - PM MS - Soldado - 2022 
+Maria convivia em união estável com Josué, o qual estuprava costumeiramente Giovana, filha menor do 
+primeiro casamento de Maria. Além desta última, alguns vizinhos também sabiam do terrível crime que estava 
+sendo cometido contra a adolescente, mas ninguém teve coragem de noticiá-lo para as autoridades 
+competentes. Nesse caso, é possível afirmar que:  
+A    Todos devem responder pelo crime de estupro, inclusive os vizinhos. 
+B   Josué somente responderá pelo crime de estupro se Giovana for menor de 14 (catorze) anos. 
+C   Maria é legalmente considerada agente garantidora nessa situação, razão pela qual também responderá 
+pelo crime praticado por Josué. 
+D   Enquanto Josué responderá pelo crime de estupro na forma comissiva, Maria e os vizinhos responderão 
+na forma omissiva. 
+E   Apenas Josué deve ser responsabilizado pelo crime de estupro. 
+ 
+13) Prova: Instituto AOCP - Prefeitura de Novo Hamburgo - Guarda Municipal - 2020 
+A omissão, prevista no Código Penal Brasileiro, é penalmente relevante quando o omitente devia e podia agir 
+para evitar o resultado. O dever de agir incumbe àquele que   
+A   com seu comportamento criou o risco da ocorrência. 
+B   tenha por lei obrigação de cuidado, proteção ou vigilância. 
+C   agiu de forma prudente, mas sem sucesso no resultado. 
+D   mesmo sem dar causa ao risco da ocorrência, deixou de agir. 
+E    ainda que de outra forma, não assumiu a responsabilidade de impedir o resultado. 
+ 
+14) Prova: FGV - SEFAZ MG - Auditor Fiscal da Receita Estadual - Área: Tributação - 2023  
+Rebeca trabalha há muitos anos como instrumentadora cirúrgica e tem bastante experiência na sua atuação. 
+Sabe que, via de regra, os centros cirúrgicos exigem tipos especiais de calçados para acesso. Tendo em vista 
+sua larga experiência com a atividade de instrumentação, Rebeca passa a utilizar sapatos de salto alto, por ser 
+muito vaidosa, e por ter certeza de que este fato não irá comprometer sua atividade. 
+Rebeca, certo dia, escorrega durante a atividade de instrumentação e derruba a mesa auxiliar de 
+instrumentação, caindo alguns objetos na área cirúrgica. O acidente ocasionou danos graves no paciente, com 
+sequela cicatricial não esperada ao tipo de procedimento a que se submetia.
+
+--- PÁGINA 5 ---
+Neste caso, é possível dizer que a conduta de Rebeca, que implicou no resultado lesivo ao paciente, foi 
+praticada com 
+A  dolo eventual. 
+B  culpa inconsciente, na modalidade imperícia. 
+C  culpa inconsciente, na modalidade imprudência. 
+D  culpa consciente, na modalidade imprudência. 
+E  culpa consciente, na modalidade imperícia. 
+ 
+15)Prova: FGV - TJDFT - Analista Judiciário - Área Judiciária - 2022 
+Majoritariamente a doutrina salienta que são duas as espécies de culpa: inconsciente e consciente. 
+Sobre o tema, é correto afirmar que na culpa:   
+A  inconsciente, o agente considera possível a realização do resultado típico, porém confia que isso não 
+sucederá; 
+B  inconsciente, faz parte da representação do agente a violação do dever de cuidado e do resultado lesivo; 
+C  consciente, faz parte da representação do agente apenas a violação do dever de cuidado; 
+D  consciente, a censura penal deve ser menor quando considerada a mesma violação do risco proibido; 
+E  consciente, o agente sabe do risco de seu comportamento, mas acredita que não acontecerá o resultado. 
+16) Prova: CESPE/CEBRASPE - SEFAZ RS - Assistente Administrativo Fazendário - 2018 
+Em relação a crime culposo, assinale a opção correta.  
+ 
+A   O agente de conduta culposa assume o risco do resultado produzido por sua conduta. 
+B   A conduta culposa é dirigida à prática de um fim ilícito. 
+C   O agente com culpa consciente prevê, mas não aceita, a superveniência do resultado de sua conduta. 
+D   O agente de crime culposo não tem previsibilidade objetiva do resultado de sua conduta. 
+E   A conduta negligente admite, em regra, tentativa no crime culposo. 
+ 
+ 
+GABARITO 
+ 
+1)A 
+1-A)E 11)A    
+2)E 12)C 
+3)D 13)B 
+4)E 14)D 
+5)D 15)E 
+6)D 16)C 
+7)C  
+8)C  
+9)B  
+10)C

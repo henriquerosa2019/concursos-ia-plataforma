@@ -11,29 +11,221 @@
 
 ---
 
-### 🗺️ Mapa Mental Estruturado (Conceitos & Relações)
+### 🗺️ Mapa Mental Interativo & Navegação do Conhecimento
 
-```nlm-mindmap
-[ AÇÃO E OMISSÃO / DOLO E CULPA ]
-   │
-   ├──► 1. ESPÉCIES DE DOLO (Art. 18, I, CP)
-   │     ├── Dolo Direto de 1º Grau: Vontade direcionada imediatamente ao resultado fim.
-   │     ├── Dolo de 2º Grau: Efeitos colaterais certos e inevitáveis da conduta.
-   │     ├── Dolo Eventual: Prevê o resultado e assume o risco (indiferença).
-   │     └── Dolo Geral: O agente julga já ter consumado o crime, pratica nova conduta que causa a morte.
-   │
-   ├──► 2. CULPA (Art. 18, II, CP)
-   │     ├── Modalidades: Imprudência (ação precipitada), Negligência (omissão prévia), Imperícia (inaptidão técnica).
-   │     ├── Culpa Inconsciente: Resultado previsível, mas não previsto pelo agente.
-   │     └── Culpa Consciente: Resultado previsto, mas o agente confia que não ocorrerá.
-   │
-   └──► 3. OMISSÃO PENALMENTE RELEVANTE (Art. 13, § 2º, CP)
-         ├── Natureza: Omissão Imprópria / Comissivo por Omissão.
-         ├── Requisitos: O agente DEVIA e PODIA agir para evitar o resultado.
-         └── Posição de Garantidor (Dever de Agir):
-               ├── Alínea 'A' (Dever por Lei): Pais, tutores, policiais em serviço.
-               ├── Alínea 'B' (Assunção de Responsabilidade): Salva-vidas, enfermeiros, cuidadores.
-               └── Alínea 'C' (Comportamento Anterior): Criador do risco da ocorrência do resultado.
+```nlm-mindmap-json
+{
+  "titulo": "Ação e Omissão: Dolo e Culpa",
+  "nodes": [
+    {
+      "id": "root",
+      "titulo": "Ação e Omissão / Dolo e Culpa",
+      "tipo": "root",
+      "pagina": 1,
+      "resumo": "Fundamentos da conduta e imputação penal (Art. 18): distinção entre dolo e culpa e relevância penal da omissão imprópria (Art. 13, § 2º)."
+    },
+    {
+      "id": "cat_dolo",
+      "titulo": "1. Espécies de Dolo (Art. 18, I)",
+      "tipo": "category",
+      "pagina": 1,
+      "resumo": "Vontade e consciência direcionadas ao resultado criminoso ou assunção do risco de produzi-lo."
+    },
+    {
+      "id": "cat_culpa",
+      "titulo": "2. Modalidades de Culpa (Art. 18, II)",
+      "tipo": "category",
+      "pagina": 2,
+      "resumo": "Quebra do dever objetivo de cuidado por imprudência, negligência ou imperícia."
+    },
+    {
+      "id": "cat_omissao",
+      "titulo": "3. Relevância da Omissão (Art. 13, § 2º)",
+      "tipo": "category",
+      "pagina": 3,
+      "resumo": "A omissão é penalmente relevante quando o omitente devia e podia agir para evitar o resultado lesivo."
+    },
+    {
+      "id": "cat_garantidores",
+      "titulo": "4. Posição de Garantidor",
+      "tipo": "category",
+      "pagina": 3,
+      "resumo": "Rol taxativo das pessoas sobre as quais recai o dever legal e de fato de impedir o resultado."
+    },
+    {
+      "id": "dolo_geral",
+      "titulo": "Dolo Geral (Aberratio Causae)",
+      "tipo": "concept",
+      "pagina": 1,
+      "resumo": "O agente crê já ter alcançado o resultado e pratica nova conduta que causa a morte real (ex: jogar corpo no rio). Responde por homicídio doloso consumado."
+    },
+    {
+      "id": "dolo_2grau",
+      "titulo": "Dolo de 2º Grau",
+      "tipo": "concept",
+      "pagina": 1,
+      "resumo": "Consequências necessárias, certas e inafastáveis da conduta principal, não meramente incertas ou prováveis."
+    },
+    {
+      "id": "dolo_eventual",
+      "titulo": "Dolo Eventual (Assunção de Risco)",
+      "tipo": "concept",
+      "pagina": 2,
+      "resumo": "O agente prevê o resultado lesivo e assume o risco de sua ocorrência com indiferença ('tanto faz se ocorrer')."
+    },
+    {
+      "id": "culpa_consciente",
+      "titulo": "Culpa Consciente",
+      "tipo": "concept",
+      "pagina": 2,
+      "resumo": "O agente prevê o resultado danoso, mas repele a sua produção e confia sinceramente que suas habilidades evitarão a consumação."
+    },
+    {
+      "id": "comp_dolo_culpa",
+      "titulo": "Dolo Eventual × Culpa Consciente",
+      "tipo": "comparison",
+      "pagina": 2,
+      "resumo": "A diferença reside na aceitação: no dolo eventual o agente assume e tolera; na culpa consciente o agente não aceita e crê sinceramente evitar."
+    },
+    {
+      "id": "trap_transito",
+      "titulo": "Pegadinha: Previsão não é Dolo",
+      "tipo": "trap",
+      "pagina": 2,
+      "resumo": "Mera previsibilidade não basta para dolo eventual; se o autor acreditava sinceramente evitar o acidente ('o parachoque sou eu'), é culpa consciente."
+    },
+    {
+      "id": "modalidades_culpa",
+      "titulo": "Imprudência, Negligência e Imperícia",
+      "tipo": "rule",
+      "pagina": 5,
+      "resumo": "Imprudência (ação precipitada/insegura); negligência (omissão prévia de cautela); imperícia (falta de aptidão técnica profissional)."
+    },
+    {
+      "id": "exemplo_salto",
+      "titulo": "Exemplo: Instrumentadora e Salto Alto",
+      "tipo": "example",
+      "pagina": 5,
+      "resumo": "Uso de calçado inadequado em cirurgia gerando queda de mesa e sequela no paciente configura conduta culposa consciente por imprudência."
+    },
+    {
+      "id": "norma_extensao",
+      "titulo": "Omissão Imprópria (Extensão Típica)",
+      "tipo": "definition",
+      "pagina": 3,
+      "resumo": "Norma de adequação típica mediata (de extensão): o não agir de quem tem o dever de agir é equiparado juridicamente à causação do dano."
+    },
+    {
+      "id": "garantidor_lei",
+      "titulo": "Alínea 'a': Obrigação Legal",
+      "tipo": "rule",
+      "pagina": 3,
+      "resumo": "Dever expresso em lei de cuidado, proteção ou vigilância (pais, tutores, policiais em serviço)."
+    },
+    {
+      "id": "garantidor_assume",
+      "titulo": "Alínea 'b': Assunção de Responsabilidade",
+      "tipo": "rule",
+      "pagina": 3,
+      "resumo": "Quem de outra forma assumiu de fato ou contratualmente a custódia para impedir o resultado (salva-vidas, cuidadores)."
+    },
+    {
+      "id": "garantidor_ingerencia",
+      "titulo": "Alínea 'c': Ingerência (Criou o Risco)",
+      "tipo": "rule",
+      "pagina": 3,
+      "resumo": "Aquele que com comportamento anterior causou o perigo para o bem jurídico tem o dever indeclinável de neutralizá-lo."
+    },
+    {
+      "id": "trap_pais_estupro",
+      "titulo": "Pegadinha: Omissão dos Pais em Estupro",
+      "tipo": "trap",
+      "pagina": 4,
+      "resumo": "Pais que toleram abusos ou consentem coabitação de filha menor de 14 anos respondem pelo crime por omissão imprópria (Súmula 593 STJ)."
+    },
+    {
+      "id": "mnem_garantidores",
+      "titulo": "Mnemônico: LEI-ASSUME-CRIA",
+      "tipo": "mnemonic",
+      "pagina": 3,
+      "resumo": "LEI (dever legal: pais) + ASSUME (assumiu a custódia: salva-vidas) + CRIA (comportamento anterior que gerou o risco: ingerência)."
+    }
+  ],
+  "edges": [
+    {
+      "source": "root",
+      "target": "cat_dolo"
+    },
+    {
+      "source": "root",
+      "target": "cat_culpa"
+    },
+    {
+      "source": "root",
+      "target": "cat_omissao"
+    },
+    {
+      "source": "root",
+      "target": "cat_garantidores"
+    },
+    {
+      "source": "cat_dolo",
+      "target": "dolo_geral"
+    },
+    {
+      "source": "cat_dolo",
+      "target": "dolo_2grau"
+    },
+    {
+      "source": "cat_dolo",
+      "target": "dolo_eventual"
+    },
+    {
+      "source": "cat_culpa",
+      "target": "culpa_consciente"
+    },
+    {
+      "source": "cat_culpa",
+      "target": "comp_dolo_culpa"
+    },
+    {
+      "source": "cat_culpa",
+      "target": "trap_transito"
+    },
+    {
+      "source": "cat_culpa",
+      "target": "modalidades_culpa"
+    },
+    {
+      "source": "modalidades_culpa",
+      "target": "exemplo_salto"
+    },
+    {
+      "source": "cat_omissao",
+      "target": "norma_extensao"
+    },
+    {
+      "source": "cat_garantidores",
+      "target": "garantidor_lei"
+    },
+    {
+      "source": "cat_garantidores",
+      "target": "garantidor_assume"
+    },
+    {
+      "source": "cat_garantidores",
+      "target": "garantidor_ingerencia"
+    },
+    {
+      "source": "cat_garantidores",
+      "target": "mnem_garantidores"
+    },
+    {
+      "source": "garantidor_lei",
+      "target": "trap_pais_estupro"
+    }
+  ]
+}
 ```
 
 ---

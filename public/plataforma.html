@@ -7698,7 +7698,7 @@
       return;
     }
 
-    // Dividir em Seção 1 (Resumo) e Seção 2 (Pegadinhas)
+    // Dividir em Seção 1 (Resumo, Briefing & Mapa Mental) e Seção 2 (Pegadinhas)
     let sec1Text = '';
     let sec2Text = '';
 
@@ -7706,12 +7706,10 @@
     const pilar2Match = markdownText.search(/##\s*2\.\s*(Pontos|Raio)/i);
     const pilar3Match = markdownText.search(/##\s*3\.\s*(Mini|Simulado|Esquematiza)/i);
 
-    if (pilar1Match !== -1) {
-      if (pilar2Match !== -1) {
-        sec1Text = markdownText.substring(pilar1Match, pilar2Match);
-      } else {
-        sec1Text = markdownText.substring(pilar1Match);
-      }
+    // Seção 1 deve iniciar desde o início (0) para incluir cabeçalho,
+    // Briefing Executivo estilo NotebookLM e o Mapa Mental Interativo!
+    if (pilar2Match !== -1) {
+      sec1Text = markdownText.substring(0, pilar2Match);
     } else {
       sec1Text = markdownText;
     }
@@ -7724,7 +7722,24 @@
       }
     }
 
-    tab0El.innerHTML = `<div class="rich-content">${parseMarkdownToHtml(sec1Text)}</div>`;
+    const hasMindmap = sec1Text.includes('nlm-mindmap') || sec1Text.includes('Mapa Mental');
+    const resumoActionBar = `
+      <div class="tab-action-bar" style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div style="font-weight: 600; color: var(--text2); display: flex; align-items: center; gap: 8px;">
+          <span>📑 1. Resumo Estruturado & Síntese Pedagógica</span>
+          <span class="badge" style="background: rgba(88, 166, 255, 0.15); color: #58a6ff; font-size: 11px; padding: 3px 8px; border-radius: 12px; border: 1px solid rgba(88, 166, 255, 0.3);">Pilar 1</span>
+        </div>
+        ${hasMindmap ? `
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <button class="btn btn-sm" onclick="document.querySelector('.nlm-mindmap-wrapper')?.scrollIntoView({ behavior: 'smooth' })" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.4); font-weight: 700; cursor: pointer;">
+              <span>🗺️</span><span>Ver Mapa Mental Interativo</span>
+            </button>
+          </div>
+        ` : ''}
+      </div>
+    `;
+
+    tab0El.innerHTML = `${resumoActionBar}<div class="rich-content">${parseMarkdownToHtml(sec1Text)}</div>`;
     
     const raioxActionBar = `
       <div class="tab-action-bar" style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">

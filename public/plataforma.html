@@ -3037,7 +3037,291 @@
       font-family: 'JetBrains Mono', monospace;
       font-weight: 600;
       color: #10B981;
+    /* ==========================================================================
+       NOTEBOOKLM STUDIO • INTERACTIVE MIND MAP STYLING
+       ========================================================================== */
+    .nlm-mindmap-wrapper {
+      background: #161b22;
+      border: 1px solid rgba(88, 101, 242, 0.35);
+      border-radius: 12px;
+      margin: 20px 0;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.25s ease;
+    }
+
+    .nlm-mindmap-wrapper.nlm-fullscreen {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      z-index: 999999 !important;
+      border-radius: 0 !important;
+      margin: 0 !important;
+    }
+
+    .nlm-mindmap-wrapper.nlm-fullscreen .nlm-mindmap-viewport {
+      height: calc(100vh - 65px) !important;
+      max-height: none !important;
+    }
+
+    .nlm-mindmap-header {
+      background: linear-gradient(135deg, rgba(88, 101, 242, 0.15) 0%, rgba(56, 139, 253, 0.08) 100%);
+      border-bottom: 1px solid rgba(88, 101, 242, 0.25);
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .nlm-mindmap-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      color: #f0f6fc;
+    }
+
+    .nlm-mindmap-badge {
+      background: rgba(88, 101, 242, 0.25);
+      border: 1px solid rgba(88, 101, 242, 0.45);
+      color: #a5b4fc;
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    .nlm-mindmap-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nlm-tool-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border, #30363d);
+      color: #c9d1d9;
+      border-radius: 6px;
+      padding: 5px 11px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      user-select: none;
+    }
+
+    .nlm-tool-btn:hover {
+      background: rgba(88, 101, 242, 0.25);
+      border-color: #5865F2;
+      color: #fff;
+    }
+
+    .nlm-tool-btn.active {
+      background: #5865F2;
+      border-color: #5865F2;
+      color: #fff;
+      box-shadow: 0 0 10px rgba(88, 101, 242, 0.4);
+    }
+
+    .nlm-mindmap-viewport {
+      position: relative;
+      overflow: auto;
+      min-height: 480px;
+      max-height: 720px;
+      padding: 30px 22px;
+      background-color: #0d1117;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px);
+      background-size: 18px 18px;
+    }
+
+    .nlm-mindmap-canvas {
+      position: relative;
+      transform-origin: top left;
+      transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+      min-width: 860px;
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+    }
+
+    .nlm-root-card {
+      align-self: flex-start;
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+      border: 2px solid #6366f1;
+      border-radius: 12px;
+      padding: 14px 22px;
+      box-shadow: 0 0 24px rgba(99, 102, 241, 0.35);
+      display: inline-flex;
+      flex-direction: column;
+      gap: 4px;
+      max-width: 440px;
+    }
+
+    .nlm-root-badge {
+      font-size: 10px;
+      font-weight: 800;
+      color: #c7d2fe;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .nlm-root-title {
+      font-size: 15.5px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.3px;
+    }
+
+    .nlm-branches-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .nlm-branch-column {
+      background: rgba(22, 27, 34, 0.9);
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .nlm-branch-column:hover {
+      border-color: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    }
+
+    .nlm-branch-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .nlm-branch-header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nlm-branch-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
       flex-shrink: 0;
+    }
+
+    .nlm-branch-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #f0f6fc;
+    }
+
+    .nlm-branch-toggle-btn {
+      background: none;
+      border: none;
+      color: #8b949e;
+      cursor: pointer;
+      font-size: 13px;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .nlm-branch-toggle-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .nlm-nodes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.25s ease;
+    }
+
+    .nlm-nodes-list.collapsed {
+      display: none;
+    }
+
+    .nlm-node-card {
+      background: #1c2128;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 11px 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .nlm-node-card:hover {
+      transform: translateY(-2px);
+      border-color: #58a6ff;
+      box-shadow: 0 4px 14px rgba(88, 166, 255, 0.18);
+    }
+
+    .nlm-node-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .nlm-node-name {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+
+    .nlm-node-badge {
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .nlm-node-desc {
+      font-size: 11.5px;
+      line-height: 1.5;
+      color: #8b949e;
+    }
+
+    .nlm-subchildren-container {
+      margin-top: 6px;
+      padding-left: 10px;
+      border-left: 2px dashed rgba(255, 255, 255, 0.18);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .nlm-subnode-card {
+      background: #161b22;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 11.5px;
+      line-height: 1.45;
     }
 
 </style>
@@ -7457,6 +7741,248 @@
     tab1El.innerHTML = raioxActionBar;
   }
 
+  /* ==========================================================================
+     NOTEBOOKLM STUDIO • INTERACTIVE MIND MAP ENGINE
+     ========================================================================== */
+  window.nlmZoomLevels = window.nlmZoomLevels || {};
+
+  window.toggleNlmMindmapMode = function(id, mode) {
+    const viewport = document.getElementById(id + '-viewport');
+    const textview = document.getElementById(id + '-textview');
+    const btnVisual = document.getElementById(id + '-btn-visual');
+    const btnText = document.getElementById(id + '-btn-text');
+    if (!viewport || !textview) return;
+    if (mode === 'visual') {
+      viewport.style.display = 'block';
+      textview.style.display = 'none';
+      if (btnVisual) btnVisual.classList.add('active');
+      if (btnText) btnText.classList.remove('active');
+    } else {
+      viewport.style.display = 'none';
+      textview.style.display = 'block';
+      if (btnVisual) btnVisual.classList.remove('active');
+      if (btnText) btnText.classList.add('active');
+    }
+  };
+
+  window.zoomNlmMindmap = function(id, delta) {
+    const canvas = document.getElementById(id + '-canvas');
+    if (!canvas) return;
+    if (!window.nlmZoomLevels[id]) window.nlmZoomLevels[id] = 1;
+    if (delta === 0) {
+      window.nlmZoomLevels[id] = 1;
+    } else {
+      window.nlmZoomLevels[id] = Math.max(0.6, Math.min(1.6, window.nlmZoomLevels[id] + delta));
+    }
+    canvas.style.transform = `scale(${window.nlmZoomLevels[id]})`;
+  };
+
+  window.toggleNlmBranch = function(headerEl) {
+    const column = headerEl.closest('.nlm-branch-column');
+    if (!column) return;
+    const list = column.querySelector('.nlm-nodes-list');
+    const btn = headerEl.querySelector('.nlm-branch-toggle-btn');
+    if (!list) return;
+    if (list.classList.contains('collapsed')) {
+      list.classList.remove('collapsed');
+      if (btn) btn.textContent = '▼';
+    } else {
+      list.classList.add('collapsed');
+      if (btn) btn.textContent = '►';
+    }
+  };
+
+  window.toggleAllNlmBranches = function(id) {
+    const container = document.getElementById(id);
+    if (!container) return;
+    const lists = container.querySelectorAll('.nlm-nodes-list');
+    const btns = container.querySelectorAll('.nlm-branch-toggle-btn');
+    const anyExpanded = Array.from(lists).some(l => !l.classList.contains('collapsed'));
+    lists.forEach(l => {
+      if (anyExpanded) l.classList.add('collapsed');
+      else l.classList.remove('collapsed');
+    });
+    btns.forEach(b => {
+      b.textContent = anyExpanded ? '►' : '▼';
+    });
+  };
+
+  window.toggleFullscreenNlmMindmap = function(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (el.classList.contains('nlm-fullscreen')) {
+      el.classList.remove('nlm-fullscreen');
+      document.body.style.overflow = '';
+    } else {
+      el.classList.add('nlm-fullscreen');
+      document.body.style.overflow = 'hidden';
+    }
+  };
+
+  function renderNotebookLmMindmapFromText(rawText, id) {
+    if (!id) id = 'nlm-mm-' + Math.random().toString(36).substring(2, 9);
+
+    const colors = [
+      { primary: '#58a6ff', bg: 'rgba(88, 166, 255, 0.12)', border: 'rgba(88, 166, 255, 0.35)', badge: '#79c0ff' },
+      { primary: '#f59e0b', bg: 'rgba(245, 158, 11, 0.12)', border: 'rgba(245, 158, 11, 0.35)', badge: '#fbbf24' },
+      { primary: '#10b981', bg: 'rgba(16, 185, 129, 0.12)', border: 'rgba(16, 185, 129, 0.35)', badge: '#34d399' },
+      { primary: '#bc8cff', bg: 'rgba(188, 140, 255, 0.12)', border: 'rgba(188, 140, 255, 0.35)', badge: '#d2a8ff' },
+      { primary: '#f43f5e', bg: 'rgba(244, 63, 94, 0.12)', border: 'rgba(244, 63, 94, 0.35)', badge: '#fda4af' }
+    ];
+
+    const lines = rawText.trim().split('\n').filter(l => l.trim().length > 0);
+    let rootTitle = "Mapa Mental";
+    let branches = [];
+    let currentBranch = null;
+    let currentSubgroup = null;
+
+    for (let rawLine of lines) {
+      let clean = rawLine.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim();
+      if (clean === '│' || clean === '|') continue;
+
+      if (clean.startsWith('[') && clean.endsWith(']')) {
+        rootTitle = clean.slice(1, -1).trim();
+        continue;
+      }
+
+      if (clean.includes('├──►') || clean.includes('└──►') || (/^[1-9]\./.test(clean.replace(/^[├└│─\s►]+/, '')))) {
+        const title = clean.replace(/^[├└│─\s►]+/, '').trim();
+        currentBranch = { title, nodes: [] };
+        branches.push(currentBranch);
+        currentSubgroup = null;
+        continue;
+      }
+
+      if (currentBranch && (clean.includes('├──') || clean.includes('└──') || clean.startsWith('-') || clean.startsWith('*'))) {
+        const itemText = clean.replace(/^[├└│─\s►]+/, '').trim();
+        const indent = rawLine.search(/\S/);
+
+        if (itemText.endsWith(':') && indent < 16) {
+          currentSubgroup = { title: itemText.slice(0, -1), subnodes: [] };
+          currentBranch.nodes.push({ isGroup: true, group: currentSubgroup });
+        } else if (currentSubgroup && indent >= 14) {
+          currentSubgroup.subnodes.push(itemText);
+        } else {
+          currentSubgroup = null;
+          let colonIdx = itemText.indexOf(':');
+          if (colonIdx > -1) {
+            currentBranch.nodes.push({
+              name: itemText.slice(0, colonIdx).trim(),
+              desc: itemText.slice(colonIdx + 1).trim()
+            });
+          } else {
+            currentBranch.nodes.push({ name: itemText, desc: '' });
+          }
+        }
+      }
+    }
+
+    let branchesHtml = '';
+    branches.forEach((b, idx) => {
+      const colTheme = colors[idx % colors.length];
+      let nodesHtml = '';
+
+      b.nodes.forEach(n => {
+        if (n.isGroup) {
+          let subitemsHtml = n.group.subnodes.map(sn => {
+            let cIdx = sn.indexOf(':');
+            let subTitle = cIdx > -1 ? sn.slice(0, cIdx).trim() : sn;
+            let subDesc = cIdx > -1 ? sn.slice(cIdx + 1).trim() : '';
+            return `
+              <div class="nlm-subnode-card">
+                <strong style="color: ${colTheme.badge};">${subTitle}:</strong>
+                ${subDesc ? `<span style="color: #c9d1d9; margin-left: 4px;">${subDesc}</span>` : ''}
+              </div>
+            `;
+          }).join('');
+
+          nodesHtml += `
+            <div class="nlm-node-card" style="border-color: ${colTheme.border};">
+              <div class="nlm-node-card-head">
+                <span class="nlm-node-name" style="color: ${colTheme.badge};">🛡️ ${n.group.title}</span>
+                <span class="nlm-node-badge" style="background: ${colTheme.bg}; color: ${colTheme.badge}; border: 1px solid ${colTheme.border};">Rol</span>
+              </div>
+              <div class="nlm-subchildren-container">
+                ${subitemsHtml}
+              </div>
+            </div>
+          `;
+        } else {
+          nodesHtml += `
+            <div class="nlm-node-card">
+              <div class="nlm-node-card-head">
+                <span class="nlm-node-name">${n.name}</span>
+              </div>
+              ${n.desc ? `<div class="nlm-node-desc">${n.desc}</div>` : ''}
+            </div>
+          `;
+        }
+      });
+
+      branchesHtml += `
+        <div class="nlm-branch-column" style="border-top: 3px solid ${colTheme.primary};">
+          <div class="nlm-branch-header" onclick="toggleNlmBranch(this)">
+            <div class="nlm-branch-header-left">
+              <span class="nlm-branch-dot" style="background: ${colTheme.primary}; box-shadow: 0 0 8px ${colTheme.primary};"></span>
+              <span class="nlm-branch-title">${b.title}</span>
+            </div>
+            <button class="nlm-branch-toggle-btn" title="Expandir/Recolher">▼</button>
+          </div>
+          <div class="nlm-nodes-list">
+            ${nodesHtml}
+          </div>
+        </div>
+      `;
+    });
+
+    return `
+  <div class="nlm-mindmap-wrapper" id="${id}">
+    <div class="nlm-mindmap-header">
+      <div class="nlm-mindmap-title">
+        <span style="font-size: 18px;">🗺️</span>
+        <span style="font-weight: 800; font-size: 13.5px; letter-spacing: 0.2px;">MAPA MENTAL INTERATIVO • NOTEBOOKLM STUDIO</span>
+        <span class="nlm-mindmap-badge">Visão Panorâmica</span>
+      </div>
+      <div class="nlm-mindmap-toolbar">
+        <button class="nlm-tool-btn active" id="${id}-btn-visual" onclick="toggleNlmMindmapMode('${id}', 'visual')" title="Modo Visual em Nós">👁️ Visual</button>
+        <button class="nlm-tool-btn" id="${id}-btn-text" onclick="toggleNlmMindmapMode('${id}', 'text')" title="Modo Texto Hierárquico">📝 Texto</button>
+        <div style="width: 1px; height: 16px; background: rgba(255,255,255,0.15); margin: 0 4px;"></div>
+        <button class="nlm-tool-btn" onclick="zoomNlmMindmap('${id}', -0.1)" title="Diminuir Zoom">➖</button>
+        <button class="nlm-tool-btn" onclick="zoomNlmMindmap('${id}', 0)" title="Resetar Zoom">100%</button>
+        <button class="nlm-tool-btn" onclick="zoomNlmMindmap('${id}', 0.1)" title="Aumentar Zoom">➕</button>
+        <button class="nlm-tool-btn" onclick="toggleAllNlmBranches('${id}')" title="Expandir ou Recolher Tudo">📂 Todos</button>
+        <button class="nlm-tool-btn" onclick="toggleFullscreenNlmMindmap('${id}')" title="Modo Tela Cheia">🗖</button>
+      </div>
+    </div>
+
+    <div class="nlm-mindmap-viewport" id="${id}-viewport">
+      <div class="nlm-mindmap-canvas" id="${id}-canvas" style="transform: scale(1);">
+        
+        <div class="nlm-root-card">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+            <span class="nlm-root-badge">🎯 TÓPICO CENTRAL</span>
+            <span style="font-size: 10px; background: rgba(99, 102, 241, 0.4); padding: 1px 6px; border-radius: 99px; color: #e0e7ff; font-weight:700;">${branches.length} Eixos</span>
+          </div>
+          <div class="nlm-root-title">${rootTitle}</div>
+          <div style="font-size: 11.5px; color: #c7d2fe; line-height: 1.4;">
+            Conceitos interconectados, desdobramentos dogmáticos e regras de prova estruturados a partir da fonte.
+          </div>
+        </div>
+
+        <div class="nlm-branches-grid">
+          ${branchesHtml}
+        </div>
+
+      </div>
+    </div>
+
+    <div class="nlm-mindmap-text-view" id="${id}-textview" style="display:none; padding: 18px 24px; background: #0d1117; font-family: Consolas, monospace; font-size: 12.5px; line-height: 1.6; color: #c9d1d9; max-height: 520px; overflow: auto;">
+      <pre style="margin: 0; white-space: pre-wrap;">${rawText.trim()}</pre>
+    </div>
+  </div>
+    `;
+  }
+
   function parseMarkdownToHtml(md) {
     if (!md) return '';
     let lines = md.split('\n');
@@ -7464,6 +7990,7 @@
     let inTable = false;
     let tableRows = [];
     let inCodeBlock = false;
+    let codeBlockLang = '';
     let codeBuffer = [];
 
     for (let line of lines) {
@@ -7471,11 +7998,17 @@
 
       if (trimmed.startsWith('```')) {
         if (inCodeBlock) {
-          html.push(`<div class="formula-box"><pre style="margin:0;white-space:pre-wrap;font-family:Consolas,monospace;">${codeBuffer.join('\n')}</pre></div>`);
+          const rawCode = codeBuffer.join('\n');
+          if (codeBlockLang === 'nlm-mindmap' || codeBlockLang === 'mindmap' || rawCode.includes('CONDUTA PENAL') || rawCode.includes('├──► 1.') || rawCode.includes('├──►')) {
+            html.push(renderNotebookLmMindmapFromText(rawCode));
+          } else {
+            html.push(`<div class="formula-box"><pre style="margin:0;white-space:pre-wrap;font-family:Consolas,monospace;">${rawCode}</pre></div>`);
+          }
           codeBuffer = [];
           inCodeBlock = false;
         } else {
           inCodeBlock = true;
+          codeBlockLang = trimmed.replace(/^```/, '').trim();
         }
         continue;
       }

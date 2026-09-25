@@ -13,7 +13,7 @@
 
 ### 🗺️ Mapa Mental Estruturado (Conceitos & Relações)
 
-```text
+```nlm-mindmap
 [ CONDUTA PENAL (Ação e Omissão) ]
    │
    ├──► 1. ESPÉCIES DE DOLO (Art. 18, I, CP)

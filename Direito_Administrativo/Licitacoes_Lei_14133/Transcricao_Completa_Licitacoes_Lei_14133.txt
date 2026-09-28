@@ -1,0 +1,1930 @@
+
+--- PÁGINA 1 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+1 
+ 
+LICITAÇÕES – LEI Nº 14.133/2021 
+ 
+ASPECTOS CONSTITUCIONAIS 
+ 
+Art. 37, XXI, CF  - Ressalvados os casos especificados na legislação, as obras, serviços, compras e alienações serão 
+contratados mediante processo de licitação pública que assegure igualdade de condições a todos os concorrentes, 
+com cláusulas que estabeleçam obrigações de pagamento, mantidas as condições efetivas da proposta, nos termos da 
+lei, o qual somente permitirá as exigências de qualificação técnica e econômica indispensáveis à garantia do 
+cumprimento das obrigações. 
+ 
+Art. 22, CF – Compete privativamente à União legislar sobre: 
+(...) 
+XXVII – normas gerais de licitação e contratação, em todas as modalidades, para as administrações públicas diretas, 
+autárquicas e fundacionais da União, Estados, Distrito Federal e Municípios, obedecido  o disposto no art. 37, XXI, e 
+para as empresas públicas e sociedades de economia mista, nos termos do art. 173, §1º, III. 
+ 
+ 
+CONCEITO DE LICITAÇÃO 
+ 
+Hely Lopes Meirelles define licitação como o “procedimento administrativo mediante o qual a Administração Pública 
+seleciona a proposta mais vantajosa para o contrato de seu interesse, inclusive o da promoção do desenvolvimento 
+econômico sustentável e fortalecimento de cadeias produtivas e serviços domésticos”. 
+ 
+Maria Sylvia Zanella Di Pietro  trata a licitação como o “ procedimento administrativo pelo qual o ente público, no 
+exercício da função administrativa, abre a todos os interessados, que se sujeitem às condições fixadas no instrumento 
+convocatório, a possibilidade de formularem propostas dentre as quais selecionará e aceitará a mais conveniente para 
+a celebração de contrato”. 
+ 
+José dos Santos Carvalho Filho define o instituto da licitação como o “procedimento administrativo vinculado por meio 
+do qual os entes da Administração Pública e aqueles por ela controlados selecionam a melhor proposta entre as 
+oferecidas pelos vários interessados, com dois objetivos – a celebração do contrato, ou a obtenção do melhor trabalho 
+técnico, artístico ou científico”. 
+ 
+Por fim, trazemos o conceito apresentado pelo professor Rafael Oliveira. Licitação, em sua linha de pensamento, seria 
+o “ processo administrativo utilizado pela Administração Pública e pelas demais pessoas indicadas pela lei com o 
+objetivo de garantir a isonomia, selecionar a melhor proposta e promover o desenvolvimento nacional sustentável, por 
+meio de critérios objetivos e impessoais, para celebração de contratos”. 
+ 
+ 
+SUJEITOS A LICITAR 
+ 
+Art. 1º, Lei nº 14.133/2021  – Esta Lei estabelece normas gerais de licitação e contratação para as Administrações 
+Públicas diretas, autárquicas e fundacionais da União, dos Estados, do Distrito Federal e dos Municípios, e abrange: 
+ 
+I - os órgãos dos Poderes Legislativo e Judiciário da União, dos Estados e do Distrito Federal e os órgãos do Poder 
+Legislativo dos Municípios, quando no desempenho de função administrativa; 
+ 
+II - os fundos especiais e as demais entidades controladas direta ou indiretamente pela Administração Pública. 
+ 
+§ 1º Não são abrangidas por esta Lei as empresas públicas, as sociedades de economia mista e as suas subsidiárias, 
+regidas pela Lei nº 13.303, de 30 de junho de 2016, ressalvado o disposto no art. 178 desta Lei. 
+--- PÁGINA 2 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+2 
+ 
+ 
+ 
+“JÁ CAIU EM PROVA, MOTTA?” 
+ 
+(ASSISTENTE TI / CAU / 2024 / CEBRASPE) Determinado órgão do Poder Judiciário de determinado estado da Federação 
+pretende vender bens móveis legalmente apreendidos. A assessoria jurídica desse órgão entendeu não ser possível a 
+contratação direta em face do valor dos bens a  serem alienados, tendo indicado que o órgão deveria valer -se da 
+modalidade de licitação leilão, com critério de maior lance para julgamento das propostas, com prazo para 
+apresentação das propostas e dos lances de 20 dias úteis. A partir dessa situação hipotética, julgue os itens a seguir. 
+01 As normas gerais de licitação e contratação para as administrações públicas abrangem os órgãos do Poder Judiciário 
+dos estados, quando no desempenho de função administrativa. 
+ 
+(ANALISTA TI / CAU / 2024 / CEBRASPE) Determinada autarquia federal pretende firmar contrato administrativo para 
+a contratação de estudo e serviços técnicos de arquitetura especializados de natureza predominantemente intelectual 
+com profissionais ou empresas de notória especialização. 
+A partir dessa situação hipotética, julgue os itens que se seguem. 
+02 A Lei de Licitações aplica -se a autarquias federais, entretanto não faz menção à aplicabilidade às autarquias 
+estaduais e municipais. 
+ 
+(AUDITOR FISCAL / SEFAZ -CE / 2021 / CEBRASPE) Em relação ao que dispõe a Lei n.º 14.133/2021 e aos conceitos 
+referentes às licitações e aos contratos públicos, julgue os itens a seguir. 
+03 As normas gerais de licitação e contratação previstas pela Lei n.º 14.133/2021 aplicam -se, em regra, às 
+administrações públicas diretas, autárquicas e fundacionais da União, dos estados, do Distrito Federal e dos 
+municípios, bem como às empresas públicas e às sociedades de economia mista dos respectivos entes. 
+ 
+04) (ANALISTA / SEAD -GO / 2022 / INSTITUTO AOCP) Sobre a in cidência da Nova Lei de Licitações e Contratos 
+Administrativos (Lei Federal nº 14.133/2021), é correto afirmar que ela NÃO abrange as licitações 
+(A) do Instituto Nacional do Seguro Social (INSS). 
+(B) da Caixa Econômica Federal (CEF). 
+(C) da Assembleia Legislativa do Estado de Goiás. 
+(D) do Instituto Brasileiro de Geografia e Estatística (IBGE). 
+(E) da Agência Nacional de Telecomunicações (ANATEL). 
+ 
+05) (PROCURADOR MUNICIPAL / PGM -RECIFE / 2022 / CEBRASPE) As regras sobre licitação e contratos  públicos 
+previstas na Lei n.º 14.133/2021 são aplicáveis a 
+A fundos especiais indiretamente controlados pela administração pública. 
+B sociedade de economia mista. 
+C subsidiária de sociedade de economia mista. 
+D empresa pública. 
+E sociedade empresária privada. 
+ 
+(ASSISTENTE EDUCACIONAL / SEE -PE / 2022 / CEBRASPE) Com base na Lei n.º 14.133/2021 e na doutrina, julgue os 
+próximos itens, relativos aos processos licitatórios e à gestão de contratos. 
+06 Em 2021, foi promulgada a Lei n.º 14.133/21, que estabelece normas gerais de licitação e contratação aplicáveis, 
+inclusive, aos municípios brasileiros. 
+ 
+(TÉCNICO MINISTERIAL / MPE-TO / 2024 / CEBRASPE) A respeito da organização administrativa, do ato administrativo, 
+dos agentes públicos e do disposto na nova Lei de Licitações e Contratos Administrativos (Lei n.º 14.133/2021), julgue 
+os itens a seguir. 
+07 A nova Lei de Licitações e Contratos Administrativos aplica -se ao Ministério Público de cada estado, uma vez que 
+ele integra a administração pública direta estadual quando desempenha função administrativa. 
+ 
+--- PÁGINA 3 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+3 
+ 
+ 
+OBJETO DA LICITAÇÃO 
+ 
+Art. 2º, Lei nº 14.133/2021 – Esta Lei aplica-se a: 
+I - alienação e concessão de direito real de uso de bens; 
+II - compra, inclusive por encomenda; 
+III - locação; 
+IV - concessão e permissão de uso de bens públicos; 
+V - prestação de serviços, inclusive os técnico-profissionais especializados; 
+VI - obras e serviços de arquitetura e engenharia; 
+VII - contratações de tecnologia da informação e de comunicação. 
+ 
+Art. 3º, Lei nº 14.133/2021 – Não se subordinam ao regime desta Lei: 
+I - contratos que tenham por objeto operação de crédito, interno ou externo, e gestão de dívida pública, incluídas as 
+contratações de agente financeiro e a concessão de garantia relacionadas a esses contratos; 
+II - contratações sujeitas a normas previstas em legislação própria. 
+ 
+ 
+“JÁ CAIU EM PROVA, MOTTA?” 
+ 
+(ANALISTA DE CONTROLE EXTERNO / TC -DF / CEBRASPE / 2023) Com base no que dispõe a Nova Lei de Licitações e 
+Contratos (Lei n.º 14.133/2021), julgue os itens a seguir. 
+01 Entre as hipóteses legais que admitem a regência da referida norma de licitações estão a alienação e a concessão 
+de direito real de uso de bens. 
+ 
+(PROCURADOR FEDERAL / AGU / 2023 / CEBRASPE) Com base no disposto na Lei n.º 14.133/2021, que estab elece 
+normas gerais de licitação e contratação para as administrações públicas diretas, autárquicas e fundacionais da União, 
+dos estados, Distrito Federal e municípios, julgue os itens a seguir. 
+02 Subordinam-se ao regime dessa lei a prestação de serviços,  inclusive dos técnico-profissionais especializados; as 
+obras e serviços de arquitetura e engenharia; e os contratos que tenham por objeto operação de crédito, interno ou 
+externo, e gestão de dívida pública, incluídas as contratações de agente financeiro e  a concessão de garantia 
+relacionada a esses contratos. 
+ 
+03) (ANALISTA ADMINISTRATIVO / FUNSAÚDE-CE / 2021 / FGV) A Lei nº 14.133/2021, trata de licitações e contratos 
+administrativos. Essa lei aplica-se aos seguintes casos, à exceção de um. Assinale-o. 
+(A) Concessão e permissão de uso de bens públicos. 
+(B) Contratos de operação de crédito, interno ou externo. 
+(C) Prestação de serviços, inclusive os técnico-profissionais especializados. 
+(D) Obras e serviços de arquitetura e engenharia. 
+(E) Contratações de tecnologia da informação e de comunicação. 
+ 
+04) (CONSULTOR LEGISLATIVO / CÂMARA MUNICIPAL DE SÃO PAULO / 2024 / FGV) A Lei Federal n° 14.133, de 1° de 
+abril de 2021, conhecida como a Nova Lei de Licitações e Contratos Administrativos, estabelece normas gera is de 
+licitação e contratação para as Administrações Públicas diretas, autárquicas e fundacionais da União, dos Estados, do 
+Distrito Federal e dos Municípios. Não se subordinam ao regime desta Lei 
+(A) as contratações de tecnologia da informação e de comunicação. 
+(B) obras e serviços de arquitetura e engenharia. 
+(C) a alienação e a concessão de direito real de uso de bens. 
+(D) os contratos que tenham por objeto operação de crédito. 
+(E) as compras, inclusive as por encomenda. 
+ 
+--- PÁGINA 4 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+4 
+ 
+05) (TÉCNICO EM GESTÃO PROCURATORIAL / PGE-AM / FCC / 2022) A Lei nº 14.133/2021, estabelece normas gerais 
+de licitação e contratação para as Administrações Públicas diretas, autárquicas e fundacionais da União, dos Estados, 
+do Distrito Federal e dos Municípios. 
+Em relação ao que se aplica a referida lei, considere: 
+I. Alienação e concessão de direito real de uso de bens. 
+II. Locação. 
+III. Contratos que tenham por objeto operação de crédito, interno ou externo, e gestão de dívida pública, incluídas as 
+contratações de agente financeiro e a concessão de garantia relacionadas a esses contratos. 
+IV. Contratações sujeitas a normas previstas em legislação própria. 
+De acordo com a Lei no 14.133/2021, subordina-se ao regime desta lei o que consta APENAS de 
+(A) III. 
+(B) IV. 
+(C) I e III. 
+(D) II e IV. 
+(E) I e II. 
+ 
+06) (TÉCNICO JUDICIÁRIO / TJ-MT / FGV / 2024) Após analisar as disposições da Lei nº 14.133/2021, Graziela observou 
+que a mencionada norma expressamente indica situações em que seus ditames são aplicáveis, bem como aponta 
+outras que a ela não se subordinam. Nesse contexto, Graziela verificou que, das hipóteses elencadas abaixo, a que não 
+se subordina ao regime da lei em questão é o contrato 
+(A) de locação. 
+(B) de compra, inclusive, por encomenda. 
+(C) de concessão de uso de bem público. 
+(D) que tenha por objeto operação de crédito. 
+(E) de prestação de serviços, inclusive os técnico-profissionais especializados. 
+ 
+(ANALISTA / BDMG / 2025 / CEBRASPE) Considerando o processo de licenciamento ambiental, as normas gerais de 
+licitação e contratação de serviços e obras públicas e as disposições legais sobre parcerias público -privadas e sobre 
+contratos de concessão de serviços públicos, julgue os próximos itens. 
+07 Contratos que tenham por objeto operação de crédito e gestão de dívida pública não são subordinados ao regime 
+da Lei n.º 14.133/2021. 
+ 
+08) (ESPECIALISTA LEGISLATIVO / ALERJ / 2026 / FGV) Com o objetivo de implementar as promessas realizadas durante 
+o processo eleitoral, José, recém -empossado no cargo de Prefeito do Município Alfa, no Estado d o Rio de Janeiro, 
+solicitou um parecer à sua equipe jurídica sobre a aplicabilidade, ou não, da Lei de Licitações e Contratos 
+Administrativos, analisando 
+i) a alienação e a concessão de direito real de uso de bens; 
+ii) a compra por encomenda; e 
+iii) a contratação de tecnologia da informação e de comunicação. 
+Considerando as disposições da Lei nº 14.133/2021, é correto afirmar que a referida legislação se aplica 
+(A) à compra por encomenda, bem como à contratação de tecnologia da informação e de comunicação, mas não à 
+alienação e à concessão de direito real de uso de bens. 
+(B) à alienação e à concessão de direito real de uso de bens, mas não à compra por encomenda, tampouco à 
+contratação de tecnologia da informação e de comunicação. 
+(C) à alienação e à concessão de direito real de uso de bens, bem como à compra por encomenda e à contratação de 
+tecnologia da informação e de comunicação. 
+(D) à compra por encomenda, mas não à alienação e à concessão de direito real de uso de bens, tampouco à 
+contratação de tecnologia da informação e de comunicação. 
+(E) à contratação de tecnologia da informação e de comunicação, mas não à compra por encomenda, tampouco à 
+alienação e à concessão de direito real de uso de bens. 
+ 
+ 
+--- PÁGINA 5 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+5 
+ 
+OBJETIVOS DA LICITAÇÃO 
+ 
+Art. 11, Lei nº 14.133/2021 – O processo licitatório tem por objetivos: 
+I - assegurar a seleção da proposta apta a gerar o resultado de contratação mais vantajoso para a Administração 
+Pública, inclusive no que se refere ao ciclo de vida do objeto; 
+II - assegurar tratamento isonômico entre os licitantes, bem como a justa competição; 
+III - evitar contratações com sobrepreço ou com preços manifestamente inexequíveis e superfaturamento na execução 
+dos contratos; 
+IV - incentivar a inovação e o desenvolvimento nacional sustentável. 
+ 
+ 
+“JÁ CAIU EM PROVA, MOTTA?” 
+ 
+(AUDITOR DO ESTADO / CGE-RJ / 2024 / CEBRASPE) Acerca de licitações e contratos administrativos, julgue os itens a 
+seguir de acordo com a Lei n.º 14.133/2021. 
+01 A inovação e o desenvolvimento nacional sustentável devem ser observados no processo licitatório. 
+ 
+(TÉCNICO MINISTERIAL / MPE -TO / 2024 / CEBRASPE) Julgue os itens a seguir, relacionados a gestão de contratos e 
+noções de processos licitatórios. 
+02 Entre os objetivos do processo licitatório está o incentivo à inovação e ao desenvolvimento nacional sustentável. 
+ 
+03) (CONSULTOR LEGISLATIVO / CÂMARA DE TAUBATÉ / 2022 / FGV) De acordo com a Lei de Licitações e Contratos 
+Administrativos (Lei nº 14.133/2021), o processo licitatório tem por objetivos as op ções a seguir, à exceção de uma. 
+Assinale-a. 
+(A) Assegurar tratamento isonômico entre os licitantes, bem como a justa competição. 
+(B) Incentivar a inovação e o desenvolvimento nacional sustentável. 
+(C) Vedar, em qualquer hipótese, participação em licitação de pessoa jurídica em consórcio. 
+(D) Evitar contratações com sobrepreço ou com preços manifestamente inexequíveis e superfaturamento na execução 
+dos contratos. 
+(E) Assegurar a seleção da proposta apta a gerar o resultado de contratação mais vantajoso para  a Administração 
+Pública, inclusive no que se refere ao ciclo de vida do objeto. 
+ 
+04) (AUDITOR INTERNO / CGM -BELO HORIZONTE / 2024 / FGV) No exercício de suas atribuições como agente da 
+licitação, Rosângela foi questionada acerca dos princípios elencados n a Lei nº 14.133/2021, bem como quanto aos 
+objetivos do procedimento licitatório, na forma do mencionado Diploma Legal. Diante de tal questionamento, 
+Rosângela respondeu corretamente, que 
+(A) o desenvolvimento sustentável é um dos princípios expressamente c onsagrados na norma em questão, cujo 
+incentivo é elencado como objetivo do procedimento licitatório. 
+(B) assegurar tratamento isonômico entre os licitantes, é um importante princípio da norma em questão, mas não 
+pode ser considerado um dos objetivos do procedimento licitatório. 
+(C) para a concretização do princípio da eficiência, é um objetivo da licitação a acumulação de funções no âmbito do 
+respectivo procedimento, com vistas à sua otimização. 
+(D) assegurar a seleção da proposta apta a gerar o resultado d e contratação mais vantajoso para a Administração 
+Pública, independentemente do ciclo de vida do objeto, é um dos objetivos relevantes do procedimento licitatório, 
+sendo elencado também como um de seus princípios. 
+ 
+05) (TÉCNICO EM CONTABILIDADE / PREFEITUR A DE CACOAL-RO / 2024 / INSTITUTO CONSULPLAN) A Lei Federal nº 
+14.133/2021 – Lei de Licitações e suas alterações posteriores – estabelece normas gerais de licitação e contratação 
+para as Administrações Públicas diretas, autárquicas e fundacionais da União,  dos Estados, do Distrito Federal e dos 
+Municípios. Sobre os objetivos do processo licitatório, analise as afirmativas a seguir. 
+--- PÁGINA 6 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+6 
+ 
+I. Assegurar a seleção da proposta apta a gerar o resultado de contratação mais vantajoso para a Administração 
+Pública, inclusive no que se refere ao ciclo de vida do objeto. 
+II. Assegurar tratamento diferenciado entre os licitantes, bem como a justa aquisição da empresa maior que possui 
+maior capital financeiro. 
+III. Evitar contratações com sobrepreço ou com preços manifestamente inexequíveis e superfaturamento na execução 
+dos contratos. 
+IV. Incentivar a inovação e o desenvolvimento nacional sustentável. 
+Está correto o que se afirma em 
+A) I, apenas. 
+B) I, II, III e IV. 
+C) I e IV, apenas. 
+D) I, III e IV, apenas. 
+ 
+ 
+PRINCÍPIOS APLICÁVEIS ÀS LICITAÇÕES 
+ 
+Art. 5°, Lei nº 14.133/2021 – Na aplicação desta Lei, serão observados os princípios da legalidade, da impessoalidade, 
+da moralidade, da publicidade, da eficiência, do interesse público, da probidade administrativa, da igualdade, do 
+planejamento, da transparência, da eficácia, da segregação de funções, da motivação, da vinculação ao edital, do 
+julgamento objetivo, da segurança jurídica, da razoabilidade, da competitividade, da proporcionalidade, da celeridade, 
+da economicidade e do desenvolvimento nacional sustentável, assim como as disposições do Decreto-Lei nº 4.657, de 
+4 de setembro de 1942 (Lei de Introdução às Normas do Direito Brasileiro). 
+ 
+ 
+“JÁ CAIU EM PROVA, MOTTA?” 
+ 
+(ANALISTA DE PLANEJAMENTO E ORÇAMENTO / MPO / 2024 / CEBRASPE) Julgue os próximos itens, referentes a 
+princípios básicos de licitações. 
+01 O princípio licitatório da vinculação ao edital obriga tanto a administração pública quanto os licitantes. 
+02 Um dos princípios básicos de licitações é a segregação de funções. 
+ 
+(PROCURADOR FEDERAL / AGU / 2023 / CEBRASPE) Com base no disposto na Lei n.º 14.133/2021, que estabelece 
+normas gerais de licitação e contratação para as administrações públicas diretas, autárquicas e fundacionais da União, 
+dos estados, Distrito Federal e municípios, julgue os itens a seguir. 
+03 Na aplicação dessa lei, serão observados, entre outros princípios, o da legalidade, o da impessoalidade, o da 
+moralidade, o da publicidade, o da eficiência, o do interesse público, o da probidade administrativa, o da igualdade, o 
+do planejamento, o da transparência, o da motivação, o da vinculação ao edital e o do julgamento objetivo. 
+ 
+(TÉCNICO MINISTERIAL / MPE-TO / 2024 / CEBRASPE) No que se refere aos princípios, aos poderes e à responsabilidade 
+da administração pública, à improbidade administrativa e ao disposto na nova Lei de Licitações e Contratos 
+Administrativos (Lei n.º 14.133/2021), julgue os itens a seguir. 
+04 Embora não faça parte do rol de princípios constitucionais da ad ministração pública, o planejamento figura como 
+princípio explícito e específico da Lei n.º 14.133/2021. 
+ 
+(AUDITOR FISCAL / SEFAZ -CE / 2021 / CEBRASPE) Em relação ao que dispõe a Lei n.º 14.133/2021 e aos conceitos 
+referentes às licitações e aos contratos públicos, julgue os itens a seguir. 
+05 Pelo princípio da segregação de funções, a administração deve buscar a divisão de funções entre diferentes agentes, 
+a fim de evitar a concentração de responsabilidades e reduzir riscos. 
+ 
+06) (PROCURADOR / PGE-PB / 2021 / CEBRASPE) A licitação consiste em procedimento complexo que, além de outros 
+requisitos, deve ser composta por diversos agentes com competências diferentes. Essa definição traduz o princípio da 
+--- PÁGINA 7 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+7 
+ 
+A transparência. 
+B eficácia. 
+C eficiência. 
+D segregação de funções. 
+E segurança jurídica. 
+ 
+07) (ASSISTENTE EM ADMINISTRAÇÃO / IF-MA / 2023 / INSTITUTO AOCP) Um dos princípios que devem ser observados 
+na aplicação da lei de licitações, Lei nº 14.133/2021, é o princípio 
+(A) de que o comércio precisa ser bom para todos. 
+(B) de que pessoas racionais pensam na margem. 
+(C) do desenvolvimento nacional sustentável. 
+(D) da dignidade da pessoa humana. 
+(E) do contraditório e da ampla defesa. 
+ 
+08) (ANALISTA DE ADMINISTRAÇÃO / MP-SC / 2022 / FGV) O princípio previsto na Lei de Licitações (Lei nº 14.133/2021) 
+que tem por finalidade evitar equívocos, fraudes e utilização irregular de recursos públicos, na medida em que ocorre 
+a separação das competências e atividades de cada servidor que atua no procedimento licitatório, é o princípio da: 
+(A) vinculação ao instrumento convocatório; 
+(B) julgamento objetivo; 
+(C) segregação de funções; 
+(D) desconcentração; 
+(E) competitividade. 
+ 
+09) (ADVOGADO SUAS / PREFEITURA DE CARAGUATATUBA / 2024 / FGV) A autoridade competente do Município de 
+Caraguatatuba precisa indicar servidor de seus quadros para o exercício da atribuição de fiscal do contrato, para o que 
+foi cogitado o nome de Clemente, em razão dele já atuar como agente da contratação, ponderando -se, contudo, os 
+riscos envolvidos no exer cício simultâneo de tais atividades. Acerca dessa situação hipotética, considerando os 
+princípios elencados na Lei nº 14.133/2021, é correto afirmar que a indicação de Clemente 
+(A) não é viável, diante do princípio da segregação das funções. 
+(B) é viável, em decorrência do princípio da efetividade. 
+(C) não é viável, em razão do princípio da competividade. 
+(D) é viável, à luz do princípio da economicidade. 
+(E) não é viável, considerando o princípio da proteção da confiança. 
+ 
+10) (ANALISTA DE PLANEJAMENTO E G ESTÃO GOVERNAMENTAL / SMPOG -MG / 2024 / FGV) Conforme disposto na 
+Lei, a vedação à designação de agente público para atuação simultânea em funções mais suscetíveis a riscos, de modo 
+a reduzir a possibilidade de ocultação de erros e de ocorrência de fraudes  na respectiva contratação, refere -se ao 
+princípio 
+(A) da segregação de funções. 
+(B) do interesse público. 
+(C) do desenvolvimento sustentável. 
+(D) do julgamento objetivo. 
+ 
+(ANALISTA MINISTERIAL / MP -CE / 2025 / CEBRASPE) Acerca de licitações e contratos ad ministrativos (Lei nº 
+14.133/2021), julgue os itens a seguir. 
+11 Os atos praticados em processo licitatório são públicos, com exceção daqueles cujo sigilo seja necessário em razão 
+de conterem informações estratégicas empresariais de concorrentes. 
+ 
+12) (ANALISTA / PGM-RJ / FGV / 2025) Assinale a opção que contém os princípios consagrados na Lei nº 14.133/2021, 
+no que concerne às licitações e contratações públicas. 
+(A) Economicidade, ponderação de interesses e pessoalidade. 
+(B) Razoabilidade, improbidade administrativa e vinculação ao edital. 
+--- PÁGINA 8 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+8 
+ 
+(C) Proporcionalidade, moralidade e julgamento subjetivo das propostas. 
+(D) Competitividade, planejamento e desenvolvimento nacional sustentável. 
+(E) Segurança jurídica, supremacia do interesse público e direcionamento razoável. 
+ 
+13) (ANALISTA / TCE -PE / FGV / 2025) João, autoridade administrativa competente no âmbito do Tribunal de Contas 
+do Estado de Pernambuco, indicou Matheus, servidor público, para o desempenho das funções essenciais à execução 
+da Lei de Licitações e Contratos Administrativos, observando o princípio segundo o qual é vedada a designação do 
+mesmo agente público para atuação simultânea em funções mais suscetíveis a riscos, de modo a reduzir a possibilidade 
+de ocultação de erros e de ocorrência de fraudes na respectiva contratação. Nesse cenário, considerando as 
+disposições da Lei nº 14.133/2021, se está diante de uma manifestação do princípio do (da): 
+(A) segregação de funções, o qual, embora não tenha assento expresso no texto legal, é fruto de construção 
+doutrinária. 
+(B) economicidade, o qual, embora não tenha assento expresso no texto legal, é fruto de construção doutrinária. 
+(C) segregação de funções, o qual dispõe de assento expresso no texto legal. 
+(D) economicidade, o qual dispõe de assento expresso no texto legal. 
+(E) planejamento, o qual dispõe de assento expresso no texto legal. 
+ 
+14) (ANALISTA AMBIENTAL / IPAAM / 2026 / CEBRASPE) No que se refere a contratações, a administração pública deve 
+garantir que o certame licitatório permita a igualdade de condições a todos os concorrentes, em atenção ao princípio 
+da 
+A motivação. 
+B segregação de funções. 
+C celeridade. 
+D isonomia. 
+E eficiência. 
+ 
+(TÉCNICO LEGISLATIVO / CÂMARA DOS DEPUTADOS / 2026 / CEBRASPE) Acerca de licitação pública, julgue os ite ns a 
+seguir, com base nas disposições da Lei n.º 14.133/2021, observada a jurisprudência dos tribunais superiores.  
+15 O planejamento e a unificação das funções são princípios norteadores do procedimento licitatório. 
+ 
+ 
+DA CONTRATAÇÃO DIRETA 
+ 
+Art. 72, Lei nº 14.133/2021  – O processo de contratação direta, que compreende os casos de inexigibilidade e de 
+dispensa de licitação, deverá ser instruído com os seguintes documentos: 
+I - documento de formalização de demanda e, se for o caso, estudo técnico preliminar, análise de riscos, termo de 
+referência, projeto básico ou projeto executivo; 
+II - estimativa de despesa, que deverá ser calculada na forma estabelecida no art. 23 desta Lei; 
+III - parecer jurídico e pareceres técnicos, se for o caso, que demonstrem o atendimento dos requisitos exigidos; 
+IV - demonstração da compatibilidade da previsão de recursos orçamentários com o compromisso a ser assumido; 
+V - comprovação de que o contratado preenche os requisitos de habilitação e qualificação mínima necessária; 
+VI - razão da escolha do contratado; 
+VII - justificativa de preço; 
+VIII - autorização da autoridade competente. 
+Parágrafo único. O ato que autoriza a contratação direta ou o extrato decorrente do contrato deverá ser divulgado e 
+mantido à disposição do público em sítio eletrônico oficial. 
+ 
+Art. 73, Lei nº 14.133/2021 – Na hipótese de contratação direta indevida ocorrida com dolo, fraude ou erro grosseiro, 
+o contratado e o agente público responsável responderão solidariamente pelo dano causado ao erário,  sem prejuízo 
+de outras sanções legais cabíveis. 
+ 
+--- PÁGINA 9 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+9 
+ 
+ 
+EXCEÇÕES AO DEVER DE LICITAR 
+ 
+São duas as exceções ao dever de licitar: DISPENSA e INEXIGIBILIDADE. 
+ 
+Há diferença entre LICITAÇÃO DISPENSADA (a lei obriga a dispensa), LICITAÇÃO DISPENSÁVEL (a lei faculta a dispensa) 
+e LICITAÇÃO INEXIGÍVEL (inviabilidade de competição). 
+ 
+ 
+DISPENSA DE LICITAÇÃO – Rol taxativo 
+INEXIGIBILIDADE DE LICITAÇÃO – Rol exemplificativo 
+ 
+ 
+INEXIGIBILIDADE DE LICITAÇÃO 
+ 
+Art. 74, Lei nº 14.133/2021 – É inexigível a licitação quando inviável a competição, em especial nos casos de: 
+I - aquisição de materiais, de equipamentos ou de gêneros ou contratação de serviços que só possam ser fornecidos 
+por produtor, empresa ou representante comercial exclusivos; 
+II - contratação de profissional do setor artístico, diretamente ou por meio de empresário exclusivo, desde que 
+consagrado pela crítica especializada ou pela opinião pública; 
+III - contratação dos seguintes serviços técnicos especializados de natureza pre dominantemente intelectual com 
+profissionais ou empresas de notória especialização, vedada a inexigibilidade para serviços de publicidade e 
+divulgação: 
+a) estudos técnicos, planejamentos, projetos básicos ou projetos executivos; 
+b) pareceres, perícias e avaliações em geral; 
+c) assessorias ou consultorias técnicas e auditorias financeiras ou tributárias; 
+d) fiscalização, supervisão ou gerenciamento de obras ou serviços; 
+e) patrocínio ou defesa de causas judiciais ou administrativas; 
+f) treinamento e aperfeiçoamento de pessoal; 
+g) restauração de obras de arte e de bens de valor histórico; 
+h) controles de qualidade e tecnológico, análises, testes e ensaios de campo e laboratoriais, instrumentação e 
+monitoramento de parâmetros específicos de obras e do meio ambiente e demais serviços de engenharia que se 
+enquadrem no disposto neste inciso; 
+ 
+IV - objetos que devam ou possam ser contratados por meio de credenciamento; 
+V - aquisição ou locação de imóvel cujas características de instalações e de localização tornem necessária sua escolha. 
+ 
+§ 1º Para fins do disposto no inciso I do caput deste artigo, a Administração deverá demonstrar a inviabilidade de 
+competição mediante atestado de exclusividade, contrato de exclusividade, declaração do fabricante ou outro 
+documento idôneo capaz de comprovar que o objeto é fornecido ou prestado por produtor, empresa ou representante 
+comercial exclusivos, vedada a preferência por marca específica. 
+ 
+§ 2º Para fins do disposto no inciso II do caput deste artigo, considera-se empresário exclusivo a pessoa física ou jurídica 
+que possua contrato, declaração, carta ou outro documento que ateste a exclusividade permanente e contínua de 
+representação, no País ou em Estado específico, do profissional do setor artístico, afastada a possibilid ade de 
+contratação direta por inexigibilidade por meio de empresário com representação restrita a evento ou local específico. 
+ 
+§ 3º Para fins do disposto no inciso III do caput deste artigo, considera-se de notória especialização o profissional ou a 
+empresa cujo conceito no campo de sua especialidade, decorrente de desempenho anterior, estudos, experiência, 
+publicações, organização, aparelhamento, equipe técnica ou outros requisitos relacionados com suas atividades, 
+permita inferir que o seu trabalho é essencial e reconhecidamente adequado à plena satisfação do objeto do contrato. 
+--- PÁGINA 10 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+10 
+ 
+ 
+§ 4º Nas contratações com fundamento no inciso III do caput deste artigo, é vedada a subcontratação de empresas ou 
+a atuação de profissionais distintos daqueles que tenham justificado a inexigibilidade. 
+ 
+§ 5º Nas contratações com fundamento no inciso V do caput deste artigo, devem ser observados os seguintes 
+requisitos: 
+I - avaliação prévia do bem, do seu estado de conservação, dos custos de adaptações, quando imprescindíveis às 
+necessidades de utilização, e do prazo de amortização dos investimentos; 
+II - certificação da inexistência de imóveis públicos vagos e disponíveis que atendam ao objeto; 
+III - justificativas que demonstrem a singularidade do imóvel a ser comprado ou locado p ela Administração e que 
+evidenciem vantagem para ela. 
+ 
+ 
+DISPENSA DE LICITAÇÃO 
+ 
+Na nova lei de licitações (lei nº 14.133/2021), os casos de LICITAÇÃO DISPENSÁVEL são encontrados no artigo 75: 
+ 
+Art. 75, Lei nº 14.133/2021 – É dispensável a licitação: 
+I - para contratação que envolva valores inferiores a R$ 100.000,00 (cem mil reais) R$ 130.984,20 (cento e trinta mil 
+novecentos e oitenta e quatro reais e vinte centavos ), no caso de obras e serviços de engenharia ou de serviço s de 
+manutenção de veículos automotores; 
+ OBS: O Decreto nº 1 2.807/2025 atualizou o valor para R$ 130.984,20 (cento e trinta mil 
+novecentos e oitenta e quatro reais e vinte centavos) 
+ 
+II - para contratação que envolva valores inferiores a R$ 50.000,00 (cinquenta mil reais)  65.492,11 (sessenta e cinco 
+mil quatrocentos e noventa e dois reais e onze centavos), no caso de outros serviços e compras; 
+ OBS: O Decreto nº  12.807/2025 atualizou o  valor para 65.492,11 (sessenta e cinco mil 
+quatrocentos e noventa e dois reais e onze centavos) 
+ 
+III - para contratação que mantenha todas as condições definidas em edital de licitação realizada há menos de 1 (um) 
+ano, quando se verificar que naquela licitação: 
+a) não surgiram licitantes interessados ou não foram apresentadas propostas válidas; 
+b) as propostas apresentadas consignaram preços manifestamente superiores aos praticados no mercado ou 
+incompatíveis com os fixados pelos órgãos oficiais competentes; 
+ 
+IV - para contratação que tenha por objeto: 
+ 
+a) bens, componentes ou peças de origem nacional ou estrangeira necessários à manutenção de equipamentos, a 
+serem adquiridos do fornecedor original desses equipamentos durante o período de garantia técnica, quando essa 
+condição de exclusividade for indispensável para a vigência da garantia; 
+ 
+b) bens, serviços, alienações ou obras, nos termos de acordo internacional específico aprovado pelo Congresso 
+Nacional, quando as condições ofertadas forem manifestamente vantajosas para a Administração; 
+ 
+c) produtos para pesquisa e desenvolvimento, limitada a contratação, no caso de obras e serviços de engenharia, ao 
+valor de R$ 300.000,00 (trezentos mil reais) R$ 392.952,63 (trezentos e noventa e dois mil novecentos e cinquenta e 
+dois reais e sessenta e três centavos) 
+ OBS: O Decreto nº 12.807/2025 atualizou o valor para R$ 392.952,63 (trezentos e noventa e dois 
+mil novecentos e cinquenta e dois reais e sessenta e três centavos) 
+ 
+--- PÁGINA 11 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+11 
+ 
+d) transferência de tecnolo gia ou licenciamento de direito de uso ou de exploração de criação protegida, nas 
+contratações realizadas por instituição científica, tecnológica e de inovação (ICT) pública ou por agência de fomento, 
+desde que demonstrada vantagem para a Administração; 
+ 
+e) hortifrutigranjeiros, pães e outros gêneros perecíveis, no período necessário para a realização dos processos 
+licitatórios correspondentes, hipótese em que a contratação será realizada diretamente com base no preço do dia; 
+ 
+f) bens ou serviços produzidos ou prestados no País que envolvam, cumulativamente, alta complexidade tecnológica 
+e defesa nacional; 
+ 
+g) materiais de uso das Forças Armadas, com exceção de materiais de uso pessoal e administrativo, quando houver 
+necessidade de manter a padronização requ erida pela estrutura de apoio logístico dos meios navais, aéreos e 
+terrestres, mediante autorização por ato do comandante da força militar; 
+ 
+h) bens e serviços para atendimento dos contingentes militares das forças singulares brasileiras empregadas em 
+operações de paz no exterior, hipótese em que a contratação deverá ser justificada quanto ao preço e à escolha do 
+fornecedor ou executante e ratificada pelo comandante da força militar; 
+ 
+i) abastecimento ou suprimento de efetivos militares em estada eventual de curta duração em portos, aeroportos ou 
+localidades diferentes de suas sedes, por motivo de movimentação operacional ou de adestramento; 
+ 
+j) coleta, processamento e comercialização de resíduos sólidos urbanos recicláveis ou reutilizáveis, em áreas com 
+sistema de coleta seletiva de lixo, realizados por associações ou cooperativas formadas exclusivamente de pessoas 
+físicas de baixa renda reconhecidas pelo poder público como catadores de materiais recicláveis, com o uso de 
+equipamentos compatíveis com as normas técnicas, ambientais e de saúde pública; 
+ 
+k) aquisição ou restauração de obras de arte e objetos históricos, de autenticidade certificada, desde que inerente às 
+finalidades do órgão ou com elas compatível; 
+ 
+l) serviços especializados ou aquisição ou locação de equipamentos destinados ao rastreamento e à obtenção de 
+provas previstas nos incisos II e V do caput do art. 3º da Lei nº 12.850, de 2 de agosto de 2013, quando houver 
+necessidade justificada de manutenção de sigilo sobre a investigação; 
+ 
+m) aquisição de medicamentos destinados exclusivamente ao tratamento de doenças raras definidas pelo Ministério 
+da Saúde; 
+ 
+V - para contratação com vistas ao cumprimento do disposto nos arts. 3º, 3º -A, 4º, 5º e 20 da Lei nº 10.973, de 2 de 
+dezembro de 2004, observados os princípios gerais de contratação constantes da referida Lei; 
+ 
+VI - para contratação que possa acarretar comprometimento da segurança nacional, nos casos estabelecidos pelo 
+Ministro de Estado da Defesa, mediante demanda dos comandos das Forças Armadas ou dos demais ministérios; 
+ 
+VII - nos casos de guerra, estado de defesa, estado de sítio, intervenção federal ou de grave perturbação da ordem; 
+ 
+VIII - nos casos de emergência ou de calamidade pública, quando caracterizada urgência de atendimento de s ituação 
+que possa ocasionar prejuízo ou comprometer a continuidade dos serviços públicos ou a segurança de pessoas, obras, 
+serviços, equipamentos e outros bens, públicos ou particulares, e somente para aquisição dos bens necessários ao 
+atendimento da situação emergencial ou calamitosa e para as parcelas de obras e serviços que possam ser concluídas 
+no prazo máximo de 1 (um) ano, contado da data de ocorrência da emergência ou da calamidade, vedadas a 
+prorrogação dos respectivos contratos e a recontratação de empresa já contratada com base no disposto neste inciso; 
+ 
+--- PÁGINA 12 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+12 
+ 
+IX - para a aquisição, por pessoa jurídica de direito público interno, de bens produzidos ou serviços prestados por órgão 
+ou entidade que integrem a Administração Pública e que tenham sido criados para esse fim específico, desde que o 
+preço contratado seja compatível com o praticado no mercado; 
+ 
+X - quando a União tiver que intervir no domínio econômico para regular preços ou normalizar o abastecimento;  
+ 
+XI - para celebração de contrato de programa  com ente federativo ou com entidade de sua Administração Pública 
+indireta que envolva prestação de serviços públicos de forma associada nos termos autorizados em contrato de 
+consórcio público ou em convênio de cooperação; 
+ 
+XII - para contratação em que ho uver transferência de tecnologia de produtos estratégicos para o Sistema Único de 
+Saúde (SUS), conforme elencados em ato da direção nacional do SUS, inclusive por ocasião da aquisição desses 
+produtos durante as etapas de absorção tecnológica, e em valores compatíveis com aqueles definidos no instrumento 
+firmado para a transferência de tecnologia; 
+ 
+XIII - para contratação de profissionais para compor a comissão de avaliação de critérios de técnica, quando se tratar 
+de profissional técnico de notória especialização; 
+ 
+XIV - para contratação de associação de pessoas com deficiência, sem fins lucrativos e de comprovada idoneidade, por 
+órgão ou entidade da Administração Pública, para a prestação de serviços, desde que o preço contratado seja 
+compatível com o praticado no mercado e os serviços contratados sejam prestados exclusivamente por pessoas com 
+deficiência; 
+ 
+XV - para contratação de instituição brasileira que tenha por finalidade estatutária apoiar, captar e executar atividades 
+de ensino, pesquisa, extensão, desenvolvimento institucional, científico e tecnológico e estímulo à inovação, inclusive 
+para gerir administrativa e financeiramente essas atividades, ou para contratação de instituição dedicada à 
+recuperação social da pessoa presa, desde que o contratado tenha inquestionável reputação ética e profissional e não 
+tenha fins lucrativos; 
+ 
+XVI - para aquisição, por pessoa jurídica de direito público interno, de produtos estratégicos para a saúde fornecidos 
+por produtores públicos por intermédio de fundação que, regimental ou estatutariamente, tenha por finalidade apoiar 
+órgão da Administração Pública direta, sua autarquia ou fundação em projetos de ensino, pesquisa, extensão, 
+desenvolvimento institucional, científico e tecnológico e de estímulo à inovação, inclusive na gestão administrativa e 
+financeira necessária à execução desses projetos, ou em parcerias que envolvam transferência de tecnologia de 
+produtos estratégicos para o SUS, nos termos do inciso XII deste caput, e que tenha sido criada para esse fim específico 
+em data anterior à entrada em vigor desta Lei, desde que o preço contratado seja compatível com o praticado no 
+mercado;   (Redação dada pela Lei nº 15.471, de 2026) 
+ 
+XVII - para contratação de entidades privadas sem fins lucrativos para a imple mentação de cisternas ou outras 
+tecnologias sociais de acesso à água para consumo humano e produção de alimentos, a fim de beneficiar as famílias 
+rurais de baixa renda atingidas pela seca ou pela falta regular de água; e (Incluído pela Lei nº 14.628, de 2023) 
+ 
+XVIII - para contratação de entidades privadas sem fins lucrativos, para a implementação do Programa Cozinha 
+Solidária, que tem como finalidade fornecer alimentação gratuita preferencialmente à população em situação de 
+vulnerabilidade e risco social, incluída a população em situação de rua, com vistas à promoção de políticas de 
+segurança alimentar e nutricional e de assistência social e à efetivação de direitos sociais, dignidade humana, resgate 
+social e melhoria da qualidade de vida. (Incluído pela Lei nº 14.628, de 2023) 
+ 
+§ 1º Para fins de aferição dos valores que atendam aos limites referidos nos incisos I e II do caput deste artigo, deverão 
+ser observados: 
+I - o somatório do que for despendido no exercício financeiro pela respectiva unidade gestora; 
+--- PÁGINA 13 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+13 
+ 
+II - o somatório da despesa realizada com objetos de mesma natureza, entendidos como tais aqueles relativos a 
+contratações no mesmo ramo de atividade. 
+ 
+§ 2º Os valores referidos nos incisos I e II do caput deste artigo serão duplicados para compras, obras e serviços 
+contratados por consórcio público ou por autarquia ou fundação qualificadas como agências executivas na forma da 
+lei. 
+ 
+§ 3º As contratações de que tratam os incisos I e II do caput deste artigo serão preferencialmente precedidas d e 
+divulgação de aviso em sítio eletrônico oficial, pelo prazo mínimo de 3 (três) dias úteis, com a especificação do objeto 
+pretendido e com a manifestação de interesse da Administração em obter propostas adicionais de eventuais 
+interessados, devendo ser selecionada a proposta mais vantajosa. 
+ 
+§ 4º As contratações de que tratam os incisos I e II do caput deste artigo serão preferencialmente pagas por meio de 
+cartão de pagamento, cujo extrato deverá ser divulgado e mantido à disposição do público no Portal Na cional de 
+Contratações Públicas (PNCP). 
+ 
+§ 5º A dispensa prevista na alínea “c” do inciso IV do caput deste artigo, quando aplicada a obras e serviços de 
+engenharia, seguirá procedimentos especiais instituídos em regulamentação específica. 
+ 
+§ 6º Para os fins do inciso VIII do caput deste artigo, considera-se emergencial a contratação por dispensa com objetivo 
+de manter a continuidade do serviço público, e deverão ser observados os valores praticados pelo mercado na forma 
+do art. 23 desta Lei e adotadas as p rovidências necessárias para a conclusão do processo licitatório, sem prejuízo de 
+apuração de responsabilidade dos agentes públicos que deram causa à situação emergencial. 
+ 
+§ 7º Não se aplica o disposto no § 1º deste artigo às contratações de até R$ 8.000,00 (oito mil reais) R$ 10.478,74 (dez 
+mil quatrocentos e setenta e oito reais e setenta e quatro centavos ) de serviços de manutenção de veículos 
+automotores de propriedade do órgão ou entidade contratante, incluído o fornecimento de peças. 
+ OBS: O Decreto nº 1 2.807/2025 atualizou o valor para R$ 10.478,74 (dez mil quatrocentos e 
+setenta e oito reais e setenta e quatro centavos) 
+ 
+ 
+Na nova lei de licitações (lei nº 14.133/2021) , os casos de LICITAÇÃO DISPENSADA são encontrados nas alíneas dos 
+incisos I e II do art. 76: 
+ 
+Art. 76, Lei nº 14.133/2021 – A alienação de bens da Administração Pública, subordinada à existência de interesse 
+público devidamente justificado, será precedida de avaliação e obedecerá às seguintes normas: 
+ 
+I - tratando-se de bens imóveis, inclusive os pertencentes às autarquias e às fundações, exigirá autorização legislativa 
+e dependerá de licitação na modalidade leilão, dispensada a realização de licitação nos casos de: 
+a) dação em pagamento; 
+b) doação, permitida exclusivamente para outro órgão ou entidade da Administração Pública, de qualquer esfera de 
+governo, ressalvado o disposto nas alíneas “f”, “g” e “h” deste inciso; 
+c) permuta por outros imóveis que atendam aos requisitos relacionados à s finalidades precípuas da Administração, 
+desde que a diferença apurada não ultrapasse a metade do valor do imóvel que será ofertado pela União, segundo 
+avaliação prévia, e ocorra a torna de valores, sempre que for o caso; 
+d) investidura; 
+e) venda a outro órgão ou entidade da Administração Pública de qualquer esfera de governo; 
+f) alienação gratuita ou onerosa, aforamento, concessão de direito real de uso, locação e permissão de uso de bens 
+imóveis residenciais construídos, destinados ou efetivamente usados em programas de habitação ou de regularização 
+fundiária de interesse social desenvolvidos por órgão ou entidade da Administração Pública; 
+g) alienação gratuita ou onerosa, aforamento, concessão de direito real de uso, locação e permissão de uso de bens 
+imóveis comerciais de âmbito local, com área de até 250 m² (duzentos e cinquenta metros quadrados) e destinados a 
+--- PÁGINA 14 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+14 
+ 
+programas de regularização fundiária de interesse social desenvolvidos por órgão ou entidade da Administração 
+Pública; 
+h) alienação e concessão de direito real de uso, gratuita ou onerosa, de terras públicas rurais da União e do Instituto 
+Nacional de Colonização e Reforma Agrária (Incra) onde incidam ocupações até o limite de que trata o § 1º do art. 6º 
+da Lei nº 11.952, de 25 de junho de 2009, para fins de regularização fundiária, atendidos os requisitos legais; 
+i) legitimação de posse de que trata o art. 29 da Lei nº 6.383, de 7 de dezembro de 1976, mediante iniciativa e 
+deliberação dos órgãos da Administração Pública competentes; 
+j) legitimação fundiária e legitimação de posse de que trata a Lei nº 13.465, de 11 de julho de 2017; 
+ 
+II - tratando-se de bens móveis, dependerá de licitação na modalidade leilão, dispensada a realização de licitação nos 
+casos de: 
+a) doação, permitida exclusivamente para fins e uso de interesse social, após avaliação de oportunidade e conveniência 
+socioeconômica em relação à escolha de outra forma de alienação; 
+b) permuta, permitida exclusivamente entre órgãos ou entidades da Administração Pública; 
+c) venda de ações, que poderão ser negociadas em bolsa, observada a legislação específica; 
+d) venda de títulos, observada a legislação pertinente; 
+e) venda de bens produzidos ou comercializados por entidades da Administração Pública, em virtude de suas 
+finalidades; 
+f) venda de materiais e equipamentos sem utilização previsível por quem deles dispõe para outros órgãos ou entidades 
+da Administração Pública. 
+ 
+§ 1º A alienação de bens imóveis da Administração Pública cuja aquisição tenha sido derivada de procedimentos 
+judiciais ou de dação em pagamento dispensará autorização legislativa e exigirá apenas avaliação prévia e licitação na 
+modalidade leilão. 
+ 
+§ 2º Os imóveis doados com base na alínea “b” do inciso I do caput deste artigo, cessadas as razões que justificaram 
+sua doação, serão revertidos ao patrimônio da pessoa jurídica doadora, vedada sua alienação pelo beneficiário. 
+ 
+§ 3º A Administração poderá conceder título de propriedade ou de direito real de uso de imóvel, admitida a dispensa 
+de licitação, quando o uso destinar-se a: 
+I - outro órgão ou entidade da Administração Pública, qualquer que seja a localização do imóvel; 
+II - pessoa natural que, nos termos de lei, regulamento ou ato normativo do órgão competente, haja implementado os 
+requisitos mínimos de cultura, de ocupação mansa e pacífica e de exploração direta sobre área rural, observado o 
+limite de que trata o § 1º do art. 6º da Lei nº 11.952, de 25 de junho de 2009. 
+ 
+§ 4º A aplicação do disposto no inciso II do § 3º deste artigo será dispensada de autorização legislativa e submeter-se-
+á aos seguintes condicionamentos: 
+I - aplicação exclusiva às áreas em que a detenção por particular seja comprovadamente anterior a 1º de dezembro de 
+2004; 
+II - submissão aos demais requisitos e impedimentos do regime legal e administrativo de destinação e de regularização 
+fundiária de terras públicas; 
+III - vedação de concessão para exploração não contemplada na lei agrária, nas leis de destinação de terras públicas 
+ou nas normas legais ou administrativas de zoneamento ecológico-econômico; 
+IV - previsão de extinção automática da concessão, dispensada notificação, em caso de declaração de utilidade pública, 
+de necessidade pública ou de interesse social; 
+V - aplicação exclusiva a imóvel situado em zona rural e não suje ito a vedação, impedimento ou inconveniente à 
+exploração mediante atividade agropecuária; 
+VI - limitação a áreas de que trata o § 1º do art. 6º da Lei nº 11.952, de 25 de junho de 2009, vedada a dispensa de 
+licitação para áreas superiores; 
+VII - acúmulo com o quantitativo de área decorrente do caso previsto na alínea “i” do inciso I do caput deste artigo até 
+o limite previsto no inciso VI deste parágrafo. 
+ 
+--- PÁGINA 15 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+15 
+ 
+§ 5º Entende-se por investidura, para os fins desta Lei, a: 
+I - alienação, ao proprietário de imóvel l indeiro, de área remanescente ou resultante de obra pública que se tornar 
+inaproveitável isoladamente, por preço que não seja inferior ao da avaliação nem superior a 50% (cinquenta por cento) 
+do valor máximo permitido para dispensa de licitação de bens e serviços previsto nesta Lei; 
+II - alienação, ao legítimo possuidor direto ou, na falta dele, ao poder público, de imóvel para fins residenciais 
+construído em núcleo urbano anexo a usina hidrelétrica, desde que considerado dispensável na fase de operação da 
+usina e que não integre a categoria de bens reversíveis ao final da concessão. 
+ 
+§ 6º A doação com encargo será licitada e de seu instrumento constarão, obrigatoriamente, os encargos, o prazo de 
+seu cumprimento e a cláusula de reversão, sob pena de nulidade  do ato, dispensada a licitação em caso de interesse 
+público devidamente justificado. 
+ 
+§ 7º Na hipótese do § 6º deste artigo, caso o donatário necessite oferecer o imóvel em garantia de financiamento, a 
+cláusula de reversão e as demais obrigações serão garantidas por hipoteca em segundo grau em favor do doador. 
+ 
+Art. 77, Lei nº 14.133/2021 – Para a venda de bens imóveis, será concedido direito de preferência ao licitante que, 
+submetendo-se a todas as regras do edital, comprove a ocupação do imóvel objeto da licitação. 
+ 
+ 
+“JÁ CAIU EM PROVA, MOTTA?” 
+ 
+(ESPECIALISTA EM REGULAÇÃO / ANTT / 2024 / CEBRASPE) Quanto à delegação dos serviços públicos, ao controle da 
+administração pública e à contratação sem licitação, julgue os itens a seguir. 
+01 Cabe contratação direta de fornecedor da administração pública, mediante dispensa de licitação, quando a 
+competição for inviável para o objeto do contrato. 
+ 
+(ADMINISTRADOR / MME / CEBRASPE / 2023) Julgue os itens subsequentes, que dizem respeito à organização d a 
+administração pública, bem como aos critérios atinentes a dispensa e inexigibilidade de licitação. 
+02 A inexigibilidade de licitação é aplicada quando a administração pública realiza a contratação de forma direta, nos 
+casos em que o objeto do contrato seja caracterizado como inviável para competição. 
+ 
+(PROCURADOR DA FAZENDA NACIONAL / AGU / 2023 / CEBRASPE) Quanto às hipóteses de contratação direta, julgue 
+os próximos itens de acordo com a Lei n.º 14.133/2021. 
+03 O rol de hipóteses legais de dispensa de l icitação é exemplificativo, ao passo que o das hipóteses legais de 
+inexigibilidade é taxativo. 
+04 Em hipótese de inexigibilidade, a competição é possível, entretanto razões de tomo levaram o legislador a admitir 
+a contratação direta, ao passo que, na dispensa de licitação, há inviabilidade de competição. 
+ 
+(APOIO ADMINISTRATIVO / CÂMARA DE MACEIÓ / 2024 / CEBRASPE) Em relação ao processo licitatório, julgue os itens 
+seguintes. 
+05 É um caso de inexigibilidade de licitação a contratação de profissional do seto r artístico, diretamente ou por meio 
+de empresário exclusivo, desde que o profissional seja consagrado pela crítica especializada. 
+ 
+(ANALISTA DE PLANEJAMENTO E ORÇAMENTO / MPO / 2024 / CEBRASPE) De acordo com as disposições da Lei n.º 
+14.133/2021, julgue os itens a seguir. 
+06 O procedimento licitatório é inexigível para a contratação realizada por instituição pública científica, tecnológica ou 
+de inovação que tenha por objeto transferência de tecnologia ou licenciamento de direito de uso ou de exploração de 
+criação protegida, desde que demonstrada vantagem para a administração. 
+ 
+(ESPECIALISTA EM REGULAÇÃO / ANTT / 2024 / CEBRASPE) Com base na Lei n.º 14.133/2021, julgue os itens a seguir. 
+07 É inexigível a licitação quando inviável a competição, em especial nos casos de objetos que devam ou possam ser 
+contratados por meio de credenciamento. 
+--- PÁGINA 16 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+16 
+ 
+08 Quando não se tratar de inexigibilidade de licitação, a locação de imóvel se dará por dispensa de licitação, 
+independentemente do valor. 
+09 É inexigível a licitação que tenha por objeto a aquisição de objetos históricos, de autenticidade certificada, desd e 
+que tal aquisição seja inerente às finalidades do órgão ou compatível com elas. 
+ 
+(ANALISTA / CAPES / 2024 / CEBRASPE) Determinada fundação pública federal pretendia realizar compra de produto 
+de limpeza mediante contratação pública orçada em valor inferi or a cinquenta mil reais. Para tanto, a autoridade 
+competente da fundação decidiu realizar contratação direta por inexigibilidade de licitação. Uma empresa interessada 
+na contratação apresentou recurso à instância superior daquela autoridade, alegando não se tratar de hipótese de 
+inexigibilidade. A autoridade superior acatou o recurso da empresa, por entender não haver previsão legal de 
+contratação direta no caso, e revogou a decisão do subordinado. A partir da situação hipotética precedente, julgue os 
+itens que se seguem. 
+10 Por expressa previsão legal, a decisão que declarar a inexigibilidade de processo licitatório deverá ser motivada, 
+com indicação dos fatos e dos fundamentos jurídicos. 
+11 A decisão da autoridade competente de realizar contratação direta por inexigibilidad e de licitação destoa do 
+regramento legal em vigor, porquanto ao caso não se aplica a hipótese de inexigibilidade de licitação. 
+12 A decisão da autoridade superior foi acertada, porque não há previsão legal para contratação direta no caso em 
+apreço. 
+ 
+(ANALISTA TI / CAU / 2024 / CEBRASPE) Determinada autarquia federal pretende firmar contrato administrativo para 
+a contratação de estudo e serviços técnicos de arquitetura especializados de natureza predominantemente intelectual 
+com profissionais ou empresas de notória especialização. 
+A partir dessa situação hipotética, julgue os itens que se seguem. 
+13 A autarquia poderá valer-se da contratação direta por inexigibilidade de licitação. 
+ 
+14) (TÉCNICO JUDICIÁRIO / TJ -RR / 2024 / FGV) O Art. 37, XXI, da CRFB/88 est abelece que, ressalvadas as hipóteses 
+previstas em lei, as contratações públicas serão precedidas de procedimento licitatório. Considerando as disposições 
+acerca da mencionada ressalva, que dá ensejo à chamada contratação direta, à luz do disposto na Lei nº 14.133/2021, 
+é correto afirmar que 
+(A) apenas pode ser admitida a contratação direta nas hipóteses em que haja a inviabilidade de competição, ou seja, 
+quando a licitação for dispensável, cujo rol previsto na norma em comento é taxativo. 
+(B) nos casos em que há viabilidade de competição, que ensejam a designada inexigibilidade de licitação, o rol previsto 
+na norma em comento é meramente exemplificativo. 
+(C) envolvendo ou não a viabilidade de competição, é taxativo o rol atinente às situações que envolvem a contratação 
+direta, ensejando, respectivamente, a licitação inexigível e a dispensável. 
+(D) não se pode considerar taxativo o rol que envolve as situações de inviabilidade de competição, considerando que 
+outras situações podem envolver tal pressuposto lógico, para fins de se admitir a contratação direta por inexigibilidade. 
+(E) tendo em vista que lei prevê a contratação direta nas hipóteses em que a licitação é dispensável ou inexigível, 
+independentemente a viabilidade ou não de competição, o rol das situa ções elencadas não pode ser considerado 
+taxativo em nenhuma das duas hipóteses. 
+ 
+15) (OFICIAL DE CHANCELARIA / MRE / CEBRASPE / 2023) Conforme a Nova Lei de Licitações e Contratos, é dispensável 
+a licitação 
+A quando inviável a competição. 
+B nos casos de intervenção federal. 
+C para aquisição de equipamentos de fornecedor exclusivo. 
+D para contratação de serviços intelectuais. 
+E para contratação de profissional do setor artístico. 
+ 
+(APOIO ADMINISTRATIVO / CÂMARA DE MACEIÓ / 2024 / CEBRASPE) Em relação ao processo licitatório, julgue os itens 
+seguintes. 
+16 É dispensável a licitação para contratação de obras e serviços de engenharia de valor inferior a R$ 150 mil. 
+--- PÁGINA 17 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+17 
+ 
+ 
+(ASSISTENTE TI / CAU / 2024 / CEBRASPE) Determinado órgão do Poder Judiciário de determinado estado da Federação 
+pretende vender bens móveis legalmente apreendidos. A assessoria jurídica desse órgão entendeu não ser possível a 
+contratação direta em face do valor dos bens a serem alienados, tendo indicado que o órgão deveria valer -se da 
+modalidade de li citação leilão, com critério de maior lance para julgamento das propostas, com prazo para 
+apresentação das propostas e dos lances de 20 dias úteis. A partir dessa situação hipotética, julgue os itens a seguir. 
+17 No caso de alienação de bens móveis, é dispensável a licitação para a contratação que envolva valores inferiores a 
+cem mil reais. 
+ 
+18) (ANALISTA JURÍDICO / FINEP / 2024 / CEBRASPE) Caso um órgão da administração pública pretenda celebrar 
+contratação cujo objeto sejam bens ou serviços produzidos ou prestados no país e que envolvam, cumulativamente, 
+alta complexidade tecnológica e defesa nacional, nos termos da Lei n.º 14.133/2021, a licitação será 
+A dispensada, a depender do valor. 
+B inexigível, independentemente do valor. 
+C inexigível, a depender do valor. 
+D dispensável, a depender do valor. 
+E dispensável, independentemente do valor. 
+ 
+(PROCURADOR DA FAZENDA NACIONAL / AGU / 2023 / CEBRASPE) Quanto às hipóteses de contratação direta, julgue 
+os próximos itens de acordo com a Lei n.º 14.133/2021. 
+19 A contratação de serviços técnicos especializados de natureza predominantemente intelectual prestados por 
+profissionais de notória especialização pode ser feita por inexigibilidade de licitação, enquanto a aquisição  de 
+medicamentos destinados ao tratamento de doenças raras pode-se dar por dispensa de licitação. 
+ 
+20) (DELEGADO DE POLÍCIA / PC-PB / 2022 / CEBRASPE) Suponha que determinado órgão público pretenda realizar a 
+contratação de serviço de manutenção de veículos automotores, no valor de R$ 90.000, e a aquisição de medicamentos 
+destinados exclusivamente ao tratamento de doenças raras definidas pelo Ministério da Saúde. Nessa situação, de 
+acordo com a Lei n.º 14.133/2021, 
+A são dispensáveis as licitações em ambos os casos. 
+B são inexigíveis as licitações em ambos os casos. 
+C é inexigível a licitação, no primeiro caso, e dispensável, no segundo. 
+D são obrigatórias as licitações em ambos os casos. 
+E é dispensável a licitação, no primeiro caso, e obrigatória, no segundo. 
+ 
+(TÉCNICO / CNMP / 2023 / CEBRASPE) Determinado órgão do Ministério Público da União (MPU) decidiu contratar 
+empresa para a realização de serviço cujo valor total envolvido era de R$ 45.000. Ticiano, servidor responsável pela 
+execução do contrato, reso lveu realizar a contratação direta, por entender que era cabível licitação dispensável no 
+caso. Entretanto, Maria, chefe de Ticiano, determinou que a contratação fosse efetivada por inexigibilidade. Por sua 
+vez, Ticiano informou que não iria cumprir a determinação superior por considerar a ordem ilegal. 
+Considerando a situação hipotética apresentada e a Lei n.º 14.133/2021, julgue os itens seguintes, a respeito dos 
+poderes e processos administrativos. 
+21 Assiste razão a Ticiano, uma vez que cabe contratação direta por licitação dispensável no caso. 
+ 
+(PROCURADOR LEGISLATIVO / CÂMARA DE MACEIÓ / 2024 / CEBRASPE) Com relação à disciplina atinente a licitações 
+e contratos administrativos, julgue os itens a seguir, considerando as disposições da Lei n.º 14.133/2021, bem como a 
+jurisprudência do Supremo Tribunal Federal (STF). 
+22 A alienação de bem imóvel pertencente a autarquia ou fundação prescinde de autorização legislativa, estando 
+condicionada a prévio procedimento licitatório na modalidade leilão. 
+ 
+23) (BIÓLOGO / PREFEITURA DE NOVA FRIBURGO-RJ / 2023 / CONSULPLAN) Andon é superintendente de compras do 
+município de Nova Friburgo e se depara com situações de inexigibilidade de licitação. Nos termos da Lei nº 
+14.133/2021, nestes casos, poderá o administrador realizar processo de contratação: 
+--- PÁGINA 18 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+18 
+ 
+A) Direta. 
+B) Imediata. 
+C) Preliminar. 
+D) Emergencial. 
+ 
+24) (ESCRIVÃO DE POLÍCIA / PC-AM / 2022 / FGV) Em fevereiro de 2022, a Polícia Civil do Estado Delta pretende realizar 
+a aquisição de determinados equipamentos qu e só podem ser fornecidos por representante comercial exclusivo. 
+Tendo em vista que a contratação será regida pela nova Lei de Licitações (Lei nº 14.133/21), o caso em tela é hipótese 
+de incidência de 
+(A) prévia licitação, na modalidade pregão. 
+(B) prévia licitação, na modalidade concorrência. 
+(C) prévia licitação, na modalidade diálogo competitivo. 
+(D) dispensa de licitação, por expressa previsão legal. 
+(E) inexigibilidade de licitação, pois é inviável a competição. 
+ 
+25) (ANALISTA DE ADMINISTRAÇÃO / MP -SC / 2022 / FGV) O Ministério Público do Estado Delta, em junho de 2022, 
+pretende realizar contratação com valor de R$ 60.000,00 para serviços de manutenção de veículos automotores da 
+frota da Procuradoria-Geral de Justiça. De acordo com a Lei nº 14.133/2021, tal contratação: 
+(A) poderá ocorrer mediante dispensa de licitação; 
+(B) poderá ocorrer mediante inexigibilidade de licitação; 
+(C) deverá necessariamente ocorrer mediante prévia licitação, na modalidade pregão; 
+(D) deverá necessariamente ocorrer mediante prévia licitação, na modalidade concorrência; 
+(E) deverá necessariamente ocorrer mediante prévia licitação, na modalidade diálogo competitivo. 
+ 
+26) (ANALISTA / SEAD -GO / 2022 / INSTITUTO AOCP) À luz da Nova Lei de Licitações (Lei Federal nº 14.133/2021), 
+assinale a alternativa que NÃO representa um caso de inexigibilidade de licitação. 
+(A) Aquisição ou locação de imóvel cujas características de instalações e de localização tornem necessária sua escolha. 
+(B) Nos casos de guerra, estado de defesa, estado de sítio, intervenção federal ou de grave perturbação da ordem. 
+(C) Objetos que devam ou possam ser contratados por meio de credenciamento. 
+(D) Aquisição de materiais, de equipamentos ou de gêneros ou contratação de serviços que só possam ser fornecidos 
+por produtor, empresa ou representante comercial exclusivos. 
+(E) Contratação de profissional do setor artístico, diretamente ou por meio de empresário exclusivo, desde que 
+consagrado pela crítica especializada ou pela opinião pública. 
+ 
+27) (TÉCNICO JUDICIÁRIO / TJ -AP / 2024 / FGV) Lorena, servidora pública ocupante de cargo efetivo do Estado do 
+Amapá, foi designada agente de licitação pela autoridade competente, sendo certo que, no exercício das respectivas 
+atribuições, ela foi questionada acerca  da obrigatoriedade de licitação para a contratação de profissional do setor 
+artístico, diretamente ou por meio de empresário exclusivo, desde que consagrado pela crítica especializada ou pela 
+opinião pública, em situações em que não há viabilidade de comp etição. Diante dessa situação hipotética, à luz do 
+disposto na Lei nº 14.133/2021, Lorena respondeu, corretamente, que: 
+(A) é cabível a contratação direta por inexigibilidade de licitação; 
+(B) é viável a contratação direta por ser dispensável a licitação na situação descrita; 
+(C) a licitação é sempre obrigatória, incluindo, portanto, a situação questionada; 
+(D) a Administração não precisa realizar licitação, mas pode optar pela contratação direta por meio de inexigibilidade 
+ou dispensa de licitação; 
+(E) a A dministração poderia optar entre realizar a licitação ou promover a contratação direta por dispensa ou 
+inexigibilidade de licitação. 
+ 
+28) (PROMOTOR DE JUSTIÇA / MP -MS / 2022 / INSTITUTO AOCP) No que diz respeito à contratação direta pela 
+administração pública, considerando a nova Lei de Licitações e Contratos Administrativos (Lei nº 14.133/2021), analise 
+as assertivas e assinale a alternativa correta. 
+--- PÁGINA 19 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+19 
+ 
+I. É dispensável a licitação nos casos de aquisição ou locação de imóvel cujas características de instalaçõ es e de 
+localização tornem necessária sua escolha, desde que restem evidenciadas as justificativas de singularidade do imóvel, 
+bem como a vantagem para a Administração. 
+II. Na hipótese de contratação direta indevida ocorrida com dolo, o contratado e o agen te público responsável 
+responderão solidariamente pelo dano causado ao erário, sem prejuízo de outras sanções legais cabíveis. 
+III. A licitação é dispensável nos casos de guerra, estado de defesa, estado de sítio, intervenção federal ou de grave 
+perturbação da ordem. 
+IV. Nos casos de inexigibilidade de licitação para a aquisição de materiais fornecidos por empresa ou representante 
+comercial exclusivos, a Administração deverá demonstrar a inviabilidade de competição mediante atestado de 
+exclusividade, contrato de exclusividade, declaração do fabricante ou outro documento idôneo capaz de comprovar 
+tal exclusividade, vedada a preferência por marca específica. 
+(A) Apenas II, III e IV estão corretas.  
+(B) Apenas II e III estão corretas. 
+(C) Apenas II e IV estão corretas. 
+(D) Apenas I, II e III estão corretas. 
+(E) I, II, III e IV estão corretas. 
+ 
+29) (ANALISTA JUDICIÁRIO – ESPECIALIDADE CONTABILIDADE / TRT -23ª REGIÃO / 2022 / FCC) Considere que 
+determinado órgão da Administração pública tenha contratado, com inexig ibilidade de licitação, empresa de 
+consultoria especializada para avaliação, modelagem e execução de venda de ativos de sua titularidade. A justificativa 
+apresentada para a contratação direta centrou -se exclusivamente no objeto do contrato, afirmando trata r-se de 
+serviços técnicos especializados. De acordo com as disposições da Lei nº 14.133/2021, tal conduta 
+(A) afigura-se ilegal, eis que passou a ser expressamente vedada contratação direta de serviços de consultoria de 
+qualquer natureza por inexigibilidad e de licitação, mantida tal possibilidade para os demais serviços técnicos 
+especializados. 
+(B) encontra respaldo legal, desde que se trate de alienação no mercado internacional que demande a contratação de 
+consultores estrangeiros, independentemente da natureza dos serviços. 
+(C) será legal se comprovada inviabilidade de competição por se tratar de empresa cujo conceito no campo de sua 
+especialidade, decorrente de desempenho anterior, experiência ou equipe técnica, permita inferir que o seu trabalho 
+é essencial e reconhecidamente adequado à plena satisfação do objeto do contrato. 
+(D) somente será legal em se tratando de empresa ou profissional que preste o serviço com exclusividade, 
+devidamente comprovada mediante declaração de órgão regulador competente. 
+(E) não mais se afigura viável a partir da edição da Lei nº 14.133/21, que substituiu todas as hipóteses de contratação 
+direta com inexigibilidade de licitação por seleção mediante procedimento de chamamento público, salvo em 
+situações de emergência ou calamidade pública. 
+ 
+30) (AUDITOR TRIBUTÁRIO / MUNICÍPIO DE SÃO JOSÉ DOS CAMPOS / 2024 / FGV) A Administração Pública do 
+Município Alfa pretende contratar, por meio de empresário exclusivo, João, profissional do setor artístico, consagrado 
+pela crítica especializada, para realizar uma performance durante as festividades de fim de ano. Por outro lado, a União 
+Federal pretende comprar bem produzido no país e que envolva, cumulativamente, alta complexidade tecnológica e 
+defesa nacional. Nesse cenário, considerando as disposições da Lei no 14.133/2021, é correto afirmar ser 
+(A) dispensável a licitação para a contratação de João por parte do Município Alfa. Igualmente, é dispensável o 
+procedimento licitatório para a compra que a União Federal pretende realizar, desde que os valores não ultrapassem 
+duzentos e cinquenta mil reais. 
+(B) dispensável a licitação para a contratação de João por parte do Município Alfa. Por sua vez, é inexigível o 
+procedimento licitatório para a compra que a União Federal pretende realizar, desde que os valores não ultrapassem 
+duzentos e cinquenta mil reais. 
+(C) inexigível a licitação para a contratação de João por parte do Município Alfa. Igualmente, é inexigível o 
+procedimento licitatório para a compra que a União Federal pretende realizar. 
+(D) inexigível a licitação para a contratação de João por parte do Município Alfa. Por sua vez, é dispensável o 
+procedimento licitatório para a compra que a União Federal pretende realizar. 
+--- PÁGINA 20 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+20 
+ 
+(E) dispensável a licitação para a contratação de João por p arte do Município Alfa. Por sua vez, é inexigível o 
+procedimento licitatório para a compra que a União Federal pretende realizar. 
+ 
+31) (OFICIAL DE JUSTIÇA / TJ-RO / 2021 / FGV) Diante da implantação do processo eletrônico, o Presidente do Tribunal 
+de Justiça do Estado Alfa verificou que a circulação de pessoas e a ocupação das salas no fórum da Comarca Beta 
+diminuiu vertiginosamente. Após estudos e planejamento estratégico, em outubro de 2021, o Tribunal concluiu que 
+um dos blocos do citado fórum, consisten te em edifício autônomo situado no imóvel ao lado do prédio principal, 
+atualmente não está sendo utilizado e, por isso, deveria ser vendido. No caso em tela, de acordo com a Lei nº 
+14.133/2021, a alienação do mencionado bem imóvel, demonstrada a existência  de interesse público devidamente 
+justificado, será precedida de: 
+(A) avaliação, exigirá autorização do Tribunal de Contas e dependerá de licitação na modalidade concorrência; 
+(B) estudo de viabilidade e economicidade da alienação e dependerá de autorização do Tribunal de Contas; 
+(C) avaliação, exigirá autorização legislativa e dependerá de licitação na modalidade pregão; 
+(D) avaliação, exigirá autorização legislativa e dependerá de licitação na modalidade leilão; 
+(E) estudo de viabilidade e economicidade da alienação e dependerá de licitação na modalidade concorrência, sendo 
+desnecessária autorização legislativa. 
+ 
+32) (AUDITOR FISCAL / SEFAZ-ES / 2021 / FGV) Com base na nova Lei de Licitação, o Estado Alfa pretende proceder à 
+locação de determinado imóvel, cujas características de instalações e de localização tornam necessária sua escolha. 
+Trata-se de imóvel exatamente ao lado da Secretaria Estadual de Fazenda, que abrigará novas instalações para os 
+Auditores Fiscais da Receita Estadual. No bojo do processo administrativo, já foi observada regularmente a avaliação 
+prévia do bem, do seu estado de conservação, dos custos de adaptações, pois imprescindíveis às necessidades de 
+utilização, e do prazo de amortização dos investimentos. Com base na Lei nº 14.133/2021 , a contratação pretendida 
+enseja 
+(A) dispensa de licitação, mediante certificação da inexistência de imóveis públicos vagos e disponíveis que atendam 
+ao objeto, justificativas que demonstrem a singularidade do imóvel a ser locado e economicidade do contra to, que 
+deve estar de acordo com o preço de mercado. 
+(B) inexigibilidade de licitação, mediante certificação da inexistência de imóveis públicos vagos e disponíveis que 
+atendam ao objeto, e justificativas que demonstrem a singularidade do imóvel a ser locado pela Administração e que 
+evidenciem vantagem para ela. 
+(C) licitação frustrada, em razão da falta de outros imóveis que atendam ao objeto do contrato, sendo imprescindíveis 
+justificativas que demonstrem a singularidade do imóvel a ser locado e economicidade do contrato, que deve estar de 
+acordo com o preço de mercado. 
+(D) realização de processo de licitação, na modalidade concorrência, em razão da natureza da contratação, 
+independentemente do preço global do contrato, devendo ser observado o preço de mer cado e as condições 
+estruturais e funcionais do imóvel a ser locado. 
+(E) realização de processo de licitação, na modalidade leilão, em razão da natureza da contratação, 
+independentemente do preço global do contrato, devendo ser observado o preço de mercado  e as condições 
+estruturais e funcionais do imóvel a ser locado. 
+ 
+(ANALISTA MINISTERIAL / MP -CE / 2025 / CEBRASPE) Julgue os itens seguintes, a respeito de aspectos relativos à 
+licitação e à contratação de obras públicas. 
+33 É inexigível a licitação nos ca sos de contratação, com profissionais ou empresas de notória especialização, de 
+serviços técnicos especializados relativos a fiscalização, supervisão ou gerenciamento de obras. 
+ 
+34) (AUDITOR PÚBLICO INTERNO / CGM -CUIABÁ / FGV / 2025) As situações a seguir elencadas, em relação às quais 
+existem diversos fornecedores e viabilidade de competição, foram submetidas à apreciação para fins de aferir a 
+possibilidade de realização de uma contratação direta: 
+I. Contratação que mantenha todas as condições definidas em  edital de licitação realizada há menos de 1 (um) ano, 
+considerando que naquela licitação não foram apresentadas propostas válidas. 
+II. Contratação que tenha por objeto aquisição de medicamentos destinados exclusivamente ao tratamento de 
+doenças raras definidas pelo Ministério da Saúde. 
+--- PÁGINA 21 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+21 
+ 
+III. Contratação que tenha por objeto bens ou serviços produzidos ou prestados no País que envolvam, 
+cumulativamente, alta complexidade tecnológica e defesa nacional. 
+Nesse cenário, assinale a alternativa que indica corretamente as situações que são consideradas de inexigibilidade de 
+licitação nos termos da Lei nº 14.133/2021. 
+(A) Todas as situações descritas. 
+(B) Apena a situação descrita em I. 
+(C) Apenas a situação descrita em III. 
+(D) Apenas nas situações descritas em II e III. 
+(E) Nenhuma das situações descritas. 
+ 
+35) (PROCURADOR MUNICIPAL / PREFEITURA MUNICIPAL DE CANAÃ DOS CARAJÁS – PA / 2025 / FGV) Após tomar 
+posse no cargo de Prefeito do Município Alfa, Lucas solicitou aos seus auxiliares a formulação de um est udo sobre as 
+hipóteses que legitimam a contratação direta no âmbito da Administração Pública, em especial os casos de 
+inexigibilidade de licitação, sendo prontamente atendido. Nesse cenário, observadas as formalidades legais e 
+considerando as disposições da Lei nº 14.133/2021, é inexigível a licitação para a 
+(A) contratação de associação de pessoas com deficiência, sem fins lucrativos e de comprovada idoneidade, por órgão 
+ou entidade da Administração Pública, para a prestação de serviços, desde que o preço contratado seja compatível 
+com o praticado no mercado e os serviços contratados sejam prestados exclusivamente por pessoas com deficiência. 
+(B) aquisição, por pessoa jurídica de direito público interno, de bens produzidos ou serviços prestados por órgão ou  
+entidade que integrem a Administração Pública e que tenham sido criados para esse fim específico, desde que o preço 
+contratado seja compatível com o praticado no mercado. 
+(C) contratação que mantenha todas as condições definidas em edital de licitação rea lizada há menos de um ano, 
+quando se verificar que naquela licitação não surgiram licitantes interessados ou não foram apresentadas propostas 
+válidas. 
+(D) contratação que envolva valores inferiores a cem mil reais, no caso de obras e serviços de engenharia ou de serviços 
+de manutenção de veículos automotores. 
+(E) aquisição ou locação de imóvel cujas características de instalações e de localização tornem necessária sua escolha. 
+ 
+36) (ANALISTA EM GEOCIÊNCIAS / CPRM / 2025 / FGV) Para que se configure um caso de licitação dispensável, em uma 
+licitação que foi considerada deserta por não acudirem interessados, além de manter todas as condições anteriores 
+do edital, o tempo decorrido desde a licitação anterior deverá ser menor que 
+(A) 1 ano. 
+(B) 2 anos. 
+(C) 3 anos. 
+(D) 4 anos. 
+(E) 5 anos. 
+ 
+37) (ANALISTA DE CONTROLE EXTERNO / TCE-MG / 2026 / CEBRASPE) Acerca da contratação direta na administração 
+pública, julgue os itens seguintes. 
+I Na hipótese de contratação direta indevida ocorrida com erro grosseiro, o contratado e o agente público responsável 
+responderão solidariamente pelo dano causado ao erário. 
+II É inexigível a licitação quando inviável a competição nos casos de contratação de serviços técnicos especializados de 
+natureza intelectual, incluídos serviços de publicidade e divulgação. 
+III É dispensável a licitação para contratação que tenha por objeto a aquisição de medicamentos destinados 
+exclusivamente ao tratamento de doenças raras definidas pelo Ministério da Saúde. 
+Assinale a opção correta. 
+A Apenas o item I está certo. 
+B Apenas o item II está certo. 
+C Apenas os itens I e III estão certos. 
+D Apenas os itens II e III estão certos. 
+E Todos os itens estão certos. 
+ 
+--- PÁGINA 22 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+22 
+ 
+38) (TÉCNICO JUDICIÁRIO / TJ -RJ / 2026 / FGV) O Tribunal de Justiça do Estado do Rio de Janeiro pretende realizar 
+pequenos serviços de engenharia no fórum da Comarca de Maricá, para melhorar a estrutura da referida repartição 
+pública. Nesse cenário, considerando as disposições da Lei nº 14.133/2021, é correto afirmar que a licitação será: 
+(A) dispensável, desde que a contratação envolva valores inferiores a R$ 200.000,00; 
+(B) dispensável, desde que a contratação envolva valores inferiores a R$ 100.000,00; 
+(C) inexigível, desde que a contratação envolva valores inferiores a R$ 200.000,00; 
+(D) inexigível, desde que a contratação envolva valores inferiores a R$ 100.000,00; 
+(E) exigível, independentemente do valor da contratação. 
+ 
+39) (ANALISTA DE ADMINISTRAÇÃO / AMAZUL / 2026 / FGV) De acordo com a Lei Federal n° 14.133/2021, a 
+contratação direta por inexigibilidade de licitação ocorre quando há inviabilidade de competição ou em casos especiais. 
+Acerca desse assunto, assinale a opção que apresenta a situação correta, na qual a inexigibilidade de licitação é 
+utilizada. 
+(A) Aquisição de materiais de uso das Forças Armadas para atender casos de padronizações. 
+(B) Contratação de profissionais para compor a comissão de avaliação de critérios de técnica. 
+(C) Aquisição ou locação de imóvel em virtude das características e localização. 
+(D) Contratação de associação de pessoas com deficiência, sem fins lucrativos e de comprovada idoneidade. 
+(E) Contratação em que houver transferência de tecnologia de produtos estratégicos para o Sistema Único de Saúde. 
+ 
+40) (PERITO CRIMINAL / PC-PI / 2026 / FGV) Uma entidade do setor público desejava adquirir obras de arte e objetos 
+históricos de autenticidade certificada. A licitação é dispensável quando a aquisição é 
+(A) alheia à atividade fim primária. 
+(B) considerada de montante material. 
+(C) destinada à valorização para venda futura. 
+(D) necessária para utilização em curtíssimo prazo. 
+(E) inerente às finalidades do órgão ou compatível com elas. 
+ 
+ 
+MODALIDADES DE LICITAÇÃO 
+ 
+As modalidades representam a estrutura procedimental da licitação. 
+ 
+MODALIDADES NA NOVA LEI DE LICITAÇÕES (LEI Nº 14.133/2021) 
+ 
+As disposições acerca das modalidades de licitação na nova lei de licitações (lei nº 14.133/2021) são encontradas 
+basicamente no art. 6º, incisos XXXVIII a XLII, bem como nos artigos 28 a 32. 
+As definições acerca das modalidades são encontradas nos supracitados incisos do artigo 6º: 
+ 
+Art. 6º, Lei nº 14.133/2021 – Para os fins desta Lei, consideram-se: 
+(...) 
+XXXVIII - concorrência: modalidade de licitação para contratação de bens e serviços especiais e de obras e serviços 
+comuns e especiais de engenharia, cujo critério de julgamento poderá ser: 
+a) menor preço; 
+b) melhor técnica ou conteúdo artístico; 
+c) técnica e preço; 
+d) maior retorno econômico; 
+e) maior desconto; 
+ 
+XXXIX - concurso: modalidade de licitação para escolha de trabalho técnico, científico ou artístico, cujo critério de 
+julgamento será o de melhor técnica ou conteúdo artístico, e para concessão de prêmio ou remuneração ao vencedor; 
+ 
+--- PÁGINA 23 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+23 
+ 
+XL - leilão: modalidade de licitação para alienação de bens imóveis ou  de bens móveis inservíveis ou legalmente 
+apreendidos a quem oferecer o maior lance; 
+ 
+XLI - pregão: modalidade de licitação obrigatória para aquisição de bens e serviços comuns, cujo critério de julgamento 
+poderá ser o de menor preço ou o de maior desconto; 
+ 
+XLII - diálogo competitivo : modalidade de licitação para contratação de obras, serviços e compras em que a 
+Administração Pública realiza diálogos com licitantes previamente selecionados mediante critérios objetivos, com o 
+intuito de desenvolver uma ou m ais alternativas capazes de atender às suas necessidades, devendo os licitantes 
+apresentar proposta final após o encerramento dos diálogos; 
+ 
+  
+Nos artigos 28 a 32, temos disposições relacionadas a algumas formalidades inerentes às referidas modalidades: 
+ 
+Art. 28, Lei nº 14.133/2021 – São modalidades de licitação: 
+I - pregão; 
+II - concorrência; 
+III - concurso; 
+IV - leilão; 
+V - diálogo competitivo. 
+ 
+§ 1º Além das modalidades referidas no caput deste artigo, a Administração pode servir -se dos procedimentos 
+auxiliares previstos no art. 78 desta Lei. 
+ 
+§ 2º É vedada a criação de outras modalidades de licitação ou, ainda, a combinação daquelas referidas no caput deste 
+artigo. 
+ 
+Art. 29, Lei nº 14.133/2021 – A concorrência e o pregão seguem o rito procedimental comum a que se refere o art. 17 
+desta Lei, adotando-se o pregão sempre que o objeto possuir padrões de desempenho e qualidade que possam ser 
+objetivamente definidos pelo edital, por meio de especificações usuais de mercado. 
+ 
+Parágrafo único. O pregão não se apl ica às contratações de serviços técnicos especializados de natureza 
+predominantemente intelectual e de obras e serviços de engenharia, exceto os serviços de engenharia de que trata a 
+alínea “a” do inciso XXI do caput do art. 6º desta Lei. 
+ 
+Art. 30, Lei nº 14.133/2021 – O concurso observará as regras e condições previstas em edital, que indicará: 
+I - a qualificação exigida dos participantes; 
+II - as diretrizes e formas de apresentação do trabalho; 
+III - as condições de realização e o prêmio ou remuneração a ser concedida ao vencedor. 
+ 
+Parágrafo único. Nos concursos destinados à elaboração de projeto, o vencedor deverá ceder à Administração Pública, 
+nos termos do art. 93 desta Lei, todos os direitos patrimoniais relativos ao projeto e autorizar sua execução conforme 
+juízo de conveniência e oportunidade das autoridades competentes. 
+ 
+Art. 31, Lei nº 14.133/2021 – O leilão poderá ser cometido a leiloeiro oficial ou a servidor designado pela autoridade 
+competente da Administração, e regulamento deverá dispor sobre seus procedimentos operacionais. 
+ 
+§ 1º Se optar pela realização de leilão por intermédio de leiloeiro oficial, a Administração deverá selecioná-lo mediante 
+credenciamento ou licitação na modalidade pregão e adotar o critério de julgamento de maior desco nto para as 
+comissões a serem cobradas, utilizados como parâmetro máximo os percentuais definidos na lei que regula a referida 
+profissão e observados os valores dos bens a serem leiloados. 
+ 
+--- PÁGINA 24 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+24 
+ 
+§ 2º O leilão será precedido da divulgação do edital em sítio eletrônico oficial, que conterá: 
+I - a descrição do bem, com suas características, e, no caso de imóvel, sua situação e suas divisas, com remissão à 
+matrícula e aos registros; 
+II - o valor pelo qual o bem foi avaliado, o preço mínimo pelo qual poderá ser alienado, as condições de pagamento e, 
+se for o caso, a comissão do leiloeiro designado; 
+III - a indicação do lugar onde estiverem os móveis, os veículos e os semoventes; 
+IV - o sítio da internet e o período em que ocorrerá o leilão, salvo se excepcionalmente f or realizado sob a forma 
+presencial por comprovada inviabilidade técnica ou desvantagem para a Administração, hipótese em que serão 
+indicados o local, o dia e a hora de sua realização; 
+V - a especificação de eventuais ônus, gravames ou pendências existentes sobre os bens a serem leiloados. 
+ 
+§ 3º Além da divulgação no sítio eletrônico oficial, o edital do leilão será afixado em local de ampla circulação de 
+pessoas na sede da Administração e poderá, ainda, ser divulgado por outros meios necessários para ampli ar a 
+publicidade e a competitividade da licitação. 
+ 
+§ 4º O leilão não exigirá registro cadastral prévio, não terá fase de habilitação e deverá ser homologado assim que 
+concluída a fase de lances, superada a fase recursal e efetivado o pagamento pelo licitante vencedor, na forma definida 
+no edital. 
+ 
+Art. 32, Lei nº 14.133/2021 – A modalidade diálogo competitivo é restrita a contratações em que a Administração: 
+ 
+I - vise a contratar objeto que envolva as seguintes condições: 
+a) inovação tecnológica ou técnica; 
+b) impossibilidade de o órgão ou entidade ter sua necessidade satisfeita sem a adaptação de soluções disponíveis no 
+mercado; e 
+c) impossibilidade de as especificações técnicas serem definidas com precisão suficiente pela Administração; 
+ 
+II - verifique a necessidade de definir e identificar os meios e as alternativas que possam satisfazer suas necessidades, 
+com destaque para os seguintes aspectos: 
+a) a solução técnica mais adequada; 
+b) os requisitos técnicos aptos a concretizar a solução já definida; 
+c) a estrutura jurídica ou financeira do contrato; 
+ 
+III - (VETADO). 
+ 
+§ 1º Na modalidade diálogo competitivo, serão observadas as seguintes disposições: 
+I - a Administração apresentará, por ocasião da divulgação do edital em sítio eletrônico oficial, suas necessidades e as 
+exigências já definidas e estabelecerá prazo mínimo de 25 (vinte e cinco) dias úteis para manifestação de interesse na 
+participação da licitação; 
+II - os critérios empregados para pré-seleção dos licitantes deverão ser previstos em edital, e serão admitidos todos os 
+interessados que preencherem os requisitos objetivos estabelecidos; 
+III - a divulgação de informações de modo discriminatório que possa implicar vantagem para algum licitante será 
+vedada; 
+IV - a Administração não poderá r evelar a outros licitantes as soluções propostas ou as informações sigilosas 
+comunicadas por um licitante sem o seu consentimento; 
+V - a fase de diálogo poderá ser mantida até que a Administração, em decisão fundamentada, identifique a solução ou 
+as soluções que atendam às suas necessidades; 
+VI - as reuniões com os licitantes pré-selecionados serão registradas em ata e gravadas mediante utilização de recursos 
+tecnológicos de áudio e vídeo; 
+VII - o edital poderá prever a realização de fases sucessivas, caso em que cada fase poderá restringir as soluções ou as 
+propostas a serem discutidas; 
+--- PÁGINA 25 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+25 
+ 
+VIII - a Administração deverá, ao declarar que o diálogo foi concluído, juntar aos autos do processo licitatório os 
+registros e as gravações da fase de diálogo, iniciar a fa se competitiva com a divulgação de edital contendo a 
+especificação da solução que atenda às suas necessidades e os critérios objetivos a serem utilizados para seleção da 
+proposta mais vantajosa e abrir prazo, não inferior a 60 (sessenta) dias úteis, para todos os licitantes pré-selecionados 
+na forma do inciso II deste parágrafo apresentarem suas propostas, que deverão conter os elementos necessários para 
+a realização do projeto; 
+IX - a Administração poderá solicitar esclarecimentos ou ajustes às propostas apresentadas, desde que não impliquem 
+discriminação nem distorçam a concorrência entre as propostas; 
+X - a Administração definirá a proposta vencedora de acordo com critérios divulgados no início da fase competitiva, 
+assegurada a contratação mais vantajosa como resultado; 
+XI - o diálogo competitivo será conduzido por comissão de contratação composta de pelo menos 3 (três) servidores 
+efetivos ou empregados públicos pertencentes aos quadros permanentes da Administração, admitida a contratação 
+de profissionais para assessoramento técnico da comissão; 
+XII - (VETADO). 
+ 
+ 
+OBSERVAÇÃO IMPORTANTE! Não confunda MODALIDADE com CRITÉRIO DE JULGAMENTO 
+ 
+Art. 33, Lei nº 14.133/2021 – O julgamento das propostas será realizado de acordo com os seguintes critérios: 
+I - menor preço; 
+II - maior desconto; 
+III - melhor técnica ou conteúdo artístico; 
+IV - técnica e preço; 
+V - maior lance, no caso de leilão; 
+VI - maior retorno econômico. 
+ 
+ 
+“JÁ CAIU EM PROVA, MOTTA?” 
+ 
+01) (DEFENSOR PÚBLICO / DPE -PI / 2022 / CEBRASPE) São modalidades de licitação, conforme a Lei n.º 14.133/2021 
+(Nova Lei de Licitações e Contratos), 
+A pregão, leilão, concorrência, tomada de preços e concurso. 
+B pregão, concorrência, concurso, leilão e diálogo competitivo. 
+C pregão, concorrência, leilão, tomada de preços e carta-convite. 
+D licitação dispensável, concorrência, leilão e diálogo competitivo. 
+E concorrência, convite, concurso, consulta e licitação inexigível. 
+ 
+(APOIO ADMINISTRATIVO / CÂMARA DE MACEIÓ / 2024 / CEBRASPE) Em relação ao processo licitatório, julgue os itens 
+seguintes. 
+02 O pregão é a modalidade de licitação obrigatória para alienação de bens imóveis ou de bens móveis inservíveis. 
+03 Concurso é a modalidade de licitação para escolha de trabalho técnico, científico ou artístico, cujo cri tério de 
+julgamento será o de melhor técnica ou conteúdo artístico. 
+ 
+(AUDITOR DO ESTADO / CGE-RJ / 2024 / CEBRASPE) Acerca de licitações e contratos administrativos, julgue os itens a 
+seguir de acordo com a Lei n.º 14.133/2021. 
+04 Concorrência é a modalida de licitatória utilizada para a contratação de bens e serviços comuns, cujo critério de 
+julgamento poderá ser o de maior desconto. 
+ 
+(ASSISTENTE TI / CAU / 2024 / CEBRASPE) Determinado órgão do Poder Judiciário de determinado estado da Federação 
+pretende vender bens móveis legalmente apreendidos. A assessoria jurídica desse órgão entendeu não ser possível a 
+contratação direta em face do valor dos bens a serem alienados, tendo indicado que o órgão deveria valer -se da 
+--- PÁGINA 26 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+26 
+ 
+modalidade de licitação leilão,  com critério de maior lance para julgamento das propostas, com prazo para 
+apresentação das propostas e dos lances de 20 dias úteis. A partir dessa situação hipotética, julgue os itens a seguir. 
+05 O entendimento da assessoria jurídica foi correto, porquanto o leilão é modalidade de licitação para a alienação de 
+bens móveis legalmente apreendidos. 
+ 
+(ESPECIALISTA EM REGULAÇÃO / ANAC / 2024 / CEBRASPE) No que se refere à delegação de serviços públicos por meio 
+de concessão, permissão e autorização, julgue os itens seguintes. 
+06 A concessão de um serviço público ocorre por meio de um contrato firmado mediante licitação por concorrência 
+ou diálogo competitivo. 
+ 
+(ANALISTA / DATAPREV / CEBRASPE / 2023) Em relação às licitações e contratos administrativos, julgue o s itens a 
+seguir, de acordo com o disposto na Lei n.º 14.133/2021. 
+07 O diálogo competitivo consiste em modalidade de licitação prevista para a contratação de objeto que envolva 
+inovação tecnológica, considerando-se a impossibilidade de o órgão ou entidade ter sua necessidade satisfeita sem a 
+adaptação de soluções disponíveis no mercado; a impossibilidade de as especificações técnicas definidas com precisão 
+pela administração; ou, ainda, outras hipóteses julgadas necessárias pelo agente público, desde que d evidamente 
+fundamentadas. 
+08 Aplica-se a modalidade pregão à contratação de serviço comum de engenharia, que é considerado todo serviço de 
+engenharia que tenha por objeto ações, objetivamente padronizáveis em termos de desempenho de qualidade, de 
+manutenção, de adequação e de adaptação de bens móveis e imóveis, com preservação das características originais 
+dos bens. 
+ 
+09) (OFICIAL DE CHANCELARIA / MRE / CEBRASPE / 2023) Inovação da Lei n.º 14.133/2021, o diálogo competitivo é 
+aplicável à contratação de 
+A obras, serviços e compras. 
+B serviços de tecnologia da informação e comunicação, apenas. 
+C obras, apenas. 
+D obras e serviços, apenas. 
+E serviços com mão de obra exclusiva, apenas. 
+ 
+(ANALISTA / DATAPREV / CEBRASPE / 2023) Acerca de licitações e contratos admin istrativos, de acordo com a Lei n.º 
+14.133/2021, julgue os itens a seguir. 
+10 O leilão é a modalidade de licitação para alienação apenas de bens móveis inservíveis a quem oferecer o maior 
+lance. 
+11 Na modalidade de licitação denominada diálogo competitivo,  os licitantes previamente selecionados devem 
+apresentar as respectivas propostas finais após o término das conversações. 
+ 
+(ANALISTA / TBG / CEBRASPE / 2023) Julgue os itens subsecutivos com base no que dispõe a Lei n.º 14.133/2021. 
+12 O pregão é modalidade obrigatória para aquisição de quaisquer bens e serviços que não envolvam obra. 
+ 
+13) (TÉCNICO EM INFORMÁTICA / DPE-RO / 2022 / CEBRASPE) Caso a administração pública vise a contratar objeto em 
+que há impossibilidade, com precisão suficiente, de definir as  especificações técnicas, pode -se utilizar licitação na 
+modalidade 
+A leilão. 
+B concurso. 
+C concorrência. 
+D diálogo competitivo. 
+E pregão. 
+ 
+14) (ANALISTA JUDICIÁRIO / TJ -MS / 2022 / FGV) O Estado Alfa, por meio de determinada secretaria, realizará 
+contratação para escolha de melhor monografia em determinada área do conhecimento de interesse do órgão público, 
+para subsidiar futuras escolhas de políticas públicas a serem desenvolvidas pela pasta. Sabe -se que a contratação 
+--- PÁGINA 27 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+27 
+ 
+observará as regras e condições previstas em edital, que indicará a qualificação exigida dos participantes, as diretrizes 
+e formas de apresentação do trabalho e as condições de realização e o prêmio ou remuneração a ser concedida ao 
+vencedor. Diante das informações fornecidas e do teo r da nova Lei de Licitações (Lei nº 14.133/2021), a contratação 
+em tela deverá ser feita mediante: 
+(A) dispensa de licitação, por expressa previsão legal; 
+(B) inexigibilidade de licitação, por expressa previsão legal; 
+(C) prévia licitação, na modalidade concurso; 
+(D) prévia licitação, na modalidade concorrência; 
+(E) prévia licitação, na modalidade diálogo competitivo. 
+ 
+15) (ANALISTA DE ADMINISTRAÇÃO / MP-SC / 2022 / FGV) De acordo com a nova Lei de Licitações (Lei nº 14.133/2021), 
+a modalidade de licitação diálogo competitivo é restrita a contratações em que a Administração, entre outros, verifique 
+a necessidade de definir e identificar os meios e as alternativas que possam satisfazer suas necessidades, com destaque 
+para alguns aspectos. A alternativa que NÃO contém um desses aspectos é: 
+(A) a estrutura financeira do contrato; 
+(B) a solução técnica mais adequada; 
+(C) a estrutura jurídica do contrato; 
+(D) os requisitos técnicos aptos a concretizar a solução já definida; 
+(E) o objeto com padrões de desempenho e qualidade que possam ser objetivamente definidos pelo edital, por meio 
+de especificações usuais de mercado. 
+ 
+16) (ANALISTA JUDICIÁRIO - ADMINISTRAÇÃO / TJDFT / 2022 / FGV) Débora, prefeita do Município Beta e grande 
+entusiasta das inovações introduzidas p ela Lei nº 14.133/2021 no sistema de licitações, questionou sua assessoria a 
+respeito da possibilidade de ser realizado um diálogo entre licitantes previamente selecionados, com o objetivo de 
+desenvolver uma ou mais alternativas que possam atender às necessidades da Administração. Após alentada análise, 
+a assessoria concluiu, corretamente, que, preenchidos os demais requisitos exigidos: 
+(A) nenhuma modalidade de licitação se ajusta a esse padrão, já que o pretendido diálogo daria azo a subjetivismos e 
+a tratamentos diferenciados, comprometendo a isonomia; 
+(B) é possível a adoção dessa modalidade, para a contratação de obras, serviços e compras, sendo os licitantes 
+selecionados conforme critérios objetivos, os quais apresentarão proposta final após o encerramento dos diálogos; 
+(C) é possível a adoção dessa modalidade apenas para a realização de contratações integradas, sendo os licitantes 
+selecionados conforme critérios objetivos, os quais apresentarão proposta final após o encerramento dos diálogos; 
+(D) é pos sível a adoção dessa modalidade apenas para a contratação de obras, serviços e compras de caráter não 
+comum, sendo o diálogo aberto a qualquer interessado, cabendo à Administração apresentar o projeto final após o 
+encerramento dos diálogos; 
+(E) é possível a adoção dessa modalidade apenas para contratações que exijam inovação de procedimentos, sendo os 
+licitantes selecionados conforme critérios objetivos, cabendo à Administração apresentar o projeto final após o 
+encerramento dos diálogos. 
+ 
+17) (TÉCNICO / DPE -RS / 2023 / FGV) O setor competente da Defensoria Pública do Estado do Rio Grande do Sul 
+detectou a necessidade de contratar a realização de determinada obra, tendo decidido que deveria promover um 
+diálogo com os licitantes previamente selecionados, conso ante critérios objetivos, com o fim de identificar a 
+alternativa mais adequada. À luz da sistemática estabelecida na Lei nº 14.133/2021, a decisão tomada pelo referido 
+setor é: 
+(A) incompatível com a sistemática legal, por afrontar o dever de sigilo da licitação; 
+(B) admitida pela sistemática legal somente quando, em momento anterior, a respectiva licitação foi considerada 
+deserta; 
+(C) admitida pela sistemática legal, sendo que os licitantes apresentarão proposta final após o encerramento dos 
+diálogos; 
+(D) admitida pela sistemática legal, sendo que a Administração escolherá o licitante que apresente a melhor alternativa 
+ao fim dos diálogos; 
+--- PÁGINA 28 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+28 
+ 
+(E) incompatível com a sistemática legal, pois a modalidade de licitação escolhida somente é permitida para a 
+contratação de serviços, não de obras. 
+ 
+18) (ANALISTA / DPE-RS / 2023 / FGV) O Estado Beta visa a alienar determinados bens imóveis, que estão desafetados, 
+para o que conta com a respectiva autorização legislativa, avaliação prévia, além da devida e pormenorizad a 
+justificação do interesse público subjacente, preenchendo os requisitos exigíveis para a contratação pretendida, em 
+situação que não se enquadra dentre as hipóteses de licitação dispensada nos termos da Lei nº 14.133/2021. Para 
+tanto, pretende elaborar edital de licitação na modalidade leilão e optar pela sua realização por intermédio de leiloeiro 
+oficial, mediante credenciamento, procedimento este que já foi formalizado pelo aludido ente federativo. Diante dessa 
+situação hipotética, à luz do disposto na Lei nº 14.133/2021, é correto afirmar que o Estado Beta: 
+(A) apenas poderá utilizar a modalidade leilão para a alienação de bens imóveis caso a aquisição desses bens tenha 
+derivado de procedimentos judiciais ou de dação em pagamento; 
+(B) não poderá se util izar de credenciamento para a seleção do leiloeiro oficial, sendo obrigatória a realização de 
+licitação na modalidade pregão; 
+(C) poderá utilizar o credenciamento para tal finalidade, com vistas a instrumentalizar futura licitação na modalidade 
+pregão; 
+(D) poderá realizar a contratação direta de leiloeiro oficial credenciado, por inexigibilidade de licitação; 
+(E) não poderá utilizar o leilão almejado, na medida em que a alienação de bens imóveis pretendida se sujeita às 
+modalidades concorrência ou pregão. 
+ 
+19) (TÉCNICO JUDICIÁRIO / TJ-AP / 2024 / FGV) Caso o poder público almeje realizar a alienação de determinado bem 
+imóvel legalmente apreendido pelas autoridades competentes, mediante o preenchimento dos requisitos 
+especificados na Lei nº 14.133/2021, deverá ser utilizada a modalidade licitatória: 
+(A) leilão; 
+(B) pregão; 
+(C) convite; 
+(D) concorrência; 
+(E) diálogo competitivo. 
+ 
+20) (ANALISTA DE GESTÃO MUNICIPAL / PREFEITURA DE SÃO JOSÉ DOS CAMPOS / 2024 / FGV) Com vistas a promover 
+a prática de atividades fís icas, esportivas, educativas e de lazer para a comunidade em geral, certo Município visa a 
+realizar uma licitação para a escolha de um projeto técnico voltado à revitalização de uma área, a fim de transformá -
+la em um centro poliesportivo que promova as men cionadas finalidades, mediante pagamento de prêmio para o 
+respectivo vencedor. Paralelamente, o ente federativo almeja realizar também o procedimento pertinente para a 
+aquisição do material necessário para a realização de esportes, bens comuns, a fim de me lhor aparelhar a escolas 
+públicas para incentivar tais práticas. Diante desta situação hipotética, as modalidades de licitação que deverão ser 
+utilizadas são, respectivamente: 
+(A) a concorrência e o leilão. 
+(B) o diálogo competitivo e a concorrência. 
+(C) o pregão e a diálogo competitivo. 
+(D) o concurso e o pregão. 
+(E) o leilão e o concurso. 
+ 
+21) (ANALISTA ADMINISTRATIVO / TJ-SC / 2024 / FGV) A Administração deseja vender bem imóvel de sua propriedade 
+pelo maior preço possível. Nesse caso, deve adotar a seguinte modalidade de licitação: 
+(A) leilão; 
+(B) concessão; 
+(C) concorrência; 
+(D) pregão; 
+(E) concurso. 
+ 
+--- PÁGINA 29 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+29 
+ 
+22) (ANALISTA JUDICIÁRIO – ESPECIALIDADE BIBLIOTECONOMIA / TRT-22ª REGIÃO / 2022 / FCC) Entre as novidades 
+da Lei nº 14.133/2021 – Lei de Licitações e Contratos Administrativos, está a inclusão formal da modalidade de licitação 
+denominada 
+(A) diálogo competitivo. 
+(B) leilão. 
+(C) credenciamento. 
+(D) tomada de preços. 
+(E) concurso. 
+ 
+23) (TÉCNICO JUDICIÁRIO – ÁREA ADMINISTRATIVA / TRT-5ª REGIÃO / 2022 / FCC) Considere que a Administração, em 
+um programa de ajuste fiscal, pretenda alienar bens móveis inservíveis, bem como alguns imóveis desocupados e não 
+afetados a nenhum serviço público. De acordo com as disposições previstas na Lei nº 14.133/2021, no que concerne à 
+modalidade licitatória, aplica-se 
+(A) leilão para os móveis inservíveis e concorrência, obrigatoriamente, para os imóveis independentemente da origem. 
+(B) leilão, tanto para os móveis inservíveis como para os imóveis, independentement e da forma de aquisição, com 
+necessidade de prévia avaliação. 
+(C) pregão para os móveis inservíveis e leilão ou concorrência para os imóveis, a depender do valor e da forma de 
+aquisição. 
+(D) leilão para os móveis e para os imóveis adquiridos por adjudicaçã o ou dação em pagamento, e concorrência para 
+os imóveis oriundos de desapropriação. 
+(E) leilão para alienação dos imóveis e, no caso dos móveis inservíveis, cuida-se de hipótese de licitação dispensada. 
+ 
+(AGENTE ADMINISTRATIVO / PF / 2025 / CEBRASPE) A res peito de licitações, controle da administração pública e 
+responsabilidade civil do Estado, julgue os itens a seguir. 
+24 É permitido ao administrador público, com justificativa no interesse público e na particularidade do caso concreto, 
+combinar duas das modalidades de licitação previstas em lei. 
+ 
+25) (ASSISTENTE ADMINISTRATIVO / EMPARN / 2025 / IDECAN) Conforme a Lei nº 14.133/2021, indique a modalidade 
+de licitação obrigatória para a aquisição de bens e serviços comuns, cujo critério de julgamento pode ser  o de menor 
+preço ou o de maior desconto. 
+(A) Concurso. 
+(B) Leilão. 
+(C) Concorrência. 
+(D) Pregão. 
+(E) Diálogo competitivo. 
+ 
+(TÉCNICO MINISTERIAL / MP-CE / 2025 / CEBRASPE) Julgue os seguintes itens, referentes ao direito administrativo. 
+26 Leilão é a modalidade de licitação para a alienação de bens imóveis ou de bens móveis inservíveis ou legalmente 
+apreendidos a quem oferecer o maior lance, podendo ser executado por leiloeiro oficial ou por servidor designado 
+pela autoridade competente da administração. 
+ 
+27) (ANALISTA ADMINISTRATIVO / TRT-15ª REGIÃO / 2025 / FCC) Conforme dispõe a Lei nº 14.133/2021, a modalidade 
+licitatória 
+(A) concurso somente admite julgamento pelo critério melhor técnica ou conteúdo artístico. 
+(B) credenciamento é adotada para conv ocar interessados em prestar serviços ou fornecer bens, sob condições 
+uniformes e previamente estipuladas pela Administração. 
+(C) pregão admite julgamento pelo critério técnica e preço. 
+(D) leilão não pode ser utilizada para alienação de bens imóveis, sendo cabível nesse caso a modalidade concorrência. 
+(E) concorrência é utilizada tão somente para obras, serviços de engenharia e delegação de serviços públicos. 
+ 
+28) (TÉCNICO ADMINISTRATIVO / TCE-RR / FGV / 2025) A contratação de bens, serviços ou obras pela Administração 
+Pública deve ser realizada de forma a garantir a transparência, a competitividade e o uso adequado dos recursos 
+--- PÁGINA 30 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+30 
+ 
+públicos. Para assegurar esses princípios, foram criadas normas específicas, como a Nova Lei de Licitações (Lei nº 
+14.133/2021). De acordo com o disposto nessa lei, é prevista como modalidade para a aquisição de bens e serviços 
+comuns, sempre que o objeto possuir padrões de desempenho e qualidade que possam ser objetivamente definidos 
+pelo edital, por meio de especificações usuais de mercado, aquela conhecida como 
+(A) diálogo competitivo. 
+(B) concorrência. 
+(C) tomada de preços. 
+(D) leilão. 
+(E) pregão. 
+ 
+29) (ANALISTA ADMINISTRATIVO / TCE-RR / FGV / 2025) Rafael, servidor público do Estado de Roraima, foi designado 
+para a função de agente de contratação. No exercício de tal atribuição, Rafael foi questionado sobre a necessidade de 
+realização de licitação e qual seria, eventualmente, a modalidade cabível ou, alternativamente, se seria possível a 
+contratação direta, à luz da Lei nº 14.133/2021, nas seguintes situações: 
+I. contratação de cantor consagrado pela crítica e pela opinião pública para a festa de determinado Município, que 
+atrai investimentos para a cidade; 
+II. contratação de serviços de limpeza e manutenção das instalações da prefeitura, considerados serviços contínuos e 
+comuns, para o qual existem várias empresas interessadas, tornando viável a competição; 
+III. celebração de contrato de programa com ente federativo ou com entidade de sua Administração Pública indireta 
+que envolva prestação de serviços públicos de forma associada nos termos autorizados em contrato de consórcio 
+público ou em convênio de cooperação. 
+Rafael respondeu, corretamente, que, nos casos I, II e III, o mais adequado seria 
+(A) (I) licitação dispensável; (II) licitação dispensável; (III) licitação dispensável. 
+(B) (I) licitação na modalidade pregão; (II) licitação na modalidade pregão; (III) licitação na modalidade pregão. 
+(C) (I) licitação inexigível; (II) licitação na modalidade pregão; (III) licitação dispensável. 
+(D) (I) licitação na modalidade pregão; (II) licitação na modalidade pregão; (III) licitação na modalidade concorrência. 
+(E) (I) licitação dispensável; (II) licitação na modalidade concorrência; (III) licitação inexigível. 
+ 
+30) (ANALISTA DE CONTROLE INTERNO / PREFEITURA MUNICIPAL DE CANAÃ DOS CARAJÁS – PA / 2025 / FGV) Uma 
+entidade escolhe a modalidade de pregão para adquirir um bem. 
+Em relação a essa modalidade, assinale a afirmativa correta. 
+(A) O critério de julgamento pode ser o de menor preço ou o de maior desconto. 
+(B) É aplicado às contratações de serviços técnicos especializados de natureza predominantemente intelectual. 
+(C) O vencedor deverá ceder à Administração Pública os direitos patrimoniais relativos ao projeto e autorizar sua 
+execução. 
+(D) As regras e condições deverão indicar a qualificação exigida dos participantes e as diretrizes e formas de 
+apresentação do trabalho. 
+(E) Não deve ser adotado, quando o objeto possuir padrões de desempenho e qualidade que possam ser 
+objetivamente definidos pelo edital. 
+ 
+31) (ASSISTENTE ADMINISTRATIVO / EBSERH / FGV / 2025) A Lei nº 14.133/2021, conhecida como Nova Lei de 
+Licitações e Contratos, introduziu uma série de inovações significativas para aprimorar os processos de contratação na 
+Administração Pública brasileira. Embora tenha trazido mudanças substanciais, a lei manteve algumas modalidades 
+tradicionais de licitação, realizando adaptações necessárias para adequá-las às novas exigências e demandas do setor 
+público. Avalie se os critérios de julgamento da concorrência na Nova Lei de Licitações e contratos incluem: 
+I. melhor conteúdo artístico; 
+II. maior retorno econômico; 
+III. maior desconto. 
+Está correto o que se apresenta em 
+(A) I, apenas. 
+(B) I e II, apenas. 
+(C) II e III, apenas. 
+--- PÁGINA 31 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+31 
+ 
+(D) I e III, apenas. 
+(E) I, II e III. 
+ 
+32) (ANALISTA / PGM-RJ / FGV / 2025) O Município do Rio de Janeiro pretende realizar as seguintes contratações: 
+I. alienação de bens imóveis legalmente apreendidos a quem oferecer o maior lance; 
+II. credenciamento para a prestação de serviço de reboque de automóveis, de todos os interessados que preencham 
+os requisitos objetivos para tanto; 
+III. aquisição de grande quantidade de bens comuns, considerados materiais de consumo, tais como produtos de 
+limpeza, papel higiênico, bem c omo materiais de papelaria e escritório, destinados ao adequado funcionamento de 
+suas repartições, mediante sistema de registro de preços. 
+Considerando as modalidades de licitação e as hipóteses de contratações direta, previstas na Lei nº 14.133/2021, 
+assinale a opção que apresenta a adequada correspondência a cada uma das situações descritas, segundo a ordem 
+apresentada. 
+(A) I. Concorrência – II. Licitação dispensável – III. Leilão. 
+(B) I. Leilão – II. Inexigibilidade de licitação – III. Pregão. 
+(C) I. Licitação dispensável – II. Pregão – III. Concurso. 
+(D) I. Pregão – II. Concorrência – III. Inexigibilidade de licitação. 
+(E) I. Inexigibilidade de licitação – II. Concurso – III. Licitação dispensável. 
+ 
+33) (AGENTE ADMINISTRATIVO / AGESAN -RS / FGV / 2025)  A Lei Federal nº 14.133/2021, que substitui as antigas 
+legislações sobre licitações públicas, trouxe novas modalidades de licitação e definiu critérios objetivos de julgamento 
+para assegurar a escolha da proposta mais vantajosa para a Administração Públic a. Assinale a opção que apresenta 
+critérios de julgamento previsto na nova Lei de Licitações e Contratos Administrativos (Lei nº 14.133/2021) está(ão): 
+(A) Escolha livre e subjetiva da Administração, sem necessidade de critério definido. 
+(B) Menor preço, a melhor técnica, o melhor preço, o maior desconto e o maior retorno econômico. 
+(C) Sorteio entre os fornecedores interessados, como forma principal de julgamento. 
+(D) Exclusividade do critério de menor preço para todas as contratações públicas, sem exceção. 
+(E) Definição do vencedor com base apenas na ordem de chegada das propostas. 
+ 
+34) (AUXILIAR DE EDUCAÇÃO / PREFEITURA DE ROLIM DE MOURA -RO / 2025 / IBADE) De acordo com a Lei Nº 
+14.133/2021, qual a modalidade de licitação para alienação de bens imóveis ou  de bens móveis inservíveis ou 
+legalmente apreendidos a quem oferecer o maior lance? 
+(A) Pregão. 
+(B) Leilão. 
+(C) Convite. 
+(D) Concurso. 
+(E) Técnica. 
+ 
+35) (ANALISTA AMBIENTAL / IPAAM / 2026 / CEBRASPE) De acordo com a Lei n.º 14.133/2021, considera-se 
+modalidade de licitação 
+I o pregão. 
+II o credenciamento. 
+III a concorrência. 
+IV o diálogo competitivo. 
+Estão certos apenas os itens 
+A I e II. 
+B I e III. 
+C II e IV. 
+D I, III e IV. 
+E II, III e IV. 
+ 
+--- PÁGINA 32 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+32 
+ 
+36) (PROCURADOR / CÂMARA DE BOA VISTA-RR / 2026 / CEBRASPE) Assinale a opção que corresponde à modalidade 
+licitatória para aquisição de bens e serviços comuns, em que se definem objetivamente padrões de desempenho e 
+qualidade, com especificações usuais de mercado, independentemente do va lor, o que impossibilita a sua utilização 
+para serviços técnicos de natureza predominantemente intelectual. 
+A pregão 
+B concorrência 
+C diálogo competitivo 
+D concurso 
+E leilão 
+ 
+37) (ASSISTENTE AMBIENTAL / SEMA-AM / 2026 / CEBRASPE) A modalidade de licitação para a contratação de obras, 
+serviços e compras na qual a administração pública realiza conversas com licitantes previamente selecionados, 
+mediante critérios objetivos, com o intuito de desenvolver uma ou mais alternativas capazes de atender às suas 
+necessidades é denominada 
+A concurso. 
+B pregão. 
+C leilão. 
+D concorrência. 
+E diálogo competitivo. 
+ 
+(TÉCNICO LEGISLATIVO / CÂMARA DOS DEPUTADOS / 2026 / CEBRASPE) Acerca de licitação pública, julgue os itens a 
+seguir, com base nas disposições da Lei n.º 14.133/2021, observada a jurisprudência dos tribunais superiores. 
+38 No caso de procedimento licitatório realizado na modalidade leilão, cabe à autoridade competente da 
+administração pública, em juízo discricionário, decidir se o certame será conduzido por servidor público ou se, 
+alternativamente, será cometido a leiloeiro oficial. 
+39 Na modalidade diálogo competitivo, todos os interessados que preencherem os critérios de pré -seleção, a serem 
+necessariamente veiculados em edital, deverão ser admitidos. 
+ 
+40) (ANALISTA  DE CONTROLE EXTERNO / TCE -MG / 2026 / CEBRASPE) Assinale a opção em que é corretamente 
+apresentada a modalidade de licitação adequada para a contratação de obras, serviços e compras em que a 
+administração pública realiza conversas com licitantes previamente selecionados mediante critérios objetivos, com o 
+intuito de desenvolver uma ou mais alternativas capazes de atender às suas necessidades, devendo os licitantes 
+apresentar proposta final após o encerramento das conversas. 
+A diálogo competitivo 
+B pregão 
+C concurso 
+D leilão 
+E concorrência 
+ 
+41) (TÉCNICO EM CONTABILIDADE / AL-RO / 2026 / FGV) Uma entidade realizou uma licitação por meio de pregão para 
+aquisição de bens comuns. O critério utilizado para julgamento foi o maior retorno econômico. A realização da licitação 
+está 
+(A) correta, uma vez que o pregão é a modalidade obrigatória para a aquisição de bens e serviços comuns. 
+(B) correta, uma vez que os bens comuns devem ser adquiridos de acordo com o maior retorno econômico. 
+(C) incorreta, uma vez que não é necessário realizar licitação para a aquisição de bens comuns. 
+(D) incorreta, uma vez que para aquisição de bens comuns deve-se utilizar a modalidade concorrência. 
+(E) incorreta, uma vez que os critérios de julgamento no pregão são o de menor preço ou o de maior desconto. 
+ 
+42) (ESPECIALISTA LEGISLATIVO / ALERJ / 2026 / FGV) Isabel, servidora pública da Assembleia Legislativa do Estado do 
+Rio de Janeiro, no exercício de suas atribuições, foi questionada por certo parlamentar acerca das modalidades de 
+licitação previstas na Lei nº 14.133/2021. Diante de tais circunstâncias, assinale a opção que indica corretamente uma 
+modalidade de licitação. 
+--- PÁGINA 33 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+33 
+ 
+(A) Credenciamento. 
+(B) Diálogo competitivo. 
+(C) Contratação integrada. 
+(D) Sistema de registro de preços. 
+(E) Procedimento de Manifestação de Interesse. 
+ 
+43) (ANALISTA / TJ-RJ / 2026 / FGV) O prefeito do Município Alfa, no Estado do Rio de Janeiro, pretende publicar edital 
+de licitação visando à celebração de contrato administrativo com a entidade vencedora. Registre -se que o referido 
+agente político demonstrou interesse na utilização, como modalidade de licitação, de regras combinadas do pregão e 
+da concorrência. Nesse cenário, considerando as disposições da Lei nº 14.133/2021, é correto afirmar que: 
+(A) não é possível a  combinação das regras aplicáveis ao pregão e à concorrência, pois, como a legislação é silente 
+sobre a matéria, o poder público não poderá inovar; 
+(B) é possível a combinação das regras aplicáveis ao pregão e à concorrência, desde que haja concordância ex pressa 
+dos licitantes; 
+(C) é possível a combinação das regras aplicáveis ao pregão e à concorrência, desde que o edital de licitação assim o 
+preveja; 
+(D) não é possível a combinação das regras aplicáveis ao pregão e à concorrência, por expressa vedação leg al nesse 
+sentido; 
+(E) é possível a combinação das regras aplicáveis ao pregão e à concorrência, por expressa previsão legal nesse sentido. 
+ 
+44) (ANALISTA DE ADMINISTRAÇÃO / AMAZUL / 2026 / FGV) Segundo a Lei Federal nº 14.133/2021, a modalidade de 
+licitação que tem como intuito formular propostas técnicas alternativas que visem suprir as exigências do setor público, 
+onde após a conclusão das etapas preliminares, os licitantes deverão apresentar proposta final consolidada, denomina-
+se 
+(A) leilão. 
+(B) pregão. 
+(C) concurso. 
+(D) concorrência. 
+(E) diálogo competitivo. 
+ 
+ 
+FASES DA LICITAÇÃO 
+ 
+Art. 17, Lei nº 14.133/2021 – O processo de licitação observará as seguintes fases, em sequência:: 
+I - preparatória; 
+II - de divulgação do edital de licitação; 
+III - de apresentação de propostas e lances, quando for o caso; 
+IV - de julgamento; 
+V - de habilitação; 
+VI - recursal; 
+VII - de homologação. 
+ 
+§ 1º A fase referida no inciso V do caput deste artigo poderá, mediante ato motivado com explicitação dos benefícios 
+decorrentes, anteceder as fases referidas nos incisos III e IV do caput deste artigo, desde que expressamente previsto 
+no edital de licitação. 
+ 
+§ 2º As licitações serão realizadas preferencialmente sob a forma eletrônica, admitida a utilização da forma presencial, 
+desde que motivada, devendo a sessão pública ser registrada em ata e gravada em áudio e vídeo. 
+(...) 
+ 
+ 
+--- PÁGINA 34 ---
+DIREITO ADMINISTRATIVO – PROF. RODRIGO MOTTA 
+Instagram: @profrodrigomotta / Canal no Youtube: Professor Rodrigo Motta - Direito Administrativo 
+ 
+34 
+ 
+“JÁ CAIU EM PROVA, MOTTA?” 
+ 
+01) (ENGENHEIRO CIVIL / PREFEITURA MUNICIPAL DE CANAÃ DOS CARAJÁS – PA / 2025 / FGV) O processo de licitação 
+de uma obra deve observar diversas fases. Após a divulgação do edital de licitação e antes da homologação da proposta 
+vencedora, as etapas intermediárias são realizadas na seguinte ordem: 
+(A) apresentação de propostas/habilitação/julgamento/recursos. 
+(B) apresentação de propostas/julgamento/habilitação/ recursos. 
+(C) apresentação de propostas/habilitação/recursos/ julgamento. 
+(D) habilitação/apresentação de propostas/julgamento/recursos. 
+(E) habilitação/apresentação de propostas/recursos/julgamento. 
+ 
+02) (DEFENSOR PÚBLICO / DPE-RJ / 2026 / FGV) A Administração Pública pretende realizar licitação para contratação 
+de serviços comuns, tendo optado por adotar, no edital, a antecipação da fase de habilitação em relação às fases de 
+apresentação e julgamento das propostas. A justificativa apresentada pelo gestor indica que a medida busca conferir 
+maior segurança à contratação, diante da complexidade técnica do objeto. 
+À luz da Lei nº 14.133/2021 (Lei de Licitações), assinale a afirmativa correta. 
+(A) A fase de habilitação precede o julgamento das propostas, sendo excepcional a inversão dessa ordem. 
+(B) O julgamento das propostas antecede a habilitação, admitindo se a inversão dessa ordem em caráter excepcional. 
+(C) A inversão de fases somente é admitida nas licitações realizadas na modalidade pregão, sendo vedada nas demais 
+modalidades. 
+(D) A adoção da habilitação antes do julgamento das propostas está vedada, uma vez que a inversão de fases foi 
+suprimida do regime jurídico vigente. 
+(E) A antecipação da fase  de habilitação é admitida, desde que prevista no edital, sendo dispensável a apresentação 
+de justificativa específica pela Administração. 
+ 
+ 
+“O que fazemos na vida ecoa na eternidade”. 
+(Maximus Decimus Meridius – Filme “Gladiador”) 
+ 

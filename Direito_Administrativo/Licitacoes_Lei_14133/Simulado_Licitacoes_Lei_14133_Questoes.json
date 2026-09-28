@@ -1,0 +1,123 @@
+[
+  {
+    "enunciado": "04) (ANALISTA / SEAD -GO / 2022 / INSTITUTO AOCP)\nSobre a incidência da Nova Lei de Licitações e Contratos Administrativos (Lei Federal nº 14.133/2021), é correto afirmar que ela NÃO abrange as licitações",
+    "options": [
+      "(A) do Instituto Nacional do Seguro Social (INSS).",
+      "(B) da Caixa Econômica Federal (CEF).",
+      "(C) da Assembleia Legislativa do Estado de Goiás.",
+      "(D) do Instituto Brasileiro de Geografia e Estatística (IBGE).",
+      "(E) da Agência Nacional de Telecomunicações (ANATEL)."
+    ],
+    "correct_index": 1,
+    "comentario": "Gabarito: Alternativa (B). Conforme o Art. 1º, § 1º da Lei nº 14.133/2021:\n\"Não são abrangidas por esta Lei as empresas públicas, as sociedades de economia mista e as suas subsidiárias, regidas pela Lei nº 13.303, de 30 de junho de 2016, ressalvado o disposto no art. 178 desta Lei.\"\nA Caixa Econômica Federal (CEF) é empresa pública federal; portanto, suas licitações são regidas pela Lei das Estatais (Lei nº 13.303/2016), e NÃO pela Lei nº 14.133/2021.",
+    "banca": "AOCP"
+  },
+  {
+    "enunciado": "05) (PROCURADOR MUNICIPAL / PGM -RECIFE / 2022 / CEBRASPE)\nAs regras sobre licitação e contratos públicos previstas na Lei n.º 14.133/2021 são aplicáveis a",
+    "options": [
+      "(A) fundos especiais indiretamente controlados pela administração pública.",
+      "(B) sociedade de economia mista.",
+      "(C) subsidiária de sociedade de economia mista.",
+      "(D) empresa pública.",
+      "(E) sociedade empresária privada."
+    ],
+    "correct_index": 0,
+    "comentario": "Gabarito: Alternativa (A). O Art. 1º da Lei nº 14.133/2021 estabelece expressamente que suas normas aplicam-se aos fundos especiais e demais entidades controladas direta ou indiretamente pela Administração Pública. Por outro lado, o § 1º exclui as empresas públicas e sociedades de economia mista, que se regem pela Lei nº 13.303/2016.",
+    "banca": "CEBRASPE"
+  },
+  {
+    "enunciado": "01) (ASSISTENTE TI / CAU / 2024 / CEBRASPE)\nDeterminado órgão do Poder Judiciário de determinado estado da Federação pretende vender bens móveis legalmente apreendidos. A assessoria jurídica desse órgão entendeu não ser possível a contratação direta em face do valor dos bens a serem alienados, tendo indicado que o órgão deveria valer-se da modalidade de licitação leilão, com critério de maior lance para julgamento das propostas, com prazo para apresentação das propostas e dos lances de 20 dias úteis. A partir dessa situação hipotética, julgue o item a seguir:\nAs normas gerais de licitação e contratação para as administrações públicas abrangem os órgãos do Poder Judiciário dos estados, quando no desempenho de função administrativa.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 0,
+    "comentario": "Gabarito: CERTO. Art. 1º, § 1º, II da Lei nº 14.133/2021: Estão subordinados a esta Lei os órgãos dos Poderes Legislativo e Judiciário da União, dos Estados e do Distrito Federal e os órgãos do Poder Legislativo dos Municípios, quando no desempenho de função administrativa.",
+    "banca": "CEBRASPE"
+  },
+  {
+    "enunciado": "03) (AUDITOR FISCAL / SEFAZ -CE / 2021 / CEBRASPE)\nEm relação ao que dispõe a Lei n.º 14.133/2021 e aos conceitos referentes às licitações e aos contratos públicos, julgue o item a seguir:\nAs normas gerais de licitação e contratação previstas pela Lei n.º 14.133/2021 aplicam-se, em regra, às administrações públicas diretas, autárquicas e fundacionais da União, dos estados, do Distrito Federal e dos municípios, bem como às empresas públicas e às sociedades de economia mista dos respectivos entes.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 1,
+    "comentario": "Gabarito: ERRADO. O item erra ao incluir as empresas públicas e sociedades de economia mista. Conforme o Art. 1º, § 1º, as estatais e suas subsidiárias NÃO são abrangidas pela Lei 14.133/2021, pois são regidas pela Lei nº 13.303/2016.",
+    "banca": "CEBRASPE"
+  },
+  {
+    "enunciado": "14) (TÉCNICO JUDICIÁRIO / TJ -RR / 2024 / FGV)\nO Art. 37, XXI, da CRFB/88 estabelece que, ressalvadas as hipóteses previstas em lei, as contratações públicas serão precedidas de procedimento licitatório. Considerando as disposições acerca da mencionada ressalva, que dá ensejo à chamada contratação direta, à luz do disposto na Lei nº 14.133/2021, é correto afirmar que",
+    "options": [
+      "(A) apenas pode ser admitida a contratação direta nas hipóteses em que haja a inviabilidade de competição, ou seja, quando a licitação for dispensável, cujo rol previsto na norma em comento é taxativo.",
+      "(B) nos casos em que há viabilidade de competição, que ensejam a designada inexigibilidade de licitação, o rol previsto na norma em comento é meramente exemplificativo.",
+      "(C) envolvendo ou não a viabilidade de competição, é taxativo o rol atinente às situações que envolvem a contratação direta, ensejando, respectivamente, a licitação inexigível e a dispensável.",
+      "(D) não se pode considerar taxativo o rol que envolve as situações de inviabilidade de competição, considerando que outras situações podem envolver tal pressuposto lógico, para fins de se admitir a contratação direta por inexigibilidade.",
+      "(E) tendo em vista que lei prevê a contratação direta nas hipóteses em que a licitação é dispensável ou inexigível, independentemente a viabilidade ou não de competição, o rol das situações elencadas não pode ser considerado taxativo em nenhuma das duas hipóteses."
+    ],
+    "correct_index": 3,
+    "comentario": "Gabarito: Alternativa (D). O rol de hipóteses de inexigibilidade de licitação (Art. 74) é exemplificativo (numerus apertus), porque decorre da própria inviabilidade de competição. Sempre que for inviável a disputa, cabe contratação direta por inexigibilidade, mesmo que não expressa nos incisos do artigo. Já o rol de licitação dispensável (Art. 75) é taxativo.",
+    "banca": "FGV"
+  },
+  {
+    "enunciado": "01) (DEFENSOR PÚBLICO / DPE -PI / 2022 / CEBRASPE)\nSão modalidades de licitação, conforme a Lei n.º 14.133/2021 (Nova Lei de Licitações e Contratos),",
+    "options": [
+      "(A) pregão, leilão, concorrência, tomada de preços e concurso.",
+      "(B) pregão, concorrência, concurso, leilão e diálogo competitivo.",
+      "(C) pregão, concorrência, leilão, tomada de preços e carta-convite.",
+      "(D) licitação dispensável, concorrência, leilão e diálogo competitivo.",
+      "(E) concorrência, convite, concurso, consulta e licitação inexigível."
+    ],
+    "correct_index": 1,
+    "comentario": "Gabarito: Alternativa (B). Conforme o Art. 28 da Lei nº 14.133/2021, são cinco as modalidades de licitação: Pregão, Concorrência, Concurso, Leilão e Diálogo Competitivo. As modalidades Tomada de Preços e Convite foram expressamente revogadas pelo novo diploma legal.",
+    "banca": "CEBRASPE"
+  },
+  {
+    "enunciado": "09) (OFICIAL DE CHANCELARIA / MRE / CEBRASPE / 2023)\nInovação da Lei n.º 14.133/2021, o diálogo competitivo é aplicável à contratação de obras, serviços e compras em que a administração pública",
+    "options": [
+      "(A) vise a obter soluções inovadoras ou que envolvam alta complexidade técnica sem possibilidade de definir previamente os requisitos.",
+      "(B) disponha previamente de projeto básico detalhado e especificações técnicas padronizadas de mercado.",
+      "(C) pretenda adquirir bens e serviços comuns disponíveis em catálogo eletrônico de padronização.",
+      "(D) pretenda alienar bens móveis legalmente apreendidos ou inservíveis.",
+      "(E) contrate profissional de notória especialização de natureza singular."
+    ],
+    "correct_index": 0,
+    "comentario": "Gabarito: Alternativa (A). Art. 32 da Lei nº 14.133/2021: O diálogo competitivo é restrito a contratações que envolvam inovação tecnológica ou técnica, impossibilidade de o órgão ter sua necessidade satisfeita sem adaptação de soluções ou impossibilidade de definir com precisão suficiente as especificações técnicas.",
+    "banca": "CEBRASPE"
+  },
+  {
+    "enunciado": "01) (ENGENHEIRO CIVIL / PREFEITURA MUNICIPAL DE CANAÃ DOS CARAJÁS – PA / 2025 / FGV)\nO processo de licitação de uma obra deve observar diversas fases. Após a divulgação do edital de licitação e antes da homologação da proposta vencedora, as etapas intermediárias são realizadas na seguinte ordem:",
+    "options": [
+      "(A) apresentação de propostas/habilitação/julgamento/recursos.",
+      "(B) apresentação de propostas/julgamento/habilitação/recursos.",
+      "(C) apresentação de propostas/habilitação/recursos/julgamento.",
+      "(D) habilitação/apresentação de propostas/julgamento/recursos.",
+      "(E) habilitação/apresentação de propostas/recursos/julgamento."
+    ],
+    "correct_index": 1,
+    "comentario": "Gabarito: Alternativa (B). Conforme o Art. 17 da Lei nº 14.133/2021, a sequência ordinária das fases é: divulgação do edital -> apresentação de propostas e lances -> julgamento -> habilitação -> recursal -> homologação. A regra geral consolidada na Nova Lei é o julgamento anteceder a habilitação.",
+    "banca": "FGV"
+  },
+  {
+    "enunciado": "02) (DEFENSOR PÚBLICO / DPE-RJ / 2026 / FGV)\nA Administração Pública pretende realizar licitação para contratação de serviços comuns, tendo optado por adotar, no edital, a antecipação da fase de habilitação em relação às fases de apresentação e julgamento das propostas. A justificativa apresentada pelo gestor indica que a medida busca conferir maior segurança à contratação, diante da complexidade técnica do objeto.\nÀ luz da Lei nº 14.133/2021 (Lei de Licitações), assinale a afirmativa correta.",
+    "options": [
+      "(A) A fase de habilitação precede o julgamento das propostas, sendo excepcional a inversão dessa ordem.",
+      "(B) O julgamento das propostas antecede a habilitação, admitindo-se a inversão dessa ordem em caráter excepcional.",
+      "(C) A inversão de fases somente é admitida nas licitações realizadas na modalidade pregão, sendo vedada nas demais modalidades.",
+      "(D) A adoção da habilitação antes do julgamento das propostas está vedada, uma vez que a inversão de fases foi suprimida do regime jurídico vigente.",
+      "(E) A antecipação da fase de habilitação é admitida, desde que prevista no edital, sendo dispensável a apresentação de justificativa específica pela Administração."
+    ],
+    "correct_index": 1,
+    "comentario": "Gabarito: Alternativa (B). O Art. 17 estabelece que o julgamento antecede a habilitação. O § 1º prescreve que a fase de habilitação poderá excepcionalmente anteceder as fases de propostas e julgamento mediante ato motivado com explicitação dos benefícios decorrentes e previsão expressa no edital.",
+    "banca": "FGV"
+  },
+  {
+    "enunciado": "06) (PROCURADOR / PGE-PB / 2021 / CEBRASPE)\nA licitação consiste em procedimento complexo que, além de outros princípios, deve observar expressamente o princípio da segregação de funções. Acerca desse princípio na Lei nº 14.133/2021, julgue o item a seguir:\nO princípio da segregação de funções veda que a mesma autoridade ou agente público acumule simultaneamente funções críticas de autorização de despesa, realização de licitação e fiscalização da execução contratual.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 0,
+    "comentario": "Gabarito: CERTO. Art. 5º c/c Art. 7º, § 1º da Lei nº 14.133/2021: A autoridade máxima do órgão deverá observar o princípio da segregação de funções, vedada a designação do mesmo agente público para atuação simultânea em funções mais suscetíveis a riscos, de modo a reduzir a ocorrência de erros e fraudes.",
+    "banca": "CEBRASPE"
+  }
+]

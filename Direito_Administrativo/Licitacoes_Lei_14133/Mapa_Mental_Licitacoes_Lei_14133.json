@@ -1,0 +1,245 @@
+{
+  "titulo": "Licitações Públicas (Lei nº 14.133/2021)",
+  "nodes": [
+    {
+      "id": "root",
+      "titulo": "Licitações (Lei 14.133/2021)",
+      "tipo": "root",
+      "pagina": 1,
+      "resumo": "Novo regime geral de licitações e contratos para as administrações diretas, autárquicas e fundacionais de todos os entes federativos (Art. 37, XXI, CF e Art. 1º)."
+    },
+    {
+      "id": "cat_sujeitos",
+      "titulo": "1. Âmbito de Aplicação e Sujeitos",
+      "tipo": "category",
+      "pagina": 1,
+      "resumo": "Entidades obrigadas à Lei 14.133/2021 e exceções constitucionais expressas."
+    },
+    {
+      "id": "cat_principios",
+      "titulo": "2. Princípios e Objetivos",
+      "tipo": "category",
+      "pagina": 5,
+      "resumo": "Finalidades do processo licitatório (Art. 11) e princípios expressos de governança (Art. 5º)."
+    },
+    {
+      "id": "cat_contratacao_direta",
+      "titulo": "3. Contratação Direta",
+      "tipo": "category",
+      "pagina": 8,
+      "resumo": "Hipóteses de afastamento do certame: Inexigibilidade (Art. 74) vs Dispensa (Arts. 75 e 76)."
+    },
+    {
+      "id": "cat_modalidades",
+      "titulo": "4. Modalidades Licitatórias",
+      "tipo": "category",
+      "pagina": 22,
+      "resumo": "Os 5 ritos procedimentais vigentes (Art. 28) e extinção de Tomada de Preços e Convite."
+    },
+    {
+      "id": "cat_fases_criterios",
+      "titulo": "5. Critérios de Julgamento e Fases",
+      "tipo": "category",
+      "pagina": 25,
+      "resumo": "Critérios de seleção da proposta (Art. 33) e rito das fases ordinárias e inversão (Art. 17)."
+    },
+    {
+      "id": "exclusao_estatais",
+      "titulo": "Exclusão das Estatais (Art. 1º, § 1º)",
+      "tipo": "rule",
+      "pagina": 1,
+      "resumo": "Empresas públicas, sociedades de economia mista e suas subsidiárias NÃO se submetem à Lei 14.133/2021, regendo-se pela Lei 13.303/2016."
+    },
+    {
+      "id": "abrangencia_poderes",
+      "titulo": "Poderes Legislativo e Judiciário",
+      "tipo": "concept",
+      "pagina": 1,
+      "resumo": "Aplica-se aos órgãos do Poder Legislativo e Judiciário quando no desempenho atípico de suas funções administrativas."
+    },
+    {
+      "id": "princ_planejamento",
+      "titulo": "Princípio do Planejamento",
+      "tipo": "rule",
+      "pagina": 6,
+      "resumo": "Princípio expresso inovador da Lei 14.133: compras e contratações devem integrar plano de contratações anual para evitar fracionamento."
+    },
+    {
+      "id": "princ_segregacao",
+      "titulo": "Segregação de Funções",
+      "tipo": "rule",
+      "pagina": 6,
+      "resumo": "Vedada a designação do mesmo agente público para funções sensíveis e simultâneas de autorização, execução e fiscalização contratual."
+    },
+    {
+      "id": "inexigibilidade_74",
+      "titulo": "Inexigibilidade de Licitação (Art. 74)",
+      "tipo": "concept",
+      "pagina": 8,
+      "resumo": "Inviabilidade de competição. Rol exemplificativo: fornecedor exclusivo, serviços intelectuais notórios e profissional artístico consagrado."
+    },
+    {
+      "id": "dispensa_75",
+      "titulo": "Licitação Dispensável (Art. 75)",
+      "tipo": "concept",
+      "pagina": 9,
+      "resumo": "A competição é viável, mas a lei autoriza a contratação direta por conveniência e economicidade. Rol taxativo (baixo valor, emergência, deserta/fracassada)."
+    },
+    {
+      "id": "comp_inex_disp",
+      "titulo": "Inexigibilidade × Dispensa",
+      "tipo": "comparison",
+      "pagina": 8,
+      "resumo": "Inexigibilidade: competição inviável e rol exemplificativo. Dispensa: competição juridicamente viável, mas dispensada/dispensável por rol estritamente taxativo."
+    },
+    {
+      "id": "modalidades_atuais",
+      "titulo": "As 5 Modalidades Vigentes (Art. 28)",
+      "tipo": "concept",
+      "pagina": 22,
+      "resumo": "Pregão, Concorrência, Concurso, Leilão e Diálogo Competitivo. Tomada de Preços e Convite foram totalmente revogadas."
+    },
+    {
+      "id": "dialogo_competitivo",
+      "titulo": "Diálogo Competitivo (Art. 32)",
+      "tipo": "concept",
+      "pagina": 24,
+      "resumo": "Modalidade inédita para inovação tecnológica ou contratação complexa, conduzida por comissão de no mínimo 3 servidores efetivos permanentes."
+    },
+    {
+      "id": "pregao_obrigatorio",
+      "titulo": "Pregão para Bens e Serviços Comuns",
+      "tipo": "rule",
+      "pagina": 22,
+      "resumo": "Modalidade obrigatória para aquisição de bens e serviços comuns, cujo critério de julgamento seja menor preço ou maior desconto."
+    },
+    {
+      "id": "rito_fases",
+      "titulo": "Ordem Ordinária das Fases (Art. 17)",
+      "tipo": "rule",
+      "pagina": 34,
+      "resumo": "Edital → Propostas e lances → Julgamento → Habilitação → Recursal → Homologação. Regra geral: o julgamento antecede a habilitação."
+    },
+    {
+      "id": "inversao_fases",
+      "titulo": "Inversão de Fases Excepcional",
+      "tipo": "exception",
+      "pagina": 34,
+      "resumo": "A antecipação da fase de habilitação é excepcional e permitida apenas mediante ato formalmente motivado que justifique o benefício ao interesse público."
+    },
+    {
+      "id": "criterios_julgamento",
+      "titulo": "Critérios de Julgamento (Art. 33)",
+      "tipo": "definition",
+      "pagina": 25,
+      "resumo": "Menor preço, Maior desconto, Melhor técnica ou conteúdo artístico, Técnica e preço, Maior lance (no leilão) e Maior retorno econômico."
+    },
+    {
+      "id": "trap_estatais",
+      "titulo": "Pegadinha: Estatais na Lei 14.133",
+      "tipo": "trap",
+      "pagina": 2,
+      "resumo": "Bancas afirmam que CEF ou Petrobras licitam pela Lei 14.133/2021. ERRADO! Empresas Públicas e SEM submetem-se à Lei nº 13.303/2016."
+    },
+    {
+      "id": "trap_taxativo",
+      "titulo": "Pegadinha: Taxatividade de Inexigibilidade",
+      "tipo": "trap",
+      "pagina": 15,
+      "resumo": "A inexigibilidade (art. 74) tem rol meramente exemplificativo (inviabilidade de competição). Quem possui rol taxativo é a dispensa de licitação (art. 75)."
+    },
+    {
+      "id": "mnem_modalidades",
+      "titulo": "Mnemônico: PRE-CON-CON-LEI-DIA",
+      "tipo": "mnemonic",
+      "pagina": 22,
+      "resumo": "PREgão + CONcorrência + CONcurso + LEIlão + DIÁlogo competitivo (as cinco modalidades de licitação vigentes)."
+    }
+  ],
+  "edges": [
+    {
+      "source": "root",
+      "target": "cat_sujeitos"
+    },
+    {
+      "source": "root",
+      "target": "cat_principios"
+    },
+    {
+      "source": "root",
+      "target": "cat_contratacao_direta"
+    },
+    {
+      "source": "root",
+      "target": "cat_modalidades"
+    },
+    {
+      "source": "root",
+      "target": "cat_fases_criterios"
+    },
+    {
+      "source": "cat_sujeitos",
+      "target": "exclusao_estatais"
+    },
+    {
+      "source": "cat_sujeitos",
+      "target": "abrangencia_poderes"
+    },
+    {
+      "source": "cat_sujeitos",
+      "target": "trap_estatais"
+    },
+    {
+      "source": "cat_principios",
+      "target": "princ_planejamento"
+    },
+    {
+      "source": "cat_principios",
+      "target": "princ_segregacao"
+    },
+    {
+      "source": "cat_contratacao_direta",
+      "target": "inexigibilidade_74"
+    },
+    {
+      "source": "cat_contratacao_direta",
+      "target": "dispensa_75"
+    },
+    {
+      "source": "cat_contratacao_direta",
+      "target": "comp_inex_disp"
+    },
+    {
+      "source": "cat_contratacao_direta",
+      "target": "trap_taxativo"
+    },
+    {
+      "source": "cat_modalidades",
+      "target": "modalidades_atuais"
+    },
+    {
+      "source": "cat_modalidades",
+      "target": "dialogo_competitivo"
+    },
+    {
+      "source": "cat_modalidades",
+      "target": "pregao_obrigatorio"
+    },
+    {
+      "source": "cat_modalidades",
+      "target": "mnem_modalidades"
+    },
+    {
+      "source": "cat_fases_criterios",
+      "target": "rito_fases"
+    },
+    {
+      "source": "cat_fases_criterios",
+      "target": "inversao_fases"
+    },
+    {
+      "source": "cat_fases_criterios",
+      "target": "criterios_julgamento"
+    }
+  ]
+}

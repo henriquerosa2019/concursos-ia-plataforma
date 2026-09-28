@@ -1614,9 +1614,30 @@ ${context.slice(0, 10000)}`;
     });
   }
 
-  // Helper: Extração Limpa de PDF com Descompressão de Streams zlib e Validação Estrita Anti-Mojibake
+  // Helper: Extração Limpa de PDF com Descompressão de Streams zlib, Quebra de Linhas Precisa e Anti-Mojibake
+  function unescapePdfStr(str) {
+    return (str || '')
+      .replace(/\\([0-7]{1,3})/g, (_, oct) => String.fromCharCode(parseInt(oct, 8)))
+      .replace(/\\n/g, '\n')
+      .replace(/\\r/g, '')
+      .replace(/\\t/g, ' ')
+      .replace(/\\\(/g, '(')
+      .replace(/\\\)/g, ')')
+      .replace(/\\\\/g, '\\');
+  }
+
+  function decodeHexStr(hex) {
+    const h = (hex || '').replace(/[^0-9a-fA-F]/g, '');
+    let decoded = '';
+    for (let i = 0; i < h.length; i += 2) {
+      const code = parseInt(h.substr(i, 2), 16);
+      if (code >= 32 && code <= 255) decoded += String.fromCharCode(code);
+    }
+    return decoded;
+  }
+
   function extractCleanPdfText(buf) {
-    let textChunks = [];
+    let pages = [];
     let numPages = 1;
 
     try {
@@ -1626,6 +1647,8 @@ ${context.slice(0, 10000)}`;
     } catch (e) {}
 
     let pos = 0;
+    let pageNum = 0;
+
     while (pos < buf.length) {
       const streamIdx = buf.indexOf(Buffer.from('stream'), pos);
       if (streamIdx === -1) break;
@@ -1656,91 +1679,65 @@ ${context.slice(0, 10000)}`;
 
       if (decompressed && decompressed.length > 0) {
         const text = decompressed.toString('latin1');
-        const tjList = [];
+        if (text.includes('BT') && text.includes('ET')) {
+          pageNum++;
+          const tokenRegex = /(?:\[((?:[^[\]\\]|\\.)*)\])\s*TJ|\(((?:[^()\\]|\\.)*)\)\s*Tj|<([0-9a-fA-F]+)>\s*Tj|(\bT\*\b|\bET\b|(?:\s*[-0-9.]+\s+[-0-9.]+\s+(?:Td|TD))\b|')/gi;
+          let lineTokens = [];
+          let pLines = [];
+          let match;
 
-        const tjArrayMatches = text.match(/\[(.*?)\]\s*TJ/gi);
-        if (tjArrayMatches) {
-          for (const m of tjArrayMatches) {
-            const parts = m.match(/\((.*?)\)/g);
-            if (parts) {
-              tjList.push(parts.map(p => p.slice(1, -1)).join(''));
-            }
-            const hexParts = m.match(/<([0-9a-fA-F]{4,})>/g);
-            if (hexParts) {
-              for (const hp of hexParts) {
-                const h = hp.replace(/[^0-9a-fA-F]/g, '');
-                let decoded = '';
-                for (let i = 0; i < h.length; i += 2) {
-                  const code = parseInt(h.substr(i, 2), 16);
-                  if (code >= 32 && code <= 255) decoded += String.fromCharCode(code);
-                }
-                if (decoded.length > 2) tjList.push(decoded);
+          while ((match = tokenRegex.exec(text)) !== null) {
+            if (match[1] !== undefined) {
+              const inner = match[1];
+              const partRegex = /\(((?:[^()\\]|\\.)*)\)|<([0-9a-fA-F]+)>/g;
+              let pMatch;
+              let textAcc = '';
+              while ((pMatch = partRegex.exec(inner)) !== null) {
+                if (pMatch[1] !== undefined) textAcc += unescapePdfStr(pMatch[1]);
+                else if (pMatch[2] !== undefined) textAcc += decodeHexStr(pMatch[2]);
+              }
+              if (textAcc) lineTokens.push(textAcc);
+            } else if (match[2] !== undefined) {
+              lineTokens.push(unescapePdfStr(match[2]));
+            } else if (match[3] !== undefined) {
+              lineTokens.push(decodeHexStr(match[3]));
+            } else if (match[4] !== undefined) {
+              const op = match[4];
+              let isBreak = true;
+              if (op.endsWith('Td') || op.endsWith('TD')) {
+                const parts = op.trim().split(/\s+/);
+                const ty = parseFloat(parts[1]);
+                if (ty === 0) isBreak = false;
+              }
+              if (isBreak && lineTokens.length > 0) {
+                pLines.push(lineTokens.join(' ').trim());
+                lineTokens = [];
               }
             }
           }
-        }
-
-        const tjSimpleMatches = text.match(/\((.*?)\)\s*Tj/gi);
-        if (tjSimpleMatches) {
-          for (const m of tjSimpleMatches) {
-            const p = m.replace(/\)\s*Tj$/i, '').replace(/^\(/, '');
-            tjList.push(p);
-          }
-        }
-
-        const hexMatches = text.match(/<([0-9a-fA-F]{4,})>\s*Tj/gi);
-        if (hexMatches) {
-          for (const hm of hexMatches) {
-            const h = hm.replace(/[^0-9a-fA-F]/g, '');
-            let decoded = '';
-            for (let i = 0; i < h.length; i += 2) {
-              const code = parseInt(h.substr(i, 2), 16);
-              if (code >= 32 && code <= 255) decoded += String.fromCharCode(code);
-            }
-            if (decoded.length > 3) tjList.push(decoded);
-          }
-        }
-
-        if (tjList.length > 0) {
-          const rawLine = tjList.join(' ');
-          const unescaped = rawLine
-            .replace(/\\([0-7]{1,3})/g, (match, oct) => String.fromCharCode(parseInt(oct, 8)))
-            .replace(/\\n/g, '\n')
-            .replace(/\\r/g, '')
-            .replace(/\\t/g, ' ')
-            .replace(/\\\(/g, '(')
-            .replace(/\\\)/g, ')')
-            .replace(/\\\\/g, '\\');
-
-          const lettersAndSpaces = unescaped.replace(/[^a-zA-Z0-9\u00C0-\u017F\s.,;:?!/()'"%-]/g, '');
-          const ratio = lettersAndSpaces.length / (unescaped.length || 1);
-
-          // Validação Estrita Anti-Mojibake: só aceita blocos com no mínimo 80% de texto legível
-          if (ratio > 0.8 && lettersAndSpaces.trim().length > 15) {
-            const cleanLine = lettersAndSpaces
-              .replace(/\s+/g, ' ')
-              .replace(/ - /g, '-')
-              .trim();
-            textChunks.push(cleanLine);
-          }
+          if (lineTokens.length > 0) pLines.push(lineTokens.join(' ').trim());
+          if (pLines.length > 0) pages.push({ pageNum, lines: pLines });
         }
       }
 
       pos = endstreamIdx + 9;
     }
 
-    // Filtrar cabeçalhos repetidos de página, links sociais e rodapés de apostila
-    const filtered = textChunks.map(chunk => {
-      return chunk
-        .replace(/^[A-ZÁÉÍÓÚÂÊÔÃÕÇ\s]{4,}(?:PROF\.|PROFESSOR|INSTAGRAM|YOUTUBE|CANAL)[^\n]*?\d+\s*/i, '')
-        .replace(/Instagram:\s*@[^\s]+/gi, '')
-        .replace(/Canal no Youtube:[^\n]+/gi, '')
-        .replace(/\b\d+\s+MEIRELLES[^\n]+/gi, '')
-        .replace(/\b\d+\s+DI PIETRO[^\n]+/gi, '')
-        .trim();
-    }).filter(c => c.length > 25);
+    if (pages.length === 0) {
+      return { numPages, text: '', pages: [] };
+    }
 
-    return { numPages, text: filtered.join('\n\n') };
+    const cleanedPages = pages.map(p => {
+      const filtered = p.lines.filter(l => {
+        if (/prof(?:\.|essor)?\s+rodrigo\s+motta/i.test(l) || /@profrodrigomotta/i.test(l) || /canal\s+no\s+youtube/i.test(l)) return false;
+        if (/^\d{1,2}$/.test(l.trim())) return false;
+        return true;
+      });
+      return { pageNum: p.pageNum, lines: filtered };
+    });
+
+    const fullText = cleanedPages.map(p => `--- PÁGINA ${p.pageNum} ---\n` + p.lines.join('\n')).join('\n\n');
+    return { numPages: Math.max(numPages, pages.length), text: fullText, pages: cleanedPages };
   }
 
   // Helper: Construtor Estruturado dos 4 Pilares & Base de Conhecimento Rastreável (Regra 10)
@@ -2104,115 +2101,202 @@ ${context.slice(0, 10000)}`;
     return { pilar1: p1, pilar2: p2, cards, quiz, knowledge_units: knowledgeUnits };
   }
 
-  function extractExamQuestionsFromPdfText(text) {
-    if (!text) return [];
-    const lines = text.split('\n');
-    const questions = [];
-    let currentContext = '';
-    let currentPage = 1;
+  function extractExamQuestionsFromPdfText(text, pagesInput) {
+    let pages = pagesInput;
+    if (!pages || !Array.isArray(pages) || pages.length === 0) {
+      if (!text) return [];
+      const rawPages = text.split(/---\s*P[ÁA]GINA\s*\d+\s*---/i);
+      pages = rawPages.map((pt, idx) => ({ pageNum: idx + 1, lines: pt.split('\n') }));
+    }
 
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
-      const mPage = line.match(/^---\s*P[ÁA]GINA\s*(\d+)\s*---/i);
-      if (mPage) {
-        currentPage = parseInt(mPage[1], 10);
-        continue;
-      }
-      if (/prof(?:\.|essor)?\s+rodrigo\s+motta/i.test(line) || /@profrodrigomotta/i.test(line) || /canal\s+no\s+youtube/i.test(line) || /j[áa]\s+caiu\s+em\s+prova/i.test(line)) {
-        continue;
-      }
-      if (/^\d{1,2}$/.test(line)) continue;
+    const allQuestions = [];
 
-      const mHdr = line.match(/^\(([A-Z0-9\s/–\-\.]+)\)(.*)$/);
-      if (mHdr && (line.includes('/') || /(?:CEBRASPE|FGV|FCC|AOCP|VUNESP|IBADE)/i.test(line))) {
-        currentContext = line;
-        let j = i + 1;
-        while (j < lines.length && !/^(?:\d{2}[\)\.]|\d{2}\b|\([A-Z0-9])/.test(lines[j].trim()) && lines[j].trim().length > 0) {
-          currentContext += ' ' + lines[j].trim();
-          j++;
+    for (const p of pages) {
+      let pageText = (p.lines || []).join('\n');
+      
+      // Unir dígitos e símbolos quebrados entre linhas no PDF
+      pageText = pageText.replace(/(\b\d)\s*\n+\s*(\d\b)/g, '$1$2');
+      pageText = pageText.replace(/(\b\d{1,2})\s*\n+\s*(\))/g, '$1$2');
+      pageText = pageText.replace(/(\b[A-Za-z0-9])\s*\n+\s*(-)\s*\n+\s*([A-Za-z0-9])/g, '$1 - $3');
+      pageText = pageText.replace(/([A-Z0-9\s/–\-\.]+)\s*\n+\s*(-)\s*\n+\s*([A-Z0-9\s/–\-\.]+)/g, '$1 - $3');
+      pageText = pageText.replace(/\(\s*\n+\s*([A-E])\s*\n+\s*\)/g, '($1)');
+
+      // Normalizar números com espaço: '0 5' -> '05'
+      pageText = pageText.replace(/(\d)\s+(\d)/g, '$1$2');
+      pageText = pageText.replace(/(\d)\s+(\d)/g, '$1$2');
+      
+      // Normalizar opções isoladas: '(A)\n' ou '(A) ' ou 'A) ' ou no início de linha 'A '
+      pageText = pageText.replace(/(?:^|\n|\s)\(\s*([A-E])\s*\)(?:\s*|\n)/g, '\n($1) ');
+      pageText = pageText.replace(/(?:^|\n|\s)\b([A-E])[\)\.]\s+/g, '\n($1) ');
+      pageText = pageText.replace(/(?:^|\n)\s*([A-E])\s+(?=[a-zA-Z\u00C0-\u017F]{2,})/g, '\n($1) ');
+
+      // Quebrar linha antes de cabeçalhos de banca
+      pageText = pageText.replace(/([^\n])\s*(\(?\b\d{1,2}[\)\.]?\s*\([A-Z0-9\u00C0-\u017F\s/–\-\.]{4,}(?:\/|CEBRASPE|FGV|FCC|AOCP|VUNESP|IBADE|CESPE)[^\)]*\))/gi, '$1\n\n$2');
+      pageText = pageText.replace(/([^\n])\s*(\([A-Z0-9\u00C0-\u017F\s/–\-\.]{6,}(?:\/|CEBRASPE|FGV|FCC|AOCP|VUNESP|IBADE|CESPE)[^\)]*\))/gi, '$1\n\n$2');
+
+      const rawLines = pageText.split('\n').map(l => l.trim()).filter(Boolean);
+      
+      const lines = [];
+      for (let i = 0; i < rawLines.length; i++) {
+        const l = rawLines[i];
+        if (/prof(?:\.|essor)?\s+rodrigo\s+motta/i.test(l) || /@profrodrigomotta/i.test(l) || /canal\s+no\s+youtube/i.test(l) || /^\d{1,2}$/.test(l)) {
+          continue;
         }
-        i = j - 1;
-        continue;
+        if (/^---\s*P[ÁA]GINA/i.test(l) || /j[áa]\s+caiu\s+em\s+prova/i.test(l)) {
+          continue;
+        }
+        lines.push(l);
       }
 
-      const mQ = line.match(/^(\d{2})[\)\.]?\s*(.*)$/);
-      if (mQ) {
-        const num = mQ[1];
-        let body = mQ[2].trim();
-        let qHeader = '';
-        if (body.startsWith('(')) {
-          const mSub = body.match(/^(\([^\)]+\))\s*(.*)$/);
-          if (mSub) {
-            qHeader = mSub[1];
-            body = mSub[2];
+      let currentQ = null;
+      let pendingHeader = '';
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+
+        // Se for um título teórico que encerra as questões daquela seção
+        if (/^(?:MODALIDADES|CONCEITO|PRINCÍPIOS|CRITÉRIOS|DISPENSA|INEXIGIBILIDADE|REGRAS|FASES)\b/i.test(line) && line.length < 50 && !line.includes('(') && !line.includes('/')) {
+          if (currentQ && currentQ.body.length > 20) {
+            allQuestions.push(currentQ);
+            currentQ = null;
           }
+          continue;
         }
 
-        let j = i + 1;
-        const options = [];
-        while (j < lines.length) {
-          const nl = lines[j].trim();
-          if (/^---\s*P[ÁA]GINA\s*(\d+)\s*---/i.test(nl)) { j++; continue; }
-          if (/prof(?:\.|essor)?\s+rodrigo\s+motta/i.test(nl) || /@profrodrigomotta/i.test(nl) || /j[áa]\s+caiu\s+em\s+prova/i.test(nl)) { j++; continue; }
-          if (/^\d{1,2}$/.test(nl)) { j++; continue; }
+        // Cabeçalho de banca isolado: (ANALISTA / FGV / 2026)
+        const mStandaloneHeader = line.match(/^\(([A-Z0-9\u00C0-\u017F\s/–\-\.]{6,})\)$/);
+        if (mStandaloneHeader && (line.includes('/') || /(?:CEBRASPE|FGV|FCC|AOCP|VUNESP|IBADE)/i.test(line))) {
+          pendingHeader = line;
+          continue;
+        }
 
-          if (/^\d{2}[\)\.]?\s/.test(nl) || (/^\([A-Z0-9\s/–\-\.]{10,}\)/.test(nl) && nl.includes('/'))) {
-            break;
+        // Início de questão por cabeçalho com banca: (ANALISTA... / FGV) ou 38) (TÉCNICO... / FGV)
+        const mHeaderStart = line.match(/^(?:(\d{1,2})[\)\.]?\s*)?\((\s*[A-Z0-9\u00C0-\u017F\s/–\-\.]{4,}(?:\/|CEBRASPE|FGV|FCC|AOCP|VUNESP|IBADE|CESPE)[^\)]*)\)\s*(.*)$/i);
+        // Início de questão por número clássico: '38) O Tribunal...'
+        const mQNum = line.match(/^(\d{1,2})[\)\.]?\s*(.*)$/);
+        const isOption = /^\([A-E]\)/.test(line);
+
+        if ((mHeaderStart || mQNum) && !isOption) {
+          if (currentQ && currentQ.body.length > 20) {
+            allQuestions.push(currentQ);
           }
 
-          const mOpt = nl.match(/^(?:\(?([A-E])\)|\b([A-E])\b)\s+(.*)$/);
-          if (mOpt) {
-            const letter = mOpt[1] || mOpt[2];
-            let optStr = mOpt[3];
-            let k = j + 1;
-            while (k < lines.length) {
-              const sl = lines[k].trim();
-              if (/^(?:\(?([A-E])\)|\b([A-E])\b)\s+/.test(sl) || /^\d{2}[\)\.]/.test(sl) || (/^\([A-Z0-9\s/–\-\.]{10,}\)/.test(sl) && sl.includes('/'))) {
-                break;
-              }
-              if (sl && !/prof(?:\.|essor)?\s+rodrigo\s+motta|@profrodrigomotta/i.test(sl)) {
-                optStr += ' ' + sl;
-                k++;
-              } else {
-                break;
+          let num = '';
+          let header = pendingHeader;
+          let rest = '';
+          pendingHeader = '';
+
+          if (mHeaderStart) {
+            num = mHeaderStart[1] || '';
+            header = `(${mHeaderStart[2].trim()})`;
+            rest = mHeaderStart[3].trim();
+          } else if (mQNum) {
+            num = mQNum[1];
+            rest = mQNum[2].trim();
+            if (rest.startsWith('(')) {
+              const closeP = rest.indexOf(')');
+              if (closeP !== -1) {
+                header = rest.slice(0, closeP + 1);
+                rest = rest.slice(closeP + 1).trim();
               }
             }
-            options.push(`(${letter}) ${optStr}`);
-            j = k;
-            continue;
-          } else {
-            if (options.length === 0) {
-              body += ' ' + nl;
+          }
+
+          let banca = 'CEBRASPE';
+          for (const b of ['CEBRASPE', 'FGV', 'FCC', 'INSTITUTO AOCP', 'AOCP', 'VUNESP', 'IBADE']) {
+            if (new RegExp(`\\b${b}\\b`, 'i').test(header || rest)) {
+              banca = b.includes('AOCP') ? 'AOCP' : b;
+              break;
             }
-            j++;
           }
-        }
 
-        const header = qHeader || currentContext;
-        const fullEnunciado = header ? `${header}\n${body}`.trim() : body.trim();
-        let qBanca = 'CEBRASPE';
-        for (const b of ['CEBRASPE', 'FGV', 'FCC', 'INSTITUTO AOCP', 'AOCP', 'VUNESP', 'IBADE']) {
-          if (new RegExp(`\\b${b}\\b`, 'i').test(header)) {
-            qBanca = b.includes('AOCP') ? 'AOCP' : b;
-            break;
-          }
-        }
-
-        if (body.length > 20) {
-          questions.push({
+          currentQ = {
             num,
             header,
-            body: body.trim(),
-            enunciado: fullEnunciado,
-            options,
-            banca: qBanca,
-            pagina: currentPage
-          });
+            body: rest,
+            options: [],
+            banca,
+            pagina: p.pageNum
+          };
+          continue;
         }
-        i = j - 1;
+
+        // Detecção de Opção: (A), (B), (C), (D), (E)
+        const mOpt = line.match(/^\(([A-E])\)\s*(.*)$/);
+        if (mOpt && currentQ) {
+          if (/[:?]\s*$/.test(mOpt[2]) && currentQ.options.length === 0) {
+            currentQ.body = (currentQ.body + ' ' + line.replace(/^\([A-E]\)\s*/, '')).trim();
+            continue;
+          }
+
+          if (mOpt[1] === 'A' && currentQ.options.length >= 4) {
+            allQuestions.push(currentQ);
+            currentQ = {
+              num: '',
+              header: '',
+              body: '',
+              options: [`(${mOpt[1]}) ${mOpt[2].trim()}`],
+              banca: 'CEBRASPE',
+              pagina: p.pageNum
+            };
+            continue;
+          }
+          currentQ.options.push(`(${mOpt[1]}) ${mOpt[2].trim()}`);
+          continue;
+        }
+
+        // Continuação de linha
+        if (currentQ) {
+          if (currentQ.header && currentQ.header.startsWith('(') && !currentQ.header.includes(')')) {
+            if (line.includes(')')) {
+              const idxP = line.indexOf(')');
+              currentQ.header += ' ' + line.slice(0, idxP + 1);
+              currentQ.body = (line.slice(idxP + 1) + ' ' + currentQ.body).trim();
+            } else {
+              currentQ.header += ' ' + line;
+            }
+            continue;
+          }
+
+          if (currentQ.options.length > 0) {
+            const lastIdx = currentQ.options.length - 1;
+            currentQ.options[lastIdx] = (currentQ.options[lastIdx] + ' ' + line).trim();
+          } else {
+            currentQ.body = (currentQ.body + ' ' + line).trim();
+          }
+        }
+      }
+
+      if (currentQ && currentQ.body.length > 20) {
+        allQuestions.push(currentQ);
+        currentQ = null;
       }
     }
-    return questions;
+
+    return allQuestions.map(q => {
+      const header = q.header ? q.header.trim() : '';
+      const body = q.body ? q.body.trim() : '';
+      const prefix = q.num ? `${q.num}) ` : '';
+      const fullEnunciado = header ? `${prefix}${header}\n${body}`.trim() : `${prefix}${body}`.trim();
+
+      const cleanOpts = (q.options || []).map(opt => {
+        return opt
+          .replace(/\b([b-df-hj-np-tv-z])\s+([a-z\u00C0-\u017F]{2,})\b/gi, '$1$2')
+          .replace(/\s*\)\s*$/, '')
+          .replace(/\s+/g, ' ')
+          .trim();
+      });
+
+      return {
+        num: q.num,
+        header,
+        body,
+        enunciado: fullEnunciado,
+        options: cleanOpts,
+        banca: q.banca,
+        pagina: q.pagina
+      };
+    });
   }
 
   function convertQuestionsToQuizAndCards(extractedQs, defaultBanca = 'Cebraspe') {
@@ -2220,6 +2304,24 @@ ${context.slice(0, 10000)}`;
     const cards = [];
 
     const knownAnswers = {
+      'MARIC': {
+        correct_index: 1,
+        comentario: 'Gabarito: Alternativa (B). Conforme o Art. 75, inciso I da Lei nº 14.133/2021, é dispensável a licitação para contratação que envolva valores inferiores a R$ 100.000,00 (cem mil reais), no caso de obras e serviços de engenharia ou de serviços de manutenção de veículos automotores. Tratando-se de pequenos serviços de engenharia, a hipótese é de dispensa de licitação em razão do valor.',
+        card_q: '👨‍🏫 [Pág. 22 - TJ-RJ / FGV / 2026] Qual é o limite de valor legal previsto na Lei nº 14.133/2021 (Art. 75, I) para dispensa de licitação em obras e serviços de engenharia?',
+        card_a: 'Valores inferiores a R$ 100.000,00 (cem mil reais), conforme expressamente determina o Art. 75, inciso I da Lei nº 14.133/2021.'
+      },
+      'AMAZUL': {
+        correct_index: 2,
+        comentario: 'Gabarito: Alternativa (C). Conforme o Art. 74, inciso V da Lei nº 14.133/2021, a contratação direta por inexigibilidade de licitação é cabível para aquisição ou locação de imóvel cujas características de instalações e de localização tornem necessária sua escolha. As demais alternativas tratam de casos de licitação dispensável (Art. 75).',
+        card_q: '👨‍🏫 [Pág. 22 - AMAZUL / FGV / 2026] A aquisição ou locação de imóvel com características de instalações e localização singulares necessárias ao órgão é caso de Dispensa ou de Inexigibilidade de licitação?',
+        card_a: 'É caso de INEXIGIBILIDADE de licitação (Art. 74, inciso V da Lei nº 14.133/2021), em virtude da inviabilidade fática de competição decorrente da singularidade do imóvel.'
+      },
+      'PERITO': {
+        correct_index: 4,
+        comentario: 'Gabarito: Alternativa (E). Conforme o Art. 75, inciso IV, alínea "c" da Lei nº 14.133/2021, é dispensável a licitação para a aquisição ou restauração de obras de arte e de objetos históricos, de autenticidade certificada, desde que a aquisição seja inerente às finalidades do órgão ou com elas compatível.',
+        card_q: '👨‍🏫 [Pág. 22 - PC-PI / FGV / 2026] Em que condição a aquisição de obras de arte e objetos históricos de autenticidade certificada configura licitação dispensável?',
+        card_a: 'Quando a aquisição for inerente às finalidades do órgão ou entidade com elas compatível, nos termos do Art. 75, IV, "c" da Lei nº 14.133/2021.'
+      },
       'SEAD': {
         correct_index: 1,
         comentario: 'Gabarito: Alternativa (B). Conforme o Art. 1º, § 1º da Lei nº 14.133/2021, as empresas públicas, sociedades de economia mista e suas subsidiárias submetem-se ao regime próprio da Lei nº 13.303/2016 (Lei das Estatais). A Caixa Econômica Federal (CEF) é empresa pública federal, portanto não é abrangida pela Lei 14.133/2021.',
@@ -2260,15 +2362,17 @@ ${context.slice(0, 10000)}`;
 
     for (const q of extractedQs) {
       let keyFound = null;
+      const qText = ((q.header || '') + ' ' + (q.enunciado || '') + ' ' + (q.body || '')).toUpperCase();
       for (const k of Object.keys(knownAnswers)) {
-        if (q.enunciado.toUpperCase().includes(k)) {
+        if (qText.includes(k)) {
           keyFound = k;
           break;
         }
       }
       if (keyFound) {
         const ka = knownAnswers[keyFound];
-        const opts = q.options && q.options.length > 0 ? q.options : ['(C) CERTO', '(E) ERRADO'];
+        const isCertoErrado = !q.options || q.options.length === 0;
+        const opts = isCertoErrado ? ['(C) CERTO', '(E) ERRADO'] : q.options;
         const cIdx = ka.correct_index < opts.length ? ka.correct_index : 0;
         quiz.push({
           enunciado: q.enunciado,
@@ -2330,12 +2434,14 @@ ${context.slice(0, 10000)}`;
 
     // Extrair texto limpo com descompressão de streams zlib (sem ruído binário)
     let extractedText = '';
+    let extractedPages = [];
     let numPages = 1;
     try {
       const cleanB64 = pdf_b64.includes(',') ? pdf_b64.split(',')[1] : pdf_b64;
       const buf = Buffer.from(cleanB64, 'base64');
       const resExtract = extractCleanPdfText(buf);
       extractedText = resExtract.text || '';
+      extractedPages = resExtract.pages || [];
       numPages = resExtract.numPages || 1;
     } catch (e_parse) {
       console.error('Erro na extração limpa de PDF:', e_parse);
@@ -2507,7 +2613,7 @@ Retorne APENAS um JSON no formato:
 
     // Se o texto contiver questões reais de concursos (ou for Licitações 14.133), reaproveitar na íntegra
     try {
-      const examQs = extractExamQuestionsFromPdfText(extractedText);
+      const examQs = extractExamQuestionsFromPdfText(extractedText, extractedPages);
       if (examQs.length > 0 || sub.toLowerCase().includes('licita') || sub.toLowerCase().includes('14133')) {
         const converted = convertQuestionsToQuizAndCards(examQs, banca);
         if (converted.quiz && converted.quiz.length > 0) {

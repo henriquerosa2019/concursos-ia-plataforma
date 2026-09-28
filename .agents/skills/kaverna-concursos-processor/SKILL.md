@@ -38,6 +38,11 @@ Sempre que a fonte for um PDF do Kaverna:
      - Exemplo: `(TJ-RR / FGV / 2024)`
 3. **Gabarito e Comentários Fundamentados:**
    - Comentar cada item com base na letra da lei correspondente e nas explicações teóricas do próprio PDF.
+4. **Formatação e Segmentação Impecável:**
+   - Cada questão deve ser separada individualmente, contendo cabeçalho, enunciado e alternativas interativas próprias.
+   - É estritamente vedado aglomerar opções ou múltiplas questões no corpo do enunciado.
+   - O motor de extração do PDF preserva quebras de linha (`Td`, `T*`, `ET`) e regex balanceada para literais com parênteses escapados, garantindo que `(A)` a `(E)` não sejam achatados em uma única linha.
+   - No frontend, `.quiz-q` possui `white-space: pre-line; line-height: 1.65;` e `normalizeQuizItem` conta com auto-recuperação de opções se embutidas no texto.
 
 ---
 

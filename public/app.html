@@ -905,8 +905,11 @@
   .quiz-q {
     font-size: 15px;
     font-weight: 600;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
     color: var(--text);
+    white-space: pre-line;
+    line-height: 1.65;
+    letter-spacing: 0.01em;
   }
   .quiz-opts {
     display: flex;
@@ -6643,6 +6646,27 @@
     if (!q || typeof q !== 'object') {
       return { enunciado: 'Questão sem enunciado', options: ['(C) CERTO', '(E) ERRADO'], correct_index: 0, comentario: '' };
     }
+
+    // Auto-recuperação: se as opções vieram embutidas no enunciado (comum em extrações cruas de PDF)
+    if ((!Array.isArray(q.options) || q.options.length <= 1) && q.enunciado) {
+      const idxStart = q.enunciado.search(/(?:^|\n|\s)\([A-E]\)\s+/);
+      if (idxStart !== -1) {
+        const enunClean = q.enunciado.slice(0, idxStart).trim();
+        const rawOpts = q.enunciado.slice(idxStart);
+        
+        const parsedOpts = [];
+        const optRegex = /\(([A-E])\)\s*([^()]+?(?=(?:\s*\([A-E]\)|\s*(?:\d{1,2}\)|\d{1,2}\.|\([A-Z0-9\s/–\-\.]{6,}\))|$)))/gi;
+        let m;
+        while ((m = optRegex.exec(rawOpts)) !== null) {
+          parsedOpts.push(`(${m[1].toUpperCase()}) ${m[2].trim()}`);
+        }
+        if (parsedOpts.length >= 2) {
+          q.options = parsedOpts;
+          q.enunciado = enunClean;
+        }
+      }
+    }
+
     if (!Array.isArray(q.options) || q.options.length === 0) {
       if (q.gabarito === 'E') {
         q.options = ['(C) CERTO', '(E) ERRADO'];
@@ -6834,7 +6858,7 @@
           const letters = ['A', 'B', 'C', 'D', 'E'];
           safeOptions.forEach((opt, optIdx) => {
             const letter = letters[optIdx] || String(optIdx);
-            const cleanOpt = String(opt).replace(/^[A-E]\)\s*/, '');
+            const cleanOpt = String(opt).replace(/^[\(\[]?[A-E][\)\]\.\-]?\s*/i, '');
             optsHtml += `
               <div class="quiz-opt ${currentChoice === letter ? 'cebraspe-opt-selected' : ''}" data-choice="${letter}" onclick="selectCebraspeOpt(${qIndex}, '${letter}')">
                 <span class="cebraspe-radio">${currentChoice === letter ? '🔘' : '⚪'}</span>

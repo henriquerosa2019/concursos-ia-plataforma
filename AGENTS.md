@@ -184,3 +184,14 @@ Organizar em estrutura lógica e progressiva:
   1. Ao importar material do Kaverna, o sistema deve detectar com precisão o tema específico abordado (ex: Licitações Lei nº 14.133/2021) e vincular ao mapa mental e taxonomia exatos da matéria.
   2. Jamais associar a temas genéricos ou divergentes (ex: nunca atribuir "Poderes Administrativos" a materiais de Licitações, Servidores, etc.).
 
+---
+
+## 12. Formatação e Segmentação Impecável do Mini-Simulado (Pilar 4): Separação Estrita de Enunciados e Opções
+- **Proibição Absoluta de Blocos Concatenações/Aglomerações:** É terminantemente proibido juntar múltiplas questões ou aglomerar as alternativas `(A)`, `(B)`, `(C)`, `(D)`, `(E)` no corpo do enunciado (`enunciado`). Cada questão deve existir de forma 100% autônoma, com seu cabeçalho, enunciado e array de opções interativas.
+- **Extração com Quebra de Linhas Precisa no PDF:** O motor de extração de PDF (tanto em `api/ai.js` quanto em `servidor.py`) deve preservar os operadores de quebra de linha (`Td`, `T*`, `ET`) e strings balanceadas com escapes `\((?:[^()\\]|\\.)*\)`, garantindo que opções como `(A)` não percam o fechamento de parênteses e sejam detectadas separadamente.
+- **Defesa em Profundidade no Frontend (`index.html`):**
+  1. `.quiz-q` possui obrigatoriamente `white-space: pre-line; line-height: 1.65;` para manter a legibilidade e espaçamento natural de enunciados longos e cabeçalhos de concursos.
+  2. `normalizeQuizItem` conta com auto-recuperação resiliente: caso qualquer item receba opções embutidas no enunciado por imperfeição de OCR ou extração de PDF, o frontend extrai automaticamente as alternativas `(A)` a `(E)` para `options` e remove do `enunciado`, garantindo a exibição dos botões interativos de resposta ao aluno.
+  3. `renderQuiz` limpa prefixos redundantes de opções (`^[([A-E])]`) para evitar duplicidade de badges visuais.
+
+

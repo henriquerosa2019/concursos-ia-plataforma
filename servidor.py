@@ -3149,115 +3149,174 @@ def sync_topic_to_catalog(discipline, subarea, title, professor, banca, aula_md,
 def extract_exam_questions_from_corpus(text_corpus):
     """
     Extrai questões reais de concursos contidas em apostilas e materiais didáticos (ex: Kaverna / 'JÁ CAIU EM PROVA').
+    Garante separação precisa de cada questão e de suas opções (A-E ou C/E), sem truncamento nem concatenação.
     """
     if not text_corpus:
         return []
-    lines = text_corpus.split("\n")
+
+    # Quebrar páginas
+    raw_pages = re.split(r'---\s*P[ÁA]GINA\s*\d+\s*---', text_corpus, flags=re.I)
     questions = []
-    current_context = ""
-    current_page = 1
-    
-    i = 0
-    while i < len(lines):
-        line = lines[i].strip()
-        m_p = re.match(r'^---\s*P[ÁA]GINA\s*(\d+)\s*---', line, re.I)
-        if m_p:
-            current_page = int(m_p.group(1))
-            i += 1
-            continue
-            
-        if any(ign in line.upper() for ign in ["PROF. RODRIGO MOTTA", "@PROFRODRIGOMOTTA", "CANAL NO YOUTUBE", "JÁ CAIU EM PROVA"]):
-            i += 1
-            continue
-        if re.match(r'^\d{1,2}$', line):
-            i += 1
-            continue
-            
-        m_hdr = re.match(r'^\(([A-Z0-9\s/–\-\.]+)\)(.*)$', line)
-        if m_hdr and ("/" in line or any(b in line.upper() for b in ["CEBRASPE", "FGV", "FCC", "AOCP", "VUNESP", "IBADE"])):
-            current_context = line
-            j = i + 1
-            while j < len(lines) and not re.match(r'^(?:\d{2}[\)\.]|\d{2}\b|\([A-Z0-9]{3,})', lines[j].strip()) and len(lines[j].strip()) > 0:
-                current_context += " " + lines[j].strip()
-                j += 1
-            i = j
-            continue
-            
-        m_q = re.match(r'^(\d{2})[\)\.]?\s*(.*)$', line)
-        if m_q:
-            num = m_q.group(1)
-            body = m_q.group(2).strip()
-            q_header = ""
-            if body.startswith("("):
-                m_sub = re.match(r'^(\([^\)]+\))\s*(.*)$', body)
-                if m_sub:
-                    q_header = m_sub[1]
-                    body = m_sub[2].strip()
-                    
-            j = i + 1
-            options = []
-            while j < len(lines):
-                nl = lines[j].strip()
-                if re.match(r'^---\s*P[ÁA]GINA\s*(\d+)\s*---', nl, re.I):
-                    j += 1
-                    continue
-                if any(ign in nl.upper() for ign in ["PROF. RODRIGO MOTTA", "@PROFRODRIGOMOTTA", "CANAL NO YOUTUBE", "JÁ CAIU EM PROVA"]):
-                    j += 1
-                    continue
-                if re.match(r'^\d{1,2}$', nl):
-                    j += 1
-                    continue
-                    
-                if re.match(r'^\d{2}[\)\.]?\s', nl) or (re.match(r'^\([A-Z0-9\s/–\-\.]{10,}\)', nl) and "/" in nl):
-                    break
-                    
-                m_opt = re.match(r'^(?:\(?([A-E])\)|\b([A-E])\b)\s+(.*)$', nl)
-                if m_opt:
-                    letter = m_opt.group(1) or m_opt.group(2)
-                    opt_str = m_opt.group(3)
-                    k = j + 1
-                    while k < len(lines):
-                        sl = lines[k].strip()
-                        if re.match(r'^(?:\(?([A-E])\)|\b([A-E])\b)\s+', sl) or re.match(r'^\d{2}[\)\.]', sl) or (re.match(r'^\([A-Z0-9\s/–\-\.]{10,}\)', sl) and "/" in sl):
-                            break
-                        if sl and not any(ign in sl.upper() for ign in ["PROF. RODRIGO MOTTA", "@PROFRODRIGOMOTTA", "CANAL NO YOUTUBE"]):
-                            opt_str += " " + sl
-                            k += 1
-                        else:
-                            break
-                    options.append(f"({letter}) {opt_str.strip()}")
-                    j = k
-                    continue
-                else:
-                    if not options:
-                        body += " " + nl
-                    j += 1
-                    
-            header = q_header or current_context
-            full_enunciado = f"{header}\n{body}".strip() if header else body.strip()
-            
-            banca = "CEBRASPE"
-            for b in ["CEBRASPE", "FGV", "FCC", "INSTITUTO AOCP", "AOCP", "VUNESP", "IBADE"]:
-                if b in header.upper():
-                    banca = "AOCP" if "AOCP" in b else b
-                    break
-                    
-            if len(body) > 15:
-                questions.append({
+
+    for page_idx, page_raw in enumerate(raw_pages, 1):
+        page_text = page_raw
+
+        # Unir quebras arbitrárias de linha
+        page_text = re.sub(r'(\b\d)\s*\n+\s*(\d\b)', r'\1\2', page_text)
+        page_text = re.sub(r'(\b\d{1,2})\s*\n+\s*(\))', r'\1\2', page_text)
+        page_text = re.sub(r'(\b[A-Za-z0-9])\s*\n+\s*(-)\s*\n+\s*([A-Za-z0-9])', r'\1 - \3', page_text)
+        page_text = re.sub(r'\(\s*\n+\s*([A-E])\s*\n+\s*\)', r'(\1)', page_text)
+
+        # Normalizar números com espaço: '0 5' -> '05'
+        page_text = re.sub(r'(\d)\s+(\d)', r'\1\2', page_text)
+        page_text = re.sub(r'(\d)\s+(\d)', r'\1\2', page_text)
+
+        # Normalizar opções: (A), B), A no início de linha
+        page_text = re.sub(r'(?:^|\n|\s)\(\s*([A-E])\s*\)(?:\s*|\n)', r'\n(\1) ', page_text)
+        page_text = re.sub(r'(?:^|\n|\s)\b([A-E])[\)\.]\s+', r'\n(\1) ', page_text)
+        page_text = re.sub(r'(?:^|\n)\s*([A-E])\s+(?=[a-zA-Z\u00C0-\u017F]{2,})', r'\n(\1) ', page_text)
+
+        # Quebrar linha antes de cabeçalhos de banca
+        page_text = re.sub(r'([^\n])\s*(\(?\b\d{1,2}[\)\.]?\s*\([A-Z0-9\u00C0-\u017F\s/–\-\.]{4,}(?:\/|CEBRASPE|FGV|FCC|AOCP|VUNESP|IBADE|CESPE)[^\)]*\))', r'\1\n\n\2', page_text, flags=re.I)
+        page_text = re.sub(r'([^\n])\s*(\([A-Z0-9\u00C0-\u017F\s/–\-\.]{6,}(?:\/|CEBRASPE|FGV|FCC|AOCP|VUNESP|IBADE|CESPE)[^\)]*\))', r'\1\n\n\2', page_text, flags=re.I)
+
+        raw_lines = [l.strip() for l in page_text.split("\n") if l.strip()]
+        lines = []
+        for l in raw_lines:
+            if any(ign in l.upper() for ign in ["PROF. RODRIGO MOTTA", "@PROFRODRIGOMOTTA", "CANAL NO YOUTUBE", "JÁ CAIU EM PROVA"]):
+                continue
+            if re.match(r'^\d{1,2}$', l):
+                continue
+            lines.append(l)
+
+        current_q = None
+        pending_header = ""
+
+        for line in lines:
+            # Título de encerramento
+            if re.match(r'^(?:MODALIDADES|CONCEITO|PRINCÍPIOS|CRITÉRIOS|DISPENSA|INEXIGIBILIDADE|REGRAS|FASES)\b', line, re.I) and len(line) < 50 and "(" not in line and "/" not in line:
+                if current_q and len(current_q["body"]) > 20:
+                    questions.append(current_q)
+                    current_q = None
+                continue
+
+            # Cabeçalho de banca isolado
+            m_sh = re.match(r'^\(([A-Z0-9\u00C0-\u017F\s/–\-\.]{6,})\)$', line)
+            if m_sh and ("/" in line or any(b in line.upper() for b in ["CEBRASPE", "FGV", "FCC", "AOCP", "VUNESP", "IBADE"])):
+                pending_header = line
+                continue
+
+            # Início de questão por cabeçalho com banca ou número
+            m_hs = re.match(r'^(?:(\d{1,2})[\)\.]?\s*)?\((\s*[A-Z0-9\u00C0-\u017F\s/–\-\.]{4,}(?:\/|CEBRASPE|FGV|FCC|AOCP|VUNESP|IBADE|CESPE)[^\)]*)\)\s*(.*)$', line, re.I)
+            m_qn = re.match(r'^(\d{1,2})[\)\.]?\s*(.*)$', line)
+            is_opt = re.match(r'^\([A-E]\)', line)
+
+            if (m_hs or m_qn) and not is_opt:
+                if current_q and len(current_q["body"]) > 20:
+                    questions.append(current_q)
+
+                num = ""
+                header = pending_header
+                rest = ""
+                pending_header = ""
+
+                if m_hs:
+                    num = m_hs.group(1) or ""
+                    header = f"({m_hs.group(2).strip()})"
+                    rest = m_hs.group(3).strip()
+                elif m_qn:
+                    num = m_qn.group(1)
+                    rest = m_qn.group(2).strip()
+                    if rest.startswith("("):
+                        cp = rest.find(")")
+                        if cp != -1:
+                            header = rest[:cp+1]
+                            rest = rest[cp+1:].strip()
+
+                banca = "CEBRASPE"
+                for b in ["CEBRASPE", "FGV", "FCC", "INSTITUTO AOCP", "AOCP", "VUNESP", "IBADE"]:
+                    if re.search(r'\b' + b + r'\b', header + " " + rest, re.I):
+                        banca = "AOCP" if "AOCP" in b else b
+                        break
+
+                current_q = {
                     "num": num,
                     "header": header,
-                    "body": body.strip(),
-                    "enunciado": full_enunciado,
-                    "options": options,
+                    "body": rest,
+                    "options": [],
                     "banca": banca,
-                    "pagina": current_page
-                })
-            i = j
-            continue
-            
-        i += 1
-        
-    return questions
+                    "pagina": page_idx
+                }
+                continue
+
+            # Opção de resposta
+            m_opt = re.match(r'^\(([A-E])\)\s*(.*)$', line)
+            if m_opt and current_q:
+                if re.search(r'[:?]\s*$', m_opt.group(2)) and len(current_q["options"]) == 0:
+                    current_q["body"] = (current_q["body"] + " " + re.sub(r'^\([A-E]\)\s*', '', line)).strip()
+                    continue
+
+                if m_opt.group(1) == "A" and len(current_q["options"]) >= 4:
+                    questions.append(current_q)
+                    current_q = {
+                        "num": "",
+                        "header": "",
+                        "body": "",
+                        "options": [f"({m_opt.group(1)}) {m_opt.group(2).strip()}"],
+                        "banca": "CEBRASPE",
+                        "pagina": page_idx
+                    }
+                    continue
+
+                current_q["options"].append(f"({m_opt.group(1)}) {m_opt.group(2).strip()}")
+                continue
+
+            # Continuação de linha
+            if current_q:
+                if current_q["header"] and current_q["header"].startswith("(") and ")" not in current_q["header"]:
+                    if ")" in line:
+                        idx_p = line.find(")")
+                        current_q["header"] += " " + line[:idx_p+1]
+                        current_q["body"] = (line[idx_p+1:] + " " + current_q["body"]).strip()
+                    else:
+                        current_q["header"] += " " + line
+                    continue
+
+                if len(current_q["options"]) > 0:
+                    current_q["options"][-1] = (current_q["options"][-1] + " " + line).strip()
+                else:
+                    current_q["body"] = (current_q["body"] + " " + line).strip()
+
+        if current_q and len(current_q["body"]) > 20:
+            questions.append(current_q)
+
+    # Limpeza e formatação final
+    formatted_qs = []
+    for q in questions:
+        h = q["header"].strip() if q["header"] else ""
+        b = q["body"].strip() if q["body"] else ""
+        prefix = f"{q['num']}) " if q["num"] else ""
+        full_enun = f"{prefix}{h}\n{b}".strip() if h else f"{prefix}{b}".strip()
+
+            cleaned = re.sub(r'\b([b-df-hj-np-tv-z])\s+([a-z\u00C0-\u017F]{2,})\b', r'\1\2', opt, flags=re.I)
+            cleaned = re.sub(r'\s*\)\s*$', '', cleaned)
+            cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+            clean_opts.append(cleaned)
+
+        formatted_qs.append({
+            "num": q["num"],
+            "header": h,
+            "body": b,
+            "enunciado": full_enun,
+            "options": clean_opts,
+            "banca": q["banca"],
+            "pagina": q["pagina"]
+        })
+
+    return formatted_qs
+
+def convert_questions_to_quizAndCards(extracted_qs, default_banca="Cebraspe"):
+    return convert_questions_to_quiz_and_cards(extracted_qs, default_banca)
 
 def convert_questions_to_quiz_and_cards(extracted_qs, default_banca="Cebraspe"):
     """
@@ -3268,6 +3327,24 @@ def convert_questions_to_quiz_and_cards(extracted_qs, default_banca="Cebraspe"):
     cards = []
     
     known_answers = {
+        "MARIC": {
+            "correct_index": 1,
+            "comentario": "Gabarito: Alternativa (B). Conforme o Art. 75, inciso I da Lei nº 14.133/2021, é dispensável a licitação para contratação que envolva valores inferiores a R$ 100.000,00 (cem mil reais), no caso de obras e serviços de engenharia ou de serviços de manutenção de veículos automotores. Tratando-se de pequenos serviços de engenharia, a hipótese é de dispensa de licitação em razão do valor.",
+            "card_q": "👨‍🏫 [Pág. 22 - TJ-RJ / FGV / 2026] Qual é o limite de valor legal previsto na Lei nº 14.133/2021 (Art. 75, I) para dispensa de licitação em obras e serviços de engenharia?",
+            "card_a": "Valores inferiores a R$ 100.000,00 (cem mil reais), conforme expressamente determina o Art. 75, inciso I da Lei nº 14.133/2021."
+        },
+        "AMAZUL": {
+            "correct_index": 2,
+            "comentario": "Gabarito: Alternativa (C). Conforme o Art. 74, inciso V da Lei nº 14.133/2021, a contratação direta por inexigibilidade de licitação é cabível para aquisição ou locação de imóvel cujas características de instalações e de localização tornem necessária sua escolha. As demais alternativas tratam de casos de licitação dispensável (Art. 75).",
+            "card_q": "👨‍🏫 [Pág. 22 - AMAZUL / FGV / 2026] A aquisição ou locação de imóvel com características de instalações e localização singulares necessárias ao órgão é caso de Dispensa ou de Inexigibilidade de licitação?",
+            "card_a": "É caso de INEXIGIBILIDADE de licitação (Art. 74, inciso V da Lei nº 14.133/2021), em virtude da inviabilidade fática de competição decorrente da singularidade do imóvel."
+        },
+        "PERITO": {
+            "correct_index": 4,
+            "comentario": "Gabarito: Alternativa (E). Conforme o Art. 75, inciso IV, alínea 'c' da Lei nº 14.133/2021, é dispensável a licitação para a aquisição ou restauração de obras de arte e de objetos históricos, de autenticidade certificada, desde que a aquisição seja inerente às finalidades do órgão ou com elas compatível.",
+            "card_q": "👨‍🏫 [Pág. 22 - PC-PI / FGV / 2026] Em que condição a aquisição de obras de arte e objetos históricos de autenticidade certificada configura licitação dispensável?",
+            "card_a": "Quando a aquisição for inerente às finalidades do órgão ou entidade com elas compatível, nos termos do Art. 75, IV, 'c' da Lei nº 14.133/2021."
+        },
         "SEAD": {
             "correct_index": 1,
             "comentario": "Gabarito: Alternativa (B). Conforme o Art. 1º, § 1º da Lei nº 14.133/2021, as empresas públicas, sociedades de economia mista e suas subsidiárias submetem-se ao regime próprio da Lei nº 13.303/2016 (Lei das Estatais). A Caixa Econômica Federal (CEF) é empresa pública federal, portanto não é abrangida pela Lei 14.133/2021.",
@@ -3308,8 +3385,9 @@ def convert_questions_to_quiz_and_cards(extracted_qs, default_banca="Cebraspe"):
     
     for q in extracted_qs:
         key_found = None
+        q_text = f"{q.get('header', '')} {q.get('enunciado', '')} {q.get('body', '')}".upper()
         for k in known_answers:
-            if k in q["enunciado"].upper():
+            if k in q_text:
                 key_found = k
                 break
                 

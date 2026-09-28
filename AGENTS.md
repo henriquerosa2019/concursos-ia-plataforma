@@ -168,3 +168,19 @@ Organizar em estrutura lógica e progressiva:
 10. O resumo está maior apenas porque repetiu o PDF? → REDUZIR REPETIÇÕES.
 11. O resumo está curto porque eliminou conhecimento relevante? → RECUPERAR conteúdo importante.
 12. Todos os mnemônicos, dicas e alertas existentes no PDF foram preservados? → VERIFICAR.
+
+---
+
+## 11. Diretriz Obrigatória para Materiais Kaverna Concursos (Prof. Rodrigo Motta): Mini-Simulados e Flashcards na Íntegra
+- **Identificação do Material:** Apostilas contendo marcas como *"Kaverna Concursos"*, *"Prof. Rodrigo Motta"*, *"@profrodrigomotta"*, *"JÁ CAIU EM PROVA, MOTTA?"*, *"KVERNA 2026"*.
+- **Pilar 4 (Mini-Simulado) — Conteúdo na Íntegra Sem Alterações:**
+  1. Sempre que o material PDF for do Kaverna Concursos, o assistente e a plataforma devem **extrair e reaproveitar as questões de concursos anteriores presentes no material na íntegra**, sem resumir, sem alterar enunciado, opções (A, B, C, D, E ou Certo/Errado) e nem suprimir nada.
+  2. Preservar o cabeçalho original da questão com órgão, ano e banca examinadora (ex: `(SEAD-GO / AOCP / 2022)`, `(PGM-RECIFE / CEBRASPE / 2022)`, `(TJ-RR / FGV / 2024)`).
+  3. O gabarito e comentários devem ser fundamentados com base nas lições, artigos de lei e doutrina expostos na apostila correspondente.
+- **Pilar 3 (Flashcards Anki) — Zero Reticências (`...`) e Extração Real:**
+  1. Os flashcards devem incorporar diretamente as regras das questões reais e conceitos de maior incidência ensinados pelo material.
+  2. **Proibição Absoluta de Reticências:** É terminantemente proibido colocar reticências (`...`) nas perguntas e respostas dos flashcards. Os textos devem constar na íntegra, com fundamentação completa, garantindo que o concurseiro não sofra supressão de detalhes cruciais de prova.
+- **Fidelidade Temática & Prevenção de Conflitos de Mapa Mental:**
+  1. Ao importar material do Kaverna, o sistema deve detectar com precisão o tema específico abordado (ex: Licitações Lei nº 14.133/2021) e vincular ao mapa mental e taxonomia exatos da matéria.
+  2. Jamais associar a temas genéricos ou divergentes (ex: nunca atribuir "Poderes Administrativos" a materiais de Licitações, Servidores, etc.).
+

@@ -1995,8 +1995,9 @@ ${context.slice(0, 10000)}`;
     let pilar2Text = '';
     let cards = [];
     let questions = [];
-
     let knowledgeUnits = [];
+    let briefingText = '';
+    let mindmapObj = null;
 
     // Tentar síntese avançada via IA (Gemini) se API Key configurada
     const apiKey = process.env.GEMINI_API_KEY;

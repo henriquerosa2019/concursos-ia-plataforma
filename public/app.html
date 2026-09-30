@@ -8,6 +8,12 @@
 <meta name="theme-color" content="#0d1117">
   <title>Projeto Aprovação • Concursos IA • Painel de Estudos</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+  if (typeof pdfjsLib !== 'undefined') {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+</script>
 <style>
   :root {
     color-scheme: dark;
@@ -5049,6 +5055,12 @@
           <option value="Portugues">Português</option>
           <option value="Direito_Constitucional">Direito Constitucional</option>
           <option value="Direito_Administrativo">Direito Administrativo</option>
+          <option value="Direito_Penal">Direito Penal</option>
+          <option value="Direito_Processual_Penal">Direito Processual Penal</option>
+          <option value="Direito_Civil">Direito Civil</option>
+          <option value="Direito_Processual_Civil">Direito Processual Civil</option>
+          <option value="Direito_Tributario">Direito Tributário</option>
+          <option value="Legislacao_Especial">Legislação Especial</option>
           <option value="Raciocinio_Logico">Raciocínio Lógico</option>
           <option value="__custom__">+ Nova Disciplina...</option>
         </select>
@@ -9291,6 +9303,9 @@
   let currentImportMode = 'youtube';
   let selectedPdfBase64 = '';
   let selectedPdfFileName = '';
+  let selectedPdfExtractedText = '';
+  let selectedPdfExtractedPages = [];
+  let selectedPdfNumPages = 1;
 
   function openAiRaioXModal() {
     if (typeof isUserTrial === 'function' && isUserTrial() && hasTrialGeneratedFeatureForDiscipline('raiox', currentDiscipline)) {
@@ -9450,7 +9465,7 @@
     }
   }
 
-  function processPdfFile(file) {
+  async function processPdfFile(file) {
     if (!file) return;
     if (!file.name.toLowerCase().endsWith('.pdf')) {
       alert('Por favor, selecione um arquivo em formato PDF.');
@@ -9458,6 +9473,11 @@
     }
 
     selectedPdfFileName = file.name;
+    selectedPdfExtractedText = '';
+    selectedPdfExtractedPages = [];
+    selectedPdfNumPages = 1;
+    selectedPdfBase64 = '';
+
     const sizeFmt = file.size > 1048576 
       ? (file.size / 1048576).toFixed(2) + ' MB' 
       : (file.size / 1024).toFixed(1) + ' KB';
@@ -9471,37 +9491,159 @@
 
     const subInput = document.getElementById('importSub');
     const titleInput = document.getElementById('importTitle');
-    const rawBase = file.name.replace(/\.pdf$/i, '').replace(/[-_]+/g, ' ').trim();
-    
+    const discSelect = document.getElementById('importDisc');
+
+    // Limpar sufixos aleatórios de arquivos e hashes (ex: "mzoypb (1)", " (1)")
+    let cleanBase = file.name.replace(/\.pdf$/i, '').replace(/[-_]+/g, ' ').trim();
+    cleanBase = cleanBase.replace(/\s+[a-z0-9]{5,}\s*\(\d+\)$/i, '').replace(/\s*\(\d+\)$/, '').trim();
+
+    // Auto-detectar disciplina pelo nome do arquivo
+    const lowerName = file.name.toLowerCase();
+    if (discSelect) {
+      if (lowerName.includes('penal') && (lowerName.includes('processo') || lowerName.includes('processual'))) {
+        discSelect.value = 'Direito_Processual_Penal';
+      } else if (lowerName.includes('penal') && (lowerName.includes('especial') || lowerName.includes('legisla'))) {
+        discSelect.value = 'Direito_Penal';
+      } else if (lowerName.includes('penal')) {
+        discSelect.value = 'Direito_Penal';
+      } else if (lowerName.includes('constitucional') || lowerName.includes('art_5') || lowerName.includes('artigo_5')) {
+        discSelect.value = 'Direito_Constitucional';
+      } else if (lowerName.includes('administrativ') || lowerName.includes('licita') || lowerName.includes('servidor') || lowerName.includes('8112') || lowerName.includes('14133')) {
+        discSelect.value = 'Direito_Administrativo';
+      } else if (lowerName.includes('civil') && (lowerName.includes('processo') || lowerName.includes('processual'))) {
+        discSelect.value = 'Direito_Processual_Civil';
+      } else if (lowerName.includes('civil')) {
+        discSelect.value = 'Direito_Civil';
+      } else if (lowerName.includes('tributar')) {
+        discSelect.value = 'Direito_Tributario';
+      } else if (lowerName.includes('portugues') || lowerName.includes('gramatica') || lowerName.includes('crase') || lowerName.includes('interpretacao')) {
+        discSelect.value = 'Portugues';
+      } else if (lowerName.includes('informatica') || lowerName.includes('excel') || lowerName.includes('redes')) {
+        discSelect.value = 'Informatica';
+      } else if (lowerName.includes('rac') || lowerName.includes('logica')) {
+        discSelect.value = 'Raciocinio_Logico';
+      }
+    }
+
     if (subInput && !subInput.value.trim()) {
-      subInput.value = rawBase.replace(/\s+/g, '_');
+      subInput.value = cleanBase.replace(/\s+/g, '_');
     }
     if (titleInput && !titleInput.value.trim()) {
-      titleInput.value = rawBase;
+      titleInput.value = cleanBase;
     }
 
     const btn = document.getElementById('btnRunImportLesson');
     const topBtn = document.getElementById('topSaveImportBtn');
     const label = document.getElementById('importBtnLabel');
-    if (label) label.textContent = '⏳ Carregando arquivo PDF...';
+    if (label) label.textContent = '⏳ Analisando e extraindo páginas do PDF...';
     if (btn) btn.disabled = true;
     if (topBtn) topBtn.disabled = true;
 
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      selectedPdfBase64 = e.target.result;
+    try {
+      // Ler Base64 apenas se o arquivo for menor que 3.0 MB (evita payload > 4.5MB da Vercel)
+      if (file.size < 3000000) {
+        try {
+          const b64Promise = new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => resolve(e.target.result || '');
+            reader.onerror = () => resolve('');
+            reader.readAsDataURL(file);
+          });
+          selectedPdfBase64 = await b64Promise;
+        } catch(eB64) {
+          console.warn('Não foi possível gerar base64 local do PDF:', eB64);
+        }
+      } else {
+        selectedPdfBase64 = '';
+      }
+
+      // Extração de texto client-side de alta fidelidade via PDF.js
+      if (typeof window.pdfjsLib !== 'undefined') {
+        const arrayBuf = await file.arrayBuffer();
+        const loadingTask = window.pdfjsLib.getDocument({
+          data: arrayBuf,
+          cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/',
+          cMapPacked: true
+        });
+        const pdfDoc = await loadingTask.promise;
+        const totalPages = pdfDoc.numPages;
+        selectedPdfNumPages = totalPages;
+        const pagesList = [];
+        let combinedText = '';
+
+        for (let p = 1; p <= totalPages; p++) {
+          if (label && p % 2 === 0) {
+            label.textContent = `⏳ Extraindo página ${p} de ${totalPages}...`;
+          }
+          const page = await pdfDoc.getPage(p);
+          const content = await page.getTextContent();
+          const items = content.items || [];
+
+          // Agrupar itens de texto por linha através da coordenada Y vertical (transform[5])
+          const lineGroups = [];
+          for (const item of items) {
+            if (!item.str && item.str !== ' ') continue;
+            const x = item.transform ? item.transform[4] : 0;
+            const y = item.transform ? item.transform[5] : 0;
+            let group = lineGroups.find(g => Math.abs(g.y - y) <= 3.5);
+            if (!group) {
+              group = { y: y, items: [] };
+              lineGroups.push(group);
+            }
+            group.items.push({ x: x, str: item.str });
+          }
+
+          // Ordenar linhas do topo para o rodapé (Y decrescente)
+          lineGroups.sort((a, b) => b.y - a.y);
+
+          const lines = [];
+          for (const group of lineGroups) {
+            group.items.sort((a, b) => a.x - b.x);
+            let lineStr = '';
+            for (let i = 0; i < group.items.length; i++) {
+              const str = group.items[i].str;
+              if (i === 0) {
+                lineStr = str;
+              } else if (lineStr.endsWith(' ') || str.startsWith(' ')) {
+                lineStr += str;
+              } else {
+                lineStr += ' ' + str;
+              }
+            }
+            if (lineStr.trim()) {
+              lines.push(lineStr.trim());
+            }
+          }
+
+          const pageJoined = lines.join('\n');
+          pagesList.push(pageJoined);
+          combinedText += `\n--- PÁGINA ${p} ---\n` + pageJoined + '\n';
+        }
+
+        selectedPdfExtractedText = combinedText.trim();
+        selectedPdfExtractedPages = pagesList;
+
+        if (fsEl) {
+          fsEl.textContent = `${sizeFmt} • ${totalPages} pág(s) extraídas`;
+        }
+      } else if (!selectedPdfBase64) {
+        // Fallback se PDF.js não carregou
+        const b64Promise = new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result || '');
+          reader.onerror = () => resolve('');
+          reader.readAsDataURL(file);
+        });
+        selectedPdfBase64 = await b64Promise;
+      }
+    } catch (err) {
+      console.error('Erro na extração client-side via PDF.js:', err);
+    } finally {
       if (btn) btn.disabled = false;
       if (topBtn) topBtn.disabled = false;
       if (label) label.textContent = '💾 Salvar e Importar Prova em PDF';
-      showToast(`Arquivo "${file.name}" carregado e pronto para salvar!`, '📄');
-    };
-    reader.onerror = function() {
-      alert("Erro ao ler arquivo PDF.");
-      if (btn) btn.disabled = false;
-      if (topBtn) topBtn.disabled = false;
-      if (label) label.textContent = '💾 Salvar e Importar Prova em PDF';
-    };
-    reader.readAsDataURL(file);
+      showToast(`Arquivo "${file.name}" carregado (${selectedPdfNumPages || 1} pág)! Pronto para salvar.`, '📄');
+    }
   }
 
   function handlePdfSelected(input) {
@@ -9575,11 +9717,11 @@
 
     try {
       if (currentImportMode === 'pdf') {
-        if (!selectedPdfBase64) {
+        if (!selectedPdfBase64 && !selectedPdfExtractedText) {
           alert("Por favor, selecione um arquivo PDF para importar.");
           return;
         }
-        label.textContent = "Extraindo PDF e Gerando os 4 Pilares...";
+        label.textContent = "Processando PDF e Gerando os 4 Pilares...";
         const resp = await fetch('/api/import-pdf', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -9589,7 +9731,10 @@
             title: title || sub.replace(/_/g, ' '),
             professor: prof,
             banca: banca,
-            pdf_base64: selectedPdfBase64,
+            pdf_base64: selectedPdfBase64 || '',
+            extracted_text: selectedPdfExtractedText || '',
+            extracted_pages: selectedPdfExtractedPages || [],
+            num_pages: selectedPdfNumPages || 1,
             pdf_filename: selectedPdfFileName,
             email: userEmail,
             is_trial: isTrial,
@@ -9881,6 +10026,11 @@
     'Direito_Administrativo': 'Direito Administrativo',
     'Direito_Constitucional': 'Direito Constitucional',
     'Direito_Penal': 'Direito Penal',
+    'Direito_Processual_Penal': 'Direito Processual Penal',
+    'Direito_Civil': 'Direito Civil',
+    'Direito_Processual_Civil': 'Direito Processual Civil',
+    'Direito_Tributario': 'Direito Tributário',
+    'Legislacao_Especial': 'Legislação Especial',
     'Portugues': 'Língua Portuguesa',
     'Raciocinio_Logico': 'Raciocínio Lógico'
   };

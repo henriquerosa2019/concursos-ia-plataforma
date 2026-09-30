@@ -2564,27 +2564,42 @@ ${context.slice(0, 10000)}`;
     const pdf_b64 = body.pdf_base64 || '';
     const pdf_filename = body.pdf_filename || 'material.pdf';
 
-    if (!pdf_b64) {
-      return res.status(400).json({ success: false, error: 'Arquivo PDF obrigatório.' });
+    const clientExtractedText = (body.extracted_text || '').trim();
+    const clientExtractedPages = Array.isArray(body.extracted_pages) ? body.extracted_pages : [];
+    const clientNumPages = Number(body.num_pages) || clientExtractedPages.length || 1;
+
+    if (!pdf_b64 && !clientExtractedText) {
+      return res.status(400).json({ success: false, error: 'Arquivo PDF ou texto extraído obrigatório.' });
     }
 
     if (!sub) {
       sub = pdf_filename.replace(/\.pdf$/i, '').trim().replace(/[\s/]/g, '_') || 'Nova_Prova';
     }
 
-    // Extrair texto limpo com descompressão de streams zlib (sem ruído binário)
-    let extractedText = '';
-    let extractedPages = [];
-    let numPages = 1;
-    try {
-      const cleanB64 = pdf_b64.includes(',') ? pdf_b64.split(',')[1] : pdf_b64;
-      const buf = Buffer.from(cleanB64, 'base64');
-      const resExtract = extractCleanPdfText(buf);
-      extractedText = resExtract.text || '';
-      extractedPages = resExtract.pages || [];
-      numPages = resExtract.numPages || 1;
-    } catch (e_parse) {
-      console.error('Erro na extração limpa de PDF:', e_parse);
+    // Extrair texto limpo com descompressão de streams zlib (sem ruído binário) ou usar o extraído no cliente
+    let extractedText = clientExtractedText;
+    let extractedPages = clientExtractedPages;
+    let numPages = clientNumPages;
+
+    if (!extractedText && pdf_b64) {
+      try {
+        const cleanB64 = pdf_b64.includes(',') ? pdf_b64.split(',')[1] : pdf_b64;
+        const buf = Buffer.from(cleanB64, 'base64');
+        const resExtract = extractCleanPdfText(buf);
+        extractedText = resExtract.text || '';
+        extractedPages = resExtract.pages || [];
+        numPages = resExtract.numPages || 1;
+      } catch (e_parse) {
+        console.error('Erro na extração limpa de PDF:', e_parse);
+      }
+    }
+
+    if (extractedText && (!extractedPages || extractedPages.length === 0)) {
+      const parts = extractedText.split(/---\s*P[ÁA]GINA\s*\d+\s*---/i);
+      extractedPages = parts.map(p => p.trim()).filter(Boolean);
+      if (extractedPages.length > 0 && numPages <= 1) {
+        numPages = extractedPages.length;
+      }
     }
 
     // Auto-detecção inteligente de tema e professor a partir do texto extraído

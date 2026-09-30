@@ -5256,31 +5256,49 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 if not title:
                     title = sub.replace("_", " ")
 
-                # Decodificar Base64
-                if "," in pdf_b64:
-                    pdf_b64 = pdf_b64.split(",", 1)[1]
-                try:
-                    pdf_bytes = base64.b64decode(pdf_b64)
-                except Exception as e_b64:
+                extracted_text = (data.get("extracted_text") or "").strip()
+                extracted_pages = data.get("extracted_pages") or []
+                num_pages = int(data.get("num_pages") or (len(extracted_pages) if extracted_pages else 1))
+
+                if not pdf_b64 and not extracted_text:
                     self.send_response(400)
                     self.send_header("Content-type", "application/json; charset=utf-8")
                     self.end_headers()
-                    self.wfile.write(json.dumps({"success": False, "error": f"Erro ao decodificar arquivo PDF: {str(e_b64)}"}, ensure_ascii=False).encode("utf-8"))
+                    self.wfile.write(json.dumps({"success": False, "error": "Arquivo PDF ou texto extraído obrigatório."}, ensure_ascii=False).encode("utf-8"))
                     return
 
                 folder = os.path.join(BASE_DIR, disc, sub)
                 os.makedirs(folder, exist_ok=True)
 
-                # Salvar arquivo PDF original
-                pdf_save_path = os.path.join(folder, pdf_filename)
-                try:
-                    with open(pdf_save_path, "wb") as f_pdf:
-                        f_pdf.write(pdf_bytes)
-                except Exception:
-                    pass
+                if pdf_b64:
+                    # Decodificar Base64
+                    if "," in pdf_b64:
+                        pdf_b64 = pdf_b64.split(",", 1)[1]
+                    try:
+                        pdf_bytes = base64.b64decode(pdf_b64)
+                        # Salvar arquivo PDF original
+                        pdf_save_path = os.path.join(folder, pdf_filename)
+                        try:
+                            with open(pdf_save_path, "wb") as f_pdf:
+                                f_pdf.write(pdf_bytes)
+                        except Exception:
+                            pass
+                        if not extracted_text:
+                            # Extrair texto das páginas usando pypdf
+                            num_pages, extracted_text = extract_text_from_pdf_bytes(pdf_bytes)
+                    except Exception as e_b64:
+                        if not extracted_text:
+                            self.send_response(400)
+                            self.send_header("Content-type", "application/json; charset=utf-8")
+                            self.end_headers()
+                            self.wfile.write(json.dumps({"success": False, "error": f"Erro ao decodificar arquivo PDF: {str(e_b64)}"}, ensure_ascii=False).encode("utf-8"))
+                            return
 
-                # Extrair texto das páginas usando pypdf
-                num_pages, extracted_text = extract_text_from_pdf_bytes(pdf_bytes)
+                if not extracted_pages and extracted_text:
+                    parts = re.split(r'---\s*P[ÁA]GINA\s*\d+\s*---', extracted_text, flags=re.IGNORECASE)
+                    extracted_pages = [p.strip() for p in parts if p.strip()]
+                    if extracted_pages and num_pages <= 1:
+                        num_pages = len(extracted_pages)
 
                 # Auto-detecção inteligente de tema e professor a partir do texto extraído
                 norm_ext = (extracted_text or "").lower()

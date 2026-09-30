@@ -89,7 +89,7 @@ function extractSemanticMindmapFromCorpus(disc, sub, title, contextText, focus =
   const normTopic = `${disc} ${sub} ${cleanTitle}`.toLowerCase().replace(/-/g, '_');
 
   // 1. Direito Penal: Dolo, Culpa e Omissão
-  if (normTopic.includes('dolo') || normTopic.includes('culpa') || normTopic.includes('omissao') || (normTopic.includes('penal') && (normTopic.includes('conduta') || normTopic.includes('crime')))) {
+  if ((normTopic.includes('dolo') || normTopic.includes('culpa') || normTopic.includes('omissao') || (normTopic.includes('penal') && (normTopic.includes('conduta') || normTopic.includes('crimes_omissivos')))) && !normTopic.includes('licita') && !normTopic.includes('ato') && !normTopic.includes('poder')) {
     return {
       titulo: cleanTitle,
       nodes: [
@@ -218,8 +218,8 @@ function extractSemanticMindmapFromCorpus(disc, sub, title, contextText, focus =
     };
   }
 
-  // 4. Direito Administrativo: Poderes e Atos Administrativos (Restrito para evitar falsos positivos)
-  if ((normTopic.includes('poder') || normTopic.includes('ato_administrativo') || normTopic.includes('atos_administrativos')) && !normTopic.includes('licita')) {
+  // 4. Direito Administrativo: Poderes Administrativos (Exclusivo)
+  if ((normTopic.includes('poder_administrativo') || normTopic.includes('poderes_administrativos') || normTopic.includes('poder_hierarquico') || normTopic.includes('poder_disciplinar') || normTopic.includes('poder_policia')) && !normTopic.includes('ato') && !normTopic.includes('licita')) {
     return {
       titulo: cleanTitle,
       nodes: [
@@ -232,7 +232,7 @@ function extractSemanticMindmapFromCorpus(disc, sub, title, contextText, focus =
         { id: "pod_policia", titulo: "Poder de Polícia", tipo: "concept", pagina: 3, resumo: "Condiciona e restringe o uso de bens e liberdades individuais em favor do interesse público (discricionariedade, autoexecutoriedade e coercibilidade)." },
         { id: "comp_hier_disc", titulo: "Hierárquico × Disciplinar", tipo: "comparison", pagina: 2, resumo: "Poder hierárquico organiza atribuições internas; poder disciplinar pune infrações funcionais com vínculo específico." },
         { id: "trap_multa", titulo: "Pegadinha: Multa não é Autoexecutória", tipo: "trap", pagina: 3, resumo: "A cobrança de multa pecuniária não tem autoexecutoriedade: se o particular não pagar, exige Execução Fiscal no Judiciário." },
-        { id: "mnem_cofifomob", titulo: "Mnemônico: COFIFOMOB", tipo: "mnemonic", pagina: 1, resumo: "Competência + Finalidade + Forma + Motivo + Objeto (requisitos de validade dos atos administrativos)." }
+        { id: "mnem_poderes", titulo: "Mnemônico: H-D-R-P", tipo: "mnemonic", pagina: 2, resumo: "Hierárquico + Disciplinar + Regulamentar + Polícia (os 4 poderes clássicos da Administração)." }
       ],
       edges: [
         { source: "root", target: "cat_conceito" },
@@ -243,61 +243,135 @@ function extractSemanticMindmapFromCorpus(disc, sub, title, contextText, focus =
         { source: "cat_especies", target: "pod_policia" },
         { source: "cat_especies", target: "comp_hier_disc" },
         { source: "cat_especies", target: "trap_multa" },
-        { source: "cat_conceito", target: "mnem_cofifomob" }
+        { source: "cat_especies", target: "mnem_poderes" }
       ]
     };
   }
 
-  // 5. Extrator Semântico Dinâmico para Qualquer PDF Importado
+  // 5. Direito Administrativo: Atos Administrativos (Exclusivo e Aprofundado)
+  if ((normTopic.includes('ato_administrativo') || normTopic.includes('atos_administrativos') || normTopic.includes('atos') || normTopic.includes('convalidacao') || normTopic.includes('anulacao_revogacao')) && !normTopic.includes('licita')) {
+    return {
+      titulo: cleanTitle,
+      nodes: [
+        { id: "root", titulo: "Atos Administrativos", tipo: "root", pagina: 1, resumo: "Manifestação unilateral de vontade da Administração Pública que produz efeitos jurídicos imediatos sob regime de direito público." },
+        { id: "cat_requisitos", titulo: "1. Requisitos de Validade (COFIFOMOB)", tipo: "category", pagina: 1, resumo: "Elementos indispensáveis para a perfeição e higidez jurídica do ato administrativo." },
+        { id: "cat_atributos", titulo: "2. Atributos do Ato (PATI)", tipo: "category", pagina: 2, resumo: "Prerrogativas e características jurídicas que diferenciam os atos administrativos dos atos privados." },
+        { id: "cat_extincao", titulo: "3. Extinção e Convalidação", tipo: "category", pagina: 3, resumo: "Formas de desfazimento (Anulação x Revogação) e saneamento de vícios sanáveis." },
+        { id: "req_competencia", titulo: "Competência (CO)", tipo: "rule", pagina: 1, resumo: "Poder legal conferido ao agente público. É irrenunciável, intransferível e inderrogável (art. 11 da Lei 9.784/99)." },
+        { id: "req_finalidade", titulo: "Finalidade (FI)", tipo: "rule", pagina: 1, resumo: "Objetivo estritamente de interesse público e específico previsto em lei. Desvio gera desvio de poder / finalidade." },
+        { id: "req_forma", titulo: "Forma (FO)", tipo: "rule", pagina: 1, resumo: "Modo de exteriorização do ato. A regra é a forma escrita solene. Vício de forma não essencial admite convalidação." },
+        { id: "req_motivo", titulo: "Motivo (MO)", tipo: "rule", pagina: 1, resumo: "Pressupostos fáticos e jurídicos que justificam a edição do ato. Sujeito à Teoria dos Motivos Determinantes." },
+        { id: "req_objeto", titulo: "Objeto / Conteúdo (OB)", tipo: "concept", pagina: 1, resumo: "Efeito jurídico imediato produzido pelo ato (criação, modificação ou extinção de direitos)." },
+        { id: "atr_presuncao", titulo: "Presunção de Legitimidade", tipo: "definition", pagina: 2, resumo: "Presume-se editado em conformidade com a lei até prova em contrário (juris tantum). Inverte o ônus da prova." },
+        { id: "atr_autoexec", titulo: "Autoexecutoriedade", tipo: "definition", pagina: 2, resumo: "A Administração executa materialmente seus atos sem necessidade de autorização judicial prévia." },
+        { id: "atr_tipicidade", titulo: "Tipicidade", tipo: "definition", pagina: 2, resumo: "O ato deve corresponder a figuras previamente definidas em lei, impedindo a criação de atos arbitrários." },
+        { id: "atr_imperat", titulo: "Imperatividade", tipo: "definition", pagina: 2, resumo: "Poder de impor obrigações unilateralmente a terceiros independentemente de sua concordância." },
+        { id: "comp_anul_revog", titulo: "Anulação × Revogação", tipo: "comparison", pagina: 3, resumo: "Anulação decorre de ilegalidade (ex tunc, vinculada, adm ou judiciário). Revogação decorre de conveniência/oportunidade (ex nunc, discricionária, privativa da adm)." },
+        { id: "trap_foco", titulo: "Pegadinha: Convalidação FO-CO", tipo: "trap", pagina: 3, resumo: "Apenas admitem convalidação vícios sanáveis de Forma (não essencial) e Competência (não exclusiva). Motivo, finalidade e objeto ilícito NUNCA convalidam." },
+        { id: "trap_multa_atos", titulo: "Pegadinha: Multa não é Autoexecutória", tipo: "trap", pagina: 2, resumo: "A imposição de multa decorre do poder de polícia, mas a sua cobrança pecuniária não é autoexecutória; exige ação de execução fiscal judicial." },
+        { id: "mnem_cofifomob", titulo: "Mnemônico: COFIFOMOB", tipo: "mnemonic", pagina: 1, resumo: "Competência + Finalidade + Forma + Motivo + Objeto (requisitos de validade dos atos administrativos)." },
+        { id: "mnem_pati", titulo: "Mnemônico: PATI", tipo: "mnemonic", pagina: 2, resumo: "Presunção de legitimidade + Autoexecutoriedade + Tipicidade + Imperatividade (atributos do ato)." }
+      ],
+      edges: [
+        { source: "root", target: "cat_requisitos" },
+        { source: "root", target: "cat_atributos" },
+        { source: "root", target: "cat_extincao" },
+        { source: "cat_requisitos", target: "req_competencia" },
+        { source: "cat_requisitos", target: "req_finalidade" },
+        { source: "cat_requisitos", target: "req_forma" },
+        { source: "cat_requisitos", target: "req_motivo" },
+        { source: "cat_requisitos", target: "req_objeto" },
+        { source: "cat_requisitos", target: "mnem_cofifomob" },
+        { source: "cat_atributos", target: "atr_presuncao" },
+        { source: "cat_atributos", target: "atr_autoexec" },
+        { source: "cat_atributos", target: "atr_tipicidade" },
+        { source: "cat_atributos", target: "atr_imperat" },
+        { source: "cat_atributos", target: "trap_multa_atos" },
+        { source: "cat_atributos", target: "mnem_pati" },
+        { source: "cat_extincao", target: "comp_anul_revog" },
+        { source: "cat_extincao", target: "trap_foco" }
+      ]
+    };
+  }
+
+  // 6. Extrator Semântico Dinâmico para Qualquer PDF Importado (Robusto & Preciso)
   const nodes = [{
     id: "root",
-    titulo: cleanTitle,
+    titulo: cleanTitle.slice(0, 45),
     tipo: "root",
     pagina: 1,
     resumo: `Estrutura esquematizada das unidades essenciais de ${cleanTitle} para retenção rápida em concursos.`
   }];
   const edges = [];
 
-  const lines = (contextText || '').split('\n');
-  let currentPage = 1;
-  const foundUnits = [];
-
-  for (const l of lines) {
-    const mPage = l.trim().match(/^---\s*P[ÁA]GINA\s*(\d+)\s*---/i);
-    if (mPage) {
-      currentPage = parseInt(mPage[1], 10);
-      continue;
+  const rawPages = (contextText || '').split(/---\s*P[ÁA]GINA\s*(\d+)\s*---/i);
+  const pageMap = {};
+  if (rawPages.length > 1) {
+    for (let i = 1; i < rawPages.length; i += 2) {
+      const pnum = parseInt(rawPages[i], 10);
+      const ptxt = rawPages[i + 1] || '';
+      pageMap[pnum] = ptxt;
     }
-    const lStr = l.trim();
-    if ((lStr.startsWith('### ') || lStr.startsWith('## ') || /^[0-9]\.\s+[A-Z]/.test(lStr)) && lStr.length > 5) {
-      const cleanHead = lStr.replace(/^[#0-9.\-*\s]+/, '').replace(/\*\*/g, '').trim();
-      if (/mini-simulado|flashcards|gabarito|quadro|visão geral|mapa mental/i.test(cleanHead)) continue;
-
-      let tipo = "concept";
-      if (/pegadinha|cuidado|armadilha|atenção/i.test(cleanHead)) tipo = "trap";
-      else if (/mnem[ôo]nico|macete/i.test(cleanHead)) tipo = "mnemonic";
-      else if (/regra|requisito|dever|art\./i.test(cleanHead)) tipo = "rule";
-      else if (/exceção|ressalva/i.test(cleanHead)) tipo = "exception";
-      else if (/diferença|versus|\sx\s|confronto/i.test(cleanHead)) tipo = "comparison";
-
-      foundUnits.push({
-        titulo: cleanHead.slice(0, 45),
-        tipo,
-        pagina: currentPage
-      });
-      if (foundUnits.length >= 12) break;
-    }
+  } else {
+    pageMap[1] = contextText || '';
   }
 
+  const pageKeys = Object.keys(pageMap).map(Number).sort((a, b) => a - b);
+  const totalP = pageKeys.length || 1;
+
   const catEixos = [
-    { id: "cat_1", titulo: "1. Conceitos e Fundamentos", pagina: 1, resumo: `Definições técnicas e princípios fundamentais de ${cleanTitle}.` },
-    { id: "cat_2", titulo: "2. Regras e Aplicações Práticas", pagina: Math.min(2, currentPage), resumo: `Dispositivos legais e normas cobradas nas provas sobre ${cleanTitle}.` },
-    { id: "cat_3", titulo: "3. Pegadinhas e Regras de Banca", pagina: Math.min(3, currentPage), resumo: `Inversões conceituais e pontos de maior índice de erro em ${cleanTitle}.` }
+    { id: "cat_1", titulo: "1. Conceitos e Fundamentos", pagina: 1, resumo: `Definições essenciais e princípios fundamentais de ${cleanTitle}.` },
+    { id: "cat_2", titulo: "2. Regras e Aplicações Práticas", pagina: Math.max(1, Math.min(2, totalP)), resumo: `Dispositivos normativos e critérios aplicáveis a ${cleanTitle}.` },
+    { id: "cat_3", titulo: "3. Pegadinhas e Regras de Banca", pagina: Math.max(1, Math.min(3, totalP)), resumo: `Inversões conceituais, termos absolutos e armadilhas em ${cleanTitle}.` }
   ];
 
   for (const c of catEixos) {
     nodes.push({ id: c.id, titulo: c.titulo, tipo: "category", pagina: c.pagina, resumo: c.resumo });
     edges.push({ source: "root", target: c.id });
+  }
+
+  const foundUnits = [];
+  const seenTitles = new Set();
+
+  for (const pnum of pageKeys) {
+    const ptxt = pageMap[pnum];
+    const lines = ptxt.split('\n');
+    for (const l of lines) {
+      const lStr = l.trim();
+      if (/rodrigo\s+motta|youtube|instagram|kaverna|p[áa]gina/i.test(lStr)) continue;
+
+      const isUpperTitle = (lStr === lStr.toUpperCase() && lStr.length > 5 && lStr.length < 55 && !lStr.startsWith('(') && !lStr.endsWith(')'));
+      const isNumbered = /^(?:[0-9]{1,2}\.|\bArt\.\s*\d+)\s+([A-Za-z\u00C0-\u017F\s]{5,50})/.test(lStr);
+      const isMarkdownHeading = (lStr.startsWith('### ') || lStr.startsWith('## ')) && lStr.length > 5;
+      const isAlert = /pegadinha|cuidado|atenção|mnem[ôo]nico|macete|exceção|ressalva|importante/i.test(lStr);
+
+      if (isUpperTitle || isNumbered || isMarkdownHeading || isAlert) {
+        const cleanUnitTitle = lStr.replace(/^[0-9.\-*\s#]+/, '').replace(/\*\*/g, '').trim();
+        if (cleanUnitTitle.length < 5 || cleanUnitTitle.length > 60) continue;
+        const normKey = cleanUnitTitle.toLowerCase();
+        if (seenTitles.has(normKey) || /gabarito|mini-simulado|exerc[ií]cios|j[áa]\s+caiu|vis[ãa]o\s+geral|mapa\s+mental|quadro\s+sin[óo]ptico/i.test(normKey)) {
+          continue;
+        }
+        seenTitles.add(normKey);
+
+        let tipo = "concept";
+        if (/pegadinha|cuidado|armadilha|atenção|não\s+confundir/i.test(normKey)) tipo = "trap";
+        else if (/mnem[ôo]nico|macete/i.test(normKey)) tipo = "mnemonic";
+        else if (/regra|requisito|dever|art\.|prazo|fase/i.test(normKey)) tipo = "rule";
+        else if (/exceção|ressalva|salvo/i.test(normKey)) tipo = "exception";
+        else if (/diferença|versus|\sx\s|confronto|distinção/i.test(normKey)) tipo = "comparison";
+        else if (isUpperTitle) tipo = "definition";
+
+        foundUnits.push({
+          titulo: cleanUnitTitle.slice(0, 45),
+          tipo,
+          pagina: pnum,
+          resumo: `Tópico sobre ${cleanUnitTitle.slice(0, 45)} extraído da página ${pnum} do material.`
+        });
+        if (foundUnits.length >= 18) break;
+      }
+    }
+    if (foundUnits.length >= 18) break;
   }
 
   foundUnits.forEach((u, idx) => {
@@ -308,7 +382,7 @@ function extractSemanticMindmapFromCorpus(disc, sub, title, contextText, focus =
       titulo: u.titulo,
       tipo: u.tipo,
       pagina: u.pagina,
-      resumo: `Conceito sobre ${u.titulo} extraído da página ${u.pagina} do material didático.`
+      resumo: u.resumo
     });
     edges.push({ source: parentCat, target: nid });
   });
@@ -2101,6 +2175,17 @@ ${context.slice(0, 10000)}`;
     return { pilar1: p1, pilar2: p2, cards, quiz, knowledge_units: knowledgeUnits };
   }
 
+  function cleanPdfSpaces(text) {
+    if (!text) return '';
+    let t = text;
+    t = t.replace(/(\b[a-zA-Z\u00C0-\u017F]+)\s+-\s*([a-zA-Z\u00C0-\u017F]+)/g, '$1-$2');
+    t = t.replace(/\b(in|est|situa|aplica|admiti|previs|obrig|procedi)\s+([a-zA-Z\u00C0-\u017F]{2,})\b/gi, '$1$2');
+    t = t.replace(/\b([b-df-hj-np-tv-z])\s+([a-z\u00C0-\u017F]{3,})\b/gi, '$1$2');
+    t = t.replace(/n\.\s*º/g, 'n.º');
+    t = t.replace(/[ \t]+/g, ' ');
+    return t.trim();
+  }
+
   function extractExamQuestionsFromPdfText(text, pagesInput) {
     let pages = pagesInput;
     if (!pages || !Array.isArray(pages) || pages.length === 0) {
@@ -2109,7 +2194,7 @@ ${context.slice(0, 10000)}`;
       pages = rawPages.map((pt, idx) => ({ pageNum: idx + 1, lines: pt.split('\n') }));
     }
 
-    const allQuestions = [];
+    const rawQuestions = [];
 
     for (const p of pages) {
       let pageText = (p.lines || []).join('\n');
@@ -2125,10 +2210,13 @@ ${context.slice(0, 10000)}`;
       pageText = pageText.replace(/(\d)\s+(\d)/g, '$1$2');
       pageText = pageText.replace(/(\d)\s+(\d)/g, '$1$2');
       
-      // Normalizar opções isoladas: '(A)\n' ou '(A) ' ou 'A) ' ou no início de linha 'A '
+      // Prevenir "(A) partir..." de virar opção
+      pageText = pageText.replace(/(?:^|\n|\s)\(\s*A\s*\)\s*partir\b/gi, '\nA partir');
+      pageText = pageText.replace(/(?:^|\n|\s)A\s+partir\b/gi, '\nA partir');
+
+      // Normalizar opções isoladas: '(A)\n' ou '(A) ' ou 'A) '
       pageText = pageText.replace(/(?:^|\n|\s)\(\s*([A-E])\s*\)(?:\s*|\n)/g, '\n($1) ');
       pageText = pageText.replace(/(?:^|\n|\s)\b([A-E])[\)\.]\s+/g, '\n($1) ');
-      pageText = pageText.replace(/(?:^|\n)\s*([A-E])\s+(?=[a-zA-Z\u00C0-\u017F]{2,})/g, '\n($1) ');
 
       // Quebrar linha antes de cabeçalhos de banca
       pageText = pageText.replace(/([^\n])\s*(\(?\b\d{1,2}[\)\.]?\s*\([A-Z0-9\u00C0-\u017F\s/–\-\.]{4,}(?:\/|CEBRASPE|FGV|FCC|AOCP|VUNESP|IBADE|CESPE)[^\)]*\))/gi, '$1\n\n$2');
@@ -2157,7 +2245,7 @@ ${context.slice(0, 10000)}`;
         // Se for um título teórico que encerra as questões daquela seção
         if (/^(?:MODALIDADES|CONCEITO|PRINCÍPIOS|CRITÉRIOS|DISPENSA|INEXIGIBILIDADE|REGRAS|FASES)\b/i.test(line) && line.length < 50 && !line.includes('(') && !line.includes('/')) {
           if (currentQ && currentQ.body.length > 20) {
-            allQuestions.push(currentQ);
+            rawQuestions.push(currentQ);
             currentQ = null;
           }
           continue;
@@ -2172,13 +2260,19 @@ ${context.slice(0, 10000)}`;
 
         // Início de questão por cabeçalho com banca: (ANALISTA... / FGV) ou 38) (TÉCNICO... / FGV)
         const mHeaderStart = line.match(/^(?:(\d{1,2})[\)\.]?\s*)?\((\s*[A-Z0-9\u00C0-\u017F\s/–\-\.]{4,}(?:\/|CEBRASPE|FGV|FCC|AOCP|VUNESP|IBADE|CESPE)[^\)]*)\)\s*(.*)$/i);
-        // Início de questão por número clássico: '38) O Tribunal...'
-        const mQNum = line.match(/^(\d{1,2})[\)\.]?\s*(.*)$/);
+        
+        // Início de questão por número clássico: '01) As normas...' ou '01. As normas...' (NUNCA leis como 14.133 ou 8.112)
+        let mQNum = line.match(/^(\d{1,2})\)\s*(.*)$/);
+        if (!mQNum) {
+          const mTestDot = line.match(/^(\d{1,2})\.(?!\d)\s+(.*)$/);
+          if (mTestDot) mQNum = mTestDot;
+        }
+
         const isOption = /^\([A-E]\)/.test(line);
 
         if ((mHeaderStart || mQNum) && !isOption) {
           if (currentQ && currentQ.body.length > 20) {
-            allQuestions.push(currentQ);
+            rawQuestions.push(currentQ);
           }
 
           let num = '';
@@ -2204,7 +2298,7 @@ ${context.slice(0, 10000)}`;
 
           let banca = 'CEBRASPE';
           for (const b of ['CEBRASPE', 'FGV', 'FCC', 'INSTITUTO AOCP', 'AOCP', 'VUNESP', 'IBADE']) {
-            if (new RegExp(`\\b${b}\\b`, 'i').test(header || rest)) {
+            if (new RegExp(`\\b${b}\\b`, 'i').test((header || '') + ' ' + rest)) {
               banca = b.includes('AOCP') ? 'AOCP' : b;
               break;
             }
@@ -2224,24 +2318,30 @@ ${context.slice(0, 10000)}`;
         // Detecção de Opção: (A), (B), (C), (D), (E)
         const mOpt = line.match(/^\(([A-E])\)\s*(.*)$/);
         if (mOpt && currentQ) {
+          // Prevenir falso positivo em "A partir de..."
+          if (mOpt[1] === 'A' && /^partir\b/i.test(mOpt[2])) {
+            currentQ.body = (currentQ.body + ' A ' + mOpt[2]).trim();
+            continue;
+          }
+
           if (/[:?]\s*$/.test(mOpt[2]) && currentQ.options.length === 0) {
             currentQ.body = (currentQ.body + ' ' + line.replace(/^\([A-E]\)\s*/, '')).trim();
             continue;
           }
 
           if (mOpt[1] === 'A' && currentQ.options.length >= 4) {
-            allQuestions.push(currentQ);
+            rawQuestions.push(currentQ);
             currentQ = {
               num: '',
               header: '',
               body: '',
-              options: [`(${mOpt[1]}) ${mOpt[2].trim()}`],
+              options: [`(${mOpt[1]}) ${cleanPdfSpaces(mOpt[2])}`],
               banca: 'CEBRASPE',
               pagina: p.pageNum
             };
             continue;
           }
-          currentQ.options.push(`(${mOpt[1]}) ${mOpt[2].trim()}`);
+          currentQ.options.push(`(${mOpt[1]}) ${cleanPdfSpaces(mOpt[2])}`);
           continue;
         }
 
@@ -2268,40 +2368,70 @@ ${context.slice(0, 10000)}`;
       }
 
       if (currentQ && currentQ.body.length > 20) {
-        allQuestions.push(currentQ);
+        rawQuestions.push(currentQ);
         currentQ = null;
       }
     }
 
-    return allQuestions.map(q => {
-      const header = q.header ? q.header.trim() : '';
-      const body = q.body ? q.body.trim() : '';
-      const prefix = q.num ? `${q.num}) ` : '';
-      const fullEnunciado = header ? `${prefix}${header}\n${body}`.trim() : `${prefix}${body}`.trim();
+    // Segunda passada: ligar contextos situacionais / textos base aos itens avaliativos
+    const finalQuestions = [];
+    let currentStemText = '';
+    let currentStemHeader = '';
+    let currentStemBanca = 'CEBRASPE';
 
-      const cleanOpts = (q.options || []).map(opt => {
-        return opt
-          .replace(/\b([b-df-hj-np-tv-z])\s+([a-z\u00C0-\u017F]{2,})\b/gi, '$1$2')
-          .replace(/\s*\)\s*$/, '')
-          .replace(/\s+/g, ' ')
-          .trim();
+    for (const q of rawQuestions) {
+      const h = cleanPdfSpaces(q.header);
+      const b = cleanPdfSpaces(q.body);
+      const num = (q.num || '').trim();
+      let opts = (q.options || []).map(cleanPdfSpaces);
+      let banca = q.banca;
+      const pag = q.pagina;
+
+      const isSituationPrompt = (opts.length === 0 && /(?:julgue\s+(?:os|o|os\s+itens)\s+itens?|situa[çc][ãa]o\s+hipot[ée]tica|julgue\s+os\s+itens\s+a\s+seguir|julgue\s+o\s+item\s+a\s+seguir|a\s+partir\s+dessa\s+situa[çc][ãa]o|julgue\s+os\s+itens\s+que\s+se\s+seguem|julgue\s+os\s+itens\s+subsecutivos)/i.test(b));
+
+      if (isSituationPrompt) {
+        currentStemText = b;
+        currentStemHeader = h;
+        currentStemBanca = banca;
+        continue;
+      }
+
+      let effHeader = h;
+      if (!effHeader && currentStemHeader) {
+        effHeader = currentStemHeader;
+        banca = currentStemBanca;
+      }
+
+      const prefix = num ? `${num}) ` : '';
+      let enun = '';
+      if (opts.length === 0 && currentStemText) {
+        enun = `${effHeader}\n[Contexto]: ${currentStemText}\n\n${prefix}${b}`.trim();
+        opts = ['(C) CERTO', '(E) ERRADO'];
+      } else {
+        enun = effHeader ? `${effHeader}\n${prefix}${b}`.trim() : `${prefix}${b}`.trim();
+        if (opts.length === 0) {
+          opts = ['(C) CERTO', '(E) ERRADO'];
+        }
+      }
+
+      finalQuestions.push({
+        num,
+        header: effHeader,
+        body: b,
+        enunciado: enun,
+        options: opts,
+        banca,
+        pagina: pag
       });
+    }
 
-      return {
-        num: q.num,
-        header,
-        body,
-        enunciado: fullEnunciado,
-        options: cleanOpts,
-        banca: q.banca,
-        pagina: q.pagina
-      };
-    });
+    return finalQuestions;
   }
 
-  function convertQuestionsToQuizAndCards(extractedQs, defaultBanca = 'Cebraspe') {
+  function convertQuestionsToQuizAndCards(extractedQs, defaultBanca = 'Cebraspe', topicLabel = '') {
     const quiz = [];
     const cards = [];
+    const cleanTopic = (topicLabel || 'Concursos Públicos').trim();
 
     const knownAnswers = {
       'MARIC': {
@@ -2391,20 +2521,30 @@ ${context.slice(0, 10000)}`;
     for (const q of extractedQs) {
       if (quiz.length >= 10) break;
       if (!quiz.some(item => item.enunciado === q.enunciado)) {
-        const isCertoErrado = !q.options || q.options.length === 0;
-        const opts = isCertoErrado ? ['(C) CERTO', '(E) ERRADO'] : q.options;
+        const isCertoErrado = !q.options || q.options.length === 0 || (q.options.length === 2 && q.options[0].includes('(C)'));
+        const opts = (!q.options || q.options.length === 0) ? ['(C) CERTO', '(E) ERRADO'] : q.options;
+        let commentBase = `Gabarito fundamentado conforme as lições e dispositivos normativos de ${cleanTopic} (Página ${q.pagina} do material didático).`;
+        if (cleanTopic.includes('14.133') || cleanTopic.toLowerCase().includes('licita')) {
+          commentBase = `Gabarito fundamentado conforme as disposições da Lei nº 14.133/2021 (Página ${q.pagina} do material de estudo).`;
+        }
+
         quiz.push({
           enunciado: q.enunciado,
           options: opts,
           correct_index: 0,
-          comentario: `Gabarito fundamentado conforme as disposições da Lei nº 14.133/2021 (Página ${q.pagina} do material de estudo).`,
+          comentario: commentBase,
           banca: q.banca
         });
         if (cards.length < 10) {
           const cardTitle = q.header || `Questão ${q.num}`;
+          let cardAns = `Gabarito e Fundamentação (${cleanTopic}): Aplicação direta dos preceitos teóricos e jurisprudenciais ensinados na página ${q.pagina} do material didático.`;
+          if (cleanTopic.includes('14.133') || cleanTopic.toLowerCase().includes('licita')) {
+            cardAns = `Gabarito e Regra da Lei 14.133/2021: Aplicação direta dos preceitos normativos e jurisprudenciais ensinados na página ${q.pagina} do material didático.`;
+          }
+
           cards.push({
             q: `👨‍🏫 [Pág. ${String(q.pagina).padStart(2, '0')} - ${cardTitle}] Julgue a assertiva:\n${q.body}`.replace(/\.\.\./g, ''),
-            a: `Gabarito e Regra da Lei 14.133/2021: Aplicação direta dos preceitos normativos e jurisprudenciais ensinados na página ${q.pagina} do material didático.`.replace(/\.\.\./g, '')
+            a: cardAns.replace(/\.\.\./g, '')
           });
         }
       }
@@ -2447,8 +2587,13 @@ ${context.slice(0, 10000)}`;
       console.error('Erro na extração limpa de PDF:', e_parse);
     }
 
-    // Auto-detecção inteligente de tema a partir do texto extraído
+    // Auto-detecção inteligente de tema e professor a partir do texto extraído
     const normExt = (extractedText || '').toLowerCase();
+    const isKaverna = /rodrigo\s+motta|@profrodrigomotta|kaverna|kverna/i.test(normExt);
+    if (isKaverna && (professor === 'Prof. Especialista' || !professor)) {
+      professor = 'Prof. Rodrigo Motta';
+    }
+
     if (normExt.includes('licitaç') && (normExt.includes('14.133') || normExt.includes('14133'))) {
       if (!sub || sub === 'Nova_Prova' || sub === 'material' || sub.toLowerCase().includes('nova')) {
         sub = 'Licitacoes_Lei_14133';
@@ -2459,8 +2604,43 @@ ${context.slice(0, 10000)}`;
       if (!disc || disc === 'Concursos_Gerais') {
         disc = 'Direito_Administrativo';
       }
-      if ((professor === 'Prof. Especialista' || !professor) && normExt.includes('rodrigo motta')) {
-        professor = 'Prof. Rodrigo Motta';
+    } else if (/ato\s+administrativo|atos\s+administrativos|cofifomob|convalida[çc][ãa]o/i.test(normExt) && !normExt.includes('licita')) {
+      if (!sub || sub === 'Nova_Prova' || sub === 'material' || sub.toLowerCase().includes('nova')) {
+        sub = 'Atos_Administrativos';
+      }
+      if (!title || title === 'Nova Prova em PDF' || title === 'material' || title.toLowerCase().includes('nova')) {
+        title = 'Atos Administrativos – Requisitos, Atributos e Extinção';
+      }
+      if (!disc || disc === 'Concursos_Gerais') {
+        disc = 'Direito_Administrativo';
+      }
+    } else if (/poder\s+hier[áa]rquico|poder\s+disciplinar|poder\s+de\s+pol[ií]cia|poderes\s+administrativos/i.test(normExt) && !normExt.includes('ato') && !normExt.includes('licita')) {
+      if (!sub || sub === 'Nova_Prova' || sub === 'material' || sub.toLowerCase().includes('nova')) {
+        sub = 'Poderes_Administrativos';
+      }
+      if (!title || title === 'Nova Prova em PDF' || title === 'material' || title.toLowerCase().includes('nova')) {
+        title = 'Poderes Administrativos – Espécies, Deveres e Abuso';
+      }
+      if (!disc || disc === 'Concursos_Gerais') {
+        disc = 'Direito_Administrativo';
+      }
+    } else if (/8\.112|8112|servidores\s+p[úu]blicos|provimento|vac[âa]ncia/i.test(normExt)) {
+      if (!sub || sub === 'Nova_Prova' || sub === 'material' || sub.toLowerCase().includes('nova')) {
+        sub = 'Servidores_Lei_8112';
+      }
+      if (!title || title === 'Nova Prova em PDF' || title === 'material' || title.toLowerCase().includes('nova')) {
+        title = 'Regime dos Servidores Públicos – Lei nº 8.112/1990';
+      }
+      if (!disc || disc === 'Concursos_Gerais') {
+        disc = 'Direito_Administrativo';
+      }
+    } else if (/direito\s+constitucional|art\.\s*5|direitos\s+fundamentais/i.test(normExt)) {
+      if (!disc || disc === 'Concursos_Gerais') {
+        disc = 'Direito_Constitucional';
+      }
+    } else if (/direito\s+penal|c[óo]digo\s+penal|dolo\s+e\s+culpa/i.test(normExt)) {
+      if (!disc || disc === 'Concursos_Gerais') {
+        disc = 'Direito_Penal';
       }
     }
 
@@ -2615,7 +2795,8 @@ Retorne APENAS um JSON no formato:
     try {
       const examQs = extractExamQuestionsFromPdfText(extractedText, extractedPages);
       if (examQs.length > 0 || sub.toLowerCase().includes('licita') || sub.toLowerCase().includes('14133')) {
-        const converted = convertQuestionsToQuizAndCards(examQs, banca);
+        const topicLabel = title || sub.replace(/_/g, ' ');
+        const converted = convertQuestionsToQuizAndCards(examQs, banca, topicLabel);
         if (converted.quiz && converted.quiz.length > 0) {
           questions = converted.quiz;
         }

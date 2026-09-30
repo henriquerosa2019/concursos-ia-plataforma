@@ -9667,6 +9667,11 @@
             localStorage.setItem('concursos_local_lessons', JSON.stringify(localLessons));
           } catch(e) {}
 
+          if (typeof globalPreseededCatalog !== 'undefined' && globalPreseededCatalog) {
+            if (!globalPreseededCatalog[targetDisc]) globalPreseededCatalog[targetDisc] = {};
+            globalPreseededCatalog[targetDisc][targetSub] = lessonObj;
+          }
+
           if (!globalTreeCache[targetDisc]) globalTreeCache[targetDisc] = {};
           globalTreeCache[targetDisc][targetSub] = {
             cards_count: (lessonObj.flashcards || []).length,
@@ -10563,7 +10568,7 @@
         if (resp.ok) meta = await resp.json();
       } catch(e) {}
 
-      if (!meta || !meta.markdown_content || meta.has_lesson === false) {
+      if (!meta || !meta.markdown_content || (meta.has_lesson === false && (!meta.markdown_content || meta.markdown_content.length < 80))) {
         try {
           const localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
           if (localLessons[disc] && localLessons[disc][sub] && localLessons[disc][sub].meta) {
@@ -10572,7 +10577,7 @@
         } catch(e) {}
       }
 
-      if (!meta || !meta.markdown_content || meta.has_lesson === false) {
+      if (!meta || !meta.markdown_content || (meta.has_lesson === false && (!meta.markdown_content || meta.markdown_content.length < 80))) {
         if (!globalPreseededCatalog) await loadPreseededCatalog();
         if (globalPreseededCatalog?.[disc]?.[sub]?.meta) {
           meta = globalPreseededCatalog[disc][sub].meta;

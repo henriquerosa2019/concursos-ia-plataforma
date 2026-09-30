@@ -1956,9 +1956,8 @@ def get_lesson_metadata(discipline, subarea):
     dur_m = re.search(r"\*\*(?:Dura[çc][ãa]o|Carga Hor[áa]ria):\*\*\s*(.*)", content)
     link_m = re.search(r"(https?://(?:www\.)?(?:youtube\.com/watch\?[^\s\)\"]+|youtu\.be/[^\s\)\"]+))", content)
     cat_m = re.search(r"\*\*Categoria.*:\*\*\s*(.*)", content)
-    
     clean_title = title_m.group(1).strip() if title_m else f"{discipline} • {subarea}"
-    has_full_lesson = bool(prof_m and link_m)
+    has_full_lesson = bool(content and len(content.strip()) > 80 and (prof_m or link_m or "#" in content))
     
     moments_file = os.path.join(folder, f"Momentos_Chave_{subarea}.json")
     moments_list = []
@@ -2341,7 +2340,7 @@ def extract_semantic_mindmap_from_corpus(discipline, subarea, title, context_tex
     norm_topic = (discipline + " " + subarea + " " + clean_title).lower().replace('-', '_')
     
     # 1. Direito Penal: Dolo, Culpa e Omissão
-    if any(k in norm_topic for k in ["dolo", "culpa", "omissao", "penal"]):
+    if any(k in norm_topic for k in ["dolo", "culpa", "omissao", "crimes_omissivos"]) and not any(k in norm_topic for k in ["licita", "poder", "ato"]):
         nodes = [
             {
                 "id": "root",
@@ -2550,8 +2549,8 @@ def extract_semantic_mindmap_from_corpus(discipline, subarea, title, context_tex
         ]
         return {"titulo": clean_title or "Licitações Públicas (Lei nº 14.133/2021)", "nodes": nodes, "edges": edges}
 
-    # 3. Direito Administrativo: Poderes e Atos Administrativos (Restrito para evitar falsos positivos)
-    if any(k in norm_topic for k in ["poder", "ato_administrativo", "atos_administrativos"]) and "licita" not in norm_topic:
+    # 3. Direito Administrativo: Poderes Administrativos (Exclusivo)
+    if any(k in norm_topic for k in ["poder_administrativo", "poderes_administrativos", "poder_hierarquico", "poder_disciplinar", "poder_policia"]) and not any(k in norm_topic for k in ["ato", "licita"]):
         nodes = [
             {"id": "root", "titulo": "Poderes Administrativos", "tipo": "root", "pagina": 1, "resumo": "Instrumentos jurídicos conferidos à Administração Pública para a consecução do interesse público com prerrogativas estatais."},
             {"id": "cat_conceito", "titulo": "1. Conceito e Finalidade", "tipo": "category", "pagina": 1, "resumo": "Poder-dever indeclinável conferido por lei, orientado estritamente ao interesse da coletividade."},
@@ -2562,7 +2561,7 @@ def extract_semantic_mindmap_from_corpus(discipline, subarea, title, context_tex
             {"id": "pod_policia", "titulo": "Poder de Polícia", "tipo": "concept", "pagina": 3, "resumo": "Condiciona e restringe o uso de bens e liberdades individuais em favor do interesse público (discricionariedade, autoexecutoriedade e coercibilidade)."},
             {"id": "comp_hier_disc", "titulo": "Hierárquico × Disciplinar", "tipo": "comparison", "pagina": 2, "resumo": "Poder hierárquico organiza atribuições internas; poder disciplinar pune infrações funcionais com vínculo específico."},
             {"id": "trap_multa", "titulo": "Pegadinha: Multa não é Autoexecutória", "tipo": "trap", "pagina": 3, "resumo": "A cobrança de multa pecuniária não tem autoexecutoriedade: se o particular não pagar, exige Execução Fiscal no Judiciário."},
-            {"id": "mnem_cofifomob", "titulo": "Mnemônico: COFIFOMOB", "tipo": "mnemonic", "pagina": 1, "resumo": "Competência + Finalidade + Forma + Motivo + Objeto (requisitos de validade dos atos administrativos)."}
+            {"id": "mnem_poderes", "titulo": "Mnemônico: H-D-R-P", "tipo": "mnemonic", "pagina": 2, "resumo": "Hierárquico + Disciplinar + Regulamentar + Polícia (os 4 poderes clássicos da Administração)."}
         ]
         edges = [
             {"source": "root", "target": "cat_conceito"},
@@ -2573,11 +2572,54 @@ def extract_semantic_mindmap_from_corpus(discipline, subarea, title, context_tex
             {"source": "cat_especies", "target": "pod_policia"},
             {"source": "cat_especies", "target": "comp_hier_disc"},
             {"source": "cat_especies", "target": "trap_multa"},
-            {"source": "cat_conceito", "target": "mnem_cofifomob"}
+            {"source": "cat_especies", "target": "mnem_poderes"}
         ]
         return {"titulo": clean_title, "nodes": nodes, "edges": edges}
 
-    # 3. Informática / Excel
+    # 4. Direito Administrativo: Atos Administrativos (Exclusivo e Aprofundado)
+    if any(k in norm_topic for k in ["ato_administrativo", "atos_administrativos", "atos", "convalidacao", "anulacao_revogacao"]) and not any(k in norm_topic for k in ["licita"]):
+        nodes = [
+            {"id": "root", "titulo": "Atos Administrativos", "tipo": "root", "pagina": 1, "resumo": "Manifestação unilateral de vontade da Administração Pública que produz efeitos jurídicos imediatos sob regime de direito público."},
+            {"id": "cat_requisitos", "titulo": "1. Requisitos de Validade (COFIFOMOB)", "tipo": "category", "pagina": 1, "resumo": "Elementos indispensáveis para a perfeição e higidez jurídica do ato administrativo."},
+            {"id": "cat_atributos", "titulo": "2. Atributos do Ato (PATI)", "tipo": "category", "pagina": 2, "resumo": "Prerrogativas e características jurídicas que diferenciam os atos administrativos dos atos privados."},
+            {"id": "cat_extincao", "titulo": "3. Extinção e Convalidação", "tipo": "category", "pagina": 3, "resumo": "Formas de desfazimento (Anulação x Revogação) e saneamento de vícios sanáveis."},
+            {"id": "req_competencia", "titulo": "Competência (CO)", "tipo": "rule", "pagina": 1, "resumo": "Poder legal conferido ao agente público. É irrenunciável, intransferível e inderrogável (art. 11 da Lei 9.784/99)."},
+            {"id": "req_finalidade", "titulo": "Finalidade (FI)", "tipo": "rule", "pagina": 1, "resumo": "Objetivo estritamente de interesse público e específico previsto em lei. Desvio gera desvio de poder / finalidade."},
+            {"id": "req_forma", "titulo": "Forma (FO)", "tipo": "rule", "pagina": 1, "resumo": "Modo de exteriorização do ato. A regra é a forma escrita solene. Vício de forma não essencial admite convalidação."},
+            {"id": "req_motivo", "titulo": "Motivo (MO)", "tipo": "rule", "pagina": 1, "resumo": "Pressupostos fáticos e jurídicos que justificam a edição do ato. Sujeito à Teoria dos Motivos Determinantes."},
+            {"id": "req_objeto", "titulo": "Objeto / Conteúdo (OB)", "tipo": "concept", "pagina": 1, "resumo": "Efeito jurídico imediato produzido pelo ato (criação, modificação ou extinção de direitos)."},
+            {"id": "atr_presuncao", "titulo": "Presunção de Legitimidade", "tipo": "definition", "pagina": 2, "resumo": "Presume-se editado em conformidade com a lei até prova em contrário (juris tantum). Inverte o ônus da prova."},
+            {"id": "atr_autoexec", "titulo": "Autoexecutoriedade", "tipo": "definition", "pagina": 2, "resumo": "A Administração executa materialmente seus atos sem necessidade de autorização judicial prévia."},
+            {"id": "atr_tipicidade", "titulo": "Tipicidade", "tipo": "definition", "pagina": 2, "resumo": "O ato deve corresponder a figuras previamente definidas em lei, impedindo a criação de atos arbitrários."},
+            {"id": "atr_imperat", "titulo": "Imperatividade", "tipo": "definition", "pagina": 2, "resumo": "Poder de impor obrigações unilateralmente a terceiros independentemente de sua concordância."},
+            {"id": "comp_anul_revog", "titulo": "Anulação × Revogação", "tipo": "comparison", "pagina": 3, "resumo": "Anulação decorre de ilegalidade (ex tunc, vinculada, adm ou judiciário). Revogação decorre de conveniência/oportunidade (ex nunc, discricionária, privativa da adm)."},
+            {"id": "trap_foco", "titulo": "Pegadinha: Convalidação FO-CO", "tipo": "trap", "pagina": 3, "resumo": "Apenas admitem convalidação vícios sanáveis de Forma (não essencial) e Competência (não exclusiva). Motivo, finalidade e objeto ilícito NUNCA convalidam."},
+            {"id": "trap_multa_atos", "titulo": "Pegadinha: Multa não é Autoexecutória", "tipo": "trap", "pagina": 2, "resumo": "A imposição de multa decorre do poder de polícia, mas a sua cobrança pecuniária não é autoexecutória; exige ação de execução fiscal judicial."},
+            {"id": "mnem_cofifomob", "titulo": "Mnemônico: COFIFOMOB", "tipo": "mnemonic", "pagina": 1, "resumo": "Competência + Finalidade + Forma + Motivo + Objeto (requisitos de validade dos atos administrativos)."},
+            {"id": "mnem_pati", "titulo": "Mnemônico: PATI", "tipo": "mnemonic", "pagina": 2, "resumo": "Presunção de legitimidade + Autoexecutoriedade + Tipicidade + Imperatividade (atributos do ato)."}
+        ]
+        edges = [
+            {"source": "root", "target": "cat_requisitos"},
+            {"source": "root", "target": "cat_atributos"},
+            {"source": "root", "target": "cat_extincao"},
+            {"source": "cat_requisitos", "target": "req_competencia"},
+            {"source": "cat_requisitos", "target": "req_finalidade"},
+            {"source": "cat_requisitos", "target": "req_forma"},
+            {"source": "cat_requisitos", "target": "req_motivo"},
+            {"source": "cat_requisitos", "target": "req_objeto"},
+            {"source": "cat_requisitos", "target": "mnem_cofifomob"},
+            {"source": "cat_atributos", "target": "atr_presuncao"},
+            {"source": "cat_atributos", "target": "atr_autoexec"},
+            {"source": "cat_atributos", "target": "atr_tipicidade"},
+            {"source": "cat_atributos", "target": "atr_imperat"},
+            {"source": "cat_atributos", "target": "trap_multa_atos"},
+            {"source": "cat_atributos", "target": "mnem_pati"},
+            {"source": "cat_extincao", "target": "comp_anul_revog"},
+            {"source": "cat_extincao", "target": "trap_foco"}
+        ]
+        return {"titulo": clean_title, "nodes": nodes, "edges": edges}
+
+    # 5. Informática / Excel
     if any(k in norm_topic for k in ["excel", "procv", "calc", "planilha"]):
         nodes = [
             {"id": "root", "titulo": "Excel: Funções de Pesquisa", "tipo": "root", "pagina": 1, "resumo": "Mecanismos de busca vetorial e matricial no Microsoft Excel com foco nas funções PROCV, PROCX e ÍNDICE+CORRESP."},
@@ -2602,8 +2644,8 @@ def extract_semantic_mindmap_from_corpus(discipline, subarea, title, context_tex
         ]
         return {"titulo": clean_title, "nodes": nodes, "edges": edges}
 
-    # 4. Extrator semântico dinâmico para QUALQUER PDF importado
-    pages = re.split(r'---\s*P[ÁA]GINA\s*(\d+)\s*---', context_text, flags=re.IGNORECASE)
+    # 6. Extrator semântico dinâmico para QUALQUER PDF importado (Robusto & Preciso)
+    pages = re.split(r'---\s*P[ÁA]GINA\s*(\d+)\s*---', context_text or "", flags=re.IGNORECASE)
     page_map = {}
     if len(pages) > 1:
         for idx in range(1, len(pages), 2):
@@ -2611,63 +2653,79 @@ def extract_semantic_mindmap_from_corpus(discipline, subarea, title, context_tex
             ptxt = pages[idx+1] if idx+1 < len(pages) else ""
             page_map[pnum] = ptxt
     else:
-        page_map[1] = context_text
+        page_map[1] = context_text or ""
 
     nodes = [{
         "id": "root",
-        "titulo": clean_title,
+        "titulo": clean_title[:45],
         "tipo": "root",
         "pagina": 1,
         "resumo": f"Estrutura esquematizada das unidades essenciais de {clean_title} para retenção rápida em concursos."
     }]
     edges = []
 
-    # Extrair seções reais do material
-    lines = context_text.split('\n')
-    current_page = 1
-    found_units = []
-
-    for l in lines:
-        m_page = re.match(r'---\s*P[ÁA]GINA\s*(\d+)\s*---', l.strip(), re.I)
-        if m_page:
-            current_page = int(m_page.group(1))
-            continue
-        
-        l_str = l.strip()
-        if (l_str.startswith('### ') or l_str.startswith('## ') or re.match(r'^[0-9]\.\s+[A-Z]', l_str)) and len(l_str) > 5:
-            clean_head = re.sub(r'^[#0-9\.\-\*\s]+', '', l_str).replace('**', '').strip()
-            if any(skip in clean_head.lower() for skip in ["mini-simulado", "flashcards", "gabarito", "quadro", "visão geral", "mapa mental"]):
-                continue
-            tipo = "concept"
-            if any(w in clean_head.lower() for w in ["pegadinha", "cuidado", "armadilha", "atenção"]):
-                tipo = "trap"
-            elif any(w in clean_head.lower() for w in ["mnemônico", "mnemonico", "macete"]):
-                tipo = "mnemonic"
-            elif any(w in clean_head.lower() for w in ["regra", "requisito", "dever", "art."]):
-                tipo = "rule"
-            elif any(w in clean_head.lower() for w in ["exceção", "ressalva"]):
-                tipo = "exception"
-            elif any(w in clean_head.lower() for w in ["diferença", "versus", " x ", "confronto"]):
-                tipo = "comparison"
-            
-            found_units.append({
-                "titulo": clean_head[:50],
-                "tipo": tipo,
-                "pagina": current_page
-            })
-            if len(found_units) >= 12:
-                break
-
-    # Seções mestres
+    # Eixos temáticos estruturados
     cat_eixos = [
-        ("cat_1", "1. Conceitos e Fundamentos", 1, "Definições técnicas e princípios fundamentais extraídos da fonte."),
-        ("cat_2", "2. Regras e Aplicações Práticas", max(1, min(2, len(page_map))), "Dispositivos legais e normas cobradas nas provas."),
-        ("cat_3", "3. Pegadinhas e Regras de Banca", max(1, min(3, len(page_map))), "Inversões conceituais e pontos de maior índice de erro.")
+        ("cat_1", "1. Conceitos e Fundamentos", 1, f"Definições essenciais e princípios fundamentais de {clean_title}."),
+        ("cat_2", "2. Regras e Aplicações Práticas", max(1, min(2, len(page_map))), f"Dispositivos normativos e critérios aplicáveis a {clean_title}."),
+        ("cat_3", "3. Pegadinhas e Regras de Banca", max(1, min(3, len(page_map))), f"Inversões conceituais, termos absolutos e armadilhas em {clean_title}.")
     ]
     for cid, ctitle, cpage, cresumo in cat_eixos:
         nodes.append({"id": cid, "titulo": ctitle, "tipo": "category", "pagina": cpage, "resumo": cresumo})
         edges.append({"source": "root", "target": cid})
 
+    found_units = []
+    seen_titles = set()
+
+    for pnum in sorted(page_map.keys()):
+        ptxt = page_map[pnum]
+        lines = ptxt.split('\n')
+        for l in lines:
+            l_str = l.strip()
+            if any(ign in l_str.upper() for ign in ["RODRIGO MOTTA", "YOUTUBE", "INSTAGRAM", "KAVERNA", "PÁGINA"]):
+                continue
+            
+            # Detectar títulos ou subtópicos relevantes:
+            is_upper_title = (l_str.isupper() and 5 < len(l_str) < 55 and not l_str.startswith('(') and not l_str.endswith(')'))
+            is_numbered = bool(re.match(r'^(?:[0-9]{1,2}\.|\bArt\.\s*\d+)\s+([A-Za-z\u00C0-\u017F\s]{5,50})', l_str))
+            is_markdown_heading = (l_str.startswith('### ') or l_str.startswith('## ')) and len(l_str) > 5
+            is_alert = any(w in l_str.lower() for w in ["pegadinha", "cuidado", "atenção", "mnemônico", "mnemonico", "exceção", "ressalva", "importante"])
+
+            if is_upper_title or is_numbered or is_markdown_heading or is_alert:
+                clean_unit_title = re.sub(r'^[0-9\.\-\*\s#]+', '', l_str).replace('**', '').strip()
+                if len(clean_unit_title) < 5 or len(clean_unit_title) > 60:
+                    continue
+                norm_key = clean_unit_title.lower()
+                if norm_key in seen_titles or any(sk in norm_key for sk in ["gabarito", "mini-simulado", "exercícios", "já caiu", "visão geral", "mapa mental", "quadro sinóptico"]):
+                    continue
+                seen_titles.add(norm_key)
+
+                tipo = "concept"
+                if any(w in norm_key for w in ["pegadinha", "cuidado", "armadilha", "atenção", "não confundir"]):
+                    tipo = "trap"
+                elif any(w in norm_key for w in ["mnemônico", "mnemonico", "macete"]):
+                    tipo = "mnemonic"
+                elif any(w in norm_key for w in ["regra", "requisito", "dever", "art.", "prazo", "fase"]):
+                    tipo = "rule"
+                elif any(w in norm_key for w in ["exceção", "ressalva", "salvo"]):
+                    tipo = "exception"
+                elif any(w in norm_key for w in ["diferença", "versus", " x ", "confronto", "distinção"]):
+                    tipo = "comparison"
+                elif is_upper_title:
+                    tipo = "definition"
+
+                found_units.append({
+                    "titulo": clean_unit_title[:45],
+                    "tipo": tipo,
+                    "pagina": pnum,
+                    "resumo": f"Tópico sobre {clean_unit_title[:45]} extraído da página {pnum} do material."
+                })
+                if len(found_units) >= 18:
+                    break
+        if len(found_units) >= 18:
+            break
+
+    # Vincular nós filhos aos eixos temáticos correspondentes
     for idx, u in enumerate(found_units):
         parent_cat = "cat_3" if u["tipo"] == "trap" else ("cat_2" if u["tipo"] in ["rule", "exception"] else "cat_1")
         nid = f"unit_{idx+1}"
@@ -2676,7 +2734,7 @@ def extract_semantic_mindmap_from_corpus(discipline, subarea, title, context_tex
             "titulo": u["titulo"],
             "tipo": u["tipo"],
             "pagina": u["pagina"],
-            "resumo": f"Conceito sobre {u['titulo']} extraído da página {u['pagina']} do material didático."
+            "resumo": u["resumo"]
         })
         edges.append({"source": parent_cat, "target": nid})
 
@@ -3146,17 +3204,30 @@ def sync_topic_to_catalog(discipline, subarea, title, professor, banca, aula_md,
             except Exception as e:
                 print(f"Aviso ao sincronizar catálogo {cp}: {e}")
 
+def clean_pdf_spaces(text):
+    if not text:
+        return ""
+    t = text
+    # Corrigir quebras de palavras e hífens do PDF
+    t = re.sub(r'(\b[a-zA-Z\u00C0-\u017F]+)\s+-\s*([a-zA-Z\u00C0-\u017F]+)', r'\1-\2', t)
+    t = re.sub(r'\b(in|est|situa|aplica|admiti|previs|obrig|procedi)\s+([a-zA-Z\u00C0-\u017F]{2,})\b', r'\1\2', t, flags=re.I)
+    t = re.sub(r'\b([b-df-hj-np-tv-z])\s+([a-z\u00C0-\u017F]{3,})\b', r'\1\2', t, flags=re.I)
+    t = re.sub(r'n\.\s*º', 'n.º', t)
+    t = re.sub(r'[ \t]+', ' ', t)
+    return t.strip()
+
 def extract_exam_questions_from_corpus(text_corpus):
     """
     Extrai questões reais de concursos contidas em apostilas e materiais didáticos (ex: Kaverna / 'JÁ CAIU EM PROVA').
     Garante separação precisa de cada questão e de suas opções (A-E ou C/E), sem truncamento nem concatenação.
+    Preserva textos situacionais (Cebraspe) vinculando-os aos itens avaliativos.
     """
     if not text_corpus:
         return []
 
     # Quebrar páginas
     raw_pages = re.split(r'---\s*P[ÁA]GINA\s*\d+\s*---', text_corpus, flags=re.I)
-    questions = []
+    raw_questions = []
 
     for page_idx, page_raw in enumerate(raw_pages, 1):
         page_text = page_raw
@@ -3171,10 +3242,13 @@ def extract_exam_questions_from_corpus(text_corpus):
         page_text = re.sub(r'(\d)\s+(\d)', r'\1\2', page_text)
         page_text = re.sub(r'(\d)\s+(\d)', r'\1\2', page_text)
 
+        # Prevenir "(A) partir..." de virar opção
+        page_text = re.sub(r'(?:^|\n|\s)\(\s*A\s*\)\s*partir\b', r'\nA partir', page_text, flags=re.I)
+        page_text = re.sub(r'(?:^|\n|\s)A\s+partir\b', r'\nA partir', page_text, flags=re.I)
+
         # Normalizar opções: (A), B), A no início de linha
         page_text = re.sub(r'(?:^|\n|\s)\(\s*([A-E])\s*\)(?:\s*|\n)', r'\n(\1) ', page_text)
         page_text = re.sub(r'(?:^|\n|\s)\b([A-E])[\)\.]\s+', r'\n(\1) ', page_text)
-        page_text = re.sub(r'(?:^|\n)\s*([A-E])\s+(?=[a-zA-Z\u00C0-\u017F]{2,})', r'\n(\1) ', page_text)
 
         # Quebrar linha antes de cabeçalhos de banca
         page_text = re.sub(r'([^\n])\s*(\(?\b\d{1,2}[\)\.]?\s*\([A-Z0-9\u00C0-\u017F\s/–\-\.]{4,}(?:\/|CEBRASPE|FGV|FCC|AOCP|VUNESP|IBADE|CESPE)[^\)]*\))', r'\1\n\n\2', page_text, flags=re.I)
@@ -3193,27 +3267,37 @@ def extract_exam_questions_from_corpus(text_corpus):
         pending_header = ""
 
         for line in lines:
-            # Título de encerramento
+            # Título de encerramento de seção teórica
             if re.match(r'^(?:MODALIDADES|CONCEITO|PRINCÍPIOS|CRITÉRIOS|DISPENSA|INEXIGIBILIDADE|REGRAS|FASES)\b', line, re.I) and len(line) < 50 and "(" not in line and "/" not in line:
                 if current_q and len(current_q["body"]) > 20:
-                    questions.append(current_q)
+                    raw_questions.append(current_q)
                     current_q = None
                 continue
 
-            # Cabeçalho de banca isolado
+            # Cabeçalho de banca isolado: (ANALISTA / FGV / 2026)
             m_sh = re.match(r'^\(([A-Z0-9\u00C0-\u017F\s/–\-\.]{6,})\)$', line)
             if m_sh and ("/" in line or any(b in line.upper() for b in ["CEBRASPE", "FGV", "FCC", "AOCP", "VUNESP", "IBADE"])):
                 pending_header = line
                 continue
 
-            # Início de questão por cabeçalho com banca ou número
+            # Início de questão por cabeçalho com banca
             m_hs = re.match(r'^(?:(\d{1,2})[\)\.]?\s*)?\((\s*[A-Z0-9\u00C0-\u017F\s/–\-\.]{4,}(?:\/|CEBRASPE|FGV|FCC|AOCP|VUNESP|IBADE|CESPE)[^\)]*)\)\s*(.*)$', line, re.I)
-            m_qn = re.match(r'^(\d{1,2})[\)\.]?\s*(.*)$', line)
+            
+            # Início de questão por número clássico: '01) As normas...' ou '01. As normas...' (NUNCA leis como 14.133 ou 8.112)
+            m_qn = None
+            m_test_num = re.match(r'^(\d{1,2})\)\s*(.*)$', line)
+            if not m_test_num:
+                m_test_dot = re.match(r'^(\d{1,2})\.(?!\d)\s+(.*)$', line)
+                if m_test_dot:
+                    m_qn = m_test_dot
+            else:
+                m_qn = m_test_num
+
             is_opt = re.match(r'^\([A-E]\)', line)
 
             if (m_hs or m_qn) and not is_opt:
                 if current_q and len(current_q["body"]) > 20:
-                    questions.append(current_q)
+                    raw_questions.append(current_q)
 
                 num = ""
                 header = pending_header
@@ -3235,7 +3319,7 @@ def extract_exam_questions_from_corpus(text_corpus):
 
                 banca = "CEBRASPE"
                 for b in ["CEBRASPE", "FGV", "FCC", "INSTITUTO AOCP", "AOCP", "VUNESP", "IBADE"]:
-                    if re.search(r'\b' + b + r'\b', header + " " + rest, re.I):
+                    if re.search(r'\b' + b + r'\b', (header or '') + " " + rest, re.I):
                         banca = "AOCP" if "AOCP" in b else b
                         break
 
@@ -3252,23 +3336,28 @@ def extract_exam_questions_from_corpus(text_corpus):
             # Opção de resposta
             m_opt = re.match(r'^\(([A-E])\)\s*(.*)$', line)
             if m_opt and current_q:
+                # Prevenir falso positivo em "A partir de..."
+                if m_opt.group(1) == "A" and re.match(r'^partir\b', m_opt.group(2), re.I):
+                    current_q["body"] = (current_q["body"] + " A " + m_opt.group(2)).strip()
+                    continue
+
                 if re.search(r'[:?]\s*$', m_opt.group(2)) and len(current_q["options"]) == 0:
                     current_q["body"] = (current_q["body"] + " " + re.sub(r'^\([A-E]\)\s*', '', line)).strip()
                     continue
 
                 if m_opt.group(1) == "A" and len(current_q["options"]) >= 4:
-                    questions.append(current_q)
+                    raw_questions.append(current_q)
                     current_q = {
                         "num": "",
                         "header": "",
                         "body": "",
-                        "options": [f"({m_opt.group(1)}) {m_opt.group(2).strip()}"],
+                        "options": [f"({m_opt.group(1)}) {clean_pdf_spaces(m_opt.group(2))}"],
                         "banca": "CEBRASPE",
                         "pagina": page_idx
                     }
                     continue
 
-                current_q["options"].append(f"({m_opt.group(1)}) {m_opt.group(2).strip()}")
+                current_q["options"].append(f"({m_opt.group(1)}) {clean_pdf_spaces(m_opt.group(2))}")
                 continue
 
             # Continuação de linha
@@ -3288,43 +3377,69 @@ def extract_exam_questions_from_corpus(text_corpus):
                     current_q["body"] = (current_q["body"] + " " + line).strip()
 
         if current_q and len(current_q["body"]) > 20:
-            questions.append(current_q)
+            raw_questions.append(current_q)
 
-    # Limpeza e formatação final
-    formatted_qs = []
-    for q in questions:
-        h = q["header"].strip() if q["header"] else ""
-        b = q["body"].strip() if q["body"] else ""
-        prefix = f"{q['num']}) " if q["num"] else ""
-        full_enun = f"{prefix}{h}\n{b}".strip() if h else f"{prefix}{b}".strip()
+    # Segunda passada: ligar contextos situacionais / textos base aos itens que julgam a situação
+    final_questions = []
+    current_stem_text = ""
+    current_stem_header = ""
+    current_stem_banca = "CEBRASPE"
 
-            cleaned = re.sub(r'\b([b-df-hj-np-tv-z])\s+([a-z\u00C0-\u017F]{2,})\b', r'\1\2', opt, flags=re.I)
-            cleaned = re.sub(r'\s*\)\s*$', '', cleaned)
-            cleaned = re.sub(r'\s+', ' ', cleaned).strip()
-            clean_opts.append(cleaned)
+    for q in raw_questions:
+        h = clean_pdf_spaces(q["header"])
+        b = clean_pdf_spaces(q["body"])
+        num = q["num"].strip()
+        opts = [clean_pdf_spaces(o) for o in q["options"]]
+        banca = q["banca"]
+        pag = q["pagina"]
 
-        formatted_qs.append({
-            "num": q["num"],
+        # Se for um enunciado situacional (texto introdutório para julgar itens)
+        is_situation_prompt = (len(opts) == 0 and re.search(r'(?:julgue\s+(?:os|o|os\s+itens)\s+itens?|situa[çc][ãa]o\s+hipot[ée]tica|julgue\s+os\s+itens\s+a\s+seguir|julgue\s+o\s+item\s+a\s+seguir|a\s+partir\s+dessa\s+situa[çc][ãa]o|julgue\s+os\s+itens\s+que\s+se\s+seguem|julgue\s+os\s+itens\s+subsecutivos)', b, re.I))
+
+        if is_situation_prompt:
+            current_stem_text = b
+            current_stem_header = h
+            current_stem_banca = banca
+            continue
+
+        # Se o item é um item Cebraspe (sem opções A-E) e temos um contexto situacional ativo
+        if not h and current_stem_header:
+            h = current_stem_header
+            banca = current_stem_banca
+
+        prefix = f"{num}) " if num else ""
+        if len(opts) == 0 and current_stem_text:
+            enun = f"{h}\n[Contexto]: {current_stem_text}\n\n{prefix}{b}".strip()
+            opts = ["(C) CERTO", "(E) ERRADO"]
+        else:
+            enun = f"{h}\n{prefix}{b}".strip() if h else f"{prefix}{b}".strip()
+            if len(opts) == 0:
+                opts = ["(C) CERTO", "(E) ERRADO"]
+
+        final_questions.append({
+            "num": num,
             "header": h,
             "body": b,
-            "enunciado": full_enun,
-            "options": clean_opts,
-            "banca": q["banca"],
-            "pagina": q["pagina"]
+            "enunciado": enun,
+            "options": opts,
+            "banca": banca,
+            "pagina": pag
         })
 
-    return formatted_qs
+    return final_questions
 
-def convert_questions_to_quizAndCards(extracted_qs, default_banca="Cebraspe"):
-    return convert_questions_to_quiz_and_cards(extracted_qs, default_banca)
+def convert_questions_to_quizAndCards(extracted_qs, default_banca="Cebraspe", topic_label=""):
+    return convert_questions_to_quiz_and_cards(extracted_qs, default_banca, topic_label)
 
-def convert_questions_to_quiz_and_cards(extracted_qs, default_banca="Cebraspe"):
+def convert_questions_to_quiz_and_cards(extracted_qs, default_banca="Cebraspe", topic_label=""):
     """
     Converte questões reais de concursos extraídas do PDF em itens do Mini-Simulado (Pilar 4)
     e Flashcards Anki (Pilar 3) na íntegra e com ZERO RETICÊNCIAS (...).
+    Garante comentários contextualizados com o tema real da aula.
     """
     quiz = []
     cards = []
+    clean_topic = (topic_label or "Concursos Públicos").strip()
     
     known_answers = {
         "MARIC": {
@@ -3412,20 +3527,28 @@ def convert_questions_to_quiz_and_cards(extracted_qs, default_banca="Cebraspe"):
         if len(quiz) >= 10:
             break
         if not any(item["enunciado"] == q["enunciado"] for item in quiz):
-            is_certo_errado = len(q["options"]) == 0
-            opts = ["(C) CERTO", "(E) ERRADO"] if is_certo_errado else q["options"]
+            is_certo_errado = len(q["options"]) == 0 or (len(q["options"]) == 2 and "(C)" in q["options"][0])
+            opts = ["(C) CERTO", "(E) ERRADO"] if len(q["options"]) == 0 else q["options"]
+            comment_base = f"Gabarito fundamentado conforme as lições e dispositivos normativos de {clean_topic} (Página {q['pagina']} do material didático)."
+            if "14.133" in clean_topic or "licita" in clean_topic.lower():
+                comment_base = f"Gabarito fundamentado conforme as disposições da Lei nº 14.133/2021 (Página {q['pagina']} do material de estudo)."
+
             quiz.append({
                 "enunciado": q["enunciado"],
                 "options": opts,
                 "correct_index": 0,
-                "comentario": f"Gabarito fundamentado conforme as disposições da Lei nº 14.133/2021 (Página {q['pagina']} do material de estudo).",
+                "comentario": comment_base,
                 "banca": q["banca"]
             })
             if len(cards) < 10:
                 card_title = q["header"] or f"Questão {q['num']}"
+                card_ans = f"Gabarito e Fundamentação ({clean_topic}): Aplicação direta dos preceitos teóricos e jurisprudenciais ensinados na página {q['pagina']} do material didático."
+                if "14.133" in clean_topic or "licita" in clean_topic.lower():
+                    card_ans = f"Gabarito e Regra da Lei 14.133/2021: Aplicação direta dos preceitos normativos e jurisprudenciais ensinados na página {q['pagina']} do material didático."
+
                 cards.append({
                     "q": f"👨‍🏫 [Pág. {str(q['pagina']).zfill(2)} - {card_title}] Julgue a assertiva:\n{q['body']}".replace("...", ""),
-                    "a": f"Gabarito e Regra da Lei 14.133/2021: Aplicação direta dos preceitos normativos e jurisprudenciais ensinados na página {q['pagina']} do material didático.".replace("...", "")
+                    "a": card_ans.replace("...", "")
                 })
                 
     return quiz, cards
@@ -3482,7 +3605,8 @@ def auto_generate_all_4_pillars(discipline, subarea, title, professor, text_corp
     try:
         exam_qs = extract_exam_questions_from_corpus(text_corpus)
         if exam_qs or "licita" in subarea.lower() or "14133" in subarea.lower():
-            q_quiz, q_cards = convert_questions_to_quiz_and_cards(exam_qs, default_banca=banca)
+            topic_label = title or subarea.replace('_', ' ')
+            q_quiz, q_cards = convert_questions_to_quiz_and_cards(exam_qs, default_banca=banca, topic_label=topic_label)
             if q_quiz and len(q_quiz) > 0:
                 questions = q_quiz
             if q_cards and len(q_cards) > 0:
@@ -5158,8 +5282,12 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 # Extrair texto das páginas usando pypdf
                 num_pages, extracted_text = extract_text_from_pdf_bytes(pdf_bytes)
 
-                # Auto-detecção inteligente de tema a partir do texto extraído
+                # Auto-detecção inteligente de tema e professor a partir do texto extraído
                 norm_ext = (extracted_text or "").lower()
+                is_kaverna = any(k in norm_ext for k in ["rodrigo motta", "@profrodrigomotta", "kaverna", "kverna"])
+                if is_kaverna and (professor == "Prof. Especialista" or not professor):
+                    professor = "Prof. Rodrigo Motta"
+
                 if "licitaç" in norm_ext and ("14.133" in norm_ext or "14133" in norm_ext):
                     if not sub or sub in ["Nova_Prova", "material"] or "nova" in sub.lower():
                         sub = "Licitacoes_Lei_14133"
@@ -5167,15 +5295,41 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                         title = "Licitações – Lei nº 14.133/2021"
                     if disc in ["Concursos_Gerais", ""] or not disc:
                         disc = "Direito_Administrativo"
-                    if (professor == "Prof. Especialista" or not professor) and "rodrigo motta" in norm_ext:
-                        professor = "Prof. Rodrigo Motta"
-                    folder = os.path.join(BASE_DIR, disc, sub)
-                    os.makedirs(folder, exist_ok=True)
-                    try:
-                        with open(os.path.join(folder, pdf_filename), "wb") as f_pdf:
-                            f_pdf.write(pdf_bytes)
-                    except Exception:
-                        pass
+                elif any(k in norm_ext for k in ["ato administrativo", "atos administrativos", "cofifomob", "convalidação"]) and "licita" not in norm_ext:
+                    if not sub or sub in ["Nova_Prova", "material"] or "nova" in sub.lower():
+                        sub = "Atos_Administrativos"
+                    if not title or title in ["Nova Prova em PDF", "material"] or "nova" in title.lower():
+                        title = "Atos Administrativos – Requisitos, Atributos e Extinção"
+                    if disc in ["Concursos_Gerais", ""] or not disc:
+                        disc = "Direito_Administrativo"
+                elif any(k in norm_ext for k in ["poder hierárquico", "poder disciplinar", "poder de polícia", "poderes administrativos"]) and "ato" not in norm_ext and "licita" not in norm_ext:
+                    if not sub or sub in ["Nova_Prova", "material"] or "nova" in sub.lower():
+                        sub = "Poderes_Administrativos"
+                    if not title or title in ["Nova Prova em PDF", "material"] or "nova" in title.lower():
+                        title = "Poderes Administrativos – Espécies, Deveres e Abuso"
+                    if disc in ["Concursos_Gerais", ""] or not disc:
+                        disc = "Direito_Administrativo"
+                elif any(k in norm_ext for k in ["8.112", "8112", "servidores públicos", "provimento", "vacância"]):
+                    if not sub or sub in ["Nova_Prova", "material"] or "nova" in sub.lower():
+                        sub = "Servidores_Lei_8112"
+                    if not title or title in ["Nova Prova em PDF", "material"] or "nova" in title.lower():
+                        title = "Regime dos Servidores Públicos – Lei nº 8.112/1990"
+                    if disc in ["Concursos_Gerais", ""] or not disc:
+                        disc = "Direito_Administrativo"
+                elif any(k in norm_ext for k in ["direito constitucional", "art. 5º", "direitos fundamentais"]):
+                    if disc in ["Concursos_Gerais", ""] or not disc:
+                        disc = "Direito_Constitucional"
+                elif any(k in norm_ext for k in ["direito penal", "código penal", "crimes contra", "dolo e culpa"]):
+                    if disc in ["Concursos_Gerais", ""] or not disc:
+                        disc = "Direito_Penal"
+
+                folder = os.path.join(BASE_DIR, disc, sub)
+                os.makedirs(folder, exist_ok=True)
+                try:
+                    with open(os.path.join(folder, pdf_filename), "wb") as f_pdf:
+                        f_pdf.write(pdf_bytes)
+                except Exception:
+                    pass
 
                 # Gerar automaticamente todos os 4 Pilares
                 pillars_result = auto_generate_all_4_pillars(
@@ -5217,6 +5371,7 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                             "category": f"Edital de Concursos Públicos ({banca})",
                             "youtube_url": "",
                             "markdown_content": pillars_result.get("markdown", ""),
+                            "mindmap_json": pillars_result.get("mindmap"),
                             "has_lesson": True,
                             "moments": []
                         },

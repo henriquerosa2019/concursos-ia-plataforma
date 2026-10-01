@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Mapa Mental: Administração Direta e Indireta</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --surface: #111827;
+      --surface-border: #1f2937;
+      --text: #f9fafb;
+      --text-muted: #9ca3af;
+      --primary: #3b82f6;
+      --primary-light: #60a5fa;
+      --accent: #10b981;
+      --rule: #f59e0b;
+      --trap: #ef4444;
+      --mnemonic: #a855f7;
+      --comparison: #8b5cf6;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      user-select: none;
+    }
+
+    /* Top Toolbar */
+    .toolbar {
+      position: absolute;
+      top: 14px;
+      left: 18px;
+      right: 18px;
+      height: 56px;
+      background: rgba(17, 24, 39, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 50;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    }
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-badge {
+      font-size: 20px;
+    }
+    .map-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.2px;
+    }
+    .stats-tag {
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      color: #93c5fd;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 20px;
+    }
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .search-input {
+      background: rgba(31, 41, 55, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 12px;
+      color: #fff;
+      outline: none;
+      width: 190px;
+      transition: all 0.2s;
+    }
+    .search-input:focus {
+      width: 250px;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+    }
+    .btn-tool {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #d1d5db;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s;
+    }
+    .btn-tool:hover {
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    /* Viewport & Canvas */
+    #viewport {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      cursor: grab;
+      background-image: 
+        radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    #viewport:active {
+      cursor: grabbing;
+    }
+    #canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: 0 0;
+      pointer-events: none;
+    }
+    #svg-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 12000px;
+      height: 12000px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    #nodes-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      pointer-events: auto;
+    }
+
+    /* Mind Map Nodes */
+    .mm-node {
+      position: absolute;
+      border-radius: 24px;
+      padding: 8px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      white-space: nowrap;
+      border-width: 1.5px;
+      border-style: solid;
+      user-select: none;
+    }
+    .mm-node:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+      z-index: 30;
+    }
+    .mm-node.selected {
+      transform: scale(1.08);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4), 0 10px 30px rgba(0,0,0,0.7);
+      z-index: 35;
+    }
+    .mm-node.dimmed {
+      opacity: 0.2;
+      filter: grayscale(80%);
+    }
+    .mm-node.matched {
+      animation: pulseMatch 1.5s infinite alternate;
+      z-index: 25;
+    }
+    @keyframes pulseMatch {
+      from { transform: scale(1); box-shadow: 0 0 8px rgba(56, 189, 248, 0.5); }
+      to { transform: scale(1.06); box-shadow: 0 0 20px rgba(56, 189, 248, 0.9); }
+    }
+
+    /* Types of Nodes */
+    .mm-node.type-root {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+      border-color: #60a5fa;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: 30px;
+      box-shadow: 0 0 28px rgba(37, 99, 235, 0.45);
+    }
+    .mm-node.type-category {
+      background: linear-gradient(135deg, #064e3b 0%, #047857 100%);
+      border-color: #34d399;
+      color: #ecfdf5;
+      font-size: 13.5px;
+      padding: 9px 18px;
+    }
+    .mm-node.type-concept {
+      background: #1f2937;
+      border-color: #4b5563;
+      color: #f3f4f6;
+    }
+    .mm-node.type-rule {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: #f59e0b;
+      color: #fef3c7;
+    }
+    .mm-node.type-trap {
+      background: rgba(239, 68, 68, 0.18);
+      border-color: #ef4444;
+      color: #fee2e2;
+    }
+    .mm-node.type-comparison {
+      background: rgba(139, 92, 246, 0.18);
+      border-color: #8b5cf6;
+      color: #ede9fe;
+    }
+    .mm-node.type-mnemonic {
+      background: rgba(168, 85, 247, 0.2);
+      border-color: #a855f7;
+      color: #f3e8ff;
+    }
+
+    .node-icon {
+      font-size: 14px;
+    }
+    .page-tag {
+      background: rgba(0, 0, 0, 0.35);
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 10px;
+      color: rgba(255, 255, 255, 0.75);
+      font-weight: 700;
+    }
+
+    .node-toggle {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      margin-left: 4px;
+      transition: background 0.15s;
+    }
+    .node-toggle:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    /* Side Drawer for Full Details */
+    #drawer {
+      position: fixed;
+      top: 0;
+      right: -420px;
+      width: 400px;
+      height: 100vh;
+      background: #111827;
+      border-left: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: -10px 0 35px rgba(0, 0, 0, 0.6);
+      z-index: 100;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      transition: right 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+    }
+    #drawer.open {
+      right: 0;
+    }
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 14px;
+    }
+    .drawer-badges {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .drawer-type-badge {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .drawer-page-badge {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+    .btn-close-drawer {
+      background: none;
+      border: none;
+      color: #9ca3af;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .btn-close-drawer:hover {
+      color: #fff;
+    }
+    .drawer-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.35;
+    }
+    .drawer-card {
+      background: #1f2937;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .drawer-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 8px;
+    }
+    .drawer-text {
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #e5e7eb;
+      white-space: pre-line;
+      word-break: break-word;
+    }
+    .drawer-tip {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 12.5px;
+      color: #fde68a;
+      line-height: 1.5;
+    }
+
+    .hint-bar {
+      position: absolute;
+      bottom: 16px;
+      left: 18px;
+      background: rgba(17, 24, 39, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 11.5px;
+      color: #9ca3af;
+      z-index: 40;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <span class="logo-badge">🧠</span>
+      <span class="map-title">Administração Direta e Indireta</span>
+      <span class="stats-tag" id="stats-badge">Carregando...</span>
+    </div>
+    <div class="toolbar-right">
+      <input type="text" class="search-input" id="search-input" placeholder="🔍 Filtrar no mapa..." title="Filtre nós por palavra-chave">
+      <button class="btn-tool" onclick="zoom(0.12)" title="Aumentar Zoom">➕ Zoom</button>
+      <button class="btn-tool" onclick="zoom(-0.12)" title="Diminuir Zoom">➖ Zoom</button>
+      <button class="btn-tool" onclick="resetView()" title="Tamanho Real (100%)">100%</button>
+      <button class="btn-tool" onclick="fitView()" title="Ajustar Mapa à Tela">🔲 Ajustar</button>
+      <button class="btn-tool" onclick="toggleAllBranches()" id="btn-toggle-all">↕ Recolher</button>
+      <button class="btn-tool" onclick="toggleFullscreen()" title="Tela Cheia">🗖</button>
+    </div>
+  </div>
+
+  <!-- Interactive Canvas -->
+  <div id="viewport">
+    <div id="canvas">
+      <svg id="svg-lines"></svg>
+      <div id="nodes-container"></div>
+    </div>
+  </div>
+
+  <div class="hint-bar">
+    💡 Arraste para mover o mapa • Role o mouse para Zoom • Clique no nó para ler a explicação completa
+  </div>
+
+  <!-- Side Details Drawer -->
+  <div id="drawer">
+    <div class="drawer-header">
+      <div class="drawer-badges">
+        <span class="drawer-type-badge" id="d-type-badge">CONCEITO</span>
+        <span class="drawer-page-badge" id="d-page-badge">Pág. 1</span>
+      </div>
+      <button class="btn-close-drawer" onclick="closeDrawer()" title="Fechar">✖</button>
+    </div>
+    <div class="drawer-title" id="d-title">Título do Nó</div>
+    <div class="drawer-card">
+      <div class="drawer-label">💡 Explicação Pedagógica & Regra de Prova:</div>
+      <div class="drawer-text" id="d-summary">Resumo completo...</div>
+    </div>
+    <div class="drawer-tip" id="d-tip">
+      🎯 <b>Dica de Retenção:</b> Estude a diferenciação exata e atente-se às palavras absolutas das bancas examinadoras.
+    </div>
+  </div>
+
+  <script>
+    const data = {
+      nodes: [{"id": "root", "titulo": "Administração Direta e Indireta", "tipo": "root", "pagina": 1, "resumo": "Estrutura esquematizada das unidades conceituais essenciais de Administração Direta e Indireta para provas de concursos públicos."}, {"id": "cat_1", "titulo": "Entidades Políticas e Entidades Administrativas", "tipo": "category", "pagina": 1, "resumo": "Entidades políticas – pessoas jurídicas que compõem a Federação, possuindo autonomia política, o que as possibilita a auto -organização (elaboração das próprias Constituições e Leis Orgânicas) , bem como capacidade de legislar, dentro das competências constitucionais. União, Estados, Distrito Federal e Municípios são pessoas políticas. Possuem personalidade jurídica de direito público."}, {"id": "item_1", "titulo": "Entidades Políticas", "tipo": "concept", "pagina": 1, "resumo": "pessoas jurídicas que compõem a Federação, possuindo autonomia política, o que as possibilita a auto -organização (elaboração das próprias Constituições e Leis Orgânicas) , bem como capacidade de legislar, dentro das competências constitucionais."}, {"id": "item_2", "titulo": "Entidades Administrativas", "tipo": "concept", "pagina": 1, "resumo": "pessoas jurídicas que não possuem autonom ia política. Não possuem competências legislativas, possuindo apenas atribuições de natureza administrativa."}, {"id": "item_3", "titulo": "Pegadinha: Não Confunda Desconcentração com Descentralização", "tipo": "trap", "pagina": 1, "resumo": "ATENÇÃO! Não confunda DESCONCENTRAÇÃO com DESCENTRALIZAÇÃO."}, {"id": "cat_2", "titulo": "Descentralização", "tipo": "category", "pagina": 1, "resumo": "Descentralização política – Ocorre quando o ente descentralizado exerce atribuições próprias que não decorrem do ente central; é a situação dos Estados-membros e Municípios. Possuem competência legislativa própria, que não decorre da União nem a ela se subordina, pois possui fundamento constitucional. Descentralização administrativa – Ocorre quando as atribuições que os entes descentralizados exercem só têm o valor jurídico que lhes empresta o ente central; suas atribuições não decorrem, com força própria, da Constituição, mas do poder central."}, {"id": "item_4", "titulo": "Descentralização Política (o ente descentralizado)", "tipo": "comparison", "pagina": 1, "resumo": "Ocorre quando o ente descentralizado exerce atribuições próprias que não decorrem do ente central; é a situação dos Estados-membros e Municípios. Possuem competência legislativa própria, que não decorre da União nem a ela se subordina, pois possui fundamento constitucional."}, {"id": "item_5", "titulo": "Descentralização Administrativa (as atribuições que)", "tipo": "comparison", "pagina": 1, "resumo": "Ocorre quando as atribuições que os entes descentralizados exercem só têm o valor jurídico que lhes empresta o ente central; suas atribuições não decorrem, com força própria, da Constituição, mas do poder central."}, {"id": "cat_3", "titulo": "Órgãos Públicos", "tipo": "category", "pagina": 2, "resumo": "São centros de competência instituídos para o desempenho de funções estatais, através de seus agentes, cuja atuação é imputada à pessoa jurídica a que pertencem. (Hely Lopes Meirelles)  Art. 1º, §2º, I, Lei nº 9.784/99 - unidade de atuação integrante da estrutura da Administração direta e da estrutura da Administração indireta."}, {"id": "item_6", "titulo": "Súmula Nº 525 STJ (Regra)", "tipo": "rule", "pagina": 2, "resumo": "A Câmara de vereadores não possui personalidade jurídica, apenas personalidade judiciária, somente podendo demandar em juízo para defender os seus direitos institucionais."}, {"id": "cat_4", "titulo": "Teoria sobre a Relação entre o Estado e os Agentes", "tipo": "category", "pagina": 2, "resumo": "Atualmente, o Brasil adota a teoria do órgão, segundo a qual os atos não são imputados ao agente que os pratica, mas ao órgão ou entidade em nome do qual atua. Leciona Hely Lopes Meirelles, em seu Direito Administrativo Brasileiro."}, {"id": "cat_5", "titulo": "Classificação dos Órgãos Públicos", "tipo": "category", "pagina": 3, "resumo": "Órgãos independentes Diretamente previstos no texto constitucional, sem subordinação hierárquica ou funcional, sujeitos apenas a controle constitucional de um Poder sobre o outro. Ex.: Presidência da República, Governadorias de Estado, Prefeituras Municipais, Senado Federal, Câmara dos Deputados, Câmaras Municipais, Assembleia Legislativa, Tribunais do Poder Judiciário."}, {"id": "cat_6", "titulo": "Entidades da Administração Pública Indireta", "tipo": "category", "pagina": 1, "resumo": "Algumas características comuns  São dotadas de personalidade jurídica."}, {"id": "item_7", "titulo": "São Dotadas de Personalidade Jurídica", "tipo": "concept", "pagina": 4, "resumo": "Regime jurídico e características de são dotadas de personalidade jurídica."}, {"id": "item_8", "titulo": "Fruto de Descentralização Administrativa", "tipo": "concept", "pagina": 4, "resumo": "Regime jurídico e características de fruto de descentralização administrativa."}, {"id": "item_9", "titulo": "Especialização de Fins e Atividades", "tipo": "concept", "pagina": 4, "resumo": "Regime jurídico e características de especialização de fins e atividades."}, {"id": "item_10", "titulo": "Sujeitos a Controle Pelo Ente Instituidor", "tipo": "concept", "pagina": 4, "resumo": "Regime jurídico e características de sujeitos a controle pelo ente instituidor."}, {"id": "item_11", "titulo": "Vinculadas à Administração Direta", "tipo": "concept", "pagina": 4, "resumo": "Regime jurídico e características de vinculadas à administração direta."}, {"id": "item_12", "titulo": "Autarquias (direito público)", "tipo": "concept", "pagina": 1, "resumo": "Pessoas jurídicas de direito público."}, {"id": "item_13", "titulo": "Fundações Públicas (direito público ou)", "tipo": "concept", "pagina": 1, "resumo": "Pessoas jurídicas de direito público ou privado Segundo o STF, as fundações públicas de direito público são espécie do gênero autarquia. São as chamadas fundações autárquicas ou autarquias fundacionais."}, {"id": "item_14", "titulo": "Art. 3º, Lei 13.303/2016 (Regra)", "tipo": "rule", "pagina": 1, "resumo": "“Empresa pública é a entidade dotada de personalidade jurídica de direito privado...”."}, {"id": "item_15", "titulo": "Art. 4º, Lei 13.303/2016 (Regra)", "tipo": "rule", "pagina": 1, "resumo": "“Sociedade de economia mista é a entidade dotada de personalidade jurídica de direito privado...” Criação."}, {"id": "item_16", "titulo": "Art. 37, Xix, CF (Regra)", "tipo": "rule", "pagina": 1, "resumo": "“somente por lei específica poderá ser criada autarquia e autorizada a instituição de empresa pública, de sociedade de economia mista e de fundação, cabendo à lei complementar, neste último caso, definir as áreas de sua atuação.”."}, {"id": "cat_7", "titulo": "Sociedades de Economia Mista", "tipo": "category", "pagina": 1, "resumo": "Justiça Estadual (súmula 556 STF) *Art. 109, CF – Aos juízes federais compete processar e julgar."}, {"id": "item_17", "titulo": "As Causas Em Que A (Inciso I)", "tipo": "rule", "pagina": 6, "resumo": "as causas em que a União, entidade autárquica ou empresa pública federal forem interessadas na condição de autoras, rés, assistentes ou oponentes, exceto as de falência, as de acidentes de trabalho e as sujeitas à Justiça Eleitoral e à Justiça do Trabalho”."}, {"id": "item_18", "titulo": "Empresas Públicas", "tipo": "concept", "pagina": 1, "resumo": "Caixa Econômica Federal (CEF), Correios (ECT), BNDES, SERPRO, FINEP."}, {"id": "cat_8", "titulo": "Importante!", "tipo": "category", "pagina": 1, "resumo": "Entidades paraestatais não integram a Administração Pública direta nem indireta. Por tanto, Organizações Sociais, OSCIP, Serviços sociais autônomos e Fundações de apoio são entidades do Terceiro Setor, e não da Administração Pública. (DEFENSOR PÚBLICO / DPE -PI / 2022 / CEBRASPE / ADAPT) Julgue os itens a seguir, a respeito da administração indireta."}, {"id": "cat_9", "titulo": "Raio-X de Pegadinhas da Banca", "tipo": "category", "pagina": 1, "resumo": "Principais armadilhas, inversões conceituais e assertivas com palavras absolutas recorrentes nas bancas examinadoras."}, {"id": "item_19", "titulo": "Pegadinha: Entre a Administração Direta e as", "tipo": "trap", "pagina": 1, "resumo": "importante: não há hierarquia entre a administração direta e as entidades da administração indireta."}],
+      edges: [{"source": "root", "target": "cat_1"}, {"source": "cat_1", "target": "item_1"}, {"source": "cat_1", "target": "item_2"}, {"source": "cat_1", "target": "item_3"}, {"source": "root", "target": "cat_2"}, {"source": "cat_2", "target": "item_4"}, {"source": "cat_2", "target": "item_5"}, {"source": "root", "target": "cat_3"}, {"source": "cat_3", "target": "item_6"}, {"source": "root", "target": "cat_4"}, {"source": "root", "target": "cat_5"}, {"source": "root", "target": "cat_6"}, {"source": "cat_6", "target": "item_7"}, {"source": "cat_6", "target": "item_8"}, {"source": "cat_6", "target": "item_9"}, {"source": "cat_6", "target": "item_10"}, {"source": "cat_6", "target": "item_11"}, {"source": "cat_6", "target": "item_12"}, {"source": "cat_6", "target": "item_13"}, {"source": "cat_6", "target": "item_14"}, {"source": "cat_6", "target": "item_15"}, {"source": "cat_6", "target": "item_16"}, {"source": "root", "target": "cat_7"}, {"source": "cat_7", "target": "item_17"}, {"source": "cat_7", "target": "item_18"}, {"source": "root", "target": "cat_8"}, {"source": "root", "target": "cat_9"}, {"source": "cat_9", "target": "item_19"}]
+    };
+
+    const typeIcons = {
+      root: '🎯',
+      category: '📁',
+      concept: '💡',
+      rule: '⚖️',
+      trap: '🚨',
+      comparison: '⚖️',
+      mnemonic: '🧠',
+      definition: '📖',
+      example: '🔍',
+      exception: '⚠️'
+    };
+
+    const typeBadges = {
+      root: { text: '🎯 TÓPICO CENTRAL', bg: 'rgba(37, 99, 235, 0.25)', color: '#93c5fd' },
+      category: { text: '📁 CATEGORIA ESTRUTURANTE', bg: 'rgba(5, 150, 105, 0.25)', color: '#6ee7b7' },
+      concept: { text: '💡 CONCEITO ESSENCIAL', bg: 'rgba(75, 85, 99, 0.4)', color: '#e5e7eb' },
+      rule: { text: '⚖️ REGRA VINCULANTE', bg: 'rgba(245, 158, 11, 0.25)', color: '#fcd34d' },
+      trap: { text: '🚨 PEGADINHA DE BANCA', bg: 'rgba(239, 68, 68, 0.25)', color: '#fca5a5' },
+      comparison: { text: '⚖️ DISTINÇÃO PRÁTICA', bg: 'rgba(139, 92, 246, 0.25)', color: '#c4b5fd' },
+      mnemonic: { text: '🧠 MNEMÔNICO DO AUTOR', bg: 'rgba(168, 85, 247, 0.25)', color: '#d8b4fe' },
+      definition: { text: '📖 DEFINIÇÃO FORMAL', bg: 'rgba(6, 182, 212, 0.25)', color: '#67e8f9' },
+      exception: { text: '⚠️ EXCEÇÃO DA LEI', bg: 'rgba(239, 68, 68, 0.25)', color: '#fca5a5' }
+    };
+
+    // Build hierarchy
+    const nodeMap = {};
+    data.nodes.forEach(n => {
+      nodeMap[n.id] = { ...n, children: [], parents: [], level: 0, x: 0, y: 0, w: 0, h: 0, collapsed: false };
+    });
+    data.edges.forEach(e => {
+      if (nodeMap[e.source] && nodeMap[e.target]) {
+        nodeMap[e.source].children.push(nodeMap[e.target]);
+        nodeMap[e.target].parents.push(nodeMap[e.source]);
+      }
+    });
+
+    let root = data.nodes.find(n => n.tipo === 'root') || data.nodes[0];
+    const rootNode = nodeMap[root.id];
+
+    // BFS for levels
+    rootNode.level = 0;
+    const q = [rootNode];
+    const visited = new Set([rootNode.id]);
+    while (q.length > 0) {
+      const cur = q.shift();
+      cur.children.forEach(ch => {
+        if (!visited.has(ch.id)) {
+          visited.add(ch.id);
+          ch.level = cur.level + 1;
+          q.push(ch);
+        }
+      });
+    }
+
+    // State
+    let zoomLevel = 0.92;
+    let panX = 60;
+    let panY = 80;
+    let isPanning = false;
+    let startX = 0, startY = 0;
+    let selectedNodeId = null;
+    let allCollapsed = false;
+
+    const viewport = document.getElementById('viewport');
+    const canvas = document.getElementById('canvas');
+    const nodesContainer = document.getElementById('nodes-container');
+    const svgLines = document.getElementById('svg-lines');
+
+    viewport.addEventListener('mousedown', e => {
+      if (e.target.closest('.mm-node') || e.target.closest('.btn-tool') || e.target.closest('#drawer')) return;
+      isPanning = true;
+      startX = e.clientX - panX;
+      startY = e.clientY - panY;
+    });
+    window.addEventListener('mousemove', e => {
+      if (!isPanning) return;
+      panX = e.clientX - startX;
+      panY = e.clientY - startY;
+      applyTransform();
+    });
+    window.addEventListener('mouseup', () => { isPanning = false; });
+
+    viewport.addEventListener('wheel', e => {
+      e.preventDefault();
+      const delta = e.deltaY < 0 ? 0.08 : -0.08;
+      const newZoom = Math.min(2.0, Math.max(0.3, zoomLevel + delta));
+      const rect = viewport.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+      panX -= (mouseX - panX) * (newZoom / zoomLevel - 1);
+      panY -= (mouseY - panY) * (newZoom / zoomLevel - 1);
+      zoomLevel = newZoom;
+      applyTransform();
+    }, { passive: false });
+
+    function applyTransform() {
+      canvas.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomLevel})`;
+    }
+
+    function calculateTreeLayout() {
+      let currentY = 60;
+      const gapX = 90;
+      const gapY = 24;
+
+      function measureSubtree(node) {
+        if (node.collapsed || node.children.length === 0) {
+          node.y = currentY;
+          node.h = 42;
+          currentY += node.h + gapY;
+          return;
+        }
+        const childYs = [];
+        node.children.forEach(ch => {
+          measureSubtree(ch);
+          childYs.push(ch.y);
+        });
+        if (childYs.length > 0) {
+          node.y = (childYs[0] + childYs[childYs.length - 1]) / 2;
+        } else {
+          node.y = currentY;
+          currentY += 42 + gapY;
+        }
+        node.h = 42;
+      }
+
+      currentY = 60;
+      measureSubtree(rootNode);
+
+      Object.values(nodeMap).forEach(n => {
+        n.x = 40 + n.level * (240 + gapX);
+      });
+    }
+
+    function renderMindmap() {
+      calculateTreeLayout();
+      nodesContainer.innerHTML = '';
+      let paths = '';
+
+      function drawBranches(node) {
+        if (node.collapsed) return;
+        node.children.forEach(ch => {
+          const x1 = node.x + (node.actualW || 180);
+          const y1 = node.y + 20;
+          const x2 = ch.x;
+          const y2 = ch.y + 20;
+          const dx = Math.max(40, (x2 - x1) * 0.55);
+
+          let strokeColor = '#3b82f6';
+          if (ch.tipo === 'trap') strokeColor = '#ef4444';
+          else if (ch.tipo === 'rule') strokeColor = '#f59e0b';
+          else if (ch.tipo === 'comparison') strokeColor = '#8b5cf6';
+          else if (ch.tipo === 'mnemonic') strokeColor = '#a855f7';
+          else if (ch.tipo === 'category') strokeColor = '#10b981';
+
+          paths += `<path d="M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}"
+                          fill="none" stroke="${strokeColor}" stroke-width="2.2" stroke-linecap="round" opacity="0.65"/>`;
+          drawBranches(ch);
+        });
+      }
+      drawBranches(rootNode);
+      svgLines.innerHTML = paths;
+
+      function createNodeElements(node) {
+        const el = document.createElement('div');
+        el.className = `mm-node type-${node.tipo || 'concept'}`;
+        if (node.id === selectedNodeId) el.classList.add('selected');
+        el.id = `node-${node.id}`;
+        el.style.left = `${node.x}px`;
+        el.style.top = `${node.y}px`;
+
+        const icon = typeIcons[node.tipo] || '💡';
+        const page = node.pagina ? `<span class="page-tag">P.${node.pagina}</span>` : '';
+        const hasKids = node.children && node.children.length > 0;
+        const toggleBtn = hasKids ? `<span class="node-toggle" title="Recolher/Expandir">${node.collapsed ? '+' : '−'}</span>` : '';
+
+        el.innerHTML = `
+          <span class="node-icon">${icon}</span>
+          <span class="node-text">${node.titulo}</span>
+          ${page}
+          ${toggleBtn}
+        `;
+
+        el.onclick = (e) => {
+          if (e.target.classList.contains('node-toggle')) {
+            e.stopPropagation();
+            node.collapsed = !node.collapsed;
+            renderMindmap();
+            return;
+          }
+          selectNode(node);
+        };
+
+        nodesContainer.appendChild(el);
+        node.actualW = el.offsetWidth;
+
+        if (!node.collapsed) {
+          node.children.forEach(createNodeElements);
+        }
+      }
+      createNodeElements(rootNode);
+
+      let refinedPaths = '';
+      function drawBranchesRefined(node) {
+        if (node.collapsed) return;
+        node.children.forEach(ch => {
+          const x1 = node.x + (node.actualW || 180);
+          const y1 = node.y + 19;
+          const x2 = ch.x;
+          const y2 = ch.y + 19;
+          const dx = Math.max(35, (x2 - x1) * 0.52);
+
+          let strokeColor = 'rgba(59, 130, 246, 0.7)';
+          if (ch.tipo === 'trap') strokeColor = 'rgba(239, 68, 68, 0.75)';
+          else if (ch.tipo === 'rule') strokeColor = 'rgba(245, 158, 11, 0.75)';
+          else if (ch.tipo === 'comparison') strokeColor = 'rgba(139, 92, 246, 0.75)';
+          else if (ch.tipo === 'mnemonic') strokeColor = 'rgba(168, 85, 247, 0.75)';
+          else if (ch.tipo === 'category') strokeColor = 'rgba(16, 185, 129, 0.75)';
+
+          refinedPaths += `<path d="M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}"
+                                fill="none" stroke="${strokeColor}" stroke-width="2.2" stroke-linecap="round"/>`;
+          drawBranchesRefined(ch);
+        });
+      }
+      drawBranchesRefined(rootNode);
+      svgLines.innerHTML = refinedPaths;
+
+      document.getElementById('stats-badge').textContent = 
+        `${data.nodes.length} nós • ${data.edges.length} conexões • ${rootNode.children.length} categorias`;
+    }
+
+    function selectNode(node) {
+      selectedNodeId = node.id;
+      document.querySelectorAll('.mm-node').forEach(el => el.classList.remove('selected'));
+      const activeEl = document.getElementById(`node-${node.id}`);
+      if (activeEl) activeEl.classList.add('selected');
+
+      const drawer = document.getElementById('drawer');
+      const bInfo = typeBadges[node.tipo] || { text: (node.tipo || 'CONCEITO').toUpperCase(), bg: '#374151', color: '#f3f4f6' };
+      const badgeEl = document.getElementById('d-type-badge');
+      badgeEl.textContent = bInfo.text;
+      badgeEl.style.background = bInfo.bg;
+      badgeEl.style.color = bInfo.color;
+
+      document.getElementById('d-page-badge').textContent = `Página ${node.pagina || 1} do PDF`;
+      document.getElementById('d-title').textContent = node.titulo;
+      document.getElementById('d-summary').textContent = node.resumo || 'Sem descrição cadastrada.';
+
+      drawer.classList.add('open');
+    }
+
+    function closeDrawer() {
+      document.getElementById('drawer').classList.remove('open');
+      selectedNodeId = null;
+      document.querySelectorAll('.mm-node').forEach(el => el.classList.remove('selected'));
+    }
+
+    function zoom(delta) {
+      zoomLevel = Math.min(2.0, Math.max(0.3, zoomLevel + delta));
+      applyTransform();
+    }
+    function resetView() {
+      zoomLevel = 1.0;
+      panX = 60;
+      panY = 80;
+      applyTransform();
+    }
+    function fitView() {
+      let minY = Infinity, maxY = -Infinity, maxX = -Infinity;
+      Object.values(nodeMap).forEach(n => {
+        if (n.y < minY) minY = n.y;
+        if (n.y > maxY) maxY = n.y;
+        if (n.x + (n.actualW || 200) > maxX) maxX = n.x + (n.actualW || 200);
+      });
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const mapW = maxX - 40 + 100;
+      const mapH = maxY - minY + 160;
+      const scaleX = (vw - 120) / mapW;
+      const scaleY = (vh - 120) / mapH;
+      zoomLevel = Math.min(1.1, Math.max(0.35, Math.min(scaleX, scaleY)));
+      panX = 60;
+      panY = Math.max(60, (vh - (maxY + minY) * zoomLevel) / 2);
+      applyTransform();
+    }
+
+    function toggleAllBranches() {
+      allCollapsed = !allCollapsed;
+      Object.values(nodeMap).forEach(n => {
+        if (n.children.length > 0 && n.level > 0) {
+          n.collapsed = allCollapsed;
+        }
+      });
+      document.getElementById('btn-toggle-all').textContent = allCollapsed ? '↕ Expandir' : '↕ Recolher';
+      renderMindmap();
+      setTimeout(fitView, 50);
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    document.getElementById('search-input').addEventListener('input', e => {
+      const q = e.target.value.toLowerCase().trim();
+      document.querySelectorAll('.mm-node').forEach(el => {
+        if (!q) {
+          el.classList.remove('matched', 'dimmed');
+          return;
+        }
+        const txt = el.textContent.toLowerCase();
+        const nid = el.id.replace('node-', '');
+        const nData = nodeMap[nid];
+        const sum = (nData?.resumo || '').toLowerCase();
+        if (txt.includes(q) || sum.includes(q)) {
+          el.classList.add('matched');
+          el.classList.remove('dimmed');
+        } else {
+          el.classList.remove('matched');
+          el.classList.add('dimmed');
+        }
+      });
+    });
+
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeDrawer();
+    });
+
+    renderMindmap();
+    setTimeout(fitView, 100);
+    window.addEventListener('resize', () => renderMindmap());
+  </script>
+</body>
+</html>

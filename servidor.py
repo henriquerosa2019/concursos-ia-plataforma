@@ -2409,657 +2409,666 @@ def extract_mindmap_substantive_summary(lines, max_chars=175):
         return combined
     return ""
 
-def extract_semantic_mindmap_from_corpus(discipline, subarea, title, context_text, focus=""):
+def to_title_case(text):
+    """Converte qualquer texto para Title Case inteligente, preservando siglas jurídicas consagradas."""
+    if not text:
+        return text
+    alpha_chars = [c for c in text if c.isalpha()]
+    if not alpha_chars:
+        return text
+
+    minor_words = {"de", "da", "do", "das", "dos", "e", "em", "por", "com", "na", "no",
+                   "à", "ao", "a", "o", "os", "as", "vs", "entre", "sobre", "sob"}
+    acronyms = {"CF", "STF", "STJ", "PCD", "ME", "EPP", "EIRELI", "CLT", "DF", "OAB",
+                "PF", "PRF", "TCU", "TI", "TIC", "CP", "CPP", "CC"}
+    words = text.split()
+    result = []
+    for i, w in enumerate(words):
+        w_clean = re.sub(r'[^\w]', '', w)
+        w_lower = w_clean.lower()
+        if w_clean.upper() in acronyms:
+            result.append(w.upper())
+        elif w_lower in minor_words and i > 0:
+            result.append(w.lower())
+        else:
+            result.append(w.capitalize())
+    return " ".join(result)
+
+
+def compress_label(concept, essence="", max_words=6):
+    """Fórmula de Compressão Semântica (Regra 13): CONCEITO + essência em poucas palavras"""
+    c = concept.strip()
+    e = essence.strip()
+    if not e or "(" in c:
+        return c
+    label = f"{c} ({e})"
+    words = label.split()
+    if len(words) > max_words:
+        c_words = c.split()
+        avail = max(1, max_words - len(c_words))
+        e_short = " ".join(e.split()[:avail]).rstrip(",;:.- ")
+        label = f"{c} ({e_short})"
+    return label
+
+
+def clean_summary_text(text):
+    """Limpa e formata o resumo garantindo frases completas sem cortes no meio de palavras."""
+    t = (text or "").strip()
+    t = re.sub(r'\s+', ' ', t)
+    t = re.sub(r'^[•\-\*►▪▸✓✔\uf0d8\uf0fc\+>\s]+', '', t)
+    t = t.replace('**', '').strip()
+    t = re.sub(r'[,;:\-–—\s]+$', '', t)
+    if t and not t.endswith(('.', '!', '?', '"', ')', ']')):
+        t += '.'
+    return t
+
+
+def make_didactic_pegadinha_title(phrase, max_words=6):
+    """Gera título didático para pegadinha sem cortar palavras e sem preposições soltas."""
+    phrase = re.sub(r'^[!:\s,;.\-–—]+', '', phrase).strip()
+    phrase = re.sub(r'^(?:ao|à|a|o|os|as|do|da|dos|das|de|em|na|no|com|por|que|sobre|para)\s+', '', phrase, flags=re.IGNORECASE).strip()
+    words = phrase.split()
+    if not words:
+        return "Pegadinha de Prova"
+    if len(words) == 1 and words[0].lower() in ("princípio", "principio", "regra", "exceção", "prazo", "limite"):
+        words.append("Aplicável")
+    chosen = words[:max_words]
+    title_str = " ".join(chosen).rstrip(',;:-–—.')
+    return f"Pegadinha: {to_title_case(title_str)}"
+
+
+def extract_didactic_title_from_clause(marker, text):
     """
-    Extrator semântico offline de alta fidelidade para mapas mentais em JSON.
-    Garante que NUNCA haja placeholders genéricos, extraindo conceitos reais,
-    classificações, regras, exceções, pegadinhas e mnemônicos diretamente da fonte e das páginas.
-    Tipos válidos: root, category, concept, definition, rule, exception, comparison, example, mnemonic, trap.
+    Traduz cláusulas legais (incisos, alíneas, itens) em conceitos didáticos autoexplicativos.
+    Elimina nós estéreis contendo apenas algarismos romanos (ex: 'VIII', 'XII') e gera títulos substantivos.
     """
-    clean_title = (focus or title or subarea.replace('_', ' ')).strip()
-    norm_topic = (discipline + " " + subarea + " " + clean_title).lower().replace('-', '_')
-    
-    # 1. Direito Penal: Dolo, Culpa e Omissão
-    if any(k in norm_topic for k in ["dolo", "culpa", "omissao", "crimes_omissivos"]) and not any(k in norm_topic for k in ["licita", "poder", "ato"]):
-        nodes = [
-            {
-                "id": "root",
-                "titulo": "Ação e Omissão / Dolo e Culpa",
-                "tipo": "root",
-                "pagina": 1,
-                "resumo": "Fundamentos da conduta e imputação penal (Art. 18): distinção entre dolo e culpa e relevância penal da omissão imprópria (Art. 13, § 2º)."
-            },
-            {
-                "id": "cat_dolo",
-                "titulo": "1. Espécies de Dolo (Art. 18, I)",
-                "tipo": "category",
-                "pagina": 1,
-                "resumo": "Vontade e consciência direcionadas ao resultado criminoso ou assunção do risco de produzi-lo."
-            },
-            {
-                "id": "cat_culpa",
-                "titulo": "2. Modalidades de Culpa (Art. 18, II)",
-                "tipo": "category",
-                "pagina": 2,
-                "resumo": "Quebra do dever objetivo de cuidado por imprudência, negligência ou imperícia."
-            },
-            {
-                "id": "cat_omissao",
-                "titulo": "3. Relevância da Omissão (Art. 13, § 2º)",
-                "tipo": "category",
-                "pagina": 3,
-                "resumo": "A omissão é penalmente relevante quando o omitente devia e podia agir para evitar o resultado lesivo."
-            },
-            {
-                "id": "cat_garantidores",
-                "titulo": "4. Posição de Garantidor",
-                "tipo": "category",
-                "pagina": 3,
-                "resumo": "Rol taxativo das pessoas sobre as quais recai o dever legal e de fato de impedir o resultado."
-            },
-            {
-                "id": "dolo_geral",
-                "titulo": "Dolo Geral (Aberratio Causae)",
-                "tipo": "concept",
-                "pagina": 1,
-                "resumo": "O agente crê já ter alcançado o resultado e pratica nova conduta que causa a morte real (ex: jogar corpo no rio). Responde por homicídio doloso consumado."
-            },
-            {
-                "id": "dolo_2grau",
-                "titulo": "Dolo de 2º Grau",
-                "tipo": "concept",
-                "pagina": 1,
-                "resumo": "Consequências necessárias, certas e inafastáveis da conduta principal, não meramente incertas ou prováveis."
-            },
-            {
-                "id": "dolo_eventual",
-                "titulo": "Dolo Eventual (Assunção de Risco)",
-                "tipo": "concept",
-                "pagina": 2,
-                "resumo": "O agente prevê o resultado lesivo e assume o risco de sua ocorrência com indiferença ('tanto faz se ocorrer')."
-            },
-            {
-                "id": "culpa_consciente",
-                "titulo": "Culpa Consciente",
-                "tipo": "concept",
-                "pagina": 2,
-                "resumo": "O agente prevê o resultado danoso, mas repele a sua produção e confia sinceramente que suas habilidades evitarão a consumação."
-            },
-            {
-                "id": "comp_dolo_culpa",
-                "titulo": "Dolo Eventual × Culpa Consciente",
-                "tipo": "comparison",
-                "pagina": 2,
-                "resumo": "A diferença reside na aceitação: no dolo eventual o agente assume e tolera; na culpa consciente o agente não aceita e crê sinceramente evitar."
-            },
-            {
-                "id": "trap_transito",
-                "titulo": "Pegadinha: Previsão não é Dolo",
-                "tipo": "trap",
-                "pagina": 2,
-                "resumo": "Mera previsibilidade não basta para dolo eventual; se o autor acreditava sinceramente evitar o acidente ('o parachoque sou eu'), é culpa consciente."
-            },
-            {
-                "id": "modalidades_culpa",
-                "titulo": "Imprudência, Negligência e Imperícia",
-                "tipo": "rule",
-                "pagina": 5,
-                "resumo": "Imprudência (ação precipitada/insegura); negligência (omissão prévia de cautela); imperícia (falta de aptidão técnica profissional)."
-            },
-            {
-                "id": "exemplo_salto",
-                "titulo": "Exemplo: Instrumentadora e Salto Alto",
-                "tipo": "example",
-                "pagina": 5,
-                "resumo": "Uso de calçado inadequado em cirurgia gerando queda de mesa e sequela no paciente configura conduta culposa consciente por imprudência."
-            },
-            {
-                "id": "norma_extensao",
-                "titulo": "Omissão Imprópria (Extensão Típica)",
-                "tipo": "definition",
-                "pagina": 3,
-                "resumo": "Norma de adequação típica mediata (de extensão): o não agir de quem tem o dever de agir é equiparado juridicamente à causação do dano."
-            },
-            {
-                "id": "garantidor_lei",
-                "titulo": "Alínea 'a': Obrigação Legal",
-                "tipo": "rule",
-                "pagina": 3,
-                "resumo": "Dever expresso em lei de cuidado, proteção ou vigilância (pais, tutores, policiais em serviço)."
-            },
-            {
-                "id": "garantidor_assume",
-                "titulo": "Alínea 'b': Assunção de Responsabilidade",
-                "tipo": "rule",
-                "pagina": 3,
-                "resumo": "Quem de outra forma assumiu de fato ou contratualmente a custódia para impedir o resultado (salva-vidas, cuidadores)."
-            },
-            {
-                "id": "garantidor_ingerencia",
-                "titulo": "Alínea 'c': Ingerência (Criou o Risco)",
-                "tipo": "rule",
-                "pagina": 3,
-                "resumo": "Aquele que com comportamento anterior causou o perigo para o bem jurídico tem o dever indeclinável de neutralizá-lo."
-            },
-            {
-                "id": "trap_pais_estupro",
-                "titulo": "Pegadinha: Omissão dos Pais em Estupro",
-                "tipo": "trap",
-                "pagina": 4,
-                "resumo": "Pais que toleram abusos ou consentem coabitação de filha menor de 14 anos respondem pelo crime por omissão imprópria (Súmula 593 STJ)."
-            },
-            {
-                "id": "mnem_garantidores",
-                "titulo": "Mnemônico: LEI-ASSUME-CRIA",
-                "tipo": "mnemonic",
-                "pagina": 3,
-                "resumo": "LEI (dever legal: pais) + ASSUME (assumiu a custódia: salva-vidas) + CRIA (comportamento anterior que gerou o risco: ingerência)."
-            }
-        ]
-        edges = [
-            {"source": "root", "target": "cat_dolo"},
-            {"source": "root", "target": "cat_culpa"},
-            {"source": "root", "target": "cat_omissao"},
-            {"source": "root", "target": "cat_garantidores"},
-            {"source": "cat_dolo", "target": "dolo_geral"},
-            {"source": "cat_dolo", "target": "dolo_2grau"},
-            {"source": "cat_dolo", "target": "dolo_eventual"},
-            {"source": "cat_culpa", "target": "culpa_consciente"},
-            {"source": "cat_culpa", "target": "comp_dolo_culpa"},
-            {"source": "cat_culpa", "target": "trap_transito"},
-            {"source": "cat_culpa", "target": "modalidades_culpa"},
-            {"source": "modalidades_culpa", "target": "exemplo_salto"},
-            {"source": "cat_omissao", "target": "norma_extensao"},
-            {"source": "cat_garantidores", "target": "garantidor_lei"},
-            {"source": "cat_garantidores", "target": "garantidor_assume"},
-            {"source": "cat_garantidores", "target": "garantidor_ingerencia"},
-            {"source": "cat_garantidores", "target": "mnem_garantidores"},
-            {"source": "garantidor_lei", "target": "trap_pais_estupro"}
-        ]
-        return {"titulo": clean_title, "nodes": nodes, "edges": edges}
+    t = text.strip().rstrip(';.,')
+    t_low = t.lower()
 
-    # 2. Direito Administrativo: Licitações (Lei nº 14.133/2021)
-    if any(k in norm_topic for k in ["licita", "14133", "14.133"]) or ("contrat" in norm_topic and any(w in norm_topic for w in ["public", "lei", "motta"])):
-        nodes = [
-            {"id": "root", "titulo": "Licitações (Lei 14.133/2021)", "tipo": "root", "pagina": 1, "resumo": "Novo regime geral de licitações e contratos para as administrações diretas, autárquicas e fundacionais de todos os entes federativos (Art. 37, XXI, CF e Art. 1º)."},
-            {"id": "cat_sujeitos", "titulo": "1. Âmbito de Aplicação e Sujeitos", "tipo": "category", "pagina": 1, "resumo": "Entidades obrigadas à Lei 14.133/2021 e exceções constitucionais expressas."},
-            {"id": "cat_principios", "titulo": "2. Princípios e Objetivos", "tipo": "category", "pagina": 5, "resumo": "Finalidades do processo licitatório (Art. 11) e princípios expressos de governança (Art. 5º)."},
-            {"id": "cat_contratacao_direta", "titulo": "3. Contratação Direta", "tipo": "category", "pagina": 8, "resumo": "Hipóteses de afastamento do certame: Inexigibilidade (Art. 74) vs Dispensa (Arts. 75 e 76)."},
-            {"id": "cat_modalidades", "titulo": "4. Modalidades Licitatórias", "tipo": "category", "pagina": 22, "resumo": "Os 5 ritos procedimentais vigentes (Art. 28) e extinção de Tomada de Preços e Convite."},
-            {"id": "cat_fases_criterios", "titulo": "5. Critérios de Julgamento e Fases", "tipo": "category", "pagina": 25, "resumo": "Critérios de seleção da proposta (Art. 33) e rito das fases ordinárias e inversão (Art. 17)."},
-            {"id": "exclusao_estatais", "titulo": "Exclusão das Estatais (Art. 1º, § 1º)", "tipo": "rule", "pagina": 1, "resumo": "Empresas públicas, sociedades de economia mista e suas subsidiárias NÃO se submetem à Lei 14.133/2021, regendo-se pela Lei 13.303/2016."},
-            {"id": "abrangencia_poderes", "titulo": "Poderes Legislativo e Judiciário", "tipo": "concept", "pagina": 1, "resumo": "Aplica-se aos órgãos do Poder Legislativo e Judiciário quando no desempenho atípico de suas funções administrativas."},
-            {"id": "princ_planejamento", "titulo": "Princípio do Planejamento", "tipo": "rule", "pagina": 6, "resumo": "Princípio expresso inovador da Lei 14.133: compras e contratações devem integrar plano de contratações anual para evitar fracionamento."},
-            {"id": "princ_segregacao", "titulo": "Segregação de Funções", "tipo": "rule", "pagina": 6, "resumo": "Vedada a designação do mesmo agente público para funções sensíveis e simultâneas de autorização, execução e fiscalização contratual."},
-            {"id": "inexigibilidade_74", "titulo": "Inexigibilidade de Licitação (Art. 74)", "tipo": "concept", "pagina": 8, "resumo": "Inviabilidade de competição. Rol exemplificativo: fornecedor exclusivo, serviços intelectuais notórios e profissional artístico consagrado."},
-            {"id": "dispensa_75", "titulo": "Licitação Dispensável (Art. 75)", "tipo": "concept", "pagina": 9, "resumo": "A competição é viável, mas a lei autoriza a contratação direta por conveniência e economicidade. Rol taxativo (baixo valor, emergência, deserta/fracassada)."},
-            {"id": "comp_inex_disp", "titulo": "Inexigibilidade × Dispensa", "tipo": "comparison", "pagina": 8, "resumo": "Inexigibilidade: competição inviável e rol exemplificativo. Dispensa: competição juridicamente viável, mas dispensada/dispensável por rol estritamente taxativo."},
-            {"id": "modalidades_atuais", "titulo": "As 5 Modalidades Vigentes (Art. 28)", "tipo": "concept", "pagina": 22, "resumo": "Pregão, Concorrência, Concurso, Leilão e Diálogo Competitivo. Tomada de Preços e Convite foram totalmente revogadas."},
-            {"id": "dialogo_competitivo", "titulo": "Diálogo Competitivo (Art. 32)", "tipo": "concept", "pagina": 24, "resumo": "Modalidade inédita para inovação tecnológica ou contratação complexa, conduzida por comissão de no mínimo 3 servidores efetivos permanentes."},
-            {"id": "pregao_obrigatorio", "titulo": "Pregão para Bens e Serviços Comuns", "tipo": "rule", "pagina": 22, "resumo": "Modalidade obrigatória para aquisição de bens e serviços comuns, cujo critério de julgamento seja menor preço ou maior desconto."},
-            {"id": "rito_fases", "titulo": "Ordem Ordinária das Fases (Art. 17)", "tipo": "rule", "pagina": 34, "resumo": "Edital → Propostas e lances → Julgamento → Habilitação → Recursal → Homologação. Regra geral: o julgamento antecede a habilitação."},
-            {"id": "inversao_fases", "titulo": "Inversão de Fases Excepcional", "tipo": "exception", "pagina": 34, "resumo": "A antecipação da fase de habilitação é excepcional e permitida apenas mediante ato formalmente motivado que justifique o benefício ao interesse público."},
-            {"id": "criterios_julgamento", "titulo": "Critérios de Julgamento (Art. 33)", "tipo": "definition", "pagina": 25, "resumo": "Menor preço, Maior desconto, Melhor técnica ou conteúdo artístico, Técnica e preço, Maior lance (no leilão) e Maior retorno econômico."},
-            {"id": "trap_estatais", "titulo": "Pegadinha: Estatais na Lei 14.133", "tipo": "trap", "pagina": 2, "resumo": "Bancas afirmam que CEF ou Petrobras licitam pela Lei 14.133/2021. ERRADO! Empresas Públicas e SEM submetem-se à Lei nº 13.303/2016."},
-            {"id": "trap_taxativo", "titulo": "Pegadinha: Taxatividade de Inexigibilidade", "tipo": "trap", "pagina": 15, "resumo": "A inexigibilidade (art. 74) tem rol meramente exemplificativo (inviabilidade de competição). Quem possui rol taxativo é a dispensa de licitação (art. 75)."},
-            {"id": "mnem_modalidades", "titulo": "Mnemônico: PRE-CON-CON-LEI-DIA", "tipo": "mnemonic", "pagina": 22, "resumo": "PREgão + CONcorrência + CONcurso + LEIlão + DIÁlogo competitivo (as cinco modalidades de licitação vigentes)."}
-        ]
-        edges = [
-            {"source": "root", "target": "cat_sujeitos"},
-            {"source": "root", "target": "cat_principios"},
-            {"source": "root", "target": "cat_contratacao_direta"},
-            {"source": "root", "target": "cat_modalidades"},
-            {"source": "root", "target": "cat_fases_criterios"},
-            {"source": "cat_sujeitos", "target": "exclusao_estatais"},
-            {"source": "cat_sujeitos", "target": "abrangencia_poderes"},
-            {"source": "cat_sujeitos", "target": "trap_estatais"},
-            {"source": "cat_principios", "target": "princ_planejamento"},
-            {"source": "cat_principios", "target": "princ_segregacao"},
-            {"source": "cat_contratacao_direta", "target": "inexigibilidade_74"},
-            {"source": "cat_contratacao_direta", "target": "dispensa_75"},
-            {"source": "cat_contratacao_direta", "target": "comp_inex_disp"},
-            {"source": "cat_contratacao_direta", "target": "trap_taxativo"},
-            {"source": "cat_modalidades", "target": "modalidades_atuais"},
-            {"source": "cat_modalidades", "target": "dialogo_competitivo"},
-            {"source": "cat_modalidades", "target": "pregao_obrigatorio"},
-            {"source": "cat_modalidades", "target": "mnem_modalidades"},
-            {"source": "cat_fases_criterios", "target": "rito_fases"},
-            {"source": "cat_fases_criterios", "target": "inversao_fases"},
-            {"source": "cat_fases_criterios", "target": "criterios_julgamento"}
-        ]
-        return {"titulo": clean_title or "Licitações Públicas (Lei nº 14.133/2021)", "nodes": nodes, "edges": edges}
+    # 1. Fases do Processo Licitatório
+    if "preparatória" in t_low or "planejamento" in t_low:
+        return f"Fase 1: Preparatória ({marker})"
+    if "divulgação do edital" in t_low:
+        return f"Fase 2: Divulgação do Edital ({marker})"
+    if "apresentação de propostas" in t_low:
+        return f"Fase 3: Apresentação de Propostas ({marker})"
+    if "julgamento" in t_low and len(t) < 70:
+        return f"Fase 4: Julgamento das Propostas ({marker})"
+    if "habilitação" in t_low and len(t) < 70:
+        return f"Fase 5: Habilitação ({marker})"
+    if "recursal" in t_low and len(t) < 70:
+        return f"Fase 6: Fase Recursal ({marker})"
+    if "homologação" in t_low:
+        return f"Fase 7: Homologação ({marker})"
 
-    # 3. Direito Administrativo: Poderes Administrativos (Exclusivo)
-    if any(k in norm_topic for k in ["poder_administrativo", "poderes_administrativos", "poder_hierarquico", "poder_disciplinar", "poder_policia"]) and not any(k in norm_topic for k in ["ato", "licita"]):
-        nodes = [
-            {"id": "root", "titulo": "Poderes Administrativos", "tipo": "root", "pagina": 1, "resumo": "Instrumentos jurídicos conferidos à Administração Pública para a consecução do interesse público com prerrogativas estatais."},
-            {"id": "cat_conceito", "titulo": "1. Conceito e Finalidade", "tipo": "category", "pagina": 1, "resumo": "Poder-dever indeclinável conferido por lei, orientado estritamente ao interesse da coletividade."},
-            {"id": "cat_especies", "titulo": "2. Poderes em Espécie", "tipo": "category", "pagina": 2, "resumo": "Classificação doutrinária clássica: Poder Hierárquico, Disciplinar, Regulamentar e de Polícia."},
-            {"id": "cat_abusos", "titulo": "3. Abuso de Poder e Sanções", "tipo": "category", "pagina": 3, "resumo": "Desvio de finalidade (excesso teleológico) e Excesso de poder (vício de competência insanável)."},
-            {"id": "pod_hierarquico", "titulo": "Poder Hierárquico", "tipo": "concept", "pagina": 2, "resumo": "Permite escalonar, fiscalizar e distribuir atribuições internamente, inclusive delegar e avocar competências."},
-            {"id": "pod_disciplinar", "titulo": "Poder Disciplinar", "tipo": "concept", "pagina": 2, "resumo": "Permite apurar infrações e aplicar sanções funcionais aos servidores e terceiros com vínculo especial."},
-            {"id": "pod_policia", "titulo": "Poder de Polícia", "tipo": "concept", "pagina": 3, "resumo": "Condiciona e restringe o uso de bens e liberdades individuais em favor do interesse público (discricionariedade, autoexecutoriedade e coercibilidade)."},
-            {"id": "comp_hier_disc", "titulo": "Hierárquico × Disciplinar", "tipo": "comparison", "pagina": 2, "resumo": "Poder hierárquico organiza atribuições internas; poder disciplinar pune infrações funcionais com vínculo específico."},
-            {"id": "trap_multa", "titulo": "Pegadinha: Multa não é Autoexecutória", "tipo": "trap", "pagina": 3, "resumo": "A cobrança de multa pecuniária não tem autoexecutoriedade: se o particular não pagar, exige Execução Fiscal no Judiciário."},
-            {"id": "mnem_poderes", "titulo": "Mnemônico: H-D-R-P", "tipo": "mnemonic", "pagina": 2, "resumo": "Hierárquico + Disciplinar + Regulamentar + Polícia (os 4 poderes clássicos da Administração)."}
-        ]
-        edges = [
-            {"source": "root", "target": "cat_conceito"},
-            {"source": "root", "target": "cat_especies"},
-            {"source": "root", "target": "cat_abusos"},
-            {"source": "cat_especies", "target": "pod_hierarquico"},
-            {"source": "cat_especies", "target": "pod_disciplinar"},
-            {"source": "cat_especies", "target": "pod_policia"},
-            {"source": "cat_especies", "target": "comp_hier_disc"},
-            {"source": "cat_especies", "target": "trap_multa"},
-            {"source": "cat_especies", "target": "mnem_poderes"}
-        ]
-        return {"titulo": clean_title, "nodes": nodes, "edges": edges}
+    # 2. Critérios de Julgamento
+    if "menor preço" in t_low:
+        return f"Critério: Menor Preço ({marker})"
+    if "maior desconto" in t_low:
+        return f"Critério: Maior Desconto ({marker})"
+    if "melhor técnica" in t_low or "conteúdo artístico" in t_low:
+        return f"Critério: Melhor Técnica ({marker})"
+    if "técnica e preço" in t_low:
+        return f"Critério: Técnica e Preço ({marker})"
+    if "maior lance" in t_low:
+        return f"Critério: Maior Lance ({marker})"
+    if "maior retorno" in t_low:
+        return f"Critério: Maior Retorno ({marker})"
 
-    # 4. Direito Administrativo: Atos Administrativos (Exclusivo e Aprofundado)
-    if any(k in norm_topic for k in ["ato_administrativo", "atos_administrativos", "atos", "convalidacao", "anulacao_revogacao"]) and not any(k in norm_topic for k in ["licita"]):
-        nodes = [
-            {"id": "root", "titulo": "Atos Administrativos", "tipo": "root", "pagina": 1, "resumo": "Manifestação unilateral de vontade da Administração Pública que produz efeitos jurídicos imediatos sob regime de direito público."},
-            {"id": "cat_requisitos", "titulo": "1. Requisitos de Validade (COFIFOMOB)", "tipo": "category", "pagina": 1, "resumo": "Elementos indispensáveis para a perfeição e higidez jurídica do ato administrativo."},
-            {"id": "cat_atributos", "titulo": "2. Atributos do Ato (PATI)", "tipo": "category", "pagina": 2, "resumo": "Prerrogativas e características jurídicas que diferenciam os atos administrativos dos atos privados."},
-            {"id": "cat_extincao", "titulo": "3. Extinção e Convalidação", "tipo": "category", "pagina": 3, "resumo": "Formas de desfazimento (Anulação x Revogação) e saneamento de vícios sanáveis."},
-            {"id": "req_competencia", "titulo": "Competência (CO)", "tipo": "rule", "pagina": 1, "resumo": "Poder legal conferido ao agente público. É irrenunciável, intransferível e inderrogável (art. 11 da Lei 9.784/99)."},
-            {"id": "req_finalidade", "titulo": "Finalidade (FI)", "tipo": "rule", "pagina": 1, "resumo": "Objetivo estritamente de interesse público e específico previsto em lei. Desvio gera desvio de poder / finalidade."},
-            {"id": "req_forma", "titulo": "Forma (FO)", "tipo": "rule", "pagina": 1, "resumo": "Modo de exteriorização do ato. A regra é a forma escrita solene. Vício de forma não essencial admite convalidação."},
-            {"id": "req_motivo", "titulo": "Motivo (MO)", "tipo": "rule", "pagina": 1, "resumo": "Pressupostos fáticos e jurídicos que justificam a edição do ato. Sujeito à Teoria dos Motivos Determinantes."},
-            {"id": "req_objeto", "titulo": "Objeto / Conteúdo (OB)", "tipo": "concept", "pagina": 1, "resumo": "Efeito jurídico imediato produzido pelo ato (criação, modificação ou extinção de direitos)."},
-            {"id": "atr_presuncao", "titulo": "Presunção de Legitimidade", "tipo": "definition", "pagina": 2, "resumo": "Presume-se editado em conformidade com a lei até prova em contrário (juris tantum). Inverte o ônus da prova."},
-            {"id": "atr_autoexec", "titulo": "Autoexecutoriedade", "tipo": "definition", "pagina": 2, "resumo": "A Administração executa materialmente seus atos sem necessidade de autorização judicial prévia."},
-            {"id": "atr_tipicidade", "titulo": "Tipicidade", "tipo": "definition", "pagina": 2, "resumo": "O ato deve corresponder a figuras previamente definidas em lei, impedindo a criação de atos arbitrários."},
-            {"id": "atr_imperat", "titulo": "Imperatividade", "tipo": "definition", "pagina": 2, "resumo": "Poder de impor obrigações unilateralmente a terceiros independentemente de sua concordância."},
-            {"id": "comp_anul_revog", "titulo": "Anulação × Revogação", "tipo": "comparison", "pagina": 3, "resumo": "Anulação decorre de ilegalidade (ex tunc, vinculada, adm ou judiciário). Revogação decorre de conveniência/oportunidade (ex nunc, discricionária, privativa da adm)."},
-            {"id": "trap_foco", "titulo": "Pegadinha: Convalidação FO-CO", "tipo": "trap", "pagina": 3, "resumo": "Apenas admitem convalidação vícios sanáveis de Forma (não essencial) e Competência (não exclusiva). Motivo, finalidade e objeto ilícito NUNCA convalidam."},
-            {"id": "trap_multa_atos", "titulo": "Pegadinha: Multa não é Autoexecutória", "tipo": "trap", "pagina": 2, "resumo": "A imposição de multa decorre do poder de polícia, mas a sua cobrança pecuniária não é autoexecutória; exige ação de execução fiscal judicial."},
-            {"id": "mnem_cofifomob", "titulo": "Mnemônico: COFIFOMOB", "tipo": "mnemonic", "pagina": 1, "resumo": "Competência + Finalidade + Forma + Motivo + Objeto (requisitos de validade dos atos administrativos)."},
-            {"id": "mnem_pati", "titulo": "Mnemônico: PATI", "tipo": "mnemonic", "pagina": 2, "resumo": "Presunção de legitimidade + Autoexecutoriedade + Tipicidade + Imperatividade (atributos do ato)."}
-        ]
-        edges = [
-            {"source": "root", "target": "cat_requisitos"},
-            {"source": "root", "target": "cat_atributos"},
-            {"source": "root", "target": "cat_extincao"},
-            {"source": "cat_requisitos", "target": "req_competencia"},
-            {"source": "cat_requisitos", "target": "req_finalidade"},
-            {"source": "cat_requisitos", "target": "req_forma"},
-            {"source": "cat_requisitos", "target": "req_motivo"},
-            {"source": "cat_requisitos", "target": "req_objeto"},
-            {"source": "cat_requisitos", "target": "mnem_cofifomob"},
-            {"source": "cat_atributos", "target": "atr_presuncao"},
-            {"source": "cat_atributos", "target": "atr_autoexec"},
-            {"source": "cat_atributos", "target": "atr_tipicidade"},
-            {"source": "cat_atributos", "target": "atr_imperat"},
-            {"source": "cat_atributos", "target": "trap_multa_atos"},
-            {"source": "cat_atributos", "target": "mnem_pati"},
-            {"source": "cat_extincao", "target": "comp_anul_revog"},
-            {"source": "cat_extincao", "target": "trap_foco"}
-        ]
-        return {"titulo": clean_title, "nodes": nodes, "edges": edges}
+    # 3. Modalidades Licitatórias
+    if "diálogo competitivo" in t_low:
+        return f"Modalidade: Diálogo Competitivo ({marker})"
+    if "concorrência" in t_low and len(t) < 120:
+        return f"Modalidade: Concorrência ({marker})"
+    if "concurso" in t_low and len(t) < 120:
+        return f"Modalidade: Concurso ({marker})"
+    if "leilão" in t_low and len(t) < 120:
+        return f"Modalidade: Leilão ({marker})"
+    if "pregão" in t_low and len(t) < 120:
+        return f"Modalidade: Pregão ({marker})"
 
-    # 5. Informática / Excel
-    if any(k in norm_topic for k in ["excel", "procv", "calc", "planilha"]):
-        nodes = [
-            {"id": "root", "titulo": "Excel: Funções de Pesquisa", "tipo": "root", "pagina": 1, "resumo": "Mecanismos de busca vetorial e matricial no Microsoft Excel com foco nas funções PROCV, PROCX e ÍNDICE+CORRESP."},
-            {"id": "cat_procv", "titulo": "1. Sintaxe e Regras do PROCV", "tipo": "category", "pagina": 1, "resumo": "PROCV(valor_procurado; matriz_tabela; núm_índice_coluna; [procurar_intervalo])."},
-            {"id": "cat_erros", "titulo": "2. Erros Recorrentes em Prova", "tipo": "category", "pagina": 2, "resumo": "Diferenciação precisa entre erros de sintaxe (#N/D, #REF!, #VALOR!, #NOME?)."},
-            {"id": "regra_3arg", "titulo": "3º Argumento: Número e não Letra", "tipo": "rule", "pagina": 1, "resumo": "O 3º argumento exige número inteiro (ex: 3), jamais a letra da coluna ('C'). Letra gera erro #NOME?."},
-            {"id": "regra_4arg", "titulo": "4º Argumento Omitido (Busca 1 vs 0)", "tipo": "rule", "pagina": 1, "resumo": "Se omitido, assume busca aproximada (1/VERDADEIRO), exigindo ordem crescente na matriz. Para busca exata, use 0/FALSO."},
-            {"id": "busca_direita", "titulo": "Busca Estrita para a Direita", "tipo": "concept", "pagina": 1, "resumo": "O PROCV pesquisa exclusivamente na primeira coluna à esquerda e retorna dados à direita. Para retornar à esquerda, use PROCX."},
-            {"id": "comp_nd_ref", "titulo": "Diferença #N/D × #REF!", "tipo": "comparison", "pagina": 2, "resumo": "#N/D ocorre quando o valor procurado não existe na 1ª coluna; #REF! ocorre quando o índice ultrapassa o total de colunas."},
-            {"id": "trap_casesens", "titulo": "Pegadinha: PROCV não é Case-Sensitive", "tipo": "trap", "pagina": 2, "resumo": "O PROCV trata maiúsculas e minúsculas como idênticas ('EXCEL' == 'excel')."},
-            {"id": "mnem_procv", "titulo": "Mnemônico: ZERO é Certeiro", "tipo": "mnemonic", "pagina": 1, "resumo": "'Zero é exato e certeiro; um é busca aproximada por palpite!'"}
-        ]
-        edges = [
-            {"source": "root", "target": "cat_procv"},
-            {"source": "root", "target": "cat_erros"},
-            {"source": "cat_procv", "target": "regra_3arg"},
-            {"source": "cat_procv", "target": "regra_4arg"},
-            {"source": "cat_procv", "target": "busca_direita"},
-            {"source": "cat_erros", "target": "comp_nd_ref"},
-            {"source": "cat_erros", "target": "trap_casesens"},
-            {"source": "cat_procv", "target": "mnem_procv"}
-        ]
-        return {"titulo": clean_title, "nodes": nodes, "edges": edges}
+    # 4. Hipóteses Clássicas de Inexigibilidade e Dispensa de Licitação
+    if "artístico" in t_low or "artista" in t_low or "setor artístico" in t_low:
+        return f"Profissional Artístico Consagrado ({marker})"
+    if "fornecedor" in t_low or "exclusivo" in t_low or "produtor" in t_low:
+        return f"Fornecedor Exclusivo ({marker})"
+    if "notória especialização" in t_low or "técnico-profissionais" in t_low:
+        return f"Serviços Técnicos Especializados ({marker})"
+    if "credenciamento" in t_low:
+        return f"Credenciamento de Objetos ({marker})"
+    if "emergência" in t_low or "calamidade" in t_low:
+        return f"Emergência ou Calamidade ({marker})"
+    if "pesquisa" in t_low and ("ensino" in t_low or "instituição" in t_low or "desenvolvimento" in t_low):
+        return f"Instituição de Pesquisa e Ensino ({marker})"
+    if "transferência de tecnologia" in t_low:
+        return f"Transferência de Tecnologia ({marker})"
+    if "deficiência" in t_low or "pcd" in t_low:
+        return f"Associação de PCD ({marker})"
+    if "catadores" in t_low or "recicláveis" in t_low:
+        return f"Associação de Catadores ({marker})"
+    if "deserta" in t_low or "fracassada" in t_low or "não surgiram licitantes" in t_low:
+        return f"Licitação Deserta ou Fracassada ({marker})"
+    if "diários oficiais" in t_low or "imprensa" in t_low:
+        return f"Impressão de Diários Oficiais ({marker})"
+    if "valores inferiores" in t_low or "valor inferior" in t_low or "baixo valor" in t_low:
+        if "obras" in t_low or "engenharia" in t_low:
+            return f"Dispensa por Baixo Valor: Obras ({marker})"
+        return f"Dispensa por Baixo Valor: Compras ({marker})"
+    if "imóvel" in t_low or "locação" in t_low:
+        return f"Locação ou Compra de Imóvel ({marker})"
 
-    # 6. Extrator Semântico Dinâmico Estilo NotebookLM para Qualquer PDF Importado (Robusto & Preciso)
-    clean_root_title = sanitize_mindmap_title(focus or title or subarea, discipline)
-    pages = re.split(r'---\s*P[ÁA]GINA\s*(\d+)\s*---', context_text or "", flags=re.IGNORECASE)
+    cleaned = re.sub(
+        r'^(?:nos casos de|na contratação de|na hipótese de|para a contratação de|'
+        r'para a aquisição de|para aquisição de|para a|para o|para|em caso de|'
+        r'aquisição de|prestação de|quando houver|quando|que tenha por objeto|'
+        r'destinado a|no caso de|de|a)\s+',
+        '', t, flags=re.IGNORECASE
+    )
+    parts = re.split(r'[,;:\(\).]', cleaned)
+    first_part = parts[0].strip()
+    words = first_part.split()
+    if len(words) > 5:
+        first_part = " ".join(words[:5])
+    words_title = [w.capitalize() for w in first_part.split()]
+    title = " ".join(words_title)
+    if not title or len(title) < 3:
+        title = "Regra Específica"
+    return f"{title} ({marker})"
+
+
+def generate_semantic_mindmap_from_text(pdf_filename, full_text):
+    """
+    Motor semântico estilo NotebookLM de alta retenção validado.
+    Reconstrói parágrafos, filtra questões/exercícios e gera 5-8 macro-categorias
+    com conceitos objetivos e resumos substantivos.
+    """
+    base_name = os.path.splitext(os.path.basename(pdf_filename))[0]
+    if base_name.lower() in ("material", "aula", "apostila", "teoria", "documento", "pdf", "livro", "slides"):
+        parent_dir = os.path.basename(os.path.dirname(os.path.abspath(pdf_filename)))
+        if parent_dir and len(parent_dir) >= 3 and parent_dir.lower() not in ("downloads", "desktop", "temp", "tmp", "concursos"):
+            base_name = parent_dir
+    clean_root_title = sanitize_mindmap_title(base_name)
+
+    clean_corpus = re.sub(r'(\w+)\s*[-–—]\s*\n\s*(\w+)', r'\1\2', full_text)
+
+    raw_pages = re.split(r'---\s*P[ÁA]GINA\s*(\d+)\s*---', clean_corpus, flags=re.IGNORECASE)
     page_map = {}
-    if len(pages) > 1:
-        for idx in range(1, len(pages), 2):
-            pnum = int(pages[idx])
-            ptxt = pages[idx+1] if idx+1 < len(pages) else ""
-            page_map[pnum] = ptxt
+    if len(raw_pages) > 1:
+        for idx in range(1, len(raw_pages), 2):
+            pnum = int(raw_pages[idx])
+            page_map[pnum] = (raw_pages[idx + 1] or "").lower()
     else:
-        page_map[1] = context_text or ""
-    total_pages = sorted(page_map.keys())[-1] if page_map else 1
+        page_map[1] = clean_corpus.lower()
 
     def find_page_for_term(term_str, default_page=1):
-        if not page_map:
-            return default_page
         t_clean = (term_str or "").lower().strip()
-        t_words = [w for w in re.findall(r'\b[a-z\u00C0-\u017F]{4,}\b', t_clean) if w not in ["para", "com", "como", "sobre", "pela", "pelo", "pegadinha"]]
+        t_words = [w for w in re.findall(r'\b[a-zà-ÿ]{4,}\b', t_clean)
+                   if w not in {"para", "com", "como", "sobre", "pela", "pelo",
+                                "pegadinha", "uma", "entre", "são", "regra", "prova",
+                                "inciso", "artigo", "fase", "item"}]
         if not t_words:
             return default_page
-        best_page = default_page
-        max_matches = 0
+        best_page, max_matches = default_page, 0
         for pnum in sorted(page_map.keys()):
-            ptxt = (page_map[pnum] or "").lower()
+            ptxt = page_map[pnum]
             matches = sum(1 for w in t_words if w in ptxt)
             if matches > max_matches:
                 max_matches = matches
                 best_page = pnum
         return best_page
 
-    # 1. Extração de Seções e Linhas (suporta Markdown ## / ###, numeração e maiúsculas)
-    sections = []
-    pegadinha_items = []
-    lines = (context_text or "").split('\n')
-    current_sec = None
-    in_pilar2 = False
-    current_pegadinha = None
+    QUESTION_HEADER_REGEX = re.compile(
+        r'(?:J[ÁA]\s+CAIU\s+EM\s+PROVA|'
+        r'\(\s*[A-Z0-9\s/–-]{3,60}\s*/\s*(?:20\d\d|[A-Z\s]{3,30})\s*/\s*(?:20\d\d|[A-Z\s]{3,30})\s*\)|'
+        r'^\s*\d{1,3}\s*[\.\)]\s*\([A-Z]|'
+        r'^\s*\d{2}\s+(?:O\b|A\b|Em\b|No\b|Na\b|De\b|Com\b|Segundo\b|Acerca\b|Julgue\b|Assinale\b|Ocorre\b|Considerando\b))',
+        re.IGNORECASE
+    )
+    OPTION_REGEX = re.compile(r'^\s*(?:\(?[A-Ea-e]\)[\s\w,–-]|(?:[A-E]\s+[A-Za-z\u00C0-\u017F]))')
+    ANSWER_REGEX = re.compile(r'^\s*(?:GABARITO|RESPOSTA|COMENT[ÁA]RIO)\b', re.IGNORECASE)
 
-    for line in lines:
-        l = line.strip()
-        if not l:
+    NON_HEADING_TERMS = {
+        "cebraspe", "fgv", "fcc", "vunesp", "ibfc", "aocp", "quadrix",
+        "gabarito", "comentário", "comentario", "questão", "questao",
+        "certo", "errado", "assinale", "julgue", "item",
+        "exercício", "exercicio", "exercícios", "exercicios"
+    }
+
+    def is_true_theoretical_heading(s):
+        s_strip = s.strip()
+        if len(s_strip) < 5 or len(s_strip) > 75:
+            return False
+        if s_strip.endswith((';', ',', ':', '.')):
+            return False
+        if re.match(r'^\(?[A-Ea-e]\)', s_strip):
+            return False
+        if any(t in s_strip.lower() for t in NON_HEADING_TERMS):
+            return False
+        if re.match(r'^[IVXLCDM]+\s*[-–—.]?\s*$', s_strip):
+            return False
+        if "(VETADO)" in s_strip.upper():
+            return False
+        if re.match(r'^[IVXLCDM]+\s*[-–—.]\s*(?:apenas|somente|estão|está|são)', s_strip, re.IGNORECASE):
+            return False
+        
+        alpha = [c for c in s_strip if c.isalpha()]
+        if not alpha or len(alpha) < 4:
+            return False
+        upper_ratio = sum(1 for c in alpha if c.isupper()) / len(alpha)
+        if upper_ratio >= 0.75:
+            words = [w for w in re.findall(r'\b[A-Za-z\u00C0-\u017F]+\b', s_strip) if len(w) >= 3]
+            if len(words) >= 1:
+                return True
+        return False
+
+    lines = clean_corpus.split('\n')
+    clean_lines = []
+    in_question = False
+
+    for l in lines:
+        s = l.strip()
+        if not s:
             continue
-        if any(ign in l.upper() for ign in ["RODRIGO MOTTA", "KAVERNA", "PÁGINA", "YOUTUBE", "INSTAGRAM", "GABARITO", "SUMÁRIO", "ÍNDICE", "WWW."]):
+        if s.startswith('---'):
+            clean_lines.append(s)
+            in_question = False
             continue
 
-        if re.search(r'##\s*2\.\s*Raio-X de Banca', l, re.IGNORECASE):
-            in_pilar2 = True
-            current_sec = None
+        if QUESTION_HEADER_REGEX.search(s):
+            in_question = True
+            continue
+        if OPTION_REGEX.match(s) or ANSWER_REGEX.match(s):
             continue
 
-        if in_pilar2:
-            m_peg = re.match(r'^###\s+(?:🚨\s*)?(?:Pegadinha\s*\d*:\s*)?(.+)$', l, re.IGNORECASE)
-            if m_peg:
-                if current_pegadinha:
-                    pegadinha_items.append(current_pegadinha)
-                p_raw = m_peg.group(1).strip()
-                current_pegadinha = {
-                    "raw_title": p_raw,
-                    "clean_title": clean_mindmap_heading(p_raw),
-                    "lines": []
-                }
-            elif current_pegadinha:
-                current_pegadinha["lines"].append(line)
+        if in_question:
+            if is_true_theoretical_heading(s):
+                in_question = False
+            else:
+                continue
+        clean_lines.append(s)
+
+    bullet_syms = r'^[•\-\*►▪▸✓✔\uf0d8\uf0fc\+]\s*'
+    noise_keywords = ["RODRIGO MOTTA", "KAVERNA", "YOUTUBE", "INSTAGRAM", "WWW.",
+                      "PROF.", "@PROF", "GABARITO", "DIREITO ADMINISTRATIVO – PROF",
+                      "DIREITO CONSTITUCIONAL – PROF", "DIREITO PENAL – PROF"]
+
+    def is_noise(s):
+        su = s.strip().upper()
+        if not su or len(su) < 3:
+            return True
+        if any(nk in su for nk in noise_keywords):
+            return True
+        if re.match(r'^\d{1,3}\s*$', su):
+            return True
+        return False
+
+    def is_terminal_line(s):
+        s = s.strip()
+        return s.endswith(('.', '!', '?', ':', '---', ';')) or (s.isupper() and len(s) > 4)
+
+    def is_new_item_line(s):
+        s = s.strip()
+        if re.match(bullet_syms, s):
+            return True
+        if is_true_theoretical_heading(s):
+            return True
+        if re.match(r'^(?:Art\.|Súmula|ATENÇÃO|IMPORTANTE|OBS|[IVXLCDM]+\s*[-–—])', s, re.IGNORECASE):
+            return True
+        if re.match(r'^[A-Z\u00C0-\u017F][A-Za-z\u00C0-\u017F\s\(\)/]{2,40}\s+[-–—]\s+[A-Za-z\u00C0-\u017F]', s):
+            return True
+        return False
+
+    reconstructed_lines = []
+    for l in clean_lines:
+        s = l.strip()
+        if is_noise(s):
+            continue
+        if s.startswith('---'):
+            reconstructed_lines.append(s)
+            continue
+        if (reconstructed_lines and 
+            not is_new_item_line(s) and 
+            not is_terminal_line(reconstructed_lines[-1]) and 
+            not reconstructed_lines[-1].startswith('---')):
+            reconstructed_lines[-1] += " " + s
         else:
-            m_heading = re.match(r'^(?:#{2,3}\s+|(?:\d{1,2}\.|\b[IVXLCDM]+\s*[-–.]|[A-Z]\.)\s+)([A-Za-z0-9\.\s\u00C0-\u017F\-\/–—:]{4,65})$', l)
-            is_upper = (l.isupper() and 6 <= len(l) <= 65 and not l.startswith('(') and not l.endsWith(')') if hasattr(l, 'endsWith') else (l.isupper() and 6 <= len(l) <= 65 and not l.startswith('(') and not l.endswith(')')) and not any(k in l for k in ["RODRIGO", "DIREITO", "PÁGINA", "EXERCÍCIO", "QUESTÃO", "GABARITO", "IMPORTANTE", "PROF.", "YOUTUBE", "WWW."]))
+            reconstructed_lines.append(s)
 
-            raw_h = None
-            if m_heading:
-                raw_h = m_heading.group(1).strip()
-            elif is_upper and (not current_sec or len(current_sec["lines"]) >= 2):
-                raw_h = l.strip()
+    raw_sections = []
+    current_sec = None
+    current_page = 1
 
-            if raw_h:
-                clean_h = clean_mindmap_heading(raw_h)
-                if len(clean_h) >= 4 and not any(sk in clean_h.lower() for sk in ["resumo estruturado", "raio-x", "mnemônicos", "mini-simulado", "quadro esquemático", "gabarito", "questões", "pilar"]):
+    for s in reconstructed_lines:
+        m_page = re.match(r'^---\s*P[ÁA]GINA\s*(\d+)\s*---$', s, re.IGNORECASE)
+        if m_page:
+            current_page = int(m_page.group(1))
+            continue
+
+        if is_true_theoretical_heading(s):
+            clean_h = to_title_case(s.rstrip(':. '))
+            clean_h = re.sub(r'^(?:Observação\s+Importante[!:]?|Atenção[!:]?|Cuidado[!:]?)\s*', '', clean_h, flags=re.IGNORECASE).strip()
+            if "não confunda modalidade com critério de julgamento" in clean_h.lower():
+                clean_h = "Critérios de Julgamento"
+            if clean_h.lower() not in clean_root_title.lower() and clean_root_title.lower() not in clean_h.lower():
+                if clean_h not in ("Importante", "Atenção", "Cuidado", "Obs", "Reflexão"):
                     if current_sec:
-                        sections.append(current_sec)
+                        raw_sections.append(current_sec)
                     current_sec = {
-                        "heading": raw_h,
-                        "clean_title": clean_h,
+                        "heading": clean_h,
+                        "page": current_page,
                         "lines": []
                     }
                     continue
 
-            if current_sec:
-                current_sec["lines"].append(line)
+        if current_sec:
+            current_sec["lines"].append(s)
 
     if current_sec:
-        sections.append(current_sec)
-    if current_pegadinha:
-        pegadinha_items.append(current_pegadinha)
+        raw_sections.append(current_sec)
 
-    # 2. Formação Dinâmica das Macro-Categorias (Nível 1)
-    macro_categories = []
-    if len(sections) >= 4:
-        target_count = min(7, len(sections))
-        step = len(sections) / target_count
-        for i in range(target_count):
-            idx = int(i * step)
-            s = sections[idx]
-            sub_sum = extract_mindmap_substantive_summary(s["lines"])
-            if not sub_sum:
-                sub_sum = f"Dispositivos normativos, conceitos essenciais e regras aplicáveis a {s['clean_title'].lower()}."
-            page = find_page_for_term(s["clean_title"], max(1, int((i + 1) * (total_pages / target_count))))
-            short_title = truncate_at_word(s["clean_title"], 38)
-            macro_categories.append({
-                "id": f"cat_{i + 1}",
-                "titulo": f"{i + 1}. {short_title}",
-                "clean_name": s["clean_title"],
-                "tipo": "category",
-                "pagina": page,
-                "resumo": sub_sum,
-                "section": s
-            })
+    grouped_sections = []
+    seen_h = set()
+    for s in raw_sections:
+        h_norm = s["heading"].lower()
+        if h_norm in seen_h:
+            if grouped_sections:
+                grouped_sections[-1]["lines"].extend(s["lines"])
+            continue
+        useful_l = [l for l in s["lines"] if l.strip() and not is_noise(l)]
+        if len(useful_l) < 2 and grouped_sections:
+            grouped_sections[-1]["lines"].extend(s["lines"])
+            continue
+        seen_h.add(h_norm)
+        grouped_sections.append(s)
+
+    if len(grouped_sections) > 8:
+        scored = sorted(enumerate(grouped_sections), key=lambda x: -len(x[1]["lines"]))
+        top_idx = sorted([idx for idx, _ in scored[:8]])
+        selected_sections = [grouped_sections[i] for i in top_idx]
     else:
-        norm_t = (discipline + " " + subarea + " " + clean_root_title).lower()
-        if any(k in norm_t for k in ["adm", "licita"]):
-            blueprints = [
-                ("1. Definições e Regime Jurídico", 1, "Conceitos fundamentais da Administração Pública, distinção entre direta e indireta e regime de direito público."),
-                ("2. Entidades Políticas e Administrativas", max(1, int(total_pages * 0.18)), "União, Estados, DF e Municípios versus entidades descentralizadas da administração indireta."),
-                ("3. Desconcentração vs. Descentralização", max(1, int(total_pages * 0.35)), "Criação interna de órgãos sem personalidade versus criação de novas pessoas jurídicas por lei."),
-                ("4. Órgãos Públicos e Classificações", max(1, int(total_pages * 0.52)), "Centros de competência despersonalizados: independentes, autônomos, superiores e subalternos."),
-                ("5. Entidades da Administração Indireta", max(1, int(total_pages * 0.7)), "Autarquias, fundações públicas, empresas públicas e sociedades de economia mista."),
-                ("6. Atividades e Prerrogativas Estatais", max(1, int(total_pages * 0.85)), "Atividades típicas de Estado, exploração de atividade econômica e regime de pessoal.")
-            ]
-        elif "const" in norm_t:
-            blueprints = [
-                ("1. Fundamentos e Princípios", 1, "Bases axiológicas, forma de Estado e princípios fundamentais."),
-                ("2. Hermenêutica e Eficácia", max(1, int(total_pages * 0.2)), "Métodos de interpretação e aplicabilidade das normas."),
-                ("3. Direitos e Garantias Individuais", max(1, int(total_pages * 0.4)), "Núcleo protetivo dos direitos individuais e remédios constitucionais."),
-                ("4. Organização do Estado e Poderes", max(1, int(total_pages * 0.6)), "Repartição de competências e tripartição dos Poderes da República."),
-                ("5. Processo Legislativo e Controle", max(1, int(total_pages * 0.8)), "Espécies normativas e fiscalização de constitucionalidade.")
-            ]
-        else:
-            blueprints = [
-                ("1. Fundamentos e Visão Geral", 1, f"Conceitos primários e definições de {clean_root_title}."),
-                ("2. Estrutura e Classificações", max(1, int(total_pages * 0.25)), "Divisões taxonômicas e espécies doutrinárias."),
-                ("3. Regime de Regras e Aplicações", max(1, int(total_pages * 0.5)), "Critérios práticos e parâmetros normativos."),
-                ("4. Prerrogativas, Exceções e Obrigações", max(1, int(total_pages * 0.75)), "Deveres, requisitos formais, restrições e procedimentos.")
-            ]
-        for idx, (title_b, page_b, desc_b) in enumerate(blueprints):
-            macro_categories.append({
-                "id": f"cat_{idx + 1}",
-                "titulo": title_b,
-                "clean_name": re.sub(r'^\d+\.\s*', '', title_b),
-                "tipo": "category",
-                "pagina": min(page_b, total_pages),
-                "resumo": desc_b,
-                "section": sections[idx] if idx < len(sections) else None
-            })
+        selected_sections = grouped_sections
 
-    # Raio-X de Pegadinhas permanente
-    cat_peg_num = len(macro_categories) + 1
-    macro_categories.append({
-        "id": f"cat_{cat_peg_num}",
-        "titulo": f"{cat_peg_num}. Raio-X de Pegadinhas da Banca",
-        "clean_name": "Pegadinhas de Prova",
-        "tipo": "category",
-        "pagina": find_page_for_term("pegadinha", total_pages),
-        "resumo": "Principais armadilhas, inversões de conceitos e assertivas com palavras absolutas exploradas pelas bancas examinadoras.",
-        "section": None
-    })
-
-    # 3. Montar Nó Raiz
     nodes = [{
         "id": "root",
-        "titulo": clean_root_title[:45],
+        "titulo": clean_root_title,
         "tipo": "root",
         "pagina": 1,
-        "resumo": f"Estrutura esquematizada das unidades essenciais de {clean_root_title} com definições, regras e distinções de prova."
+        "resumo": f"Estrutura esquematizada das unidades conceituais essenciais de {clean_root_title} para provas de concursos públicos."
     }]
     edges = []
+    seen_node_keys = set([clean_root_title.lower()])
+    node_id_seq = 0
 
-    for c in macro_categories:
+    for c_idx, sec in enumerate(selected_sections):
+        cat_id = f"cat_{c_idx + 1}"
+        cat_page = find_page_for_term(sec["heading"], sec["page"])
+        cat_title = sec["heading"]
+
+        cat_summary_lines = []
+        for l in sec["lines"]:
+            ls = l.strip()
+            if ls and not is_noise(ls) and len(ls) >= 20 and not ls.isupper():
+                cat_summary_lines.append(ls)
+                if len(cat_summary_lines) >= 2:
+                    break
+        cat_summary = clean_summary_text(" ".join(cat_summary_lines)) if cat_summary_lines else f"Regras e fundamentos de {cat_title.lower()} para concursos públicos."
+
         nodes.append({
-            "id": c["id"],
-            "titulo": c["titulo"],
+            "id": cat_id,
+            "titulo": cat_title,
             "tipo": "category",
-            "pagina": c["pagina"],
-            "resumo": c["resumo"]
+            "pagina": cat_page,
+            "resumo": cat_summary
         })
-        edges.append({"source": "root", "target": c["id"]})
+        edges.append({"source": "root", "target": cat_id})
+        seen_node_keys.add(cat_title.lower())
 
-    # 4. Extração de Subconceitos por Section Locality
-    seen_node_titles = set()
-    item_counter = 0
+        sec_lines = sec["lines"]
+        sec_items_count = 0
 
-    for c in macro_categories:
-        s = c.get("section")
-        sec_lines = s["lines"] if s else []
-        sec_items = []
-
-        # Tabelas Markdown
-        for l in sec_lines:
-            if l.startswith('|') and '|' in l[1:]:
-                parts = [p.strip() for p in l.split('|') if p.strip()]
-                if len(parts) >= 2 and not all(ch in '-: ' for ch in parts[0]):
-                    term = parts[0].replace('**', '').strip()
-                    defi = parts[1].replace('**', '').strip()
-                    if len(term) >= 3 and len(defi) >= 8 and not any(k in term.lower() for k in ["termo", "tipo", "item", "estrutura", "posição"]):
-                        clean_t = clean_mindmap_heading(term)
-                        is_comp = any(k in clean_t.lower() for k in ["desconcentração", "descentralização", "versus", "outorga", "delegação"])
-                        sec_items.append({
-                            "titulo": truncate_at_word(clean_t, 42),
-                            "tipo": "comparison" if is_comp else "concept",
-                            "resumo": defi[:180]
-                        })
-
-        # Subcabeçalhos #### ou negrito
-        for idx_l, l in enumerate(sec_lines):
-            l_str = l.strip()
-            m_subh = re.match(r'^####\s+(?:[0-9]{1,2}\.|\b[A-Z]\.)?\s*(.+)$', l_str)
-            if m_subh:
-                raw_st = m_subh.group(1).strip()
-                clean_st = clean_mindmap_heading(raw_st)
-                if len(clean_st) >= 3 and not any(sk in clean_st.lower() for sk in ["características comuns", "definição", "conceito"]):
-                    next_lines = sec_lines[idx_l+1:idx_l+8]
-                    sum_txt = extract_mindmap_substantive_summary(next_lines, max_chars=160)
-                    if not sum_txt:
-                        sum_txt = f"Aspectos e critérios aplicáveis a {clean_st}."
-                    sec_items.append({
-                        "titulo": truncate_at_word(clean_st, 42),
-                        "tipo": "concept",
-                        "resumo": sum_txt
-                    })
-
-            m_atencao = re.search(r'\*\*(?:Atenção|Importante|Cuidado|Lembre-se)[!:]?\*\*\s*(.+)$', l_str, re.IGNORECASE)
-            if m_atencao:
-                alerta_txt = m_atencao.group(1).replace('**', '').strip()
-                t_tit = "Regra: Ausência de Hierarquia" if "hierarquia" in alerta_txt.lower() else "Alerta de Prova"
-                sec_items.append({
-                    "titulo": truncate_at_word(t_tit, 42),
-                    "tipo": "rule" if "regra" in t_tit.lower() else "trap",
-                    "resumo": alerta_txt[:180]
-                })
-
-        # Marcadores de lista / bullets / travessões
-        for l in sec_lines:
-            l_str = l.strip()
-            m_bullet = re.match(r'^[•\-\*\+]\s*([A-Za-z\u00C0-\u017F\s\(\)/,:-]{3,35})\s*[-–—:]\s*(.{8,140})', l_str)
-            if m_bullet:
-                b_term = clean_mindmap_heading(m_bullet.group(1))
-                b_def = m_bullet.group(2).replace('**', '').strip()
-                if len(b_term) >= 3 and len(b_def) >= 8 and not any(k in b_term.lower() for k in ["termo", "tipo", "item", "estrutura"]):
-                    sec_items.append({
-                        "titulo": truncate_at_word(b_term, 42),
-                        "tipo": "concept",
-                        "resumo": b_def[:180]
-                    })
-
-        for it in sec_items:
-            norm_k = it["titulo"].lower()
-            if norm_k in seen_node_titles:
+        for line_i, line_str in enumerate(sec_lines):
+            if sec_items_count >= 10:
+                break
+            l = line_str.strip()
+            if not l or is_noise(l):
                 continue
-            seen_node_titles.add(norm_k)
-            item_counter += 1
-            nid = f"item_{item_counter}"
-            p_item = find_page_for_term(it["titulo"], default_page=c["pagina"])
 
-            nodes.append({
-                "id": nid,
-                "titulo": it["titulo"],
-                "tipo": it["tipo"],
-                "pagina": p_item,
-                "resumo": it["resumo"]
-            })
-            edges.append({
-                "source": c["id"],
-                "target": nid
-            })
+            # Inciso, Alínea ou Artigo
+            m_inciso = re.match(r'^([IVXLCDM]+|\d{1,2}|[a-z])\s*[-–—.]\s*(.{4,})$', l)
+            if m_inciso:
+                raw_marker = m_inciso.group(1).upper()
+                marker_str = f"Inciso {raw_marker}" if re.match(r'^[IVXLCDM]+$', raw_marker) else f"Item {raw_marker}"
+                didactic_title = extract_didactic_title_from_clause(marker_str, m_inciso.group(2))
+                def_raw = clean_summary_text(m_inciso.group(2))
+                if didactic_title.lower() not in seen_node_keys:
+                    seen_node_keys.add(didactic_title.lower())
+                    node_id_seq += 1
+                    sec_items_count += 1
+                    nid = f"item_{node_id_seq}"
+                    nodes.append({
+                        "id": nid,
+                        "titulo": didactic_title,
+                        "tipo": "rule",
+                        "pagina": find_page_for_term(didactic_title, cat_page),
+                        "resumo": def_raw
+                    })
+                    edges.append({"source": cat_id, "target": nid})
+                continue
 
-    # 5. Anexar Pegadinhas
-    trap_cat = macro_categories[-1]
-    if pegadinha_items:
-        for ps in pegadinha_items:
-            p_text = " ".join([l.strip() for l in ps["lines"] if l.strip()])
-            m_banca = re.search(r'O que a banca afirma[^:]*:\s*(?:["“])?([^"”\n]{10,140})', p_text, re.IGNORECASE)
-            m_regra = re.search(r'Regra de Ouro[^:]*:\s*(?:["“])?([^"”\n]{10,140})', p_text, re.IGNORECASE)
-
-            banca_claim = m_banca.group(1).replace('**', '').strip() if m_banca else ""
-            golden_rule = m_regra.group(1).replace('**', '').strip() if m_regra else ""
-
-            if banca_claim and golden_rule:
-                trap_summary = f"Banca afirma: {truncate_at_word(banca_claim, 85)}. Regra: {truncate_at_word(golden_rule, 85)}."
-            elif golden_rule:
-                trap_summary = f"Regra de Ouro: {truncate_at_word(golden_rule, 170)}."
-            elif banca_claim:
-                trap_summary = f"Armadilha de prova: {truncate_at_word(banca_claim, 170)}."
-            else:
-                trap_summary = extract_mindmap_substantive_summary(ps["lines"], max_chars=170) or "Ponto de atenção crítico contra pegadinha frequente de banca examinadora."
-
-            item_counter += 1
-            nid = f"item_{item_counter}"
-            p_trap = find_page_for_term(ps["clean_title"], default_page=8)
-
-            nodes.append({
-                "id": nid,
-                "titulo": truncate_at_word(f"Pegadinha: {ps['clean_title']}", 38),
-                "tipo": "trap",
-                "pagina": p_trap,
-                "resumo": trap_summary
-            })
-            edges.append({
-                "source": trap_cat["id"],
-                "target": nid
-            })
-    else:
-        for pnum in sorted(page_map.keys()):
-            ptxt = page_map[pnum] or ""
-            for lp in ptxt.split('\n'):
-                m_tr = re.search(r'(?:pegadinha|cuidado|atenção|armadilha|não confundir|inversão)[\s:–-]+([^\.\n]{5,55})', lp, re.IGNORECASE)
-                if m_tr:
-                    phrase = m_tr.group(1).strip()
-                    p_tit = truncate_at_word(f"Pegadinha: {phrase}", 36)
-                    if p_tit.lower() not in seen_node_titles:
-                        seen_node_titles.add(p_tit.lower())
-                        item_counter += 1
-                        nid = f"item_{item_counter}"
+            # Linha com travessão "Termo – Definição"
+            m_dash = re.match(r'^(?:' + bullet_syms + r')?([A-Za-z\u00C0-\u017F\s\(\)/]{3,45})\s+[-–—]\s+(.{12,})$', l)
+            if m_dash and not l.startswith('Art.') and not l.startswith('*'):
+                candidate_term = m_dash.group(1).strip()
+                if re.match(r'^(?:[IVXLCDM]+|\d+|[A-Z])$', candidate_term, re.IGNORECASE):
+                    marker_str = f"Inciso {candidate_term.upper()}"
+                    didactic_title = extract_didactic_title_from_clause(marker_str, m_dash.group(2))
+                    def_raw = clean_summary_text(m_dash.group(2))
+                    if didactic_title.lower() not in seen_node_keys:
+                        seen_node_keys.add(didactic_title.lower())
+                        node_id_seq += 1
+                        sec_items_count += 1
+                        nid = f"item_{node_id_seq}"
                         nodes.append({
                             "id": nid,
-                            "titulo": p_tit,
-                            "tipo": "trap",
-                            "pagina": pnum,
-                            "resumo": f"Ponto de atenção crítico contra armadilha frequente de banca examinadora: {phrase}."
+                            "titulo": didactic_title,
+                            "tipo": "rule",
+                            "pagina": find_page_for_term(didactic_title, cat_page),
+                            "resumo": def_raw
                         })
-                        edges.append({
-                            "source": trap_cat["id"],
-                            "target": nid
-                        })
-                if item_counter >= 30:
-                    break
-            if item_counter >= 30:
+                        edges.append({"source": cat_id, "target": nid})
+                    continue
+
+                term_raw = to_title_case(candidate_term)
+                def_raw = clean_summary_text(m_dash.group(2).strip())
+                essence_match = re.search(r'^(?:pessoas jurídicas de|ocorre quando|são|não possuem|com criação|dotada de|modalidade de licitação para|critério de julgamento)\s+([^,.;]{5,30})', def_raw, re.IGNORECASE)
+                essence = essence_match.group(1).strip() if essence_match else ""
+                short_label = compress_label(term_raw, essence, max_words=5)
+
+                if term_raw.lower() not in seen_node_keys and len(term_raw) >= 3:
+                    seen_node_keys.add(term_raw.lower())
+                    node_id_seq += 1
+                    sec_items_count += 1
+                    nid = f"item_{node_id_seq}"
+                    p_num = find_page_for_term(term_raw, cat_page)
+                    is_comp = any(k in term_raw.lower() for k in ["desconcentração", "descentralização", "versus", "outorga", "delegação", "sociedades", "dispensada", "dispensável"])
+                    nodes.append({
+                        "id": nid,
+                        "titulo": short_label,
+                        "tipo": "comparison" if is_comp else "concept",
+                        "pagina": p_num,
+                        "resumo": def_raw
+                    })
+                    edges.append({"source": cat_id, "target": nid})
+                continue
+
+            # Marcador bullet com termo na linha atual e definição na próxima
+            m_bullet_only = re.match(r'^' + bullet_syms + r'([A-Za-z\u00C0-\u017F\s\(\)/]{4,45})$', l)
+            if m_bullet_only:
+                term_raw = to_title_case(m_bullet_only.group(1).strip())
+                next_desc = []
+                for nxt in sec_lines[line_i + 1: line_i + 4]:
+                    ns = nxt.strip()
+                    if ns and not is_noise(ns) and not re.match(r'^' + bullet_syms, ns) and not ns.isupper():
+                        next_desc.append(ns)
+                def_raw = clean_summary_text(" ".join(next_desc)) if next_desc else f"Regime jurídico e características de {term_raw.lower()}."
+                essence_match = re.search(r'^(?:diretamente|subordinados|possuem|são aqueles|aqueles que|formados por)\s+([^,.;]{5,30})', def_raw, re.IGNORECASE)
+                essence = essence_match.group(1).strip() if essence_match else ""
+                short_label = compress_label(term_raw, essence, max_words=5)
+
+                if term_raw.lower() not in seen_node_keys and len(term_raw) >= 3:
+                    seen_node_keys.add(term_raw.lower())
+                    node_id_seq += 1
+                    sec_items_count += 1
+                    nid = f"item_{node_id_seq}"
+                    p_num = find_page_for_term(term_raw, cat_page)
+                    nodes.append({
+                        "id": nid,
+                        "titulo": short_label,
+                        "tipo": "concept",
+                        "pagina": p_num,
+                        "resumo": def_raw
+                    })
+                    edges.append({"source": cat_id, "target": nid})
+                continue
+
+            # Súmula ou Artigo importante
+            m_sumula = re.match(r'^(Súmula\s+n?º?\s*\d+\s+[A-Z]{3}|Art\.\s*\d+[^–—:]*)\s*[-–—:]\s*(.{15,})$', l, re.IGNORECASE)
+            if m_sumula:
+                s_name = m_sumula.group(1).strip()
+                s_desc = clean_summary_text(m_sumula.group(2).strip())
+                short_label = compress_label(to_title_case(s_name), "Regra Legal", max_words=5)
+                if s_name.lower() not in seen_node_keys:
+                    seen_node_keys.add(s_name.lower())
+                    node_id_seq += 1
+                    sec_items_count += 1
+                    nid = f"item_{node_id_seq}"
+                    nodes.append({
+                        "id": nid,
+                        "titulo": short_label,
+                        "tipo": "rule",
+                        "pagina": find_page_for_term(s_name, cat_page),
+                        "resumo": s_desc
+                    })
+                    edges.append({"source": cat_id, "target": nid})
+                continue
+
+            # Alertas de Prova (ATENÇÃO / IMPORTANTE)
+            m_alert = re.search(r'(?:ATENÇÃO|IMPORTANTE|CUIDADO)[!:]?\s*([^.\n]{15,100})', l, re.IGNORECASE)
+            if m_alert:
+                short_label = make_didactic_pegadinha_title(m_alert.group(1))
+                full_alert = clean_summary_text(l)
+                if short_label.lower() not in seen_node_keys:
+                    seen_node_keys.add(short_label.lower())
+                    node_id_seq += 1
+                    sec_items_count += 1
+                    nid = f"item_{node_id_seq}"
+                    nodes.append({
+                        "id": nid,
+                        "titulo": short_label,
+                        "tipo": "trap",
+                        "pagina": cat_page,
+                        "resumo": full_alert
+                    })
+                    edges.append({"source": cat_id, "target": nid})
+                continue
+
+    # Categoria de Pegadinhas Reais (Pilar 2)
+    trap_cat_id = f"cat_{len(selected_sections) + 1}"
+    trap_nodes = []
+
+    for pnum in sorted(page_map.keys()):
+        ptxt = page_map[pnum]
+        for line_p in ptxt.split('\n'):
+            lp = line_p.strip()
+            m_tr = re.search(r'(?:não\s+confunda|não\s+há\s+hierarquia|banca\s+costuma|pegadinha|cuidado\s+com|atenção)[!:\s]+([^.\n]{12,100})', lp, re.IGNORECASE)
+            if m_tr:
+                t_title = make_didactic_pegadinha_title(m_tr.group(1))
+                if t_title.lower() not in seen_node_keys:
+                    seen_node_keys.add(t_title.lower())
+                    trap_nodes.append({
+                        "titulo": t_title,
+                        "pagina": pnum,
+                        "resumo": clean_summary_text(lp)
+                    })
+            if len(trap_nodes) >= 6:
                 break
+        if len(trap_nodes) >= 6:
+            break
+
+    if trap_nodes:
+        nodes.append({
+            "id": trap_cat_id,
+            "titulo": "Raio-X de Pegadinhas da Banca",
+            "tipo": "category",
+            "pagina": trap_nodes[0]["pagina"],
+            "resumo": "Principais armadilhas, inversões conceituais e assertivas com palavras absolutas recorrentes nas bancas examinadoras."
+        })
+        edges.append({"source": "root", "target": trap_cat_id})
+
+        for tn in trap_nodes:
+            node_id_seq += 1
+            nid = f"item_{node_id_seq}"
+            nodes.append({
+                "id": nid,
+                "titulo": tn["titulo"],
+                "tipo": "trap",
+                "pagina": tn["pagina"],
+                "resumo": tn["resumo"]
+            })
+            edges.append({"source": trap_cat_id, "target": nid})
 
     return {"titulo": clean_root_title, "nodes": nodes, "edges": edges}
+
+
+def extract_semantic_mindmap_from_corpus(discipline, subarea, title, context_text, focus=""):
+    """
+    Extrator semântico offline de alta fidelidade para mapas mentais em JSON.
+    Processa dinamicamente o texto do documento com a fórmula do Pilar 2 e Regra 13.
+    """
+    clean_title = (focus or title or subarea.replace('_', ' ')).strip()
+    if context_text and len(context_text.strip()) >= 80:
+        return generate_semantic_mindmap_from_text(subarea or clean_title, context_text)
+    
+    root_title = to_title_case(clean_title)
+    return {
+        "titulo": root_title,
+        "nodes": [
+            {
+                "id": "root",
+                "titulo": root_title,
+                "tipo": "root",
+                "pagina": 1,
+                "resumo": f"Estrutura esquematizada das unidades conceituais essenciais de {root_title} para concursos públicos."
+            },
+            {
+                "id": "cat_1",
+                "titulo": "Conceitos Fundamentais",
+                "tipo": "category",
+                "pagina": 1,
+                "resumo": f"Definições dogmáticas, princípios e características estruturantes de {root_title}."
+            },
+            {
+                "id": "cat_2",
+                "titulo": "Regras Vinculantes e Espécies",
+                "tipo": "category",
+                "pagina": 1,
+                "resumo": f"Classificações operacionais e regimes jurídicos aplicáveis."
+            },
+            {
+                "id": "cat_3",
+                "titulo": "Raio-X de Pegadinhas da Banca",
+                "tipo": "category",
+                "pagina": 1,
+                "resumo": "Principais armadilhas e inversões conceituais recorrentes nas bancas examinadoras."
+            }
+        ],
+        "edges": [
+            {"source": "root", "target": "cat_1"},
+            {"source": "root", "target": "cat_2"},
+            {"source": "root", "target": "cat_3"}
+        ]
+    }
+
 
 def generate_mindmap_json(discipline, subarea, title, context_text, focus="", pdf_filename="material.pdf"):
     """

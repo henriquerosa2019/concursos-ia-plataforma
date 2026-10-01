@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Mapa Mental: Licitacoes Lei 14133</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --surface: #111827;
+      --surface-border: #1f2937;
+      --text: #f9fafb;
+      --text-muted: #9ca3af;
+      --primary: #3b82f6;
+      --primary-light: #60a5fa;
+      --accent: #10b981;
+      --rule: #f59e0b;
+      --trap: #ef4444;
+      --mnemonic: #a855f7;
+      --comparison: #8b5cf6;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      user-select: none;
+    }
+
+    /* Top Toolbar */
+    .toolbar {
+      position: absolute;
+      top: 14px;
+      left: 18px;
+      right: 18px;
+      height: 56px;
+      background: rgba(17, 24, 39, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 50;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    }
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-badge {
+      font-size: 20px;
+    }
+    .map-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.2px;
+    }
+    .stats-tag {
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      color: #93c5fd;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 20px;
+    }
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .search-input {
+      background: rgba(31, 41, 55, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 12px;
+      color: #fff;
+      outline: none;
+      width: 190px;
+      transition: all 0.2s;
+    }
+    .search-input:focus {
+      width: 250px;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+    }
+    .btn-tool {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #d1d5db;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s;
+    }
+    .btn-tool:hover {
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    /* Viewport & Canvas */
+    #viewport {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      cursor: grab;
+      background-image: 
+        radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    #viewport:active {
+      cursor: grabbing;
+    }
+    #canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: 0 0;
+      pointer-events: none;
+    }
+    #svg-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 12000px;
+      height: 12000px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    #nodes-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      pointer-events: auto;
+    }
+
+    /* Mind Map Nodes */
+    .mm-node {
+      position: absolute;
+      border-radius: 24px;
+      padding: 8px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      white-space: nowrap;
+      border-width: 1.5px;
+      border-style: solid;
+      user-select: none;
+    }
+    .mm-node:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+      z-index: 30;
+    }
+    .mm-node.selected {
+      transform: scale(1.08);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4), 0 10px 30px rgba(0,0,0,0.7);
+      z-index: 35;
+    }
+    .mm-node.dimmed {
+      opacity: 0.2;
+      filter: grayscale(80%);
+    }
+    .mm-node.matched {
+      animation: pulseMatch 1.5s infinite alternate;
+      z-index: 25;
+    }
+    @keyframes pulseMatch {
+      from { transform: scale(1); box-shadow: 0 0 8px rgba(56, 189, 248, 0.5); }
+      to { transform: scale(1.06); box-shadow: 0 0 20px rgba(56, 189, 248, 0.9); }
+    }
+
+    /* Types of Nodes */
+    .mm-node.type-root {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+      border-color: #60a5fa;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: 30px;
+      box-shadow: 0 0 28px rgba(37, 99, 235, 0.45);
+    }
+    .mm-node.type-category {
+      background: linear-gradient(135deg, #064e3b 0%, #047857 100%);
+      border-color: #34d399;
+      color: #ecfdf5;
+      font-size: 13.5px;
+      padding: 9px 18px;
+    }
+    .mm-node.type-concept {
+      background: #1f2937;
+      border-color: #4b5563;
+      color: #f3f4f6;
+    }
+    .mm-node.type-rule {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: #f59e0b;
+      color: #fef3c7;
+    }
+    .mm-node.type-trap {
+      background: rgba(239, 68, 68, 0.18);
+      border-color: #ef4444;
+      color: #fee2e2;
+    }
+    .mm-node.type-comparison {
+      background: rgba(139, 92, 246, 0.18);
+      border-color: #8b5cf6;
+      color: #ede9fe;
+    }
+    .mm-node.type-mnemonic {
+      background: rgba(168, 85, 247, 0.2);
+      border-color: #a855f7;
+      color: #f3e8ff;
+    }
+
+    .node-icon {
+      font-size: 14px;
+    }
+    .page-tag {
+      background: rgba(0, 0, 0, 0.35);
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 10px;
+      color: rgba(255, 255, 255, 0.75);
+      font-weight: 700;
+    }
+
+    .node-toggle {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      margin-left: 4px;
+      transition: background 0.15s;
+    }
+    .node-toggle:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    /* Side Drawer for Full Details */
+    #drawer {
+      position: fixed;
+      top: 0;
+      right: -420px;
+      width: 400px;
+      height: 100vh;
+      background: #111827;
+      border-left: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: -10px 0 35px rgba(0, 0, 0, 0.6);
+      z-index: 100;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      transition: right 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+    }
+    #drawer.open {
+      right: 0;
+    }
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 14px;
+    }
+    .drawer-badges {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .drawer-type-badge {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .drawer-page-badge {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+    .btn-close-drawer {
+      background: none;
+      border: none;
+      color: #9ca3af;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .btn-close-drawer:hover {
+      color: #fff;
+    }
+    .drawer-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.35;
+    }
+    .drawer-card {
+      background: #1f2937;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .drawer-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 8px;
+    }
+    .drawer-text {
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #e5e7eb;
+      white-space: pre-line;
+      word-break: break-word;
+    }
+    .drawer-tip {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 12.5px;
+      color: #fde68a;
+      line-height: 1.5;
+    }
+
+    .hint-bar {
+      position: absolute;
+      bottom: 16px;
+      left: 18px;
+      background: rgba(17, 24, 39, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 11.5px;
+      color: #9ca3af;
+      z-index: 40;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <span class="logo-badge">🧠</span>
+      <span class="map-title">Licitacoes Lei 14133</span>
+      <span class="stats-tag" id="stats-badge">Carregando...</span>
+    </div>
+    <div class="toolbar-right">
+      <input type="text" class="search-input" id="search-input" placeholder="🔍 Filtrar no mapa..." title="Filtre nós por palavra-chave">
+      <button class="btn-tool" onclick="zoom(0.12)" title="Aumentar Zoom">➕ Zoom</button>
+      <button class="btn-tool" onclick="zoom(-0.12)" title="Diminuir Zoom">➖ Zoom</button>
+      <button class="btn-tool" onclick="resetView()" title="Tamanho Real (100%)">100%</button>
+      <button class="btn-tool" onclick="fitView()" title="Ajustar Mapa à Tela">🔲 Ajustar</button>
+      <button class="btn-tool" onclick="toggleAllBranches()" id="btn-toggle-all">↕ Recolher</button>
+      <button class="btn-tool" onclick="toggleFullscreen()" title="Tela Cheia">🗖</button>
+    </div>
+  </div>
+
+  <!-- Interactive Canvas -->
+  <div id="viewport">
+    <div id="canvas">
+      <svg id="svg-lines"></svg>
+      <div id="nodes-container"></div>
+    </div>
+  </div>
+
+  <div class="hint-bar">
+    💡 Arraste para mover o mapa • Role o mouse para Zoom • Clique no nó para ler a explicação completa
+  </div>
+
+  <!-- Side Details Drawer -->
+  <div id="drawer">
+    <div class="drawer-header">
+      <div class="drawer-badges">
+        <span class="drawer-type-badge" id="d-type-badge">CONCEITO</span>
+        <span class="drawer-page-badge" id="d-page-badge">Pág. 1</span>
+      </div>
+      <button class="btn-close-drawer" onclick="closeDrawer()" title="Fechar">✖</button>
+    </div>
+    <div class="drawer-title" id="d-title">Título do Nó</div>
+    <div class="drawer-card">
+      <div class="drawer-label">💡 Explicação Pedagógica & Regra de Prova:</div>
+      <div class="drawer-text" id="d-summary">Resumo completo...</div>
+    </div>
+    <div class="drawer-tip" id="d-tip">
+      🎯 <b>Dica de Retenção:</b> Estude a diferenciação exata e atente-se às palavras absolutas das bancas examinadoras.
+    </div>
+  </div>
+
+  <script>
+    const data = {
+      nodes: [{"id": "root", "titulo": "Licitacoes Lei 14133", "tipo": "root", "pagina": 1, "resumo": "Estrutura esquematizada das unidades conceituais essenciais de Licitacoes Lei 14133 para provas de concursos públicos."}, {"id": "cat_1", "titulo": "Objeto da Licitação", "tipo": "category", "pagina": 3, "resumo": "Art. 2º, Lei nº 14.133/2021 – Esta Lei aplica-se a: I - alienação e concessão de direito real de uso de bens."}, {"id": "item_1", "titulo": "Art. 2º, Lei Nº 14.133/2021 (Regra)", "tipo": "rule", "pagina": 3, "resumo": "Esta Lei aplica-se a."}, {"id": "item_2", "titulo": "Alienação E Concessão De Direito (Inciso I)", "tipo": "rule", "pagina": 3, "resumo": "alienação e concessão de direito real de uso de bens."}, {"id": "item_3", "titulo": "Compra (Inciso II)", "tipo": "rule", "pagina": 1, "resumo": "compra, inclusive por encomenda."}, {"id": "item_4", "titulo": "Locação ou Compra de Imóvel (Inciso III)", "tipo": "rule", "pagina": 13, "resumo": "locação."}, {"id": "item_5", "titulo": "Concessão E Permissão De Uso (Inciso IV)", "tipo": "rule", "pagina": 3, "resumo": "concessão e permissão de uso de bens públicos."}, {"id": "item_6", "titulo": "Serviços Técnicos Especializados (Inciso V)", "tipo": "rule", "pagina": 2, "resumo": "prestação de serviços, inclusive os técnico-profissionais especializados."}, {"id": "item_7", "titulo": "Obras E Serviços De Arquitetura (Inciso VI)", "tipo": "rule", "pagina": 3, "resumo": "obras e serviços de arquitetura e engenharia."}, {"id": "item_8", "titulo": "Contratações De Tecnologia Da Informação (Inciso VII)", "tipo": "rule", "pagina": 3, "resumo": "contratações de tecnologia da informação e de comunicação."}, {"id": "item_9", "titulo": "Art. 3º, Lei Nº 14.133/2021 (Regra)", "tipo": "rule", "pagina": 3, "resumo": "Não se subordinam ao regime desta Lei."}, {"id": "item_10", "titulo": "Contratos Que Tenham Por Objeto (Inciso I)", "tipo": "rule", "pagina": 3, "resumo": "contratos que tenham por objeto operação de crédito, interno ou externo, e gestão de dívida pública, incluídas as contratações de agente financeiro e a concessão de garantia relacionadas a esses contratos."}, {"id": "cat_2", "titulo": "Objetivos da Licitação", "tipo": "category", "pagina": 1, "resumo": "Art. 11, Lei nº 14.133/2021 – O processo licitatório tem por objetivos: I - assegurar a seleção da proposta apta a gerar o resultado de contratação mais vantajoso para a Administração Pública, inclusive no que se refere ao ciclo de vida do objeto."}, {"id": "item_11", "titulo": "Art. 11, Lei Nº 14.133/2021 (Regra)", "tipo": "rule", "pagina": 1, "resumo": "O processo licitatório tem por objetivos."}, {"id": "item_12", "titulo": "Assegurar A Seleção Da Proposta (Inciso I)", "tipo": "rule", "pagina": 5, "resumo": "assegurar a seleção da proposta apta a gerar o resultado de contratação mais vantajoso para a Administração Pública, inclusive no que se refere ao ciclo de vida do objeto."}, {"id": "item_13", "titulo": "Assegurar Tratamento Isonômico Entre Os (Inciso II)", "tipo": "rule", "pagina": 5, "resumo": "assegurar tratamento isonômico entre os licitantes, bem como a justa competição."}, {"id": "item_14", "titulo": "Evitar Contratações Com Sobrepreço Ou (Inciso III)", "tipo": "rule", "pagina": 5, "resumo": "evitar contratações com sobrepreço ou com preços manifestamente inexequíveis e superfaturamento na execução dos contratos."}, {"id": "item_15", "titulo": "Incentivar A Inovação E O (Inciso IV)", "tipo": "rule", "pagina": 5, "resumo": "incentivar a inovação e o desenvolvimento nacional sustentável."}, {"id": "item_16", "titulo": "Assegurar Tratamento Diferenciado Entre Os (Inciso II)", "tipo": "rule", "pagina": 6, "resumo": "Assegurar tratamento diferenciado entre os licitantes, bem como a justa aquisição da empresa maior que possui maior capital financeiro."}, {"id": "item_17", "titulo": "Art. 5°, Lei Nº 14.133/2021 (Regra)", "tipo": "rule", "pagina": 1, "resumo": "Na aplicação desta Lei, serão observados os princípios da legalidade, da impessoalidade, da moralidade, da publicidade, da eficiência, do interesse público, da probidade administrativa, da igualdade, do planejamento, da transparência, da eficácia, da segregação de funções, da motivação, da vinculação ao edital, do julgamento objetivo, da segurança jurídica, da razoabilidade, da competitividade, da proporcionalidade, da celeridade, da economicidade e do desenvolvimento nacional sustentável, assim como as disposições do Decreto-Lei nº 4.657, de 4 de setembro de 1942 (Lei de Introdução às Normas do Direito Brasileiro)."}, {"id": "cat_3", "titulo": "Da Contratação Direta", "tipo": "category", "pagina": 1, "resumo": "Art. 72, Lei nº 14.133/2021 – O processo de contratação direta, que compreende os casos de inexigibilidade e de dispensa de licitação, deverá ser instruído com os seguintes documentos: I - documento de formalização de demanda e, se for o caso, estudo técnico preliminar, análise de riscos, termo de referência, projeto básico ou projeto executivo."}, {"id": "item_18", "titulo": "Art. 72, Lei Nº 14.133/2021 (Regra)", "tipo": "rule", "pagina": 1, "resumo": "O processo de contratação direta, que compreende os casos de inexigibilidade e de dispensa de licitação, deverá ser instruído com os seguintes documentos."}, {"id": "item_19", "titulo": "Documento De Formalização De Demanda (Inciso I)", "tipo": "rule", "pagina": 8, "resumo": "documento de formalização de demanda e, se for o caso, estudo técnico preliminar, análise de riscos, termo de referência, projeto básico ou projeto executivo."}, {"id": "item_20", "titulo": "Estimativa De Despesa (Inciso II)", "tipo": "rule", "pagina": 8, "resumo": "estimativa de despesa, que deverá ser calculada na forma estabelecida no art. 23 desta Lei."}, {"id": "item_21", "titulo": "Parecer Jurídico E Pareceres Técnicos (Inciso III)", "tipo": "rule", "pagina": 8, "resumo": "parecer jurídico e pareceres técnicos, se for o caso, que demonstrem o atendimento dos requisitos exigidos."}, {"id": "item_22", "titulo": "Demonstração Da Compatibilidade Da Previsão (Inciso IV)", "tipo": "rule", "pagina": 8, "resumo": "demonstração da compatibilidade da previsão de recursos orçamentários com o compromisso a ser assumido."}, {"id": "item_23", "titulo": "Comprovação De Que O Contratado (Inciso V)", "tipo": "rule", "pagina": 8, "resumo": "comprovação de que o contratado preenche os requisitos de habilitação e qualificação mínima necessária."}, {"id": "item_24", "titulo": "Razão Da Escolha Do Contratado (Inciso VI)", "tipo": "rule", "pagina": 8, "resumo": "razão da escolha do contratado."}, {"id": "item_25", "titulo": "Justificativa De Preço (Inciso VII)", "tipo": "rule", "pagina": 8, "resumo": "justificativa de preço."}, {"id": "item_26", "titulo": "Autorização Da Autoridade Competente (Inciso VIII)", "tipo": "rule", "pagina": 8, "resumo": "autorização da autoridade competente."}, {"id": "item_27", "titulo": "Art. 73, Lei Nº 14.133/2021 (Regra)", "tipo": "rule", "pagina": 1, "resumo": "Na hipótese de contratação direta indevida ocorrida com dolo, fraude ou erro grosseiro, o contratado e o agente público responsável responderão solidariamente pelo dano causado ao erário, sem prejuízo de outras sanções legais cabíveis."}, {"id": "cat_4", "titulo": "Inexigibilidade de Licitação", "tipo": "category", "pagina": 8, "resumo": "Art. 74, Lei nº 14.133/2021 – É inexigível a licitação quando inviável a competição, em especial nos casos de: I - aquisição de materiais, de equipamentos ou de gêneros ou contratação de serviços que só possam ser fornecidos por produtor, empresa ou representante comercial exclusivos."}, {"id": "item_28", "titulo": "Art. 74, Lei Nº 14.133/2021 (Regra)", "tipo": "rule", "pagina": 8, "resumo": "É inexigível a licitação quando inviável a competição, em especial nos casos de."}, {"id": "item_29", "titulo": "Fornecedor Exclusivo (Inciso I)", "tipo": "rule", "pagina": 15, "resumo": "aquisição de materiais, de equipamentos ou de gêneros ou contratação de serviços que só possam ser fornecidos por produtor, empresa ou representante comercial exclusivos."}, {"id": "item_30", "titulo": "Profissional Artístico Consagrado (Inciso II)", "tipo": "rule", "pagina": 9, "resumo": "contratação de profissional do setor artístico, diretamente ou por meio de empresário exclusivo, desde que consagrado pela crítica especializada ou pela opinião pública."}, {"id": "item_31", "titulo": "Serviços Técnicos Especializados (Inciso III)", "tipo": "rule", "pagina": 2, "resumo": "contratação dos seguintes serviços técnicos especializados de natureza pre dominantemente intelectual com profissionais ou empresas de notória especialização, vedada a inexigibilidade para serviços de publicidade e divulgação."}, {"id": "item_32", "titulo": "Credenciamento de Objetos (Inciso IV)", "tipo": "rule", "pagina": 9, "resumo": "objetos que devam ou possam ser contratados por meio de credenciamento."}, {"id": "item_33", "titulo": "Locação ou Compra de Imóvel (Inciso V)", "tipo": "rule", "pagina": 13, "resumo": "aquisição ou locação de imóvel cujas características de instalações e de localização tornem necessária sua escolha."}, {"id": "item_34", "titulo": "Avaliação Prévia Do Bem (Inciso I)", "tipo": "rule", "pagina": 10, "resumo": "avaliação prévia do bem, do seu estado de conservação, dos custos de adaptações, quando imprescindíveis às necessidades de utilização, e do prazo de amortização dos investimentos."}, {"id": "item_35", "titulo": "Certificação Da Inexistência De Imóveis (Inciso II)", "tipo": "rule", "pagina": 10, "resumo": "certificação da inexistência de imóveis públicos vagos e disponíveis que atendam ao objeto."}, {"id": "cat_5", "titulo": "Dispensa de Licitação", "tipo": "category", "pagina": 8, "resumo": "Na nova lei de licitações (lei nº 14.133/2021), os casos de LICITAÇÃO DISPENSÁVEL são encontrados no artigo 75: Art. 75, Lei nº 14.133/2021 – É dispensável a licitação."}, {"id": "item_36", "titulo": "Art. 75, Lei Nº 14.133/2021 (Regra)", "tipo": "rule", "pagina": 8, "resumo": "É dispensável a licitação."}, {"id": "item_37", "titulo": "Dispensa por Baixo Valor: Obras (Inciso I)", "tipo": "rule", "pagina": 9, "resumo": "para contratação que envolva valores inferiores a R$ 100.000,00 (cem mil reais) R$ 130.984,20 (cento e trinta mil novecentos e oitenta e quatro reais e vinte centavos ), no caso de obras e serviços de engenharia ou de serviço s de manutenção de veículos automotores."}, {"id": "item_38", "titulo": "Dispensa por Baixo Valor: Compras (Inciso II)", "tipo": "rule", "pagina": 10, "resumo": "para contratação que envolva valores inferiores a R$ 50.000,00 (cinquenta mil reais) 65.492,11 (sessenta e cinco mil quatrocentos e noventa e dois reais e onze centavos), no caso de outros serviços e compras."}, {"id": "item_39", "titulo": "Contratação Que Mantenha Todas As (Inciso III)", "tipo": "rule", "pagina": 10, "resumo": "para contratação que mantenha todas as condições definidas em edital de licitação realizada há menos de 1 (um) ano, quando se verificar que naquela licitação."}, {"id": "item_40", "titulo": "Contratação Que Tenha Por Objeto (Inciso IV)", "tipo": "rule", "pagina": 3, "resumo": "para contratação que tenha por objeto."}, {"id": "item_41", "titulo": "Contratação Com Vistas Ao Cumprimento (Inciso V)", "tipo": "rule", "pagina": 11, "resumo": "para contratação com vistas ao cumprimento do disposto nos arts. 3º, 3º -A, 4º, 5º e 20 da Lei nº 10.973, de 2 de dezembro de 2004, observados os princípios gerais de contratação constantes da referida Lei."}, {"id": "item_42", "titulo": "Contratação Que Possa Acarretar Comprometimento (Inciso VI)", "tipo": "rule", "pagina": 11, "resumo": "para contratação que possa acarretar comprometimento da segurança nacional, nos casos estabelecidos pelo Ministro de Estado da Defesa, mediante demanda dos comandos das Forças Armadas ou dos demais ministérios."}, {"id": "item_43", "titulo": "Guerra (Inciso VII)", "tipo": "rule", "pagina": 11, "resumo": "nos casos de guerra, estado de defesa, estado de sítio, intervenção federal ou de grave perturbação da ordem."}, {"id": "item_44", "titulo": "Emergência ou Calamidade (Inciso VIII)", "tipo": "rule", "pagina": 11, "resumo": "nos casos de emergência ou de calamidade pública, quando caracterizada urgência de atendimento de s ituação que possa ocasionar prejuízo ou comprometer a continuidade dos serviços públicos ou a segurança de pessoas, obras, serviços, equipamentos e outros bens, públicos ou particulares, e somente para aquisição dos bens necessários ao atendimento da situação emergencial ou calamitosa e para as parcelas de obras e serviços que possam ser concluídas no prazo máximo de 1 (um) ano, contado da data de ocorrência da emergência ou da calamidade, vedadas a prorrogação dos respectivos contratos e a recontratação de empresa já contratada com base no disposto neste inciso."}, {"id": "item_45", "titulo": "Aquisição (Inciso IX)", "tipo": "rule", "pagina": 6, "resumo": "para a aquisição, por pessoa jurídica de direito público interno, de bens produzidos ou serviços prestados por órgão ou entidade que integrem a Administração Pública e que tenham sido criados para esse fim específico, desde que o preço contratado seja compatível com o praticado no mercado."}, {"id": "cat_6", "titulo": "Modalidades de Licitação", "tipo": "category", "pagina": 1, "resumo": "As modalidades representam a estrutura procedimental da licitação. MODALIDADES NA NOVA LEI DE LICITAÇÕES (LEI Nº 14.133/2021) As disposições acerca das modalidades de licitação na nova lei de licitações (lei nº 14.133/2021) são encontradas basicamente no art. 6º, incisos XXXVIII a XLII, bem como nos artigos 28 a 32."}, {"id": "item_46", "titulo": "Art. 6º, Lei Nº 14.133/2021 (Regra)", "tipo": "rule", "pagina": 1, "resumo": "Para os fins desta Lei, consideram-se."}, {"id": "item_47", "titulo": "Concorrência (Inciso XXXVIII)", "tipo": "rule", "pagina": 22, "resumo": "concorrência: modalidade de licitação para contratação de bens e serviços especiais e de obras e serviços comuns e especiais de engenharia, cujo critério de julgamento poderá ser."}, {"id": "item_48", "titulo": "Critério: Melhor Técnica (Inciso XXXIX)", "tipo": "rule", "pagina": 22, "resumo": "concurso: modalidade de licitação para escolha de trabalho técnico, científico ou artístico, cujo critério de julgamento será o de melhor técnica ou conteúdo artístico, e para concessão de prêmio ou remuneração ao vencedor."}, {"id": "item_49", "titulo": "Critério: Maior Lance (Inciso XL)", "tipo": "rule", "pagina": 2, "resumo": "leilão: modalidade de licitação para alienação de bens imóveis ou de bens móveis inservíveis ou legalmente apreendidos a quem oferecer o maior lance."}, {"id": "item_50", "titulo": "Critério: Menor Preço (Inciso XLI)", "tipo": "rule", "pagina": 22, "resumo": "pregão: modalidade de licitação obrigatória para aquisição de bens e serviços comuns, cujo critério de julgamento poderá ser o de menor preço ou o de maior desconto."}, {"id": "item_51", "titulo": "Modalidade: Diálogo Competitivo (Inciso XLII)", "tipo": "rule", "pagina": 23, "resumo": "diálogo competitivo : modalidade de licitação para contratação de obras, serviços e compras em que a Administração Pública realiza diálogos com licitantes previamente selecionados mediante critérios objetivos, com o intuito de desenvolver uma ou m ais alternativas capazes de atender às suas necessidades, devendo os licitantes apresentar proposta final após o encerramento dos diálogos."}, {"id": "item_52", "titulo": "Art. 28, Lei Nº 14.133/2021 (Regra)", "tipo": "rule", "pagina": 1, "resumo": "São modalidades de licitação."}, {"id": "item_53", "titulo": "Modalidade: Pregão (Inciso I)", "tipo": "rule", "pagina": 18, "resumo": "pregão."}, {"id": "item_54", "titulo": "Modalidade: Concorrência (Inciso II)", "tipo": "rule", "pagina": 18, "resumo": "concorrência."}, {"id": "item_55", "titulo": "Modalidade: Concurso (Inciso III)", "tipo": "rule", "pagina": 22, "resumo": "concurso."}, {"id": "cat_7", "titulo": "Critérios de Julgamento", "tipo": "category", "pagina": 22, "resumo": "Art. 33, Lei nº 14.133/2021 – O julgamento das propostas será realizado de acordo com os seguintes critérios: II - maior desconto."}, {"id": "item_56", "titulo": "Art. 33, Lei Nº 14.133/2021 (Regra)", "tipo": "rule", "pagina": 22, "resumo": "O julgamento das propostas será realizado de acordo com os seguintes critérios."}, {"id": "item_57", "titulo": "Critério: Menor Preço (Inciso I)", "tipo": "rule", "pagina": 22, "resumo": "menor preço."}, {"id": "item_58", "titulo": "Critério: Maior Desconto (Inciso II)", "tipo": "rule", "pagina": 22, "resumo": "maior desconto."}, {"id": "item_59", "titulo": "Critério: Melhor Técnica (Inciso III)", "tipo": "rule", "pagina": 1, "resumo": "melhor técnica ou conteúdo artístico."}, {"id": "item_60", "titulo": "Critério: Técnica e Preço (Inciso IV)", "tipo": "rule", "pagina": 12, "resumo": "técnica e preço."}, {"id": "item_61", "titulo": "Critério: Maior Lance (Inciso V)", "tipo": "rule", "pagina": 2, "resumo": "maior lance, no caso de leilão."}, {"id": "item_62", "titulo": "Critério: Maior Retorno (Inciso VI)", "tipo": "rule", "pagina": 22, "resumo": "maior retorno econômico."}, {"id": "cat_8", "titulo": "Fases da Licitação", "tipo": "category", "pagina": 24, "resumo": "Art. 17, Lei nº 14.133/2021 – O processo de licitação observará as seguintes fases, em sequência:: II - de divulgação do edital de licitação."}, {"id": "item_63", "titulo": "Art. 17, Lei Nº 14.133/2021 (Regra)", "tipo": "rule", "pagina": 24, "resumo": "O processo de licitação observará as seguintes fases, em sequência."}, {"id": "item_64", "titulo": "Fase 1: Preparatória (Inciso I)", "tipo": "rule", "pagina": 33, "resumo": "preparatória."}, {"id": "item_65", "titulo": "Fase 2: Divulgação do Edital (Inciso II)", "tipo": "rule", "pagina": 21, "resumo": "de divulgação do edital de licitação."}, {"id": "item_66", "titulo": "Fase 3: Apresentação de Propostas (Inciso III)", "tipo": "rule", "pagina": 2, "resumo": "de apresentação de propostas e lances, quando for o caso."}, {"id": "item_67", "titulo": "Fase 4: Julgamento das Propostas (Inciso IV)", "tipo": "rule", "pagina": 2, "resumo": "de julgamento."}, {"id": "item_68", "titulo": "Fase 5: Habilitação (Inciso V)", "tipo": "rule", "pagina": 8, "resumo": "de habilitação."}, {"id": "item_69", "titulo": "Fase 6: Fase Recursal (Inciso VI)", "tipo": "rule", "pagina": 24, "resumo": "recursal."}, {"id": "item_70", "titulo": "Fase 7: Homologação (Inciso VII)", "tipo": "rule", "pagina": 33, "resumo": "de homologação."}, {"id": "cat_9", "titulo": "Raio-X de Pegadinhas da Banca", "tipo": "category", "pagina": 8, "resumo": "Principais armadilhas, inversões conceituais e assertivas com palavras absolutas recorrentes nas bancas examinadoras."}, {"id": "item_71", "titulo": "Pegadinha: Princípio Aplicável", "tipo": "trap", "pagina": 8, "resumo": "garantir que o certame licitatório permita a igualdade de condições a todos os concorrentes, em atenção ao princípio."}, {"id": "item_72", "titulo": "Pegadinha: Modalidade com Critério de Julgamento", "tipo": "trap", "pagina": 25, "resumo": "observação importante! não confunda modalidade com critério de julgamento."}],
+      edges: [{"source": "root", "target": "cat_1"}, {"source": "cat_1", "target": "item_1"}, {"source": "cat_1", "target": "item_2"}, {"source": "cat_1", "target": "item_3"}, {"source": "cat_1", "target": "item_4"}, {"source": "cat_1", "target": "item_5"}, {"source": "cat_1", "target": "item_6"}, {"source": "cat_1", "target": "item_7"}, {"source": "cat_1", "target": "item_8"}, {"source": "cat_1", "target": "item_9"}, {"source": "cat_1", "target": "item_10"}, {"source": "root", "target": "cat_2"}, {"source": "cat_2", "target": "item_11"}, {"source": "cat_2", "target": "item_12"}, {"source": "cat_2", "target": "item_13"}, {"source": "cat_2", "target": "item_14"}, {"source": "cat_2", "target": "item_15"}, {"source": "cat_2", "target": "item_16"}, {"source": "cat_2", "target": "item_17"}, {"source": "root", "target": "cat_3"}, {"source": "cat_3", "target": "item_18"}, {"source": "cat_3", "target": "item_19"}, {"source": "cat_3", "target": "item_20"}, {"source": "cat_3", "target": "item_21"}, {"source": "cat_3", "target": "item_22"}, {"source": "cat_3", "target": "item_23"}, {"source": "cat_3", "target": "item_24"}, {"source": "cat_3", "target": "item_25"}, {"source": "cat_3", "target": "item_26"}, {"source": "cat_3", "target": "item_27"}, {"source": "root", "target": "cat_4"}, {"source": "cat_4", "target": "item_28"}, {"source": "cat_4", "target": "item_29"}, {"source": "cat_4", "target": "item_30"}, {"source": "cat_4", "target": "item_31"}, {"source": "cat_4", "target": "item_32"}, {"source": "cat_4", "target": "item_33"}, {"source": "cat_4", "target": "item_34"}, {"source": "cat_4", "target": "item_35"}, {"source": "root", "target": "cat_5"}, {"source": "cat_5", "target": "item_36"}, {"source": "cat_5", "target": "item_37"}, {"source": "cat_5", "target": "item_38"}, {"source": "cat_5", "target": "item_39"}, {"source": "cat_5", "target": "item_40"}, {"source": "cat_5", "target": "item_41"}, {"source": "cat_5", "target": "item_42"}, {"source": "cat_5", "target": "item_43"}, {"source": "cat_5", "target": "item_44"}, {"source": "cat_5", "target": "item_45"}, {"source": "root", "target": "cat_6"}, {"source": "cat_6", "target": "item_46"}, {"source": "cat_6", "target": "item_47"}, {"source": "cat_6", "target": "item_48"}, {"source": "cat_6", "target": "item_49"}, {"source": "cat_6", "target": "item_50"}, {"source": "cat_6", "target": "item_51"}, {"source": "cat_6", "target": "item_52"}, {"source": "cat_6", "target": "item_53"}, {"source": "cat_6", "target": "item_54"}, {"source": "cat_6", "target": "item_55"}, {"source": "root", "target": "cat_7"}, {"source": "cat_7", "target": "item_56"}, {"source": "cat_7", "target": "item_57"}, {"source": "cat_7", "target": "item_58"}, {"source": "cat_7", "target": "item_59"}, {"source": "cat_7", "target": "item_60"}, {"source": "cat_7", "target": "item_61"}, {"source": "cat_7", "target": "item_62"}, {"source": "root", "target": "cat_8"}, {"source": "cat_8", "target": "item_63"}, {"source": "cat_8", "target": "item_64"}, {"source": "cat_8", "target": "item_65"}, {"source": "cat_8", "target": "item_66"}, {"source": "cat_8", "target": "item_67"}, {"source": "cat_8", "target": "item_68"}, {"source": "cat_8", "target": "item_69"}, {"source": "cat_8", "target": "item_70"}, {"source": "root", "target": "cat_9"}, {"source": "cat_9", "target": "item_71"}, {"source": "cat_9", "target": "item_72"}]
+    };
+
+    const typeIcons = {
+      root: '🎯',
+      category: '📁',
+      concept: '💡',
+      rule: '⚖️',
+      trap: '🚨',
+      comparison: '⚖️',
+      mnemonic: '🧠',
+      definition: '📖',
+      example: '🔍',
+      exception: '⚠️'
+    };
+
+    const typeBadges = {
+      root: { text: '🎯 TÓPICO CENTRAL', bg: 'rgba(37, 99, 235, 0.25)', color: '#93c5fd' },
+      category: { text: '📁 CATEGORIA ESTRUTURANTE', bg: 'rgba(5, 150, 105, 0.25)', color: '#6ee7b7' },
+      concept: { text: '💡 CONCEITO ESSENCIAL', bg: 'rgba(75, 85, 99, 0.4)', color: '#e5e7eb' },
+      rule: { text: '⚖️ REGRA VINCULANTE', bg: 'rgba(245, 158, 11, 0.25)', color: '#fcd34d' },
+      trap: { text: '🚨 PEGADINHA DE BANCA', bg: 'rgba(239, 68, 68, 0.25)', color: '#fca5a5' },
+      comparison: { text: '⚖️ DISTINÇÃO PRÁTICA', bg: 'rgba(139, 92, 246, 0.25)', color: '#c4b5fd' },
+      mnemonic: { text: '🧠 MNEMÔNICO DO AUTOR', bg: 'rgba(168, 85, 247, 0.25)', color: '#d8b4fe' },
+      definition: { text: '📖 DEFINIÇÃO FORMAL', bg: 'rgba(6, 182, 212, 0.25)', color: '#67e8f9' },
+      exception: { text: '⚠️ EXCEÇÃO DA LEI', bg: 'rgba(239, 68, 68, 0.25)', color: '#fca5a5' }
+    };
+
+    // Build hierarchy
+    const nodeMap = {};
+    data.nodes.forEach(n => {
+      nodeMap[n.id] = { ...n, children: [], parents: [], level: 0, x: 0, y: 0, w: 0, h: 0, collapsed: false };
+    });
+    data.edges.forEach(e => {
+      if (nodeMap[e.source] && nodeMap[e.target]) {
+        nodeMap[e.source].children.push(nodeMap[e.target]);
+        nodeMap[e.target].parents.push(nodeMap[e.source]);
+      }
+    });
+
+    let root = data.nodes.find(n => n.tipo === 'root') || data.nodes[0];
+    const rootNode = nodeMap[root.id];
+
+    // BFS for levels
+    rootNode.level = 0;
+    const q = [rootNode];
+    const visited = new Set([rootNode.id]);
+    while (q.length > 0) {
+      const cur = q.shift();
+      cur.children.forEach(ch => {
+        if (!visited.has(ch.id)) {
+          visited.add(ch.id);
+          ch.level = cur.level + 1;
+          q.push(ch);
+        }
+      });
+    }
+
+    // State
+    let zoomLevel = 0.92;
+    let panX = 60;
+    let panY = 80;
+    let isPanning = false;
+    let startX = 0, startY = 0;
+    let selectedNodeId = null;
+    let allCollapsed = false;
+
+    const viewport = document.getElementById('viewport');
+    const canvas = document.getElementById('canvas');
+    const nodesContainer = document.getElementById('nodes-container');
+    const svgLines = document.getElementById('svg-lines');
+
+    viewport.addEventListener('mousedown', e => {
+      if (e.target.closest('.mm-node') || e.target.closest('.btn-tool') || e.target.closest('#drawer')) return;
+      isPanning = true;
+      startX = e.clientX - panX;
+      startY = e.clientY - panY;
+    });
+    window.addEventListener('mousemove', e => {
+      if (!isPanning) return;
+      panX = e.clientX - startX;
+      panY = e.clientY - startY;
+      applyTransform();
+    });
+    window.addEventListener('mouseup', () => { isPanning = false; });
+
+    viewport.addEventListener('wheel', e => {
+      e.preventDefault();
+      const delta = e.deltaY < 0 ? 0.08 : -0.08;
+      const newZoom = Math.min(2.0, Math.max(0.3, zoomLevel + delta));
+      const rect = viewport.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+      panX -= (mouseX - panX) * (newZoom / zoomLevel - 1);
+      panY -= (mouseY - panY) * (newZoom / zoomLevel - 1);
+      zoomLevel = newZoom;
+      applyTransform();
+    }, { passive: false });
+
+    function applyTransform() {
+      canvas.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomLevel})`;
+    }
+
+    function calculateTreeLayout() {
+      let currentY = 60;
+      const gapX = 90;
+      const gapY = 24;
+
+      function measureSubtree(node) {
+        if (node.collapsed || node.children.length === 0) {
+          node.y = currentY;
+          node.h = 42;
+          currentY += node.h + gapY;
+          return;
+        }
+        const childYs = [];
+        node.children.forEach(ch => {
+          measureSubtree(ch);
+          childYs.push(ch.y);
+        });
+        if (childYs.length > 0) {
+          node.y = (childYs[0] + childYs[childYs.length - 1]) / 2;
+        } else {
+          node.y = currentY;
+          currentY += 42 + gapY;
+        }
+        node.h = 42;
+      }
+
+      currentY = 60;
+      measureSubtree(rootNode);
+
+      Object.values(nodeMap).forEach(n => {
+        n.x = 40 + n.level * (240 + gapX);
+      });
+    }
+
+    function renderMindmap() {
+      calculateTreeLayout();
+      nodesContainer.innerHTML = '';
+      let paths = '';
+
+      function drawBranches(node) {
+        if (node.collapsed) return;
+        node.children.forEach(ch => {
+          const x1 = node.x + (node.actualW || 180);
+          const y1 = node.y + 20;
+          const x2 = ch.x;
+          const y2 = ch.y + 20;
+          const dx = Math.max(40, (x2 - x1) * 0.55);
+
+          let strokeColor = '#3b82f6';
+          if (ch.tipo === 'trap') strokeColor = '#ef4444';
+          else if (ch.tipo === 'rule') strokeColor = '#f59e0b';
+          else if (ch.tipo === 'comparison') strokeColor = '#8b5cf6';
+          else if (ch.tipo === 'mnemonic') strokeColor = '#a855f7';
+          else if (ch.tipo === 'category') strokeColor = '#10b981';
+
+          paths += `<path d="M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}"
+                          fill="none" stroke="${strokeColor}" stroke-width="2.2" stroke-linecap="round" opacity="0.65"/>`;
+          drawBranches(ch);
+        });
+      }
+      drawBranches(rootNode);
+      svgLines.innerHTML = paths;
+
+      function createNodeElements(node) {
+        const el = document.createElement('div');
+        el.className = `mm-node type-${node.tipo || 'concept'}`;
+        if (node.id === selectedNodeId) el.classList.add('selected');
+        el.id = `node-${node.id}`;
+        el.style.left = `${node.x}px`;
+        el.style.top = `${node.y}px`;
+
+        const icon = typeIcons[node.tipo] || '💡';
+        const page = node.pagina ? `<span class="page-tag">P.${node.pagina}</span>` : '';
+        const hasKids = node.children && node.children.length > 0;
+        const toggleBtn = hasKids ? `<span class="node-toggle" title="Recolher/Expandir">${node.collapsed ? '+' : '−'}</span>` : '';
+
+        el.innerHTML = `
+          <span class="node-icon">${icon}</span>
+          <span class="node-text">${node.titulo}</span>
+          ${page}
+          ${toggleBtn}
+        `;
+
+        el.onclick = (e) => {
+          if (e.target.classList.contains('node-toggle')) {
+            e.stopPropagation();
+            node.collapsed = !node.collapsed;
+            renderMindmap();
+            return;
+          }
+          selectNode(node);
+        };
+
+        nodesContainer.appendChild(el);
+        node.actualW = el.offsetWidth;
+
+        if (!node.collapsed) {
+          node.children.forEach(createNodeElements);
+        }
+      }
+      createNodeElements(rootNode);
+
+      let refinedPaths = '';
+      function drawBranchesRefined(node) {
+        if (node.collapsed) return;
+        node.children.forEach(ch => {
+          const x1 = node.x + (node.actualW || 180);
+          const y1 = node.y + 19;
+          const x2 = ch.x;
+          const y2 = ch.y + 19;
+          const dx = Math.max(35, (x2 - x1) * 0.52);
+
+          let strokeColor = 'rgba(59, 130, 246, 0.7)';
+          if (ch.tipo === 'trap') strokeColor = 'rgba(239, 68, 68, 0.75)';
+          else if (ch.tipo === 'rule') strokeColor = 'rgba(245, 158, 11, 0.75)';
+          else if (ch.tipo === 'comparison') strokeColor = 'rgba(139, 92, 246, 0.75)';
+          else if (ch.tipo === 'mnemonic') strokeColor = 'rgba(168, 85, 247, 0.75)';
+          else if (ch.tipo === 'category') strokeColor = 'rgba(16, 185, 129, 0.75)';
+
+          refinedPaths += `<path d="M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}"
+                                fill="none" stroke="${strokeColor}" stroke-width="2.2" stroke-linecap="round"/>`;
+          drawBranchesRefined(ch);
+        });
+      }
+      drawBranchesRefined(rootNode);
+      svgLines.innerHTML = refinedPaths;
+
+      document.getElementById('stats-badge').textContent = 
+        `${data.nodes.length} nós • ${data.edges.length} conexões • ${rootNode.children.length} categorias`;
+    }
+
+    function selectNode(node) {
+      selectedNodeId = node.id;
+      document.querySelectorAll('.mm-node').forEach(el => el.classList.remove('selected'));
+      const activeEl = document.getElementById(`node-${node.id}`);
+      if (activeEl) activeEl.classList.add('selected');
+
+      const drawer = document.getElementById('drawer');
+      const bInfo = typeBadges[node.tipo] || { text: (node.tipo || 'CONCEITO').toUpperCase(), bg: '#374151', color: '#f3f4f6' };
+      const badgeEl = document.getElementById('d-type-badge');
+      badgeEl.textContent = bInfo.text;
+      badgeEl.style.background = bInfo.bg;
+      badgeEl.style.color = bInfo.color;
+
+      document.getElementById('d-page-badge').textContent = `Página ${node.pagina || 1} do PDF`;
+      document.getElementById('d-title').textContent = node.titulo;
+      document.getElementById('d-summary').textContent = node.resumo || 'Sem descrição cadastrada.';
+
+      drawer.classList.add('open');
+    }
+
+    function closeDrawer() {
+      document.getElementById('drawer').classList.remove('open');
+      selectedNodeId = null;
+      document.querySelectorAll('.mm-node').forEach(el => el.classList.remove('selected'));
+    }
+
+    function zoom(delta) {
+      zoomLevel = Math.min(2.0, Math.max(0.3, zoomLevel + delta));
+      applyTransform();
+    }
+    function resetView() {
+      zoomLevel = 1.0;
+      panX = 60;
+      panY = 80;
+      applyTransform();
+    }
+    function fitView() {
+      let minY = Infinity, maxY = -Infinity, maxX = -Infinity;
+      Object.values(nodeMap).forEach(n => {
+        if (n.y < minY) minY = n.y;
+        if (n.y > maxY) maxY = n.y;
+        if (n.x + (n.actualW || 200) > maxX) maxX = n.x + (n.actualW || 200);
+      });
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const mapW = maxX - 40 + 100;
+      const mapH = maxY - minY + 160;
+      const scaleX = (vw - 120) / mapW;
+      const scaleY = (vh - 120) / mapH;
+      zoomLevel = Math.min(1.1, Math.max(0.35, Math.min(scaleX, scaleY)));
+      panX = 60;
+      panY = Math.max(60, (vh - (maxY + minY) * zoomLevel) / 2);
+      applyTransform();
+    }
+
+    function toggleAllBranches() {
+      allCollapsed = !allCollapsed;
+      Object.values(nodeMap).forEach(n => {
+        if (n.children.length > 0 && n.level > 0) {
+          n.collapsed = allCollapsed;
+        }
+      });
+      document.getElementById('btn-toggle-all').textContent = allCollapsed ? '↕ Expandir' : '↕ Recolher';
+      renderMindmap();
+      setTimeout(fitView, 50);
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    document.getElementById('search-input').addEventListener('input', e => {
+      const q = e.target.value.toLowerCase().trim();
+      document.querySelectorAll('.mm-node').forEach(el => {
+        if (!q) {
+          el.classList.remove('matched', 'dimmed');
+          return;
+        }
+        const txt = el.textContent.toLowerCase();
+        const nid = el.id.replace('node-', '');
+        const nData = nodeMap[nid];
+        const sum = (nData?.resumo || '').toLowerCase();
+        if (txt.includes(q) || sum.includes(q)) {
+          el.classList.add('matched');
+          el.classList.remove('dimmed');
+        } else {
+          el.classList.remove('matched');
+          el.classList.add('dimmed');
+        }
+      });
+    });
+
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeDrawer();
+    });
+
+    renderMindmap();
+    setTimeout(fitView, 100);
+    window.addEventListener('resize', () => renderMindmap());
+  </script>
+</body>
+</html>

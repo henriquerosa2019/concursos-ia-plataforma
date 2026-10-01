@@ -173,419 +173,145 @@ function extractMindmapSubstantiveSummary(lines, maxChars = 175) {
   return '';
 }
 
-function extractSemanticMindmapFromCorpus(disc, sub, title, contextText, focus = '') {
-  const cleanTitle = (focus || title || sub.replace(/_/g, ' ')).trim();
-  const normTopic = `${disc} ${sub} ${cleanTitle}`.toLowerCase().replace(/-/g, '_');
+function toTitleCase(text) {
+  if (!text) return text;
+  const minorWords = new Set(["de", "da", "do", "das", "dos", "e", "em", "por", "com", "na", "no", "à", "ao", "a", "o", "os", "as", "vs", "entre", "sobre", "sob"]);
+  const acronyms = new Set(["CF", "STF", "STJ", "PCD", "ME", "EPP", "EIRELI", "CLT", "DF", "OAB", "PF", "PRF", "TCU", "TI", "TIC", "CP", "CPP", "CC"]);
+  const words = text.split(/\s+/);
+  return words.map((w, i) => {
+    const wClean = w.replace(/[^\w\u00C0-\u017F]/g, '');
+    const wLower = wClean.toLowerCase();
+    if (acronyms.has(wClean.toUpperCase())) return w.replace(wClean, wClean.toUpperCase());
+    if (minorWords.has(wLower) && i > 0) return w.replace(wClean, wLower);
+    return w.replace(wClean, wClean.charAt(0).toUpperCase() + wClean.slice(1).toLowerCase());
+  }).join(' ');
+}
 
-  // 0. Direito Constitucional: Constituição Federal e Legislação 360 (Estrutura Master NotebookLM)
-  if ((normTopic.includes('constitu') || normTopic.includes('legislacao_360') || normTopic.includes('hermeneutica') || normTopic.includes('sentidos_de_constituicao')) && !normTopic.includes('penal') && !normTopic.includes('licita') && !normTopic.includes('excel')) {
-    return {
-      titulo: "Constituição Federal e Legislação 360",
-      nodes: [
-        { id: "root", titulo: "Constituição Federal e Legislação 360", tipo: "root", pagina: 1, resumo: "Mapeamento estrutural condensado dos conceitos fundamentais de Direito Constitucional e Legislação 360 para concursos públicos." },
-        { id: "cat_sentidos", titulo: "Sentidos de Constituição", tipo: "category", pagina: 13, resumo: "Concepções teóricas sobre a essência, fundamento e validade da Constituição." },
-        { id: "cat_hermeneutica", titulo: "Hermenêutica Constitucional", tipo: "category", pagina: 14, resumo: "Métodos de interpretação e princípios hermenêuticos vinculantes na aplicação da Carta Magna." },
-        { id: "cat_constitucionalismo", titulo: "Constitucionalismo", tipo: "category", pagina: 16, resumo: "Evolução histórica da limitação do poder estatal e consagração dos direitos fundamentais." },
-        { id: "cat_classificacao", titulo: "Classificação das Constituições", tipo: "category", pagina: 17, resumo: "Critérios taxonômicos estruturantes: origem, forma, elaboração, conteúdo, estabilidade e correspondência." },
-        { id: "cat_poder_constituinte", titulo: "Poder Constituinte", tipo: "category", pagina: 21, resumo: "Espécies de manifestação constituinte: Originário, Derivado e Difuso (Mutação Constitucional)." },
-        { id: "cat_principios", titulo: "Princípios Fundamentais", tipo: "category", pagina: 21, resumo: "Vigência estruturante dos Fundamentos (Art. 1º), Objetivos (Art. 3º) e Relações Internacionais (Art. 4º)." },
-        { id: "cat_poderes", titulo: "Organização dos Poderes", tipo: "category", pagina: 21, resumo: "Tripartição clássica dos Poderes da União e exercício de funções típicas e atípicas." },
-        { id: "cat_especificos", titulo: "Conceitos Específicos", tipo: "category", pagina: 23, resumo: "Institutos de alta densidade em provas: Eficácia das Normas, Vedação ao Retrocesso e Reserva de Plenário." },
-        
-        // Sentidos de Constituição
-        { id: "sent_sociologico", titulo: "Sociológico (Fatores Reais de Poder)", tipo: "concept", pagina: 13, resumo: "Ferdinand Lassalle: a Constituição real é a soma dos fatores reais de poder; o texto escrito é mera folha de papel se dissonante da sociedade." },
-        { id: "sent_politico", titulo: "Político (Decisão Política Fundamental)", tipo: "concept", pagina: 13, resumo: "Carl Schmitt: a Constituição decorre de uma decisão política fundamental do titular do poder; distingue Constituição de leis constitucionais." },
-        { id: "sent_juridico", titulo: "Jurídico (Norma Fundamental)", tipo: "concept", pagina: 13, resumo: "Hans Kelsen: norma fundamental suprema que valida o ordenamento (sentidos lógico-jurídico transcendental e jurídico-positivo posto)." },
-        { id: "sent_culturalista", titulo: "Culturalista (Constituição Total)", tipo: "concept", pagina: 13, resumo: "J. H. Meirelles Teixeira: produto de um fato cultural que integra de forma unitária aspectos econômicos, sociológicos, filosóficos e jurídicos." },
-        { id: "sent_processo_pub", titulo: "Processo Público (Sociedade Aberta)", tipo: "concept", pagina: 13, resumo: "Peter Häberle: a Constituição é processo público dinâmico de interpretação do qual participam todos os cidadãos (sociedade aberta de intérpretes)." },
-        { id: "sent_ordem_juridica", titulo: "Ordem Jurídica (Força Normativa)", tipo: "concept", pagina: 13, resumo: "Konrad Hesse: resposta a Lassalle; a Constituição possui força normativa própria para conformar e transformar a realidade social." },
-        { id: "sent_simbolica", titulo: "Constitucionalização Simbólica", tipo: "concept", pagina: 14, resumo: "Marcelo Neves: mero instrumento de retórica política sem eficácia social concreta; hipertrofia de símbolos para mascarar déficits reais." },
-
-        // Hermenêutica Constitucional: Métodos e Princípios
-        { id: "sub_metodos", titulo: "Métodos de Interpretação", tipo: "category", pagina: 14, resumo: "Modelos dogmáticos para extrair o sentido e alcance das normas constitucionais." },
-        { id: "sub_principios", titulo: "Princípios de Interpretação", tipo: "category", pagina: 15, resumo: "Cânones e postulados hermenêuticos vinculantes aplicados na jurisdição constitucional." },
-        { id: "met_classico", titulo: "Jurídico ou Hermenêutico Clássico", tipo: "concept", pagina: 14, resumo: "Ernst Forsthoff: aplica os elementos da hermenêutica tradicional (gramatical, lógico, histórico, teleológico e genético)." },
-        { id: "met_topico", titulo: "Tópico-Problemático", tipo: "concept", pagina: 14, resumo: "Theodor Viehweg: primazia do problema concreto sobre a norma; parte da situação fática concreta em busca do preceito aplicável." },
-        { id: "met_concretizador", titulo: "Hermenêutico-Concretizador", tipo: "concept", pagina: 14, resumo: "Konrad Hesse: primazia da norma sobre o problema; movimento dialético de ida e volta (círculo hermenêutico) entre texto e contexto." },
-        { id: "met_integrativo", titulo: "Integrativo ou Científico-Espiritual", tipo: "concept", pagina: 14, resumo: "Rudolf Smend: interpreta a Constituição com base nos valores subjacentes e no espírito integrador da comunidade política." },
-        { id: "met_estruturante", titulo: "Normativo-Estruturante", tipo: "concept", pagina: 14, resumo: "Friedrich Müller: não há identidade estrita entre texto e norma; a norma jurídica resulta da atividade judicial e do setor da realidade." },
-        { id: "met_comparativo", titulo: "Comparativo", tipo: "concept", pagina: 15, resumo: "Peter Häberle: análise comparativa de soluções e institutos em ordenamentos estrangeiros para extrair o sentido ideal." },
-
-        { id: "princ_supremacia", titulo: "Supremacia da Constituição", tipo: "rule", pagina: 15, resumo: "Hierarquia máxima da Constituição; nenhuma norma infraconstitucional pode contrariá-la sob pena de invalidade." },
-        { id: "princ_presuncao", titulo: "Presunção de Constitucionalidade", tipo: "rule", pagina: 15, resumo: "As leis presumem-se válidas até declaração judicial em contrário (presunção juris tantum relativa)." },
-        { id: "princ_conforme", titulo: "Interpretação Conforme", tipo: "rule", pagina: 15, resumo: "Havendo múltiplas interpretações, adota-se a harmônica com a CF sem expurgar o texto legal do ordenamento." },
-        { id: "princ_unidade", titulo: "Unidade da Constituição", tipo: "rule", pagina: 15, resumo: "A Carta Magna é um sistema normativo uno e coerente; inexiste hierarquia entre normas constitucionais originárias." },
-        { id: "princ_proporcionalidade", titulo: "Razoabilidade e Proporcionalidade", tipo: "rule", pagina: 15, resumo: "Tríplice teste de proporcionalidade na ponderação de bens: adequação, necessidade e proporcionalidade em sentido estrito." },
-        { id: "princ_efetividade", titulo: "Máxima Efetividade", tipo: "rule", pagina: 16, resumo: "Princípio da eficiência interpretativa: deve-se conferir à norma constitucional a mais ampla eficácia e aplicabilidade prática." },
-        { id: "princ_integrador", titulo: "Efeito Integrador", tipo: "rule", pagina: 16, resumo: "Prioriza critérios interpretativos que favoreçam a coesão social, a unidade política e a estabilidade das instituições." },
-        { id: "princ_concordancia", titulo: "Concordância Prática", tipo: "rule", pagina: 16, resumo: "Princípio da harmonização: nos conflitos de direitos fundamentais, reduz-se proporcionalmente cada âmbito sem sacrificar nenhum." },
-        { id: "princ_conformidade_func", titulo: "Conformidade Funcional", tipo: "rule", pagina: 16, resumo: "Justeza: o intérprete está proibido de subverter a partilha e o equilíbrio orgânico dos Poderes fixados pelo constituinte." },
-
-        // Constitucionalismo
-        { id: "const_antigo", titulo: "Antigo (Hebreus, Grécia, Roma)", tipo: "concept", pagina: 16, resumo: "Hebreus (teocracia e limitação religiosa do poder), Grécia (democracia direta) e Roma (direitos civis contratuais e semente orgânica)." },
-        { id: "const_medieval", titulo: "Medieval (Magna Carta 1215)", tipo: "concept", pagina: 16, resumo: "Marco inglês com o rei João Sem Terra: limitação do poder real absoluto frente aos direitos estamentais dos barões." },
-        { id: "const_moderno", titulo: "Moderno (Liberal e Social)", tipo: "concept", pagina: 16, resumo: "Liberal: revoluções séc. XVIII (EUA 1776, França 1789) e 1ª dimensão. Social: México 1917 e Weimar 1919 (trabalho e igualdade)." },
-        { id: "const_contemporaneo", titulo: "Contemporâneo (Dignidade Humana)", tipo: "concept", pagina: 16, resumo: "Pós-2ª Guerra: centralidade axiológica da dignidade da pessoa humana e consagração das 3ª, 4ª e 5ª dimensões de direitos." },
-        { id: "const_futuro", titulo: "Do Futuro (7 Valores - Dromi)", tipo: "concept", pagina: 16, resumo: "José Roberto Dromi: verdade, solidariedade, consenso, continuidade, participação, integração e universalidade." },
-
-        // Classificação das Constituições
-        { id: "class_origem", titulo: "Origem (Outorgada, Promulgada, Cesarista, Dualista)", tipo: "concept", pagina: 17, resumo: "Outorgadas (impostas unilateralmente), Promulgadas (populares/democráticas - CF/88), Cesaristas (ratificação) e Dualistas (pactuadas)." },
-        { id: "class_forma", titulo: "Forma (Escrita vs Não Escrita)", tipo: "concept", pagina: 17, resumo: "Escritas (formais e instrumentais em código solene - CF/88) vs Não escritas (costumeiras/consuetudinárias baseadas em precedentes)." },
-        { id: "class_elaboracao", titulo: "Modo de Elaboração (Dogmática vs Histórica)", tipo: "concept", pagina: 17, resumo: "Dogmáticas (elaboradas de uma só vez por órgão constituinte - CF/88) vs Históricas (processo social cumulativo lento)." },
-        { id: "class_conteudo", titulo: "Conteúdo (Material vs Formal)", tipo: "concept", pagina: 18, resumo: "Materiais (apenas matérias intrinsecamente constitucionais) vs Formais (todas as matérias inseridas no texto solene - CF/88)." },
-        { id: "class_estabilidade", titulo: "Estabilidade (Rígida, Super-rígida, Flexível)", tipo: "concept", pagina: 18, resumo: "Rígidas (rito legislativo solene qualificado - CF/88), Super-rígidas (Alexandre de Moraes: rígidas com cláusulas pétreas imutáveis)." },
-        { id: "class_extensao", titulo: "Extensão (Analítica vs Sintética)", tipo: "concept", pagina: 18, resumo: "Analíticas (prolixas, detalhadas e extensas - CF/88) vs Sintéticas (concisas, versando apenas sobre a organização do Estado)." },
-        { id: "class_correspondencia", titulo: "Correspondência (Critério Ontológico)", tipo: "concept", pagina: 19, resumo: "Karl Loewenstein: Normativas (consonantes e eficazes), Nominais (prospectivas sem simetria fática) e Semânticas (disfarce autoritário)." },
-
-        // Poder Constituinte
-        { id: "pc_originario", titulo: "Originário", tipo: "category", pagina: 21, resumo: "Poder inicial, autônomo, incondicionado e ilimitado juridicamente que funda a ordem estatal." },
-        { id: "pc_derivado", titulo: "Derivado", tipo: "category", pagina: 21, resumo: "Poder instituído pelo originário: condicionado, limitado e de segundo grau." },
-        { id: "pc_difuso", titulo: "Difuso (Mutação Constitucional)", tipo: "concept", pagina: 21, resumo: "Poder de fato: modificação informal e silenciosa do sentido interpretativo da norma, sem alteração literal do texto constitucional." },
-        { id: "pco_historico", titulo: "Histórico", tipo: "concept", pagina: 21, resumo: "Cria o Estado pela primeiríssima vez, estruturando a gênese institucional." },
-        { id: "pco_revolucionario", titulo: "Revolucionário", tipo: "concept", pagina: 21, resumo: "Rompe com a ordem jurídica pretérita instaurando uma nova Constituição soberana." },
-        { id: "pcd_revisor", titulo: "Revisor", tipo: "concept", pagina: 21, resumo: "Art. 3º do ADCT: competência de revisão unicameral por maioria absoluta esgotada após 5 anos (6 ECRs)." },
-        { id: "pcd_decorrente", titulo: "Decorrente", tipo: "concept", pagina: 21, resumo: "Competência outorgada aos Estados-membros para auto-organização por meio de Constituições Estaduais (art. 25) e DF (art. 32)." },
-        { id: "pcd_reformador", titulo: "Reformador", tipo: "concept", pagina: 21, resumo: "Poder de emendar a Constituição nos termos do art. 60, submetido aos limites circunstanciais, formais e materiais pétreos." },
-
-        // Princípios Fundamentais
-        { id: "princ_fundamentos", titulo: "Fundamentos (SO-CI-DI-VA-PLU)", tipo: "mnemonic", pagina: 21, resumo: "Art. 1º: SOberania, CIdadania, DIgnidade da pessoa humana, VAlores sociais do trabalho e livre iniciativa, PLUralismo político." },
-        { id: "princ_objetivos", titulo: "Objetivos (CON-GA-ERRA-PRO)", tipo: "mnemonic", pagina: 22, resumo: "Art. 3º: CONstruir sociedade justa, GArantir desenvolvimento, ERRA dicar pobreza/reduzir desigualdades, PROmover o bem de todos." },
-        { id: "princ_internacionais", titulo: "Relações Internacionais (Independência, Direitos Humanos...)", tipo: "rule", pagina: 22, resumo: "Art. 4º: independência nacional, prevalência dos direitos humanos, não intervenção, asilo político e integração latino-americana." },
-
-        // Organização dos Poderes
-        { id: "pod_funcoes", titulo: "Funções", tipo: "category", pagina: 22, resumo: "Desdobramento funcional da tripartição tripartite do poder político." },
-        { id: "pod_triparticao", titulo: "Tripartição", tipo: "category", pagina: 21, resumo: "Art. 2º: Poderes Executivo, Legislativo e Judiciário independentes e harmônicos entre si." },
-        { id: "func_tipicas", titulo: "Típicas", tipo: "concept", pagina: 22, resumo: "Atribuições preponderantes expressas da essência institucional de cada poder." },
-        { id: "func_atipicas", titulo: "Atípicas", tipo: "concept", pagina: 22, resumo: "Atribuições de gestão, julgamento ou produção normativa secundária conferidas subsidiariamente pela Constituição." },
-        { id: "trip_executivo", titulo: "Executivo", tipo: "concept", pagina: 22, resumo: "Típica: administrar e chefiar o Estado. Atípica: legislar mediante medidas provisórias (art. 62) e julgar processos administrativos." },
-        { id: "trip_legislativo", titulo: "Legislativo", tipo: "concept", pagina: 22, resumo: "Típica: legislar e fiscalizar as finanças públicas. Atípica: administrar seus quadros e julgar crimes de responsabilidade (art. 52, I)." },
-        { id: "trip_judiciario", titulo: "Judiciário", tipo: "concept", pagina: 22, resumo: "Típica: exercer jurisdição contenciosa definitiva. Atípica: autoadministração e elaboração dos próprios regimentos internos." },
-
-        // Conceitos Específicos
-        { id: "esp_eficacia", titulo: "Eficácia das Normas (Plena, Contida, Limitada)", tipo: "concept", pagina: 26, resumo: "José Afonso da Silva: Plena (direta, imediata, integral), Contida (restringível por lei) e Limitada (indireta, mediata e reduzida)." },
-        { id: "esp_retrocesso", titulo: "Vedação ao Retrocesso (Efeito Cliquet)", tipo: "rule", pagina: 23, resumo: "Princípio implícito e internacional (CADH/PIDESC): direitos fundamentais conquistados não podem ser arbitrariamente suprimidos." },
-        { id: "esp_reserva_plenario", titulo: "Reserva de Plenário (Full Bench)", tipo: "rule", pagina: 157, resumo: "Art. 97 da CF e Súmula Vinculante 10: a inconstitucionalidade de lei por tribunal só pode ser declarada por maioria absoluta do plenário." }
-      ],
-      edges: [
-        { source: "root", target: "cat_sentidos" },
-        { source: "root", target: "cat_hermeneutica" },
-        { source: "root", target: "cat_constitucionalismo" },
-        { source: "root", target: "cat_classificacao" },
-        { source: "root", target: "cat_poder_constituinte" },
-        { source: "root", target: "cat_principios" },
-        { source: "root", target: "cat_poderes" },
-        { source: "root", target: "cat_especificos" },
-
-        // Sentidos
-        { source: "cat_sentidos", target: "sent_sociologico" },
-        { source: "cat_sentidos", target: "sent_politico" },
-        { source: "cat_sentidos", target: "sent_juridico" },
-        { source: "cat_sentidos", target: "sent_culturalista" },
-        { source: "cat_sentidos", target: "sent_processo_pub" },
-        { source: "cat_sentidos", target: "sent_ordem_juridica" },
-        { source: "cat_sentidos", target: "sent_simbolica" },
-
-        // Hermenêutica
-        { source: "cat_hermeneutica", target: "sub_metodos" },
-        { source: "cat_hermeneutica", target: "sub_principios" },
-        { source: "sub_metodos", target: "met_classico" },
-        { source: "sub_metodos", target: "met_topico" },
-        { source: "sub_metodos", target: "met_concretizador" },
-        { source: "sub_metodos", target: "met_integrativo" },
-        { source: "sub_metodos", target: "met_estruturante" },
-        { source: "sub_metodos", target: "met_comparativo" },
-
-        { source: "sub_principios", target: "princ_supremacia" },
-        { source: "sub_principios", target: "princ_presuncao" },
-        { source: "sub_principios", target: "princ_conforme" },
-        { source: "sub_principios", target: "princ_unidade" },
-        { source: "sub_principios", target: "princ_proporcionalidade" },
-        { source: "sub_principios", target: "princ_efetividade" },
-        { source: "sub_principios", target: "princ_integrador" },
-        { source: "sub_principios", target: "princ_concordancia" },
-        { source: "sub_principios", target: "princ_conformidade_func" },
-
-        // Constitucionalismo
-        { source: "cat_constitucionalismo", target: "const_antigo" },
-        { source: "cat_constitucionalismo", target: "const_medieval" },
-        { source: "cat_constitucionalismo", target: "const_moderno" },
-        { source: "cat_constitucionalismo", target: "const_contemporaneo" },
-        { source: "cat_constitucionalismo", target: "const_futuro" },
-
-        // Classificação
-        { source: "cat_classificacao", target: "class_origem" },
-        { source: "cat_classificacao", target: "class_forma" },
-        { source: "cat_classificacao", target: "class_elaboracao" },
-        { source: "cat_classificacao", target: "class_conteudo" },
-        { source: "cat_classificacao", target: "class_estabilidade" },
-        { source: "cat_classificacao", target: "class_extensao" },
-        { source: "cat_classificacao", target: "class_correspondencia" },
-
-        // Poder Constituinte
-        { source: "cat_poder_constituinte", target: "pc_originario" },
-        { source: "cat_poder_constituinte", target: "pc_derivado" },
-        { source: "cat_poder_constituinte", target: "pc_difuso" },
-        { source: "pc_originario", target: "pco_historico" },
-        { source: "pc_originario", target: "pco_revolucionario" },
-        { source: "pc_derivado", target: "pcd_revisor" },
-        { source: "pc_derivado", target: "pcd_decorrente" },
-        { source: "pc_derivado", target: "pcd_reformador" },
-
-        // Princípios Fundamentais
-        { source: "cat_principios", target: "princ_fundamentos" },
-        { source: "cat_principios", target: "princ_objetivos" },
-        { source: "cat_principios", target: "princ_internacionais" },
-
-        // Organização dos Poderes
-        { source: "cat_poderes", target: "pod_funcoes" },
-        { source: "cat_poderes", target: "pod_triparticao" },
-        { source: "pod_funcoes", target: "func_tipicas" },
-        { source: "pod_funcoes", target: "func_atipicas" },
-        { source: "pod_triparticao", target: "trip_executivo" },
-        { source: "pod_triparticao", target: "trip_legislativo" },
-        { source: "pod_triparticao", target: "trip_judiciario" },
-
-        // Conceitos Específicos
-        { source: "cat_especificos", target: "esp_eficacia" },
-        { source: "cat_especificos", target: "esp_retrocesso" },
-        { source: "cat_especificos", target: "esp_reserva_plenario" }
-      ]
-    };
+function compressLabel(concept, essence = "", maxWords = 6) {
+  const c = (concept || "").trim();
+  const e = (essence || "").trim();
+  if (!e || c.includes('(')) return c;
+  let label = `${c} (${e})`;
+  const words = label.split(/\s+/);
+  if (words.length > maxWords) {
+    const cWords = c.split(/\s+/);
+    const avail = Math.max(1, maxWords - cWords.length);
+    const eShort = e.split(/\s+/).slice(0, avail).join(' ').replace(/[,;:.\-–—\s]+$/, '');
+    label = `${c} (${eShort})`;
   }
+  return label;
+}
 
-  // 1. Direito Penal: Dolo, Culpa e Omissão
-  if ((normTopic.includes('dolo') || normTopic.includes('culpa') || normTopic.includes('omissao') || (normTopic.includes('penal') && (normTopic.includes('conduta') || normTopic.includes('crimes_omissivos')))) && !normTopic.includes('licita') && !normTopic.includes('ato') && !normTopic.includes('poder')) {
-    return {
-      titulo: cleanTitle,
-      nodes: [
-        { id: "root", titulo: "Ação e Omissão / Dolo e Culpa", tipo: "root", pagina: 1, resumo: "Fundamentos da conduta e imputação penal (Art. 18): distinção entre dolo e culpa e relevância penal da omissão imprópria (Art. 13, § 2º)." },
-        { id: "cat_dolo", titulo: "1. Espécies de Dolo (Art. 18, I)", tipo: "category", pagina: 1, resumo: "Vontade e consciência direcionadas ao resultado criminoso ou assunção do risco de produzi-lo." },
-        { id: "cat_culpa", titulo: "2. Modalidades de Culpa (Art. 18, II)", tipo: "category", pagina: 2, resumo: "Quebra do dever objetivo de cuidado por imprudência, negligência ou imperícia." },
-        { id: "cat_omissao", titulo: "3. Relevância da Omissão (Art. 13, § 2º)", tipo: "category", pagina: 3, resumo: "A omissão é penalmente relevante quando o omitente devia e podia agir para evitar o resultado lesivo." },
-        { id: "cat_garantidores", titulo: "4. Posição de Garantidor", tipo: "category", pagina: 3, resumo: "Rol taxativo das pessoas sobre as quais recai o dever legal e de fato de impedir o resultado." },
-        { id: "dolo_geral", titulo: "Dolo Geral (Aberratio Causae)", tipo: "concept", pagina: 1, resumo: "O agente crê já ter alcançado o resultado e pratica nova conduta que causa a morte real (ex: jogar corpo no rio). Responde por homicídio doloso consumado." },
-        { id: "dolo_2grau", titulo: "Dolo de 2º Grau", tipo: "concept", pagina: 1, resumo: "Consequências necessárias, certas e inafastáveis da conduta principal, não meramente incertas ou prováveis." },
-        { id: "dolo_eventual", titulo: "Dolo Eventual (Assunção de Risco)", tipo: "concept", pagina: 2, resumo: "O agente prevê o resultado lesivo e assume o risco de sua ocorrência com indiferença ('tanto faz se ocorrer')." },
-        { id: "culpa_consciente", titulo: "Culpa Consciente", tipo: "concept", pagina: 2, resumo: "O agente prevê o resultado danoso, mas repele a sua produção e confia sinceramente que suas habilidades evitarão a consumação." },
-        { id: "comp_dolo_culpa", titulo: "Dolo Eventual × Culpa Consciente", tipo: "comparison", pagina: 2, resumo: "A diferença reside na aceitação: no dolo eventual o agente assume e tolera; na culpa consciente o agente não aceita e crê sinceramente evitar." },
-        { id: "trap_transito", titulo: "Pegadinha: Previsão não é Dolo", tipo: "trap", pagina: 2, resumo: "Mera previsibilidade não basta para dolo eventual; se o autor acreditava sinceramente evitar o acidente ('o parachoque sou eu'), é culpa consciente." },
-        { id: "modalidades_culpa", titulo: "Imprudência, Negligência e Imperícia", tipo: "rule", pagina: 5, resumo: "Imprudência (ação precipitada/insegura); negligência (omissão prévia de cautela); imperícia (falta de aptidão técnica profissional)." },
-        { id: "exemplo_salto", titulo: "Exemplo: Instrumentadora e Salto Alto", tipo: "example", pagina: 5, resumo: "Uso de calçado inadequado em cirurgia gerando queda de mesa e sequela no paciente configura conduta culposa consciente por imprudência." },
-        { id: "norma_extensao", titulo: "Omissão Imprópria (Extensão Típica)", tipo: "definition", pagina: 3, resumo: "Norma de adequação típica mediata (de extensão): o não agir de quem tem o dever de agir é equiparado juridicamente à causação do dano." },
-        { id: "garantidor_lei", titulo: "Alínea 'a': Obrigação Legal", tipo: "rule", pagina: 3, resumo: "Dever expresso em lei de cuidado, proteção ou vigilância (pais, tutores, policiais em serviço)." },
-        { id: "garantidor_assume", titulo: "Alínea 'b': Assunção de Responsabilidade", tipo: "rule", pagina: 3, resumo: "Quem de outra forma assumiu de fato ou contratualmente a custódia para impedir o resultado (salva-vidas, cuidadores)." },
-        { id: "garantidor_ingerencia", titulo: "Alínea 'c': Ingerência (Criou o Risco)", tipo: "rule", pagina: 3, resumo: "Aquele que com comportamento anterior causou o perigo para o bem jurídico tem o dever indeclinável de neutralizá-lo." },
-        { id: "trap_pais_estupro", titulo: "Pegadinha: Omissão dos Pais em Estupro", tipo: "trap", pagina: 4, resumo: "Pais que toleram abusos ou consentem coabitação de filha menor de 14 anos respondem pelo crime por omissão imprópria (Súmula 593 STJ)." },
-        { id: "mnem_garantidores", titulo: "Mnemônico: LEI-ASSUME-CRIA", tipo: "mnemonic", pagina: 3, resumo: "LEI (dever legal: pais) + ASSUME (assumiu a custódia: salva-vidas) + CRIA (comportamento anterior que gerou o risco: ingerência)." }
-      ],
-      edges: [
-        { source: "root", target: "cat_dolo" },
-        { source: "root", target: "cat_culpa" },
-        { source: "root", target: "cat_omissao" },
-        { source: "root", target: "cat_garantidores" },
-        { source: "cat_dolo", target: "dolo_geral" },
-        { source: "cat_dolo", target: "dolo_2grau" },
-        { source: "cat_dolo", target: "dolo_eventual" },
-        { source: "cat_culpa", target: "culpa_consciente" },
-        { source: "cat_culpa", target: "comp_dolo_culpa" },
-        { source: "cat_culpa", target: "trap_transito" },
-        { source: "cat_culpa", target: "modalidades_culpa" },
-        { source: "modalidades_culpa", target: "exemplo_salto" },
-        { source: "cat_omissao", target: "norma_extensao" },
-        { source: "cat_garantidores", target: "garantidor_lei" },
-        { source: "cat_garantidores", target: "garantidor_assume" },
-        { source: "cat_garantidores", target: "garantidor_ingerencia" },
-        { source: "cat_garantidores", target: "mnem_garantidores" },
-        { source: "garantidor_lei", target: "trap_pais_estupro" }
-      ]
-    };
+function cleanSummaryText(text) {
+  let t = (text || "").trim();
+  t = t.replace(/\s+/g, ' ');
+  t = t.replace(/^[•\-\*►▪▸✓✔\uf0d8\uf0fc\+>\s]+/, '');
+  t = t.replace(/\*\*/g, '').trim();
+  t = t.replace(/[,;:\-–—\s]+$/, '');
+  if (t && !/[.!?")\]]$/.test(t)) t += '.';
+  return t;
+}
+
+function makeDidacticPegadinhaTitle(phrase, maxWords = 6) {
+  let p = phrase.replace(/^[!:\s,;.\-–—]+/, '').trim();
+  p = p.replace(/^(?:ao|à|a|o|os|as|do|da|dos|das|de|em|na|no|com|por|que|sobre|para)\s+/i, '').trim();
+  const words = p.split(/\s+/).filter(Boolean);
+  if (!words.length) return "Pegadinha de Prova";
+  if (words.length === 1 && ["princípio", "principio", "regra", "exceção", "prazo", "limite"].includes(words[0].toLowerCase())) {
+    words.push("Aplicável");
   }
+  const chosen = words.slice(0, maxWords);
+  const titleStr = chosen.join(' ').replace(/[,;:\-–—.]+$/, '');
+  return `Pegadinha: ${toTitleCase(titleStr)}`;
+}
 
-  // 2. Direito Administrativo: Licitações (Lei nº 14.133/2021)
-  if (normTopic.includes('licita') || normTopic.includes('14133') || normTopic.includes('14.133') || (normTopic.includes('contrat') && (normTopic.includes('public') || normTopic.includes('lei')))) {
-    return {
-      titulo: cleanTitle || "Licitações Públicas (Lei nº 14.133/2021)",
-      nodes: [
-        { id: "root", titulo: "Licitações (Lei 14.133/2021)", tipo: "root", pagina: 1, resumo: "Novo regime geral de licitações e contratos para as administrações diretas, autárquicas e fundacionais de todos os entes federativos (Art. 37, XXI, CF e Art. 1º)." },
-        { id: "cat_sujeitos", titulo: "1. Âmbito de Aplicação e Sujeitos", tipo: "category", pagina: 1, resumo: "Entidades obrigadas à Lei 14.133/2021 e exceções constitucionais expressas." },
-        { id: "cat_principios", titulo: "2. Princípios e Objetivos", tipo: "category", pagina: 5, resumo: "Finalidades do processo licitatório (Art. 11) e princípios expressos de governança (Art. 5º)." },
-        { id: "cat_contratacao_direta", titulo: "3. Contratação Direta", tipo: "category", pagina: 8, resumo: "Hipóteses de afastamento do certame: Inexigibilidade (Art. 74) vs Dispensa (Arts. 75 e 76)." },
-        { id: "cat_modalidades", titulo: "4. Modalidades Licitatórias", tipo: "category", pagina: 22, resumo: "Os 5 ritos procedimentais vigentes (Art. 28) e extinção de Tomada de Preços e Convite." },
-        { id: "cat_fases_criterios", titulo: "5. Critérios de Julgamento e Fases", tipo: "category", pagina: 25, resumo: "Critérios de seleção da proposta (Art. 33) e rito das fases ordinárias e inversão (Art. 17)." },
-        { id: "exclusao_estatais", titulo: "Exclusão das Estatais (Art. 1º, § 1º)", tipo: "rule", pagina: 1, resumo: "Empresas públicas, sociedades de economia mista e suas subsidiárias NÃO se submetem à Lei 14.133/2021, regendo-se pela Lei 13.303/2016." },
-        { id: "abrangencia_poderes", titulo: "Poderes Legislativo e Judiciário", tipo: "concept", pagina: 1, resumo: "Aplica-se aos órgãos do Poder Legislativo e Judiciário quando no desempenho atípico de suas funções administrativas." },
-        { id: "princ_planejamento", titulo: "Princípio do Planejamento", tipo: "rule", pagina: 6, resumo: "Princípio expresso inovador da Lei 14.133: compras e contratações devem integrar plano de contratações anual para evitar fracionamento." },
-        { id: "princ_segregacao", titulo: "Segregação de Funções", tipo: "rule", pagina: 6, resumo: "Vedada a designação do mesmo agente público para funções sensíveis e simultâneas de autorização, execução e fiscalização contratual." },
-        { id: "inexigibilidade_74", titulo: "Inexigibilidade de Licitação (Art. 74)", tipo: "concept", pagina: 8, resumo: "Inviabilidade de competição. Rol exemplificativo: fornecedor exclusivo, serviços intelectuais notórios e profissional artístico consagrado." },
-        { id: "dispensa_75", titulo: "Licitação Dispensável (Art. 75)", tipo: "concept", pagina: 9, resumo: "A competição é viável, mas a lei autoriza a contratação direta por conveniência e economicidade. Rol taxativo (baixo valor, emergência, deserta/fracassada)." },
-        { id: "comp_inex_disp", titulo: "Inexigibilidade × Dispensa", tipo: "comparison", pagina: 8, resumo: "Inexigibilidade: competição inviável e rol exemplificativo. Dispensa: competição juridicamente viável, mas dispensada/dispensável por rol estritamente taxativo." },
-        { id: "modalidades_atuais", titulo: "As 5 Modalidades Vigentes (Art. 28)", tipo: "concept", pagina: 22, resumo: "Pregão, Concorrência, Concurso, Leilão e Diálogo Competitivo. Tomada de Preços e Convite foram totalmente revogadas." },
-        { id: "dialogo_competitivo", titulo: "Diálogo Competitivo (Art. 32)", tipo: "concept", pagina: 24, resumo: "Modalidade inédita para inovação tecnológica ou contratação complexa, conduzida por comissão de no mínimo 3 servidores efetivos permanentes." },
-        { id: "pregao_obrigatorio", titulo: "Pregão para Bens e Serviços Comuns", tipo: "rule", pagina: 22, resumo: "Modalidade obrigatória para aquisição de bens e serviços comuns, cujo critério de julgamento seja menor preço ou maior desconto." },
-        { id: "rito_fases", titulo: "Ordem Ordinária das Fases (Art. 17)", tipo: "rule", pagina: 34, resumo: "Edital → Propostas e lances → Julgamento → Habilitação → Recursal → Homologação. Regra geral: o julgamento antecede a habilitação." },
-        { id: "inversao_fases", titulo: "Inversão de Fases Excepcional", tipo: "exception", pagina: 34, resumo: "A antecipação da fase de habilitação é excepcional e permitida apenas mediante ato formalmente motivado que justifique o benefício ao interesse público." },
-        { id: "criterios_julgamento", titulo: "Critérios de Julgamento (Art. 33)", tipo: "definition", pagina: 25, resumo: "Menor preço, Maior desconto, Melhor técnica ou conteúdo artístico, Técnica e preço, Maior lance (no leilão) e Maior retorno econômico." },
-        { id: "trap_estatais", titulo: "Pegadinha: Estatais na Lei 14.133", tipo: "trap", pagina: 2, resumo: "Bancas afirmam que CEF ou Petrobras licitam pela Lei 14.133/2021. ERRADO! Empresas Públicas e SEM submetem-se à Lei nº 13.303/2016." },
-        { id: "trap_taxativo", titulo: "Pegadinha: Taxatividade de Inexigibilidade", tipo: "trap", pagina: 15, resumo: "A inexigibilidade (art. 74) tem rol meramente exemplificativo (inviabilidade de competição). Quem possui rol taxativo é a dispensa de licitação (art. 75)." },
-        { id: "mnem_modalidades", titulo: "Mnemônico: PRE-CON-CON-LEI-DIA", tipo: "mnemonic", pagina: 22, resumo: "PREgão + CONcorrência + CONcurso + LEIlão + DIÁlogo competitivo (as cinco modalidades de licitação vigentes)." }
-      ],
-      edges: [
-        { source: "root", target: "cat_sujeitos" },
-        { source: "root", target: "cat_principios" },
-        { source: "root", target: "cat_contratacao_direta" },
-        { source: "root", target: "cat_modalidades" },
-        { source: "root", target: "cat_fases_criterios" },
-        { source: "cat_sujeitos", target: "exclusao_estatais" },
-        { source: "cat_sujeitos", target: "abrangencia_poderes" },
-        { source: "cat_sujeitos", target: "trap_estatais" },
-        { source: "cat_principios", target: "princ_planejamento" },
-        { source: "cat_principios", target: "princ_segregacao" },
-        { source: "cat_contratacao_direta", target: "inexigibilidade_74" },
-        { source: "cat_contratacao_direta", target: "dispensa_75" },
-        { source: "cat_contratacao_direta", target: "comp_inex_disp" },
-        { source: "cat_contratacao_direta", target: "trap_taxativo" },
-        { source: "cat_modalidades", target: "modalidades_atuais" },
-        { source: "cat_modalidades", target: "dialogo_competitivo" },
-        { source: "cat_modalidades", target: "pregao_obrigatorio" },
-        { source: "cat_modalidades", target: "mnem_modalidades" },
-        { source: "cat_fases_criterios", target: "rito_fases" },
-        { source: "cat_fases_criterios", target: "inversao_fases" },
-        { source: "cat_fases_criterios", target: "criterios_julgamento" }
-      ]
-    };
+function extractDidacticTitleFromClause(marker, text) {
+  const t = text.trim().replace(/[;.,]+$/, '');
+  const tLow = t.toLowerCase();
+
+  // 1. Fases
+  if (tLow.includes("preparatória") || tLow.includes("planejamento")) return `Fase 1: Preparatória (${marker})`;
+  if (tLow.includes("divulgação do edital")) return `Fase 2: Divulgação do Edital (${marker})`;
+  if (tLow.includes("apresentação de propostas")) return `Fase 3: Apresentação de Propostas (${marker})`;
+  if (tLow.includes("julgamento") && t.length < 70) return `Fase 4: Julgamento das Propostas (${marker})`;
+  if (tLow.includes("habilitação") && t.length < 70) return `Fase 5: Habilitação (${marker})`;
+  if (tLow.includes("recursal") && t.length < 70) return `Fase 6: Fase Recursal (${marker})`;
+  if (tLow.includes("homologação")) return `Fase 7: Homologação (${marker})`;
+
+  // 2. Critérios
+  if (tLow.includes("menor preço")) return `Critério: Menor Preço (${marker})`;
+  if (tLow.includes("maior desconto")) return `Critério: Maior Desconto (${marker})`;
+  if (tLow.includes("melhor técnica") || tLow.includes("conteúdo artístico")) return `Critério: Melhor Técnica (${marker})`;
+  if (tLow.includes("técnica e preço")) return `Critério: Técnica e Preço (${marker})`;
+  if (tLow.includes("maior lance")) return `Critério: Maior Lance (${marker})`;
+  if (tLow.includes("maior retorno")) return `Critério: Maior Retorno (${marker})`;
+
+  // 3. Modalidades
+  if (tLow.includes("diálogo competitivo")) return `Modalidade: Diálogo Competitivo (${marker})`;
+  if (tLow.includes("concorrência") && t.length < 120) return `Modalidade: Concorrência (${marker})`;
+  if (tLow.includes("concurso") && t.length < 120) return `Modalidade: Concurso (${marker})`;
+  if (tLow.includes("leilão") && t.length < 120) return `Modalidade: Leilão (${marker})`;
+  if (tLow.includes("pregão") && t.length < 120) return `Modalidade: Pregão (${marker})`;
+
+  // 4. Inexigibilidade e Dispensa
+  if (tLow.includes("artístico") || tLow.includes("artista") || tLow.includes("setor artístico")) return `Profissional Artístico Consagrado (${marker})`;
+  if (tLow.includes("fornecedor") || tLow.includes("exclusivo") || tLow.includes("produtor")) return `Fornecedor Exclusivo (${marker})`;
+  if (tLow.includes("notória especialização") || tLow.includes("técnico-profissionais")) return `Serviços Técnicos Especializados (${marker})`;
+  if (tLow.includes("credenciamento")) return `Credenciamento de Objetos (${marker})`;
+  if (tLow.includes("emergência") || tLow.includes("calamidade")) return `Emergência ou Calamidade (${marker})`;
+  if (tLow.includes("pesquisa") && (tLow.includes("ensino") || tLow.includes("instituição") || tLow.includes("desenvolvimento"))) return `Instituição de Pesquisa e Ensino (${marker})`;
+  if (tLow.includes("transferência de tecnologia")) return `Transferência de Tecnologia (${marker})`;
+  if (tLow.includes("deficiência") || tLow.includes("pcd")) return `Associação de PCD (${marker})`;
+  if (tLow.includes("catadores") || tLow.includes("recicláveis")) return `Associação de Catadores (${marker})`;
+  if (tLow.includes("deserta") || tLow.includes("fracassada") || tLow.includes("não surgiram licitantes")) return `Licitação Deserta ou Fracassada (${marker})`;
+  if (tLow.includes("diários oficiais") || tLow.includes("imprensa")) return `Impressão de Diários Oficiais (${marker})`;
+  if (tLow.includes("valores inferiores") || tLow.includes("valor inferior") || tLow.includes("baixo valor")) {
+    if (tLow.includes("obras") || tLow.includes("engenharia")) return `Dispensa por Baixo Valor: Obras (${marker})`;
+    return `Dispensa por Baixo Valor: Compras (${marker})`;
   }
+  if (tLow.includes("imóvel") || tLow.includes("locação")) return `Locação ou Compra de Imóvel (${marker})`;
 
-  // 3. Informática: Excel / Funções de Pesquisa
-  if (normTopic.includes('excel') || normTopic.includes('procv') || normTopic.includes('calc') || normTopic.includes('planilha')) {
-    return {
-      titulo: cleanTitle,
-      nodes: [
-        { id: "root", titulo: "Excel: Funções de Pesquisa", tipo: "root", pagina: 1, resumo: "Mecanismos de busca vetorial e matricial no Microsoft Excel com foco nas funções PROCV, PROCX e ÍNDICE+CORRESP." },
-        { id: "cat_procv", titulo: "1. Sintaxe e Regras do PROCV", tipo: "category", pagina: 1, resumo: "PROCV(valor_procurado; matriz_tabela; núm_índice_coluna; [procurar_intervalo])." },
-        { id: "cat_erros", titulo: "2. Erros Recorrentes em Prova", tipo: "category", pagina: 2, resumo: "Diferenciação precisa entre erros de sintaxe (#N/D, #REF!, #VALOR!, #NOME?)." },
-        { id: "regra_3arg", titulo: "3º Argumento: Número e não Letra", tipo: "rule", pagina: 1, resumo: "O 3º argumento exige número inteiro (ex: 3), jamais a letra da coluna ('C'). Letra gera erro #NOME?." },
-        { id: "regra_4arg", titulo: "4º Argumento Omitido (Busca 1 vs 0)", tipo: "rule", pagina: 1, resumo: "Se omitido, assume busca aproximada (1/VERDADEIRO), exigindo ordem crescente na matriz. Para busca exata, use 0/FALSO." },
-        { id: "busca_direita", titulo: "Busca Estrita para a Direita", tipo: "concept", pagina: 1, resumo: "O PROCV pesquisa exclusivamente na primeira coluna à esquerda e retorna dados à direita. Para retornar à esquerda, use PROCX." },
-        { id: "comp_nd_ref", titulo: "Diferença #N/D × #REF!", tipo: "comparison", pagina: 2, resumo: "#N/D ocorre quando o valor procurado não existe na 1ª coluna; #REF! ocorre quando o índice ultrapassa o total de colunas." },
-        { id: "trap_casesens", titulo: "Pegadinha: PROCV não é Case-Sensitive", tipo: "trap", pagina: 2, resumo: "O PROCV trata maiúsculas e minúsculas como idênticas ('EXCEL' == 'excel')." },
-        { id: "mnem_procv", titulo: "Mnemônico: ZERO é Certeiro", tipo: "mnemonic", pagina: 1, resumo: "'Zero é exato e certeiro; um é busca aproximada por palpite!'" }
-      ],
-      edges: [
-        { source: "root", target: "cat_procv" },
-        { source: "root", target: "cat_erros" },
-        { source: "cat_procv", target: "regra_3arg" },
-        { source: "cat_procv", target: "regra_4arg" },
-        { source: "cat_procv", target: "busca_direita" },
-        { source: "cat_erros", target: "comp_nd_ref" },
-        { source: "cat_erros", target: "trap_casesens" },
-        { source: "cat_procv", target: "mnem_procv" }
-      ]
-    };
+  const cleaned = t.replace(
+    /^(?:nos casos de|na contratação de|na hipótese de|para a contratação de|para a aquisição de|para aquisição de|para a|para o|para|em caso de|aquisição de|prestação de|quando houver|quando|que tenha por objeto|destinado a|no caso de|de|a)\s+/i,
+    ''
+  );
+  const parts = cleaned.split(/[,;:\(\).]/);
+  const firstPart = parts[0].trim();
+  const words = firstPart.split(/\s+/).slice(0, 5);
+  const title = words.map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+  return `${title || "Regra Específica"} (${marker})`;
+}
+
+function generateSemanticMindmapFromText(pdfFilename, fullText) {
+  let baseName = (pdfFilename || "Material").replace(/\.[^/.]+$/, "");
+  baseName = baseName.replace(/.*[/\\]/, "");
+  if (["material", "aula", "apostila", "teoria", "documento", "pdf", "livro", "slides"].includes(baseName.toLowerCase())) {
+    baseName = "Concurso Público";
   }
+  const cleanRootTitle = sanitizeMindmapTitle(baseName);
+  const cleanCorpus = fullText.replace(/(\w+)\s*[-–—]\s*\n\s*(\w+)/g, '$1$2');
 
-  // 4. Direito Administrativo: Poderes Administrativos (Exclusivo)
-  if ((normTopic.includes('poder_administrativo') || normTopic.includes('poderes_administrativos') || normTopic.includes('poder_hierarquico') || normTopic.includes('poder_disciplinar') || normTopic.includes('poder_policia')) && !normTopic.includes('ato') && !normTopic.includes('licita')) {
-    return {
-      titulo: cleanTitle,
-      nodes: [
-        { id: "root", titulo: "Poderes Administrativos", tipo: "root", pagina: 1, resumo: "Instrumentos jurídicos conferidos à Administração Pública para a consecução do interesse público com prerrogativas estatais." },
-        { id: "cat_conceito", titulo: "1. Conceito e Finalidade", tipo: "category", pagina: 1, resumo: "Poder-dever indeclinável conferido por lei, orientado estritamente ao interesse da coletividade." },
-        { id: "cat_especies", titulo: "2. Poderes em Espécie", tipo: "category", pagina: 2, resumo: "Classificação doutrinária clássica: Poder Hierárquico, Disciplinar, Regulamentar e de Polícia." },
-        { id: "cat_abusos", titulo: "3. Abuso de Poder e Sanções", tipo: "category", pagina: 3, resumo: "Desvio de finalidade (excesso teleológico) e Excesso de poder (vício de competência insanável)." },
-        { id: "pod_hierarquico", titulo: "Poder Hierárquico", tipo: "concept", pagina: 2, resumo: "Permite escalonar, fiscalizar e distribuir atribuições internamente, inclusive delegar e avocar competências." },
-        { id: "pod_disciplinar", titulo: "Poder Disciplinar", tipo: "concept", pagina: 2, resumo: "Permite apurar infrações e aplicar sanções funcionais aos servidores e terceiros com vínculo especial." },
-        { id: "pod_policia", titulo: "Poder de Polícia", tipo: "concept", pagina: 3, resumo: "Condiciona e restringe o uso de bens e liberdades individuais em favor do interesse público (discricionariedade, autoexecutoriedade e coercibilidade)." },
-        { id: "comp_hier_disc", titulo: "Hierárquico × Disciplinar", tipo: "comparison", pagina: 2, resumo: "Poder hierárquico organiza atribuições internas; poder disciplinar pune infrações funcionais com vínculo específico." },
-        { id: "trap_multa", titulo: "Pegadinha: Multa não é Autoexecutória", tipo: "trap", pagina: 3, resumo: "A cobrança de multa pecuniária não tem autoexecutoriedade: se o particular não pagar, exige Execução Fiscal no Judiciário." },
-        { id: "mnem_poderes", titulo: "Mnemônico: H-D-R-P", tipo: "mnemonic", pagina: 2, resumo: "Hierárquico + Disciplinar + Regulamentar + Polícia (os 4 poderes clássicos da Administração)." }
-      ],
-      edges: [
-        { source: "root", target: "cat_conceito" },
-        { source: "root", target: "cat_especies" },
-        { source: "root", target: "cat_abusos" },
-        { source: "cat_especies", target: "pod_hierarquico" },
-        { source: "cat_especies", target: "pod_disciplinar" },
-        { source: "cat_especies", target: "pod_policia" },
-        { source: "cat_especies", target: "comp_hier_disc" },
-        { source: "cat_especies", target: "trap_multa" },
-        { source: "cat_especies", target: "mnem_poderes" }
-      ]
-    };
-  }
-
-  // 5. Direito Administrativo: Atos Administrativos (Exclusivo e Aprofundado)
-  if ((normTopic.includes('ato_administrativo') || normTopic.includes('atos_administrativos') || normTopic.includes('atos') || normTopic.includes('convalidacao') || normTopic.includes('anulacao_revogacao')) && !normTopic.includes('licita')) {
-    return {
-      titulo: cleanTitle,
-      nodes: [
-        { id: "root", titulo: "Atos Administrativos", tipo: "root", pagina: 1, resumo: "Manifestação unilateral de vontade da Administração Pública que produz efeitos jurídicos imediatos sob regime de direito público." },
-        { id: "cat_requisitos", titulo: "1. Requisitos de Validade (COFIFOMOB)", tipo: "category", pagina: 1, resumo: "Elementos indispensáveis para a perfeição e higidez jurídica do ato administrativo." },
-        { id: "cat_atributos", titulo: "2. Atributos do Ato (PATI)", tipo: "category", pagina: 2, resumo: "Prerrogativas e características jurídicas que diferenciam os atos administrativos dos atos privados." },
-        { id: "cat_extincao", titulo: "3. Extinção e Convalidação", tipo: "category", pagina: 3, resumo: "Formas de desfazimento (Anulação x Revogação) e saneamento de vícios sanáveis." },
-        { id: "req_competencia", titulo: "Competência (CO)", tipo: "rule", pagina: 1, resumo: "Poder legal conferido ao agente público. É irrenunciável, intransferível e inderrogável (art. 11 da Lei 9.784/99)." },
-        { id: "req_finalidade", titulo: "Finalidade (FI)", tipo: "rule", pagina: 1, resumo: "Objetivo estritamente de interesse público e específico previsto em lei. Desvio gera desvio de poder / finalidade." },
-        { id: "req_forma", titulo: "Forma (FO)", tipo: "rule", pagina: 1, resumo: "Modo de exteriorização do ato. A regra é a forma escrita solene. Vício de forma não essencial admite convalidação." },
-        { id: "req_motivo", titulo: "Motivo (MO)", tipo: "rule", pagina: 1, resumo: "Pressupostos fáticos e jurídicos que justificam a edição do ato. Sujeito à Teoria dos Motivos Determinantes." },
-        { id: "req_objeto", titulo: "Objeto / Conteúdo (OB)", tipo: "concept", pagina: 1, resumo: "Efeito jurídico imediato produzido pelo ato (criação, modificação ou extinção de direitos)." },
-        { id: "atr_presuncao", titulo: "Presunção de Legitimidade", tipo: "definition", pagina: 2, resumo: "Presume-se editado em conformidade com a lei até prova em contrário (juris tantum). Inverte o ônus da prova." },
-        { id: "atr_autoexec", titulo: "Autoexecutoriedade", tipo: "definition", pagina: 2, resumo: "A Administração executa materialmente seus atos sem necessidade de autorização judicial prévia." },
-        { id: "atr_tipicidade", titulo: "Tipicidade", tipo: "definition", pagina: 2, resumo: "O ato deve corresponder a figuras previamente definidas em lei, impedindo a criação de atos arbitrários." },
-        { id: "atr_imperat", titulo: "Imperatividade", tipo: "definition", pagina: 2, resumo: "Poder de impor obrigações unilateralmente a terceiros independentemente de sua concordância." },
-        { id: "comp_anul_revog", titulo: "Anulação × Revogação", tipo: "comparison", pagina: 3, resumo: "Anulação decorre de ilegalidade (ex tunc, vinculada, adm ou judiciário). Revogação decorre de conveniência/oportunidade (ex nunc, discricionária, privativa da adm)." },
-        { id: "trap_foco", titulo: "Pegadinha: Convalidação FO-CO", tipo: "trap", pagina: 3, resumo: "Apenas admitem convalidação vícios sanáveis de Forma (não essencial) e Competência (não exclusiva). Motivo, finalidade e objeto ilícito NUNCA convalidam." },
-        { id: "trap_multa_atos", titulo: "Pegadinha: Multa não é Autoexecutória", tipo: "trap", pagina: 2, resumo: "A imposição de multa decorre do poder de polícia, mas a sua cobrança pecuniária não é autoexecutória; exige ação de execução fiscal judicial." },
-        { id: "mnem_cofifomob", titulo: "Mnemônico: COFIFOMOB", tipo: "mnemonic", pagina: 1, resumo: "Competência + Finalidade + Forma + Motivo + Objeto (requisitos de validade dos atos administrativos)." },
-        { id: "mnem_pati", titulo: "Mnemônico: PATI", tipo: "mnemonic", pagina: 2, resumo: "Presunção de legitimidade + Autoexecutoriedade + Tipicidade + Imperatividade (atributos do ato)." }
-      ],
-      edges: [
-        { source: "root", target: "cat_requisitos" },
-        { source: "root", target: "cat_atributos" },
-        { source: "root", target: "cat_extincao" },
-        { source: "cat_requisitos", target: "req_competencia" },
-        { source: "cat_requisitos", target: "req_finalidade" },
-        { source: "cat_requisitos", target: "req_forma" },
-        { source: "cat_requisitos", target: "req_motivo" },
-        { source: "cat_requisitos", target: "req_objeto" },
-        { source: "cat_requisitos", target: "mnem_cofifomob" },
-        { source: "cat_atributos", target: "atr_presuncao" },
-        { source: "cat_atributos", target: "atr_autoexec" },
-        { source: "cat_atributos", target: "atr_tipicidade" },
-        { source: "cat_atributos", target: "atr_imperat" },
-        { source: "cat_atributos", target: "trap_multa_atos" },
-        { source: "cat_atributos", target: "mnem_pati" },
-        { source: "cat_extincao", target: "comp_anul_revog" },
-        { source: "cat_extincao", target: "trap_foco" }
-      ]
-    };
-  }
-
-  // 6. Extrator Semântico Dinâmico Estilo NotebookLM para Qualquer PDF Importado (Robusto & Preciso)
-  const cleanRootTitle = sanitizeMindmapTitle(focus || title || sub, disc);
-  const rawPages = (contextText || '').split(/---\s*P[ÁA]GINA\s*(\d+)\s*---/i);
+  const rawPages = cleanCorpus.split(/---\s*P[ÁA]GINA\s*(\d+)\s*---/i);
   const pageMap = {};
-
   if (rawPages.length > 1) {
-    for (let i = 1; i < rawPages.length; i += 2) {
-      const pnum = parseInt(rawPages[i], 10);
-      pageMap[pnum] = (rawPages[i + 1] || '');
+    for (let idx = 1; idx < rawPages.length; idx += 2) {
+      const pnum = parseInt(rawPages[idx], 10);
+      pageMap[pnum] = (rawPages[idx + 1] || "").toLowerCase();
     }
   } else {
-    pageMap[1] = contextText || '';
+    pageMap[1] = cleanCorpus.toLowerCase();
   }
 
-  const pageKeys = Object.keys(pageMap).map(Number).sort((a, b) => a - b);
-  const totalPages = pageKeys.length ? pageKeys[pageKeys.length - 1] : 1;
-
   function findPageForTerm(termStr, defaultPage = 1) {
-    if (!pageKeys.length) return defaultPage;
-    const tClean = (termStr || '').toLowerCase().trim();
-    const tWords = (tClean.match(/[a-z\u00C0-\u017F]{4,}/g) || []).filter(w => !['para', 'com', 'como', 'sobre', 'pela', 'pelo', 'pegadinha'].includes(w));
+    const tClean = (termStr || "").toLowerCase().trim();
+    const tWords = (tClean.match(/\b[a-zà-ÿ]{4,}\b/g) || []).filter(w =>
+      !["para", "com", "como", "sobre", "pela", "pelo", "pegadinha", "uma", "entre", "são", "regra", "prova", "inciso", "artigo", "fase", "item"].includes(w)
+    );
     if (!tWords.length) return defaultPage;
-
     let bestPage = defaultPage;
     let maxMatches = 0;
-    for (const pnum of pageKeys) {
-      const ptxt = (pageMap[pnum] || '').toLowerCase();
+    for (const pnum of Object.keys(pageMap).map(Number).sort((a,b)=>a-b)) {
+      const ptxt = pageMap[pnum];
       let matches = 0;
       for (const w of tWords) {
         if (ptxt.includes(w)) matches++;
@@ -598,335 +324,460 @@ function extractSemanticMindmapFromCorpus(disc, sub, title, contextText, focus =
     return bestPage;
   }
 
-  // 1. Extração de Seções e Linhas (suporta Markdown ## / ###, numeração e maiúsculas)
-  const sections = [];
-  const pegadinhaItems = [];
-  const lines = (contextText || '').split('\n');
-  let currentSec = null;
-  let inPilar2 = false;
-  let currentPegadinha = null;
+  const QUESTION_HEADER_REGEX = /(?:J[ÁA]\s+CAIU\s+EM\s+PROVA|\(\s*[A-Z0-9\s/–-]{3,60}\s*\/\s*(?:20\d\d|[A-Z\s]{3,30})\s*\/\s*(?:20\d\d|[A-Z\s]{3,30})\s*\)|^\s*\d{1,3}\s*[\.\)]\s*\([A-Z]|^\s*\d{2}\s+(?:O\b|A\b|Em\b|No\b|Na\b|De\b|Com\b|Segundo\b|Acerca\b|Julgue\b|Assinale\b|Ocorre\b|Considerando\b))/i;
+  const OPTION_REGEX = /^\s*(?:\(?[A-Ea-e]\)[\s\w,–-]|(?:[A-E]\s+[A-Za-z\u00C0-\u017F]))/;
+  const ANSWER_REGEX = /^\s*(?:GABARITO|RESPOSTA|COMENT[ÁA]RIO)\b/i;
 
-  for (const line of lines) {
-    const l = line.trim();
-    if (!l) continue;
-    if (/rodrigo motta|kaverna|p[áa]gina\s*\d+|youtube|instagram|gabarito|sum[áa]rio|[ií]ndice|www\./i.test(l)) continue;
+  const NON_HEADING_TERMS = [
+    "cebraspe", "fgv", "fcc", "vunesp", "ibfc", "aocp", "quadrix",
+    "gabarito", "comentário", "comentario", "questão", "questao",
+    "certo", "errado", "assinale", "julgue", "item",
+    "exercício", "exercicio", "exercícios", "exercicios"
+  ];
 
-    if (/##\s*2\.\s*Raio-X de Banca/i.test(l)) {
-      inPilar2 = true;
-      currentSec = null;
+  function isTrueTheoreticalHeading(s) {
+    const sStrip = s.trim();
+    if (sStrip.length < 5 || sStrip.length > 75) return false;
+    if (/[;,:.]$/.test(sStrip)) return false;
+    if (/^\(?[A-Ea-e]\)/.test(sStrip)) return false;
+    if (NON_HEADING_TERMS.some(t => sStrip.toLowerCase().includes(t))) return false;
+    if (/^[IVXLCDM]+\s*[-–—.]?\s*$/.test(sStrip)) return false;
+    if (sStrip.toUpperCase().includes("(VETADO)")) return false;
+    if (/^[IVXLCDM]+\s*[-–—.]\s*(?:apenas|somente|estão|está|são)/i.test(sStrip)) return false;
+
+    const alpha = (sStrip.match(/[a-zA-Z\u00C0-\u017F]/g) || []);
+    if (alpha.length < 4) return false;
+    const upperCount = alpha.filter(c => c === c.toUpperCase() && c !== c.toLowerCase()).length;
+    if (upperCount / alpha.length >= 0.75) {
+      const words = (sStrip.match(/\b[A-Za-z\u00C0-\u017F]+\b/g) || []).filter(w => w.length >= 3);
+      if (words.length >= 1) return true;
+    }
+    return false;
+  }
+
+  const lines = cleanCorpus.split('\n');
+  const cleanLines = [];
+  let inQuestion = false;
+
+  for (const l of lines) {
+    const s = l.trim();
+    if (!s) continue;
+    if (s.startsWith('---')) {
+      cleanLines.push(s);
+      inQuestion = false;
       continue;
     }
+    if (QUESTION_HEADER_REGEX.test(s)) {
+      inQuestion = true;
+      continue;
+    }
+    if (OPTION_REGEX.test(s) || ANSWER_REGEX.test(s)) continue;
 
-    if (inPilar2) {
-      const mPeg = l.match(/^###\s+(?:🚨\s*)?(?:Pegadinha\s*\d*:\s*)?(.+)$/i);
-      if (mPeg) {
-        if (currentPegadinha) pegadinhaItems.push(currentPegadinha);
-        const pRaw = mPeg[1].trim();
-        currentPegadinha = {
-          raw_title: pRaw,
-          clean_title: cleanMindmapHeading(pRaw),
-          lines: []
-        };
-      } else if (currentPegadinha) {
-        currentPegadinha.lines.push(line);
-      }
+    if (inQuestion) {
+      if (isTrueTheoreticalHeading(s)) inQuestion = false;
+      else continue;
+    }
+    cleanLines.push(s);
+  }
+
+  const bulletSyms = /^[•\-\*►▪▸✓✔\uf0d8\uf0fc\+]\s*/;
+  const noiseKeywords = ["RODRIGO MOTTA", "KAVERNA", "YOUTUBE", "INSTAGRAM", "WWW.",
+                        "PROF.", "@PROF", "GABARITO", "DIREITO ADMINISTRATIVO – PROF",
+                        "DIREITO CONSTITUCIONAL – PROF", "DIREITO PENAL – PROF"];
+
+  function isNoise(s) {
+    const su = s.trim().toUpperCase();
+    if (!su || su.length < 3) return true;
+    if (noiseKeywords.some(nk => su.includes(nk))) return true;
+    if (/^\d{1,3}\s*$/.test(su)) return true;
+    return false;
+  }
+
+  function isTerminalLine(s) {
+    const st = s.trim();
+    return /[.!?:\---;]$/.test(st) || (st === st.toUpperCase() && st.length > 4);
+  }
+
+  function isNewItemLine(s) {
+    const st = s.trim();
+    if (bulletSyms.test(st)) return true;
+    if (isTrueTheoreticalHeading(st)) return true;
+    if (/^(?:Art\.|Súmula|ATENÇÃO|IMPORTANTE|OBS|[IVXLCDM]+\s*[-–—])/i.test(st)) return true;
+    if (/^[A-Z\u00C0-\u017F][A-Za-z\u00C0-\u017F\s\(\)/]{2,40}\s+[-–—]\s+[A-Za-z\u00C0-\u017F]/.test(st)) return true;
+    return false;
+  }
+
+  const reconstructedLines = [];
+  for (const l of cleanLines) {
+    const s = l.trim();
+    if (isNoise(s)) continue;
+    if (s.startsWith('---')) {
+      reconstructedLines.push(s);
+      continue;
+    }
+    if (reconstructedLines.length &&
+        !isNewItemLine(s) &&
+        !isTerminalLine(reconstructedLines[reconstructedLines.length - 1]) &&
+        !reconstructedLines[reconstructedLines.length - 1].startsWith('---')) {
+      reconstructedLines[reconstructedLines.length - 1] += " " + s;
     } else {
-      const mHeading = l.match(/^(?:#{2,3}\s+|(?:\d{1,2}\.|\b[IVXLCDM]+\s*[-–.]|[A-Z]\.)\s+)([A-Za-z0-9\.\s\u00C0-\u017F\-\/–—:]{4,65})$/);
-      const isUpper = (l === l.toUpperCase() && l.length >= 6 && l.length <= 65 && !l.startsWith('(') && !l.endsWith(')') && !/RODRIGO|DIREITO|P[ÁA]GINA|EXERC[IÍ]CIO|QUEST[ÃA]O|GABARITO|IMPORTANTE|PROF\.|YOUTUBE|WWW\./i.test(l));
+      reconstructedLines.push(s);
+    }
+  }
 
-      let rawH = null;
-      if (mHeading) {
-        rawH = mHeading[1].trim();
-      } else if (isUpper && (!currentSec || currentSec.lines.length >= 2)) {
-        rawH = l.trim();
+  const rawSections = [];
+  let currentSec = null;
+  let currentPage = 1;
+
+  for (const s of reconstructedLines) {
+    const mPage = s.match(/^---\s*P[ÁA]GINA\s*(\d+)\s*---$/i);
+    if (mPage) {
+      currentPage = parseInt(mPage[1], 10);
+      continue;
+    }
+    if (isTrueTheoreticalHeading(s)) {
+      let cleanH = toTitleCase(s.replace(/[:.\s]+$/, ''));
+      cleanH = cleanH.replace(/^(?:Observação\s+Importante[!:]?|Atenção[!:]?|Cuidado[!:]?)\s*/i, '').trim();
+      if (cleanH.toLowerCase().includes("não confunda modalidade com critério de julgamento")) {
+        cleanH = "Critérios de Julgamento";
       }
-
-      if (rawH) {
-        const cleanH = cleanMindmapHeading(rawH);
-        if (cleanH.length >= 4 && !/resumo estruturado|raio-x|mnem[ôo]nicos|mini-simulado|quadro esquem[áa]tico|gabarito|quest[õo]es|pilar/i.test(cleanH)) {
-          if (currentSec) sections.push(currentSec);
+      if (!cleanH.toLowerCase().includes(cleanRootTitle.toLowerCase()) && !cleanRootTitle.toLowerCase().includes(cleanH.toLowerCase())) {
+        if (!["Importante", "Atenção", "Cuidado", "Obs", "Reflexão"].includes(cleanH)) {
+          if (currentSec) rawSections.push(currentSec);
           currentSec = {
-            heading: rawH,
-            clean_title: cleanH,
+            heading: cleanH,
+            page: currentPage,
             lines: []
           };
           continue;
         }
       }
-
-      if (currentSec) {
-        currentSec.lines.push(line);
-      }
     }
+    if (currentSec) currentSec.lines.push(s);
+  }
+  if (currentSec) rawSections.push(currentSec);
+
+  const groupedSections = [];
+  const seenH = new Set();
+  for (const s of rawSections) {
+    const hNorm = s.heading.toLowerCase();
+    if (seenH.has(hNorm)) {
+      if (groupedSections.length) groupedSections[groupedSections.length - 1].lines.push(...s.lines);
+      continue;
+    }
+    const usefulL = s.lines.filter(l => l.trim() && !isNoise(l));
+    if (usefulL.length < 2 && groupedSections.length) {
+      groupedSections[groupedSections.length - 1].lines.push(...s.lines);
+      continue;
+    }
+    seenH.add(hNorm);
+    groupedSections.push(s);
   }
 
-  if (currentSec) sections.push(currentSec);
-  if (currentPegadinha) pegadinhaItems.push(currentPegadinha);
-
-  // 2. Formação Dinâmica das Macro-Categorias (Nível 1)
-  const macroCategories = [];
-  if (sections.length >= 4) {
-    const targetCount = Math.min(7, sections.length);
-    const step = sections.length / targetCount;
-    for (let i = 0; i < targetCount; i++) {
-      const idx = Math.floor(i * step);
-      const s = sections[idx];
-      let subSum = extractMindmapSubstantiveSummary(s.lines);
-      if (!subSum) {
-        subSum = `Dispositivos normativos, conceitos essenciais e regras aplicáveis a ${s.clean_title.toLowerCase()}.`;
-      }
-      const page = findPageForTerm(s.clean_title, Math.max(1, Math.floor((i + 1) * (totalPages / targetCount))));
-      const shortTitle = truncateAtWord(s.clean_title, 38);
-
-      macroCategories.push({
-        id: `cat_${i + 1}`,
-        titulo: `${i + 1}. ${shortTitle}`,
-        clean_name: s.clean_title,
-        tipo: "category",
-        pagina: page,
-        resumo: subSum,
-        section: s
-      });
-    }
-  } else {
-    const normT = `${disc} ${sub} ${cleanRootTitle}`.toLowerCase();
-    let blueprints = [];
-    if (/adm|licita/i.test(normT)) {
-      blueprints = [
-        ["1. Definições e Regime Jurídico", 1, "Conceitos fundamentais da Administração Pública, distinção entre direta e indireta e regime de direito público."],
-        ["2. Entidades Políticas e Administrativas", Math.max(1, Math.floor(totalPages * 0.18)), "União, Estados, DF e Municípios versus entidades descentralizadas da administração indireta."],
-        ["3. Desconcentração vs. Descentralização", Math.max(1, Math.floor(totalPages * 0.35)), "Criação interna de órgãos sem personalidade versus criação de novas pessoas jurídicas por lei."],
-        ["4. Órgãos Públicos e Classificações", Math.max(1, Math.floor(totalPages * 0.52)), "Centros de competência despersonalizados: independentes, autônomos, superiores e subalternos."],
-        ["5. Entidades da Administração Indireta", Math.max(1, Math.floor(totalPages * 0.7)), "Autarquias, fundações públicas, empresas públicas e sociedades de economia mista."],
-        ["6. Atividades e Prerrogativas Estatais", Math.max(1, Math.floor(totalPages * 0.85)), "Atividades típicas de Estado, exploração de atividade econômica e regime de pessoal."]
-      ];
-    } else if (/const/i.test(normT)) {
-      blueprints = [
-        ["1. Fundamentos e Princípios", 1, "Bases axiológicas, forma de Estado e princípios fundamentais."],
-        ["2. Hermenêutica e Eficácia", Math.max(1, Math.floor(totalPages * 0.2)), "Métodos de interpretação e aplicabilidade das normas."],
-        ["3. Direitos e Garantias Individuais", Math.max(1, Math.floor(totalPages * 0.4)), "Núcleo protetivo dos direitos individuais e remédios constitucionais."],
-        ["4. Organização do Estado e Poderes", Math.max(1, Math.floor(totalPages * 0.6)), "Repartição de competências e tripartição dos Poderes da República."],
-        ["5. Processo Legislativo e Controle", Math.max(1, Math.floor(totalPages * 0.8)), "Espécies normativas e fiscalização de constitucionalidade."]
-      ];
-    } else {
-      blueprints = [
-        ["1. Fundamentos e Visão Geral", 1, `Conceitos primários e definições de ${cleanRootTitle}.`],
-        ["2. Estrutura e Classificações", Math.max(1, Math.floor(totalPages * 0.25)), "Divisões taxonômicas e espécies doutrinárias."],
-        ["3. Regime de Regras e Aplicações", Math.max(1, Math.floor(totalPages * 0.5)), "Critérios práticos e parâmetros normativos."],
-        ["4. Prerrogativas, Exceções e Obrigações", Math.max(1, Math.floor(totalPages * 0.75)), "Deveres, requisitos formais, restrições e procedimentos."]
-      ];
-    }
-    blueprints.forEach(([titleB, pageB, descB], idx) => {
-      macroCategories.push({
-        id: `cat_${idx + 1}`,
-        titulo: titleB,
-        clean_name: titleB.replace(/^\d+\.\s*/, ''),
-        tipo: "category",
-        pagina: Math.min(pageB, totalPages),
-        resumo: descB,
-        section: sections[idx] || null
-      });
-    });
+  let selectedSections = groupedSections;
+  if (groupedSections.length > 8) {
+    const scored = groupedSections.map((sec, idx) => ({ idx, sec, len: sec.lines.length }))
+      .sort((a, b) => b.len - a.len);
+    const topIdx = scored.slice(0, 8).map(x => x.idx).sort((a,b)=>a-b);
+    selectedSections = topIdx.map(i => groupedSections[i]);
   }
 
-  // Raio-X de Pegadinhas permanente
-  const catPegNum = macroCategories.length + 1;
-  macroCategories.push({
-    id: `cat_${catPegNum}`,
-    titulo: `${catPegNum}. Raio-X de Pegadinhas da Banca`,
-    clean_name: "Pegadinhas de Prova",
-    tipo: "category",
-    pagina: findPageForTerm("pegadinha", totalPages),
-    resumo: "Principais armadilhas, inversões de conceitos e assertivas com palavras absolutas exploradas pelas bancas examinadoras.",
-    section: null
-  });
-
-  // 3. Montar Nó Raiz
   const nodes = [{
     id: "root",
-    titulo: cleanRootTitle.slice(0, 45),
+    titulo: cleanRootTitle,
     tipo: "root",
     pagina: 1,
-    resumo: `Estrutura esquematizada das unidades essenciais de ${cleanRootTitle} com definições, regras e distinções de prova.`
+    resumo: `Estrutura esquematizada das unidades conceituais essenciais de ${cleanRootTitle} para provas de concursos públicos.`
   }];
   const edges = [];
+  const seenNodeKeys = new Set([cleanRootTitle.toLowerCase()]);
+  let nodeIdSeq = 0;
 
-  for (const c of macroCategories) {
+  for (let cIdx = 0; cIdx < selectedSections.length; cIdx++) {
+    const sec = selectedSections[cIdx];
+    const catId = `cat_${cIdx + 1}`;
+    const catPage = findPageForTerm(sec.heading, sec.page);
+    const catTitle = sec.heading;
+
+    const catSummaryLines = [];
+    for (const l of sec.lines) {
+      const ls = l.trim();
+      if (ls && !isNoise(ls) && ls.length >= 20 && ls !== ls.toUpperCase()) {
+        catSummaryLines.push(ls);
+        if (catSummaryLines.length >= 2) break;
+      }
+    }
+    const catSummary = catSummaryLines.length ? cleanSummaryText(catSummaryLines.join(' ')) : `Regras e fundamentos de ${catTitle.toLowerCase()} para concursos públicos.`;
+
     nodes.push({
-      id: c.id,
-      titulo: c.titulo,
+      id: catId,
+      titulo: catTitle,
       tipo: "category",
-      pagina: c.pagina,
-      resumo: c.resumo
+      pagina: catPage,
+      resumo: catSummary
     });
-    edges.push({ source: "root", target: c.id });
-  }
+    edges.push({ source: "root", target: catId });
+    seenNodeKeys.add(catTitle.toLowerCase());
 
-  // 4. Extração de Subconceitos por Section Locality
-  const seenNodeTitles = new Set();
-  let itemCounter = 0;
+    const secLines = sec.lines;
+    let secItemsCount = 0;
 
-  for (const c of macroCategories) {
-    const s = c.section;
-    const secLines = s ? s.lines : [];
-    const secItems = [];
+    for (let lineI = 0; lineI < secLines.length; lineI++) {
+      if (secItemsCount >= 10) break;
+      const l = secLines[lineI].trim();
+      if (!l || isNoise(l)) continue;
 
-    // Tabelas Markdown
-    for (const l of secLines) {
-      if (l.startsWith('|') && l.includes('|', 1)) {
-        const parts = l.split('|').map(p => p.trim()).filter(Boolean);
-        if (parts.length >= 2 && !parts[0].split('').every(ch => '-: '.includes(ch))) {
-          const term = parts[0].replace(/\*\*/g, '').trim();
-          const defi = parts[1].replace(/\*\*/g, '').trim();
-          if (term.length >= 3 && defi.length >= 8 && !/termo|tipo|item|estrutura|posi[çc][ãa]o/i.test(term)) {
-            const cleanT = cleanMindmapHeading(term);
-            const isComp = /desconcentra[çc][ãa]o|descentraliza[çc][ãa]o|versus|outorga|delega[çc][ãa]o/i.test(cleanT);
-            secItems.push({
-              titulo: truncateAtWord(cleanT, 42),
-              tipo: isComp ? "comparison" : "concept",
-              resumo: defi.slice(0, 180)
-            });
-          }
-        }
-      }
-    }
-
-    // Subcabeçalhos #### ou negrito
-    for (let idxL = 0; idxL < secLines.length; idxL++) {
-      const lStr = secLines[idxL].trim();
-      const mSubh = lStr.match(/^####\s+(?:[0-9]{1,2}\.|\b[A-Z]\.)?\s*(.+)$/);
-      if (mSubh) {
-        const rawSt = mSubh[1].trim();
-        const cleanSt = cleanMindmapHeading(rawSt);
-        if (cleanSt.length >= 3 && !/caracter[íi]sticas comuns|defini[çc][ãa]o|conceito/i.test(cleanSt)) {
-          const nextLines = secLines.slice(idxL + 1, idxL + 8);
-          let sumTxt = extractMindmapSubstantiveSummary(nextLines, 160);
-          if (!sumTxt) sumTxt = `Aspectos e critérios aplicáveis a ${cleanSt}.`;
-          secItems.push({
-            titulo: truncateAtWord(cleanSt, 42),
-            tipo: "concept",
-            resumo: sumTxt
+      // Inciso / Alínea / Item
+      const mInciso = l.match(/^([IVXLCDM]+|\d{1,2}|[a-z])\s*[-–—.]\s*(.{4,})$/);
+      if (mInciso) {
+        const rawMarker = mInciso[1].toUpperCase();
+        const markerStr = /^[IVXLCDM]+$/.test(rawMarker) ? `Inciso ${rawMarker}` : `Item ${rawMarker}`;
+        const didacticTitle = extractDidacticTitleFromClause(markerStr, mInciso[2]);
+        const defRaw = cleanSummaryText(mInciso[2]);
+        if (!seenNodeKeys.has(didacticTitle.toLowerCase())) {
+          seenNodeKeys.add(didacticTitle.toLowerCase());
+          nodeIdSeq++;
+          secItemsCount++;
+          const nid = `item_${nodeIdSeq}`;
+          nodes.push({
+            id: nid,
+            titulo: didacticTitle,
+            tipo: "rule",
+            pagina: findPageForTerm(didacticTitle, catPage),
+            resumo: defRaw
           });
+          edges.push({ source: catId, target: nid });
         }
+        continue;
       }
 
-      const mAtencao = lStr.match(/\*\*(?:Atenção|Importante|Cuidado|Lembre-se)[!:]?\*\*\s*(.+)$/i);
-      if (mAtencao) {
-        const alertaTxt = mAtencao[1].replace(/\*\*/g, '').trim();
-        const tTit = /hierarquia/i.test(alertaTxt) ? "Regra: Ausência de Hierarquia" : "Alerta de Prova";
-        secItems.push({
-          titulo: truncateAtWord(tTit, 42),
-          tipo: /regra/i.test(tTit) ? "rule" : "trap",
-          resumo: alertaTxt.slice(0, 180)
-        });
-      }
-    }
-
-    // Marcadores de lista / bullets / travessões
-    for (const l of secLines) {
-      const lStr = l.trim();
-      const mBullet = lStr.match(/^[•\-\*\+]\s*([A-Za-z\u00C0-\u017F\s\(\)/,:-]{3,35})\s*[-–—:]\s*(.{8,140})/);
-      if (mBullet) {
-        const bTerm = cleanMindmapHeading(mBullet[1]);
-        const bDef = mBullet[2].replace(/\*\*/g, '').trim();
-        if (bTerm.length >= 3 && bDef.length >= 8 && !/termo|tipo|item|estrutura/i.test(bTerm)) {
-          secItems.push({
-            titulo: truncateAtWord(bTerm, 42),
-            tipo: "concept",
-            resumo: bDef.slice(0, 180)
-          });
-        }
-      }
-    }
-
-    for (const it of secItems) {
-      const normK = it.titulo.toLowerCase();
-      if (seenNodeTitles.has(normK)) continue;
-      seenNodeTitles.add(normK);
-      itemCounter++;
-      const nid = `item_${itemCounter}`;
-      const pItem = findPageForTerm(it.titulo, c.pagina);
-
-      nodes.push({
-        id: nid,
-        titulo: it.titulo,
-        tipo: it.tipo,
-        pagina: pItem,
-        resumo: it.resumo
-      });
-      edges.push({ source: c.id, target: nid });
-    }
-  }
-
-  // 5. Anexar Pegadinhas
-  const trapCat = macroCategories[macroCategories.length - 1];
-  if (pegadinhaItems.length > 0) {
-    for (const ps of pegadinhaItems) {
-      const pText = ps.lines.map(l => l.trim()).filter(Boolean).join(' ');
-      const mBanca = pText.match(/O que a banca afirma[^:]*:\s*(?:["“])?([^"”\n]{10,140})/i);
-      const mRegra = pText.match(/Regra de Ouro[^:]*:\s*(?:["“])?([^"”\n]{10,140})/i);
-
-      let bancaClaim = mBanca ? mBanca[1].replace(/\*\*/g, '').trim() : '';
-      let goldenRule = mRegra ? mRegra[1].replace(/\*\*/g, '').trim() : '';
-
-      let trapSummary = '';
-      if (bancaClaim && goldenRule) {
-        trapSummary = `Banca afirma: ${truncateAtWord(bancaClaim, 85)}. Regra: ${truncateAtWord(goldenRule, 85)}.`;
-      } else if (goldenRule) {
-        trapSummary = `Regra de Ouro: ${truncateAtWord(goldenRule, 170)}.`;
-      } else if (bancaClaim) {
-        trapSummary = `Armadilha de prova: ${truncateAtWord(bancaClaim, 170)}.`;
-      } else {
-        trapSummary = extractMindmapSubstantiveSummary(ps.lines, 170) || "Ponto de atenção crítico contra pegadinha frequente de banca examinadora.";
-      }
-
-      itemCounter++;
-      const nid = `item_${itemCounter}`;
-      const pTrap = findPageForTerm(ps.clean_title, 8);
-
-      nodes.push({
-        id: nid,
-        titulo: truncateAtWord(`Pegadinha: ${ps.clean_title}`, 38),
-        tipo: "trap",
-        pagina: pTrap,
-        resumo: trapSummary
-      });
-      edges.push({ source: trapCat.id, target: nid });
-    }
-  } else {
-    for (const pnum of pageKeys) {
-      const ptxt = pageMap[pnum] || '';
-      for (const lp of ptxt.split('\n')) {
-        const mTr = lp.match(/(?:pegadinha|cuidado|atenção|armadilha|não confundir|inversão)[\s:–-]+([^\.\n]{5,55})/i);
-        if (mTr) {
-          const phrase = mTr[1].trim();
-          const pTitle = truncateAtWord(`Pegadinha: ${phrase}`, 36);
-          if (!seenNodeTitles.has(pTitle.toLowerCase())) {
-            seenNodeTitles.add(pTitle.toLowerCase());
-            itemCounter++;
-            const nid = `item_${itemCounter}`;
+      // Linha com travessão "Termo – Definição"
+      const mDash = l.match(/^(?:[•\-\*►▪▸✓✔\uf0d8\uf0fc\+]\s*)?([A-Za-z\u00C0-\u017F\s\(\)/]{3,45})\s+[-–—]\s+(.{12,})$/);
+      if (mDash && !l.startsWith('Art.') && !l.startsWith('*')) {
+        const candidateTerm = mDash[1].trim();
+        if (/^(?:[IVXLCDM]+|\d+|[A-Z])$/i.test(candidateTerm)) {
+          const markerStr = `Inciso ${candidateTerm.toUpperCase()}`;
+          const didacticTitle = extractDidacticTitleFromClause(markerStr, mDash[2]);
+          const defRaw = cleanSummaryText(mDash[2]);
+          if (!seenNodeKeys.has(didacticTitle.toLowerCase())) {
+            seenNodeKeys.add(didacticTitle.toLowerCase());
+            nodeIdSeq++;
+            secItemsCount++;
+            const nid = `item_${nodeIdSeq}`;
             nodes.push({
               id: nid,
-              titulo: pTitle,
-              tipo: "trap",
-              pagina: pnum,
-              resumo: `Ponto de atenção crítico contra armadilha frequente de banca examinadora: ${phrase}.`
+              titulo: didacticTitle,
+              tipo: "rule",
+              pagina: findPageForTerm(didacticTitle, catPage),
+              resumo: defRaw
             });
-            edges.push({ source: trapCat.id, target: nid });
+            edges.push({ source: catId, target: nid });
+          }
+          continue;
+        }
+
+        const termRaw = toTitleCase(candidateTerm);
+        const defRaw = cleanSummaryText(mDash[2].trim());
+        const essenceMatch = defRaw.match(/^(?:pessoas jurídicas de|ocorre quando|são|não possuem|com criação|dotada de|modalidade de licitação para|critério de julgamento)\s+([^,.;]{5,30})/i);
+        const essence = essenceMatch ? essenceMatch[1].trim() : "";
+        const shortLabel = compressLabel(termRaw, essence, 5);
+
+        if (!seenNodeKeys.has(termRaw.toLowerCase()) && termRaw.length >= 3) {
+          seenNodeKeys.add(termRaw.toLowerCase());
+          nodeIdSeq++;
+          secItemsCount++;
+          const nid = `item_${nodeIdSeq}`;
+          const pNum = findPageForTerm(termRaw, catPage);
+          const isComp = ["desconcentração", "descentralização", "versus", "outorga", "delegação", "sociedades", "dispensada", "dispensável"].some(k => termRaw.toLowerCase().includes(k));
+          nodes.push({
+            id: nid,
+            titulo: shortLabel,
+            tipo: isComp ? "comparison" : "concept",
+            pagina: pNum,
+            resumo: defRaw
+          });
+          edges.push({ source: catId, target: nid });
+        }
+        continue;
+      }
+
+      // Marcador bullet com termo na linha atual e definição na próxima
+      const mBulletOnly = l.match(/^[•\-\*►▪▸✓✔\uf0d8\uf0fc\+]\s*([A-Za-z\u00C0-\u017F\s\(\)/]{4,45})$/);
+      if (mBulletOnly) {
+        const termRaw = toTitleCase(mBulletOnly[1].trim());
+        const nextDesc = [];
+        for (const nxt of secLines.slice(lineI + 1, lineI + 4)) {
+          const ns = nxt.trim();
+          if (ns && !isNoise(ns) && !bulletSyms.test(ns) && ns !== ns.toUpperCase()) {
+            nextDesc.push(ns);
           }
         }
-        if (itemCounter >= 30) break;
+        const defRaw = nextDesc.length ? cleanSummaryText(nextDesc.join(' ')) : `Regime jurídico e características de ${termRaw.toLowerCase()}.`;
+        const essenceMatch = defRaw.match(/^(?:diretamente|subordinados|possuem|são aqueles|aqueles que|formados por)\s+([^,.;]{5,30})/i);
+        const essence = essenceMatch ? essenceMatch[1].trim() : "";
+        const shortLabel = compressLabel(termRaw, essence, 5);
+
+        if (!seenNodeKeys.has(termRaw.toLowerCase()) && termRaw.length >= 3) {
+          seenNodeKeys.add(termRaw.toLowerCase());
+          nodeIdSeq++;
+          secItemsCount++;
+          const nid = `item_${nodeIdSeq}`;
+          const pNum = findPageForTerm(termRaw, catPage);
+          nodes.push({
+            id: nid,
+            titulo: shortLabel,
+            tipo: "concept",
+            pagina: pNum,
+            resumo: defRaw
+          });
+          edges.push({ source: catId, target: nid });
+        }
+        continue;
       }
-      if (itemCounter >= 30) break;
+
+      // Súmula ou Artigo importante
+      const mSumula = l.match(/^(Súmula\s+n?º?\s*\d+\s+[A-Z]{3}|Art\.\s*\d+[^–—:]*)\s*[-–—:]\s*(.{15,})$/i);
+      if (mSumula) {
+        const sName = mSumula[1].trim();
+        const sDesc = cleanSummaryText(mSumula[2].trim());
+        const shortLabel = compressLabel(toTitleCase(sName), "Regra Legal", 5);
+        if (!seenNodeKeys.has(sName.toLowerCase())) {
+          seenNodeKeys.add(sName.toLowerCase());
+          nodeIdSeq++;
+          secItemsCount++;
+          const nid = `item_${nodeIdSeq}`;
+          nodes.push({
+            id: nid,
+            titulo: shortLabel,
+            tipo: "rule",
+            pagina: findPageForTerm(sName, catPage),
+            resumo: sDesc
+          });
+          edges.push({ source: catId, target: nid });
+        }
+        continue;
+      }
+
+      // Alertas de Prova (ATENÇÃO / IMPORTANTE)
+      const mAlert = l.match(/(?:ATENÇÃO|IMPORTANTE|CUIDADO)[!:]?\s*([^.\n]{15,100})/i);
+      if (mAlert) {
+        const shortLabel = makeDidacticPegadinhaTitle(mAlert[1]);
+        const fullAlert = cleanSummaryText(l);
+        if (!seenNodeKeys.has(shortLabel.toLowerCase())) {
+          seenNodeKeys.add(shortLabel.toLowerCase());
+          nodeIdSeq++;
+          secItemsCount++;
+          const nid = `item_${nodeIdSeq}`;
+          nodes.push({
+            id: nid,
+            titulo: shortLabel,
+            tipo: "trap",
+            pagina: catPage,
+            resumo: fullAlert
+          });
+          edges.push({ source: catId, target: nid });
+        }
+        continue;
+      }
     }
   }
 
-  return {
-    titulo: cleanRootTitle,
-    nodes,
-    edges
-  };
+  // Categoria de Pegadinhas da Banca (Pilar 2)
+  const trapCatId = `cat_${selectedSections.length + 1}`;
+  const trapNodes = [];
+
+  for (const pnum of Object.keys(pageMap).map(Number).sort((a,b)=>a-b)) {
+    const ptxt = pageMap[pnum];
+    for (const lineP of ptxt.split('\n')) {
+      const lp = lineP.trim();
+      const mTr = lp.match(/(?:não\s+confunda|não\s+há\s+hierarquia|banca\s+costuma|pegadinha|cuidado\s+com|atenção)[!:\s]+([^.\n]{12,100})/i);
+      if (mTr) {
+        const tTitle = makeDidacticPegadinhaTitle(mTr[1]);
+        if (!seenNodeKeys.has(tTitle.toLowerCase())) {
+          seenNodeKeys.add(tTitle.toLowerCase());
+          trapNodes.push({
+            titulo: tTitle,
+            pagina: pnum,
+            resumo: cleanSummaryText(lp)
+          });
+        }
+      }
+      if (trapNodes.length >= 6) break;
+    }
+    if (trapNodes.length >= 6) break;
+  }
+
+  if (trapNodes.length > 0) {
+    nodes.push({
+      id: trapCatId,
+      titulo: "Raio-X de Pegadinhas da Banca",
+      tipo: "category",
+      pagina: trapNodes[0].pagina,
+      resumo: "Principais armadilhas, inversões conceituais e assertivas com palavras absolutas recorrentes nas bancas examinadoras."
+    });
+    edges.push({ source: "root", target: trapCatId });
+
+    for (const tn of trapNodes) {
+      nodeIdSeq++;
+      const nid = `item_${nodeIdSeq}`;
+      nodes.push({
+        id: nid,
+        titulo: tn.titulo,
+        tipo: "trap",
+        pagina: tn.pagina,
+        resumo: tn.resumo
+      });
+      edges.push({ source: trapCatId, target: nid });
+    }
+  }
+
+  return { titulo: cleanRootTitle, nodes, edges };
 }
+
+function extractSemanticMindmapFromCorpus(disc, sub, title, contextText, focus = '') {
+  const cleanTitle = (focus || title || (sub || '').replace(/_/g, ' ')).trim();
+  if (contextText && contextText.trim().length >= 80) {
+    return generateSemanticMindmapFromText(sub || cleanTitle, contextText);
+  }
+  const rootTitle = toTitleCase(cleanTitle);
+  return {
+    titulo: rootTitle,
+    nodes: [
+      {
+        id: "root",
+        titulo: rootTitle,
+        tipo: "root",
+        pagina: 1,
+        resumo: `Estrutura esquematizada das unidades conceituais essenciais de ${rootTitle} para concursos públicos.`
+      },
+      {
+        id: "cat_1",
+        titulo: "Conceitos Fundamentais",
+        tipo: "category",
+        pagina: 1,
+        resumo: `Definições dogmáticas, princípios e características estruturantes de ${rootTitle}.`
+      },
+      {
+        id: "cat_2",
+        titulo: "Regras Vinculantes e Espécies",
+        tipo: "category",
+        pagina: 1,
+        resumo: "Classificações operacionais e regimes jurídicos aplicáveis."
+      },
+      {
+        id: "cat_3",
+        titulo: "Raio-X de Pegadinhas da Banca",
+        tipo: "category",
+        pagina: 1,
+        resumo: "Principais armadilhas e inversões conceituais recorrentes nas bancas examinadoras."
+      }
+    ],
+    edges: [
+      { source: "root", target: "cat_1" },
+      { source: "root", target: "cat_2" },
+      { source: "root", target: "cat_3" }
+    ]
+  };
 }
 
 export default async function handler(req, res) {

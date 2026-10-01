@@ -1,27 +1,12 @@
-# DIREITO ADMINISTRATIVO - Licitações – Lei nº 14.133/2021
-**Professor:** Prof. Rodrigo Motta  
-**Duração:** 50 minutos  
-**Categoria:** Edital de Concursos Públicos (Cebraspe / FGV / AOCP)  
-
----
-
-> 📋 **VISÃO GERAL DA FONTE (BRIEFING EXECUTIVO — ESTILO NOTEBOOKLM):**  
-> Este material didático do Prof. Rodrigo Motta consolida de forma cirúrgica o regime geral de **Licitações Públicas sob a égide da Lei Federal nº 14.133/2021**. A fonte estrutura o conteúdo em blocos fundamentais para concursos públicos: aspectos constitucionais (Art. 37, XXI), órgãos e sujeitos vinculados (com a importantíssima exclusão das empresas estatais da Lei 13.303/2016), princípios setoriais (destacando planejamento e segregação de funções), contratação direta (distinção dogmática entre inexigibilidade de rol exemplificativo e dispensa de rol taxativo), modalidades licitatórias vigentes (com foco no pregão e no inovador diálogo competitivo) e a inversão ordinária das fases procedimentais onde o julgamento antecede a habilitação.
-
----
-
-### 🗺️ Mapa Mental Interativo & Navegação do Conhecimento
-
-```nlm-mindmap-json
 {
-  "titulo": "Licitacoes Lei 14133",
+  "titulo": "Material",
   "nodes": [
     {
       "id": "root",
-      "titulo": "Licitacoes Lei 14133",
+      "titulo": "Material",
       "tipo": "root",
       "pagina": 1,
-      "resumo": "Estrutura esquematizada das unidades conceituais essenciais de Licitacoes Lei 14133 para provas de concursos públicos."
+      "resumo": "Estrutura esquematizada das unidades conceituais essenciais de Material para provas de concursos públicos."
     },
     {
       "id": "cat_1",
@@ -32,7 +17,7 @@
     },
     {
       "id": "item_1",
-      "titulo": "Art. 2º, Lei Nº 14.133/2021 (Regra)",
+      "titulo": "Art. 2º, Lei nº 14.133/2021 (Regra)",
       "tipo": "rule",
       "pagina": 3,
       "resumo": "Esta Lei aplica-se a."
@@ -88,7 +73,7 @@
     },
     {
       "id": "item_9",
-      "titulo": "Art. 3º, Lei Nº 14.133/2021 (Regra)",
+      "titulo": "Art. 3º, Lei nº 14.133/2021 (Regra)",
       "tipo": "rule",
       "pagina": 3,
       "resumo": "Não se subordinam ao regime desta Lei."
@@ -109,7 +94,7 @@
     },
     {
       "id": "item_11",
-      "titulo": "Art. 11, Lei Nº 14.133/2021 (Regra)",
+      "titulo": "Art. 11, Lei nº 14.133/2021 (Regra)",
       "tipo": "rule",
       "pagina": 1,
       "resumo": "O processo licitatório tem por objetivos."
@@ -151,7 +136,7 @@
     },
     {
       "id": "item_17",
-      "titulo": "Art. 5°, Lei Nº 14.133/2021 (Regra)",
+      "titulo": "Art. 5°, Lei nº 14.133/2021 (Regra)",
       "tipo": "rule",
       "pagina": 1,
       "resumo": "Na aplicação desta Lei, serão observados os princípios da legalidade, da impessoalidade, da moralidade, da publicidade, da eficiência, do interesse público, da probidade administrativa, da igualdade, do planejamento, da transparência, da eficácia, da segregação de funções, da motivação, da vinculação ao edital, do julgamento objetivo, da segurança jurídica, da razoabilidade, da competitividade, da proporcionalidade, da celeridade, da economicidade e do desenvolvimento nacional sustentável, assim como as disposições do Decreto-Lei nº 4.657, de 4 de setembro de 1942 (Lei de Introdução às Normas do Direito Brasileiro)."
@@ -165,7 +150,7 @@
     },
     {
       "id": "item_18",
-      "titulo": "Art. 72, Lei Nº 14.133/2021 (Regra)",
+      "titulo": "Art. 72, Lei nº 14.133/2021 (Regra)",
       "tipo": "rule",
       "pagina": 1,
       "resumo": "O processo de contratação direta, que compreende os casos de inexigibilidade e de dispensa de licitação, deverá ser instruído com os seguintes documentos."
@@ -228,7 +213,7 @@
     },
     {
       "id": "item_27",
-      "titulo": "Art. 73, Lei Nº 14.133/2021 (Regra)",
+      "titulo": "Art. 73, Lei nº 14.133/2021 (Regra)",
       "tipo": "rule",
       "pagina": 1,
       "resumo": "Na hipótese de contratação direta indevida ocorrida com dolo, fraude ou erro grosseiro, o contratado e o agente público responsável responderão solidariamente pelo dano causado ao erário, sem prejuízo de outras sanções legais cabíveis."
@@ -242,7 +227,7 @@
     },
     {
       "id": "item_28",
-      "titulo": "Art. 74, Lei Nº 14.133/2021 (Regra)",
+      "titulo": "Art. 74, Lei nº 14.133/2021 (Regra)",
       "tipo": "rule",
       "pagina": 8,
       "resumo": "É inexigível a licitação quando inviável a competição, em especial nos casos de."
@@ -256,9 +241,9 @@
     },
     {
       "id": "item_30",
-      "titulo": "Profissional Artístico Consagrado (Inciso II)",
+      "titulo": "Fornecedor Exclusivo (Inciso II)",
       "tipo": "rule",
-      "pagina": 9,
+      "pagina": 15,
       "resumo": "contratação de profissional do setor artístico, diretamente ou por meio de empresário exclusivo, desde que consagrado pela crítica especializada ou pela opinião pública."
     },
     {
@@ -305,7 +290,7 @@
     },
     {
       "id": "item_36",
-      "titulo": "Art. 75, Lei Nº 14.133/2021 (Regra)",
+      "titulo": "Art. 75, Lei nº 14.133/2021 (Regra)",
       "tipo": "rule",
       "pagina": 8,
       "resumo": "É dispensável a licitação."
@@ -382,7 +367,7 @@
     },
     {
       "id": "item_46",
-      "titulo": "Art. 6º, Lei Nº 14.133/2021 (Regra)",
+      "titulo": "Art. 6º, Lei nº 14.133/2021 (Regra)",
       "tipo": "rule",
       "pagina": 1,
       "resumo": "Para os fins desta Lei, consideram-se."
@@ -424,7 +409,7 @@
     },
     {
       "id": "item_52",
-      "titulo": "Art. 28, Lei Nº 14.133/2021 (Regra)",
+      "titulo": "Art. 28, Lei nº 14.133/2021 (Regra)",
       "tipo": "rule",
       "pagina": 1,
       "resumo": "São modalidades de licitação."
@@ -459,7 +444,7 @@
     },
     {
       "id": "item_56",
-      "titulo": "Art. 33, Lei Nº 14.133/2021 (Regra)",
+      "titulo": "Art. 33, Lei nº 14.133/2021 (Regra)",
       "tipo": "rule",
       "pagina": 22,
       "resumo": "O julgamento das propostas será realizado de acordo com os seguintes critérios."
@@ -515,7 +500,7 @@
     },
     {
       "id": "item_63",
-      "titulo": "Art. 17, Lei Nº 14.133/2021 (Regra)",
+      "titulo": "Art. 17, Lei nº 14.133/2021 (Regra)",
       "tipo": "rule",
       "pagina": 24,
       "resumo": "O processo de licitação observará as seguintes fases, em sequência."
@@ -578,14 +563,14 @@
     },
     {
       "id": "item_71",
-      "titulo": "Pegadinha: Princípio Aplicável",
+      "titulo": "Pegadinha: princípio",
       "tipo": "trap",
       "pagina": 8,
       "resumo": "garantir que o certame licitatório permita a igualdade de condições a todos os concorrentes, em atenção ao princípio."
     },
     {
       "id": "item_72",
-      "titulo": "Pegadinha: Modalidade com Critério de Julgamento",
+      "titulo": "Pegadinha: modalidade com critério de julgamento",
       "tipo": "trap",
       "pagina": 25,
       "resumo": "observação importante! não confunda modalidade com critério de julgamento."
@@ -918,75 +903,3 @@
     }
   ]
 }
-```
-
----
-
-## 1. Resumo Estruturado e Conceitos-Chave
-
-> 👨‍🏫 **FONTE DO CONHECIMENTO:** Apostila Teórica e Prática de Licitações (Lei nº 14.133/2021)  
-> **Professor/Autor:** Prof. Rodrigo Motta | **Material:** PDF Oficial (34 págs.) | **Banca Alvo:** Cebraspe / FGV / AOCP
-
-### 🧠 Mnemônicos & Técnicas de Memorização do Autor
-> 📌 **👨‍🏫 [MATERIAL DO AUTOR - Pág. 22]**  
-> **Mnemônico:** `PRE-CON-CON-LEI-DIA`  
-> - **O que memoriza:** As cinco modalidades de licitação vigentes na Nova Lei de Licitações.  
-> - **Como utilizar em prova:** Lembrar que **PRE**gão, **CON**corrência, **CON**curso, **LEI**lão e **DIÁ**logo competitivo são as únicas modalidades; Convite e Tomada de Preços foram extintas.
-
-### 💡 Dicas do Autor 👨‍🏫 [MATERIAL DO AUTOR]
-- **Orientação (Pág. 01):** Sempre verificar a natureza jurídica da entidade na questão. Se for sociedade de economia mista (ex: Petrobras, Banco do Brasil) ou empresa pública (ex: Caixa Econômica Federal), a resposta correta apontará a Lei nº 13.303/2016 e não a Lei 14.133/2021.
-- **Orientação (Pág. 08):** Inexigibilidade decorre de impossibilidade fática de competição (inviabilidade). Se houver viabilidade de disputa, mas o gestor não realizar licitação por autorização legal de economicidade ou emergência, a hipótese será de dispensa de licitação.
-- **Orientação (Pág. 25):** Jamais confunda modalidade de licitação (Pregão, Concorrência, Concurso, Leilão, Diálogo Competitivo) com critério de julgamento (Menor Preço, Maior Desconto, Melhor Técnica, Técnica e Preço, Maior Lance, Maior Retorno Econômico).
-
-### A. Fundamentos e Definições Essenciais 👨‍🏫 [MATERIAL DO PROFESSOR]
-- **Âmbito de Incidência (Art. 1º):** Subordinam-se à Lei 14.133/2021 os órgãos dos Poderes Executivo, Legislativo e Judiciário da União, dos Estados, do Distrito Federal e dos Municípios, incluídas as administrações direta, autárquica e fundacional, bem como os fundos especiais *(👨‍🏫 Pág. 01)*.
-- **Exclusão das Empresas Estatais (Art. 1º, § 1º):** Não são abrangidas por esta Lei as empresas públicas, as sociedades de economia mista e as suas subsidiárias, regidas pela Lei nº 13.303/2016, ressalvado o regramento dos crimes em licitações (Art. 178) *(👨‍🏫 Pág. 01)*.
-- **Princípios Expressos (Art. 5º):** Além dos princípios constitucionais do LIMPE, a Lei 14.133/2021 expressamente positivou: planejamento, transparência, eficácia, segregação de funções, motivação, vinculação ao edital, julgamento objetivo, segurança jurídica e razoabilidade *(👨‍🏫 Pág. 06)*.
-- **Objetivos da Licitação (Art. 11):** Assegurar a seleção da proposta mais vantajosa, inclusive considerando o ciclo de vida do objeto; tratamento isonômico e justa competição; evitar sobrepreço ou contratação com superfaturamento; incentivar a inovação e o desenvolvimento nacional sustentável *(👨‍🏫 Pág. 05)*.
-
-### B. Regras de Aplicação, Requisitos e Competências 👨‍🏫 [MATERIAL DO PROFESSOR]
-- **Inexigibilidade de Licitação (Art. 74):** Caracteriza-se pela inviabilidade de competição. O rol legal é meramente exemplificativo (fornecedor exclusivo, profissional de notória especialização para serviços intelectuais singulares, contratação de artista consagrado) *(👨‍🏫 Pág. 08)*.
-- **Licitação Dispensável (Art. 75):** A competição é juridicamente viável, mas a lei confere ao gestor discricionariedade mitigada para não licitar. O rol legal é taxativo (baixo valor até R$ 100 mil para obras/serviços de engenharia e R$ 50 mil para compras em valores originais, emergência ou calamidade pública, licitação deserta ou fracassada) *(👨‍🏫 Pág. 09)*.
-- **Diálogo Competitivo (Art. 32):** Modalidade inovadora voltada a objetos complexos e soluções técnicas sob medida. Conduzida por comissão composta por pelo menos 3 servidores efetivos ou empregados públicos dos quadros permanentes *(👨‍🏫 Pág. 24)*.
-- **Ordem Sequencial das Fases (Art. 17):** 1. Preparatória -> 2. Divulgação do edital -> 3. Apresentação de propostas e lances -> 4. Julgamento -> 5. Habilitação -> 6. Recursal -> 7. Homologação. A regra geral do novo diploma é que o julgamento antecede a habilitação *(👨‍🏫 Pág. 34)*.
-
-### ⚠️ Alertas & Pegadinhas do Autor 👨‍🏫 [MATERIAL DO AUTOR]
-- **Ponto Crítico (Pág. 02):** A assertiva que afirmar que Caixa Econômica Federal ou Banco do Brasil licitam pela Lei nº 14.133/2021 está ERRADA! Estatais possuem regime próprio regido pela Lei nº 13.303/2016.
-- **Ponto Crítico (Pág. 15):** Cuidado com afirmações de banca declarando que o rol do Art. 74 (inexigibilidade) é taxativo. O rol é EXEMPLIFICATIVO. Quem tem rol taxativo é a dispensa (Art. 75).
-- **Ponto Crítico (Pág. 34):** A inversão de fases (habilitação antes do julgamento) não foi banida, mas tornou-se EXCEÇÃO expressa, dependendo de ato motivado e previsão explícita no edital.
-
-### C. Quadro Esquemático de Retenção Rápida
-
-*Síntese estruturada pela IA a partir do conteúdo da fonte.*
-
-| Instituto Jurídico | Regra Geral da Lei 14.133/2021 | Ponto Crítico de Banca (Cebraspe / FGV / AOCP) |
-| :--- | :--- | :--- |
-| **Empresas Estatais (EP e SEM)** | Excluídas do regime geral (Art. 1º, § 1º) | Subordinam-se à Lei 13.303/2016; não caia na pegadinha da CEF/Petrobras |
-| **Inexigibilidade (Art. 74)** | Inviabilidade de competição (rol exemplificativo) | A banca afirma ser rol fechado/taxativo para induzir ao erro |
-| **Dispensa de Licitação (Art. 75)** | Viabilidade de competição autorizada por lei | Rol estritamente taxativo; veda interpretação extensiva |
-| **Modalidades Vigentes (Art. 28)** | Pregão, Concorrência, Concurso, Leilão, Diálogo | Tomada de Preços e Convite foram totalmente revogadas |
-| **Rito Procedimental (Art. 17)** | Julgamento antecede a Habilitação | A inversão de fases é excepcional e exige justificativa formal |
-
----
-
-## 2. Raio-X de Banca & Pegadinhas
-
-### PARTE 1: Pegadinhas e Alertas do Autor 👨‍🏫 [MATERIAL DO AUTOR]
-
-#### Pegadinha 1: Submissão de Empresas Estatais à Nova Lei de Licitações
-1. **O conhecimento correto:** O Art. 1º, § 1º exclui as empresas públicas, sociedades de economia mista e subsidiárias do regime da Lei 14.133/2021, aplicando-se-lhes a Lei nº 13.303/2016.
-2. **O erro ou confusão provável:** O candidato supõe que por integrarem a Administração Indireta, Petrobras e CEF contratam pela Lei 14.133.
-3. **Como uma questão explora a confusão:** "A CEF, por ser empresa pública federal, submete suas compras às regras gerais da Lei nº 14.133/2021." (Item Errado).
-4. **Como evitar o erro:** Mnemônico mental: "Estatais = Lei 13.303/2016. Adm Direta, Autarquias e Fundações = Lei 14.133/2021."
-
-#### Pegadinha 2: Natureza dos Róis de Inexigibilidade versus Dispensa
-1. **O conhecimento correto:** Inexigibilidade decorre de inviabilidade fática de competição (rol meramente exemplificativo do Art. 74). Dispensa envolve viabilidade de disputa autorizada por lei (rol taxativo do Art. 75).
-2. **Como a banca explora:** A FGV afirma que somente cabe inexigibilidade nas hipóteses taxativamente descritas no art. 74.
-3. **Como evitar o erro:** Se for inviável competir, sempre caberá inexigibilidade, ainda que não conste dos incisos do art. 74.
-
-### PARTE 2: Análise Complementar de Banca da IA 🤖 [INSIGHT PEDAGÓGICO COMPLEMENTAR]
-
-#### Ponto Crítico 1: Fases da Licitação e Inversão Excepcional
-1. **O conhecimento correto:** Na Lei 14.133/2021, a regra geral é o Julgamento acontecer ANTES da Habilitação (Art. 17). A inversão de fases é excepcional e exige ato motivado explicitando a vantagem pública.
-2. **Como a banca explora:** As bancas cobram a ordem invertida clássica da Lei 8.666/93 como se fosse a regra atual.
-3. **Como gabaritar:** Memorize: Nova Lei = Primeiro julga quem vence o preço/proposta, depois apenas o vencedor é habilitado documentalmente!

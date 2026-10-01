@@ -2802,6 +2802,134 @@
     white-space: normal;
     margin-top: 6px;
   }
+  /* Mind Map Pills (Estilo NotebookLM Universal) */
+  .mm-node {
+    position: absolute;
+    border-radius: 24px;
+    padding: 8px 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    white-space: nowrap;
+    border-width: 1.5px;
+    border-style: solid;
+    user-select: none;
+    z-index: 10;
+  }
+  .mm-node:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    z-index: 30;
+  }
+  .mm-node.selected {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4), 0 10px 30px rgba(0, 0, 0, 0.7);
+    z-index: 35;
+  }
+  .mm-node.dimmed {
+    opacity: 0.2;
+    filter: grayscale(80%);
+  }
+  .mm-node.matched {
+    animation: nlmPulseMatch 1.5s infinite alternate;
+    z-index: 25;
+  }
+  @keyframes nlmPulseMatch {
+    from { transform: scale(1); box-shadow: 0 0 8px rgba(56, 189, 248, 0.5); }
+    to { transform: scale(1.06); box-shadow: 0 0 20px rgba(56, 189, 248, 0.9); }
+  }
+  .mm-node.type-root {
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+    border-color: #60a5fa;
+    color: #ffffff;
+    font-size: 14.5px;
+    font-weight: 700;
+    padding: 11px 22px;
+    border-radius: 30px;
+    box-shadow: 0 0 26px rgba(37, 99, 235, 0.45);
+  }
+  .mm-node.type-category {
+    background: linear-gradient(135deg, #064e3b 0%, #047857 100%);
+    border-color: #34d399;
+    color: #ecfdf5;
+    font-size: 13.5px;
+    padding: 9px 18px;
+  }
+  .mm-node.type-concept {
+    background: #1f2937;
+    border-color: #4b5563;
+    color: #f3f4f6;
+  }
+  .mm-node.type-rule {
+    background: rgba(245, 158, 11, 0.15);
+    border-color: #f59e0b;
+    color: #fef3c7;
+  }
+  .mm-node.type-trap {
+    background: rgba(239, 68, 68, 0.18);
+    border-color: #ef4444;
+    color: #fee2e2;
+  }
+  .mm-node.type-comparison {
+    background: rgba(139, 92, 246, 0.18);
+    border-color: #8b5cf6;
+    color: #ede9fe;
+  }
+  .mm-node.type-mnemonic {
+    background: rgba(168, 85, 247, 0.2);
+    border-color: #a855f7;
+    color: #f3e8ff;
+  }
+  .mm-node.type-definition {
+    background: rgba(6, 182, 212, 0.18);
+    border-color: #06b6d4;
+    color: #cffafe;
+  }
+  .mm-node.type-exception {
+    background: rgba(239, 68, 68, 0.18);
+    border-color: #ef4444;
+    color: #fee2e2;
+  }
+  .mm-node.type-example {
+    background: rgba(234, 179, 8, 0.18);
+    border-color: #eab308;
+    color: #fef9c3;
+  }
+  .node-icon {
+    font-size: 14px;
+  }
+  .page-tag {
+    background: rgba(0, 0, 0, 0.35);
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 700;
+  }
+  .node-toggle {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    margin-left: 4px;
+    transition: background 0.15s;
+  }
+  .node-toggle:hover {
+    background: rgba(255, 255, 255, 0.35);
+  }
+
   /* Minimap */
   .nlm-minimap {
     position: absolute;
@@ -8430,322 +8558,561 @@
     return '';
   }
 
-  window.generateUniversalMindmapFromText = function(discipline, subarea, title, contextText, focus) {
-    const cleanTitle = (focus || title || (subarea || 'Novo Tópico').replace(/_/g, ' ')).trim();
-    const normTopic = `${discipline || ''} ${subarea || ''} ${cleanTitle}`.toLowerCase().replace(/-/g, '_');
+  function toTitleCase(text) {
+    if (!text) return text;
+    const minorWords = new Set(["de", "da", "do", "das", "dos", "e", "em", "por", "com", "na", "no", "à", "ao", "a", "o", "os", "as", "vs", "entre", "sobre", "sob"]);
+    const acronyms = new Set(["CF", "STF", "STJ", "PCD", "ME", "EPP", "EIRELI", "CLT", "DF", "OAB", "PF", "PRF", "TCU", "TI", "TIC", "CP", "CPP", "CC"]);
+    const words = text.split(/\s+/);
+    return words.map((w, i) => {
+      const wClean = w.replace(/[^\w\u00C0-\u017F]/g, '');
+      const wLower = wClean.toLowerCase();
+      if (acronyms.has(wClean.toUpperCase())) return w.replace(wClean, wClean.toUpperCase());
+      if (minorWords.has(wLower) && i > 0) return w.replace(wClean, wLower);
+      return w.replace(wClean, wClean.charAt(0).toUpperCase() + wClean.slice(1).toLowerCase());
+    }).join(' ');
+  }
 
-    const rawPages = (contextText || '').split(/---\s*P[ÁA]GINA\s*(\d+)\s*---/i);
+  function compressLabel(concept, essence = "", maxWords = 6) {
+    const c = (concept || "").trim();
+    const e = (essence || "").trim();
+    if (!e || c.includes('(')) return c;
+    let label = `${c} (${e})`;
+    const words = label.split(/\s+/);
+    if (words.length > maxWords) {
+      const cWords = c.split(/\s+/);
+      const avail = Math.max(1, maxWords - cWords.length);
+      const eShort = e.split(/\s+/).slice(0, avail).join(' ').replace(/[,;:.\-–—\s]+$/, '');
+      label = `${c} (${eShort})`;
+    }
+    return label;
+  }
+
+  function cleanSummaryText(text) {
+    let t = (text || "").trim();
+    t = t.replace(/\s+/g, ' ');
+    t = t.replace(/^[•\-\*►▪▸✓✔\uf0d8\uf0fc\+>\s]+/, '');
+    t = t.replace(/\*\*/g, '').trim();
+    t = t.replace(/[,;:\-–—\s]+$/, '');
+    if (t && !/[.!?")\]]$/.test(t)) t += '.';
+    return t;
+  }
+
+  function makeDidacticPegadinhaTitle(phrase, maxWords = 6) {
+    let p = phrase.replace(/^[!:\s,;.\-–—]+/, '').trim();
+    p = p.replace(/^(?:ao|à|a|o|os|as|do|da|dos|das|de|em|na|no|com|por|que|sobre|para)\s+/i, '').trim();
+    const words = p.split(/\s+/).filter(Boolean);
+    if (!words.length) return "Pegadinha de Prova";
+    if (words.length === 1 && ["princípio", "principio", "regra", "exceção", "prazo", "limite"].includes(words[0].toLowerCase())) {
+      words.push("Aplicável");
+    }
+    const chosen = words.slice(0, maxWords);
+    const titleStr = chosen.join(' ').replace(/[,;:\-–—.]+$/, '');
+    return `Pegadinha: ${toTitleCase(titleStr)}`;
+  }
+
+  function extractDidacticTitleFromClause(marker, text) {
+    const t = text.trim().replace(/[;.,]+$/, '');
+    const tLow = t.toLowerCase();
+
+    // 1. Fases
+    if (tLow.includes("preparatória") || tLow.includes("planejamento")) return `Fase 1: Preparatória (${marker})`;
+    if (tLow.includes("divulgação do edital")) return `Fase 2: Divulgação do Edital (${marker})`;
+    if (tLow.includes("apresentação de propostas")) return `Fase 3: Apresentação de Propostas (${marker})`;
+    if (tLow.includes("julgamento") && t.length < 70) return `Fase 4: Julgamento das Propostas (${marker})`;
+    if (tLow.includes("habilitação") && t.length < 70) return `Fase 5: Habilitação (${marker})`;
+    if (tLow.includes("recursal") && t.length < 70) return `Fase 6: Fase Recursal (${marker})`;
+    if (tLow.includes("homologação")) return `Fase 7: Homologação (${marker})`;
+
+    // 2. Critérios
+    if (tLow.includes("menor preço")) return `Critério: Menor Preço (${marker})`;
+    if (tLow.includes("maior desconto")) return `Critério: Maior Desconto (${marker})`;
+    if (tLow.includes("melhor técnica") || tLow.includes("conteúdo artístico")) return `Critério: Melhor Técnica (${marker})`;
+    if (tLow.includes("técnica e preço")) return `Critério: Técnica e Preço (${marker})`;
+    if (tLow.includes("maior lance")) return `Critério: Maior Lance (${marker})`;
+    if (tLow.includes("maior retorno")) return `Critério: Maior Retorno (${marker})`;
+
+    // 3. Modalidades
+    if (tLow.includes("diálogo competitivo")) return `Modalidade: Diálogo Competitivo (${marker})`;
+    if (tLow.includes("concorrência") && t.length < 120) return `Modalidade: Concorrência (${marker})`;
+    if (tLow.includes("concurso") && t.length < 120) return `Modalidade: Concurso (${marker})`;
+    if (tLow.includes("leilão") && t.length < 120) return `Modalidade: Leilão (${marker})`;
+    if (tLow.includes("pregão") && t.length < 120) return `Modalidade: Pregão (${marker})`;
+
+    // 4. Inexigibilidade e Dispensa
+    if (tLow.includes("artístico") || tLow.includes("artista") || tLow.includes("setor artístico")) return `Profissional Artístico Consagrado (${marker})`;
+    if (tLow.includes("fornecedor") || tLow.includes("exclusivo") || tLow.includes("produtor")) return `Fornecedor Exclusivo (${marker})`;
+    if (tLow.includes("notória especialização") || tLow.includes("técnico-profissionais")) return `Serviços Técnicos Especializados (${marker})`;
+    if (tLow.includes("credenciamento")) return `Credenciamento de Objetos (${marker})`;
+    if (tLow.includes("emergência") || tLow.includes("calamidade")) return `Emergência ou Calamidade (${marker})`;
+    if (tLow.includes("pesquisa") && (tLow.includes("ensino") || tLow.includes("instituição") || tLow.includes("desenvolvimento"))) return `Instituição de Pesquisa e Ensino (${marker})`;
+    if (tLow.includes("transferência de tecnologia")) return `Transferência de Tecnologia (${marker})`;
+    if (tLow.includes("deficiência") || tLow.includes("pcd")) return `Associação de PCD (${marker})`;
+    if (tLow.includes("catadores") || tLow.includes("recicláveis")) return `Associação de Catadores (${marker})`;
+    if (tLow.includes("deserta") || tLow.includes("fracassada") || tLow.includes("não surgiram licitantes")) return `Licitação Deserta ou Fracassada (${marker})`;
+    if (tLow.includes("diários oficiais") || tLow.includes("imprensa")) return `Impressão de Diários Oficiais (${marker})`;
+    if (tLow.includes("valores inferiores") || tLow.includes("valor inferior") || tLow.includes("baixo valor")) {
+      if (tLow.includes("obras") || tLow.includes("engenharia")) return `Dispensa por Baixo Valor: Obras (${marker})`;
+      return `Dispensa por Baixo Valor: Compras (${marker})`;
+    }
+    if (tLow.includes("imóvel") || tLow.includes("locação")) return `Locação ou Compra de Imóvel (${marker})`;
+
+    const cleaned = t.replace(
+      /^(?:nos casos de|na contratação de|na hipótese de|para a contratação de|para a aquisição de|para aquisição de|para a|para o|para|em caso de|aquisição de|prestação de|quando houver|quando|que tenha por objeto|destinado a|no caso de|de|a)\s+/i,
+      ''
+    );
+    const parts = cleaned.split(/[,;:\(\).]/);
+    const firstPart = parts[0].trim();
+    const words = firstPart.split(/\s+/).slice(0, 5);
+    const title = words.map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+    return `${title || "Regra Específica"} (${marker})`;
+  }
+
+  window.generateUniversalMindmapFromText = function(discipline, subarea, title, contextText, focus) {
+    let baseName = (focus || title || (subarea || 'Tópico').replace(/_/g, ' ')).trim();
+    const cleanRootTitle = toTitleCase(baseName);
+    const cleanCorpus = (contextText || '').replace(/(\w+)\s*[-–—]\s*\n\s*(\w+)/g, '$1$2');
+
+    const rawPages = cleanCorpus.split(/---\s*P[ÁA]GINA\s*(\d+)\s*---/i);
     const pageMap = {};
     if (rawPages.length > 1) {
-      for (let i = 1; i < rawPages.length; i += 2) {
-        const pnum = parseInt(rawPages[i], 10);
-        const ptxt = rawPages[i + 1] || '';
-        pageMap[pnum] = ptxt;
+      for (let idx = 1; idx < rawPages.length; idx += 2) {
+        const pnum = parseInt(rawPages[idx], 10);
+        pageMap[pnum] = (rawPages[idx + 1] || "").toLowerCase();
       }
     } else {
-      pageMap[1] = contextText || '';
+      pageMap[1] = cleanCorpus.toLowerCase();
     }
 
-    const pageKeys = Object.keys(pageMap).map(Number).sort((a, b) => a - b);
-    const totalP = pageKeys.length ? pageKeys[pageKeys.length - 1] : 1;
-
-    // 1. Descoberta de Cabeçalhos e Macro-Eixos Estruturantes
-    const headings = [];
-    const seenHeadings = new Set();
-    const discNorm = (discipline || '').toLowerCase().replace(/_/g, ' ');
-    const titleNorm = cleanTitle.toLowerCase();
-
-    for (const pnum of pageKeys) {
-      const ptxt = pageMap[pnum];
-      const lines = ptxt.split('\n');
-      for (const l of lines) {
-        const lStr = l.trim();
-        if (!lStr || lStr.length < 4) continue;
-        if (/rodrigo\s+motta|kaverna|p[áa]gina|youtube|instagram|gabarito|sum[áa]rio|[ií]ndice|www\./i.test(lStr)) continue;
-
-        const m_md = lStr.match(/^#{1,3}\s+(.+)$/);
-        const m_num = lStr.match(/^(?:[0-9]{1,2}\.|\b[IVXLCDM]+\s*[-–.]|\bArt\.\s*\d+[º\w\s-]*)\s+([A-Za-z\u00C0-\u017F\s\(\)/,:-]{4,60})/);
-        const isUpper = (lStr === lStr.toUpperCase() && lStr.length >= 5 && lStr.length <= 55 && !lStr.startsWith('(') && !lStr.endsWith(')'));
-
-        let cand = "";
-        if (m_md) cand = m_md[1];
-        else if (m_num) cand = m_num[1];
-        else if (isUpper) cand = lStr;
-
-        if (cand) {
-          const cleanCand = cand.replace(/^[0-9.\-–*#\s]+/, '').replace(/\*\*/g, '').trim();
-          const norm = cleanCand.toLowerCase();
-          if (cleanCand.length >= 4 && cleanCand.length <= 50 && !seenHeadings.has(norm)) {
-            if (norm !== discNorm && norm !== titleNorm && !/vis[ãa]o\s+geral|mapa\s+mental|mini-simulado|exerc[ií]cios|resumo\s+estruturado|raio-x|flashcards|pilar/i.test(norm)) {
-              seenHeadings.add(norm);
-              headings.push({ title: cleanCand, page: pnum });
-            }
-          }
+    function findPageForTerm(termStr, defaultPage = 1) {
+      const tClean = (termStr || "").toLowerCase().trim();
+      const tWords = (tClean.match(/\b[a-zà-ÿ]{4,}\b/g) || []).filter(w =>
+        !["para", "com", "como", "sobre", "pela", "pelo", "pegadinha", "uma", "entre", "são", "regra", "prova", "inciso", "artigo", "fase", "item"].includes(w)
+      );
+      if (!tWords.length) return defaultPage;
+      let bestPage = defaultPage;
+      let maxMatches = 0;
+      for (const pnum of Object.keys(pageMap).map(Number).sort((a,b)=>a-b)) {
+        const ptxt = pageMap[pnum];
+        let matches = 0;
+        for (const w of tWords) {
+          if (ptxt.includes(w)) matches++;
+        }
+        if (matches > maxMatches) {
+          maxMatches = matches;
+          bestPage = pnum;
         }
       }
+      return bestPage;
     }
 
-    // 2. Formação Dinâmica de 5 a 8 Macro-Categorias (Nível 1)
-    const macroCategories = [];
-    if (headings.length >= 5) {
-      const targetCount = Math.min(8, Math.max(5, headings.length));
-      const step = headings.length / targetCount;
-      for (let i = 0; i < targetCount; i++) {
-        const idx = Math.floor(i * step);
-        const sh = headings[idx];
-        const catTitle = `${i + 1}. ${sh.title.slice(0, 38)}`;
-        macroCategories.push({
-          id: `cat_${i + 1}`,
-          titulo: catTitle,
-          pagina: sh.page,
-          resumo: `Eixo estruturante sobre ${sh.title.toLowerCase()} com regras essenciais e diretrizes de prova.`
-        });
-      }
-    } else {
-      let blueprints = [];
-      if (/const/i.test(normTopic)) {
-        blueprints = [
-          ["1. Fundamentos e Princípios", 1, "Bases axiológicas, forma de Estado e princípios fundamentais."],
-          ["2. Hermenêutica e Eficácia", Math.max(1, Math.floor(totalP * 0.15)), "Métodos de interpretação e aplicabilidade das normas."],
-          ["3. Direitos e Garantias Individuais", Math.max(1, Math.floor(totalP * 0.3)), "Núcleo protetivo dos direitos individuais e remédios constitucionais."],
-          ["4. Organização do Estado", Math.max(1, Math.floor(totalP * 0.45)), "Repartição de competências e autonomia dos entes federados."],
-          ["5. Organização dos Poderes", Math.max(1, Math.floor(totalP * 0.6)), "Funções típicas e atípicas dos Poderes da República."],
-          ["6. Processo Legislativo e Controle", Math.max(1, Math.floor(totalP * 0.75)), "Espécies normativas, processo legislativo e controle de constitucionalidade."],
-          ["7. Pegadinhas e Regras de Banca", Math.max(1, Math.floor(totalP * 0.9)), "Inversões clássicas de prova, termos absolutos e armadilhas da banca."]
-        ];
-      } else if (/adm|licita/i.test(normTopic)) {
-        blueprints = [
-          ["1. Conceitos e Regime Jurídico", 1, "Princípios expressos e implícitos da Administração Pública."],
-          ["2. Poderes e Prerrogativas", Math.max(1, Math.floor(totalP * 0.18)), "Poder de polícia, poder disciplinar e hierárquico."],
-          ["3. Atos Administrativos e Requisitos", Math.max(1, Math.floor(totalP * 0.35)), "Competência, finalidade, forma, motivo e objeto."],
-          ["4. Licitações e Contratos", Math.max(1, Math.floor(totalP * 0.52)), "Modalidades licitatórias, julgamento e contratação direta."],
-          ["5. Agentes e Responsabilidade Civil", Math.max(1, Math.floor(totalP * 0.7)), "Regime jurídico funcional, responsabilidade civil e improbidade."],
-          ["6. Extinção, Anulação e Convalidação", Math.max(1, Math.floor(totalP * 0.85)), "Revogação (mérito) versus anulação (ilegalidade) e efeitos."],
-          ["7. Pegadinhas e Casos Críticos de Prova", Math.max(1, Math.floor(totalP * 0.95)), "Armadilhas frequentes de bancas examinadoras."]
-        ];
-      } else if (/penal/i.test(normTopic)) {
-        blueprints = [
-          ["1. Princípios e Teoria da Norma", 1, "Legalidade, anterioridade e aplicação da lei penal no tempo e espaço."],
-          ["2. Fato Típico e Conduta", Math.max(1, Math.floor(totalP * 0.18)), "Conduta, resultado, nexo de causalidade e tipicidade penal."],
-          ["3. Dolo, Culpa e Omissão", Math.max(1, Math.floor(totalP * 0.35)), "Espécies de dolo, modalidades de culpa e relevância da omissão."],
-          ["4. Ilicitude e Causas Excludentes", Math.max(1, Math.floor(totalP * 0.52)), "Legítima defesa, estado de necessidade e estrito cumprimento."],
-          ["5. Culpabilidade e Imputabilidade", Math.max(1, Math.floor(totalP * 0.7)), "Imputabilidade, potencial consciência e exigibilidade de conduta diversa."],
-          ["6. Concurso de Crimes e Penas", Math.max(1, Math.floor(totalP * 0.85)), "Concurso material, formal, crime continuado e fixação de penas."],
-          ["7. Pegadinhas e Regras de Banca", Math.max(1, Math.floor(totalP * 0.95)), "Inversões e diferenças conceituais cobradas em provas."]
-        ];
-      } else if (/info|excel|rede|dados/i.test(normTopic)) {
-        blueprints = [
-          ["1. Fundamentos e Arquitetura", 1, "Conceitos estruturais, hardware, software e definições operacionais."],
-          ["2. Funções e Comandos Centrais", Math.max(1, Math.floor(totalP * 0.2)), "Sintaxes, funções operacionais e parâmetros essenciais."],
-          ["3. Protocolos, Padrões e Portas", Math.max(1, Math.floor(totalP * 0.4)), "Modelos OSI/TCP, portas oficiais e regras de rede."],
-          ["4. Segurança da Informação e Ameaças", Math.max(1, Math.floor(totalP * 0.6)), "Malwares, criptografia, autenticação e certificados digitais."],
-          ["5. Procedimentos Operacionais e Atalhos", Math.max(1, Math.floor(totalP * 0.8)), "Práticas recomendadas, sequências operacionais e teclas de atalho."],
-          ["6. Pegadinhas e Armadilhas de Banca", Math.max(1, Math.floor(totalP * 0.95)), "Erros de digitação de fórmula, termos absolutos e armadilhas."]
-        ];
-      } else {
-        blueprints = [
-          ["1. Fundamentos e Visão Geral", 1, `Conceitos primários e definições de ${cleanTitle}.`],
-          ["2. Estrutura e Classificações", Math.max(1, Math.floor(totalP * 0.2)), "Divisões taxonômicas e espécies doutrinárias."],
-          ["3. Regime de Regras e Aplicações", Math.max(1, Math.floor(totalP * 0.4)), "Critérios práticos e parâmetros normativos."],
-          ["4. Prerrogativas e Obrigações", Math.max(1, Math.floor(totalP * 0.6)), "Deveres, requisitos formais e procedimentos operacionais."],
-          ["5. Exceções e Vedações Legais", Math.max(1, Math.floor(totalP * 0.8)), "Hipóteses restritivas e ressalvas legais."],
-          ["6. Raio-X de Pegadinhas da Banca", Math.max(1, Math.floor(totalP * 0.95)), "Armadilhas conceituais e inversões de prova."]
-        ];
-      }
+    const QUESTION_HEADER_REGEX = /(?:J[ÁA]\s+CAIU\s+EM\s+PROVA|\(\s*[A-Z0-9\s/–-]{3,60}\s*\/\s*(?:20\d\d|[A-Z\s]{3,30})\s*\/\s*(?:20\d\d|[A-Z\s]{3,30})\s*\)|^\s*\d{1,3}\s*[\.\)]\s*\([A-Z]|^\s*\d{2}\s+(?:O\b|A\b|Em\b|No\b|Na\b|De\b|Com\b|Segundo\b|Acerca\b|Julgue\b|Assinale\b|Ocorre\b|Considerando\b))/i;
+    const OPTION_REGEX = /^\s*(?:\(?[A-Ea-e]\)[\s\w,–-]|(?:[A-E]\s+[A-Za-z\u00C0-\u017F]))/;
+    const ANSWER_REGEX = /^\s*(?:GABARITO|RESPOSTA|COMENT[ÁA]RIO)\b/i;
 
-      blueprints.forEach(([titleB, pageB, descB], idx) => {
-        macroCategories.push({
-          id: `cat_${idx + 1}`,
-          titulo: titleB,
-          pagina: Math.min(pageB, totalP),
-          resumo: descB
-        });
-      });
-    }
-
-    // 3. Montar Nó Raiz e Categorias Oficiais
-    const nodes = [{
-      id: "root",
-      titulo: cleanTitle.slice(0, 45),
-      tipo: "root",
-      pagina: 1,
-      resumo: `Estrutura esquematizada das unidades essenciais de ${cleanTitle} para retenção rápida em concursos.`
-    }];
-    const edges = [];
-
-    for (const c of macroCategories) {
-      nodes.push({ id: c.id, titulo: c.titulo, tipo: "category", pagina: c.pagina, resumo: c.resumo });
-      edges.push({ source: "root", target: c.id });
-    }
-
-    // 4. Extração de Conceitos, Definições, Regras, Exceções, Mnemônicos e Pegadinhas
-    const foundItems = [];
-    const seenItems = new Set();
-
-    const knownMnemonics = [
-      [/\bSO[\s\-]CI[\s\-]DI[\s\-]VA[\s\-]PLU\b/i, 'Fundamentos (SO-CI-DI-VA-PLU)', 'Soberania, Cidadania, Dignidade, Valores sociais, Pluralismo.'],
-      [/\bCON[\s\-]GA[\s\-]ERRA[\s\-]PRO\b/i, 'Objetivos (CON-GA-ERRA-PRO)', 'Construir sociedade, Garantir desenv., Erradicar pobreza, Promover bem.'],
-      [/\bCO[\s\-]FI[\s\-]FO[\s\-]MO[\s\-]OB\b/i, 'Requisitos do Ato (COFIFOMOB)', 'Competência, Finalidade, Forma, Motivo e Objeto.'],
-      [/\bPA[\s\-]TI\b/i, 'Atributos do Ato (PATI)', 'Presunção de legitimidade, Autoexecutoriedade, Tipicidade, Imperatividade.'],
-      [/\bLIMPE\b/i, 'Princípios Expressos (LIMPE)', 'Legalidade, Impessoalidade, Moralidade, Publicidade, Eficiência.'],
-      [/\bRAÇÃO\b/i, 'Imprescritíveis (RAÇÃO)', 'Racismo e Ação de grupos armados são imprescritíveis.'],
-      [/\b3T\+H\b/i, 'Inafiançáveis (3T+H)', 'Tortura, Tráfico, Terrorismo e Hediondos.'],
-      [/\bPRE[\s\-]CON[\s\-]CON[\s\-]LEI[\s\-]DIA\b/i, 'Modalidades (PRE-CON-CON-LEI-DIA)', 'Pregão, Concorrência, Concurso, Leilão e Diálogo Competitivo.']
+    const NON_HEADING_TERMS = [
+      "cebraspe", "fgv", "fcc", "vunesp", "ibfc", "aocp", "quadrix",
+      "gabarito", "comentário", "comentario", "questão", "questao",
+      "certo", "errado", "assinale", "julgue", "item",
+      "exercício", "exercicio", "exercícios", "exercicios"
     ];
 
-    for (const pnum of pageKeys) {
-      const ptxt = pageMap[pnum];
+    function isTrueTheoreticalHeading(s) {
+      const sStrip = s.trim();
+      if (sStrip.length < 5 || sStrip.length > 75) return false;
+      if (/[;,:.]$/.test(sStrip)) return false;
+      if (/^\(?[A-Ea-e]\)/.test(sStrip)) return false;
+      if (NON_HEADING_TERMS.some(t => sStrip.toLowerCase().includes(t))) return false;
+      if (/^[IVXLCDM]+\s*[-–—.]?\s*$/.test(sStrip)) return false;
+      if (sStrip.toUpperCase().includes("(VETADO)")) return false;
+      if (/^[IVXLCDM]+\s*[-–—.]\s*(?:apenas|somente|estão|está|são)/i.test(sStrip)) return false;
 
-      for (const [pat, mTitle, mDesc] of knownMnemonics) {
-        if (pat.test(ptxt) && !seenItems.has(mTitle.toLowerCase())) {
-          seenItems.add(mTitle.toLowerCase());
-          foundItems.push({
-            titulo: mTitle,
-            tipo: "mnemonic",
-            pagina: pnum,
-            resumo: mDesc
-          });
-        }
+      const alpha = (sStrip.match(/[a-zA-Z\u00C0-\u017F]/g) || []);
+      if (alpha.length < 4) return false;
+      const upperCount = alpha.filter(c => c === c.toUpperCase() && c !== c.toLowerCase()).length;
+      if (upperCount / alpha.length >= 0.75) {
+        const words = (sStrip.match(/\b[A-Za-z\u00C0-\u017F]+\b/g) || []).filter(w => w.length >= 3);
+        if (words.length >= 1) return true;
       }
-
-      const lines = ptxt.split('\n');
-      for (const l of lines) {
-        const lStr = l.trim();
-        if (!lStr || lStr.length < 6) continue;
-        if (/rodrigo\s+motta|kaverna|p[áa]gina|youtube|instagram|www\./i.test(lStr)) continue;
-
-        const m_trap = lStr.match(/(?:pegadinha|cuidado|atenção|armadilha|não confundir|inversão)[\s:–-]+([^\.\n]{5,55})/i);
-        const m_exc = lStr.match(/(?:exceção|ressalva|salvo|exceto|vedado)[\s:–-]+([^\.\n]{5,55})/i);
-        const m_rule = lStr.match(/(?:regra geral|requisito|dever|prazo|obrigatoriamente)[\s:–-]+([^\.\n]{5,55})/i);
-        const m_comp = lStr.match(/([A-Za-z\u00C0-\u017F\s]{3,20})\s+(?:versus|x|não se confunde com)\s+([A-Za-z\u00C0-\u017F\s]{3,20})/i);
-        const m_def = lStr.match(/\*\*([A-Za-z\u00C0-\u017F\s]{3,35})\*\*[:–-]\s*(.{10,90})/);
-
-        if (m_trap) {
-          const tTitle = `Pegadinha: ${m_trap[1].trim().slice(0, 30)}`;
-          if (!seenItems.has(tTitle.toLowerCase())) {
-            seenItems.add(tTitle.toLowerCase());
-            foundItems.push({
-              titulo: tTitle.slice(0, 45),
-              tipo: "trap",
-              pagina: pnum,
-              resumo: `Ponto de alerta crítico para evitar pegadinha de banca examinadora.`
-            });
-          }
-        } else if (m_exc) {
-          const tTitle = `Exceção: ${m_exc[1].trim().slice(0, 32)}`;
-          if (!seenItems.has(tTitle.toLowerCase())) {
-            seenItems.add(tTitle.toLowerCase());
-            foundItems.push({
-              titulo: tTitle.slice(0, 45),
-              tipo: "exception",
-              pagina: pnum,
-              resumo: `Hipótese restritiva ou excepcional prevista expressamente no conteúdo.`
-            });
-          }
-        } else if (m_comp) {
-          const term1 = m_comp[1].trim();
-          const term2 = m_comp[2].trim();
-          const tTitle = `${term1} × ${term2}`;
-          if (!seenItems.has(tTitle.toLowerCase())) {
-            seenItems.add(tTitle.toLowerCase());
-            foundItems.push({
-              titulo: tTitle.slice(0, 45),
-              tipo: "comparison",
-              pagina: pnum,
-              resumo: `Distinção conceitual entre ${term1} e ${term2} frequentemente explorada em provas.`
-            });
-          }
-        } else if (m_def) {
-          const term = m_def[1].trim();
-          const expl = m_def[2].trim();
-          if (!seenItems.has(term.toLowerCase())) {
-            seenItems.add(term.toLowerCase());
-            foundItems.push({
-              titulo: term.slice(0, 45),
-              tipo: "definition",
-              pagina: pnum,
-              resumo: expl.slice(0, 120)
-            });
-          }
-        } else if (m_rule) {
-          const tTitle = `Regra: ${m_rule[1].trim().slice(0, 32)}`;
-          if (!seenItems.has(tTitle.toLowerCase())) {
-            seenItems.add(tTitle.toLowerCase());
-            foundItems.push({
-              titulo: tTitle.slice(0, 45),
-              tipo: "rule",
-              pagina: pnum,
-              resumo: `Requisito ou critério vinculante previsto nas regras da matéria.`
-            });
-          }
-        }
-
-        if (foundItems.length >= 28) break;
-      }
-      if (foundItems.length >= 28) break;
+      return false;
     }
 
-    if (foundItems.length < 12) {
-      for (const pnum of pageKeys) {
-        const ptxt = pageMap[pnum];
-        const lines = ptxt.split('\n');
-        for (const l of lines) {
-          const m_bullet = l.trim().match(/^[-*•]\s+([A-Za-z\u00C0-\u017F\s\(\)/,:-]{5,50})/);
-          if (m_bullet) {
-            const cTitle = m_bullet[1].replace(/\*\*/g, '').trim();
-            if (cTitle.length >= 5 && !seenItems.has(cTitle.toLowerCase())) {
-              seenItems.add(cTitle.toLowerCase());
-              foundItems.push({
-                titulo: cTitle.slice(0, 45),
-                tipo: "concept",
-                pagina: pnum,
-                resumo: `Tópico sobre ${cTitle.slice(0, 45)} extraído da página ${pnum} do material.`
-              });
-            }
-          }
-          if (foundItems.length >= 24) break;
-        }
-        if (foundItems.length >= 24) break;
+    const lines = cleanCorpus.split('\n');
+    const cleanLines = [];
+    let inQuestion = false;
+
+    for (const l of lines) {
+      const s = l.trim();
+      if (!s) continue;
+      if (s.startsWith('---')) {
+        cleanLines.push(s);
+        inQuestion = false;
+        continue;
       }
+      if (QUESTION_HEADER_REGEX.test(s)) {
+        inQuestion = true;
+        continue;
+      }
+      if (OPTION_REGEX.test(s) || ANSWER_REGEX.test(s)) continue;
+
+      if (inQuestion) {
+        if (isTrueTheoreticalHeading(s)) inQuestion = false;
+        else continue;
+      }
+      cleanLines.push(s);
     }
 
-    const trapCat = macroCategories.find(c => /pegadinha|banca/i.test(c.titulo));
+    const bulletSyms = /^[•\-\*►▪▸✓✔\uf0d8\uf0fc\+]\s*/;
+    const noiseKeywords = ["RODRIGO MOTTA", "KAVERNA", "YOUTUBE", "INSTAGRAM", "WWW.",
+                          "PROF.", "@PROF", "GABARITO", "DIREITO ADMINISTRATIVO – PROF",
+                          "DIREITO CONSTITUCIONAL – PROF", "DIREITO PENAL – PROF"];
 
-    foundItems.forEach((item, idx) => {
-      const nid = `item_${idx + 1}`;
-      let parentId = macroCategories[0].id;
+    function isNoise(s) {
+      const su = s.trim().toUpperCase();
+      if (!su || su.length < 3) return true;
+      if (noiseKeywords.some(nk => su.includes(nk))) return true;
+      if (/^\d{1,3}\s*$/.test(su)) return true;
+      return false;
+    }
 
-      if (item.tipo === "trap" && trapCat) {
-        parentId = trapCat.id;
+    function isTerminalLine(s) {
+      const st = s.trim();
+      return /[.!?:\---;]$/.test(st) || (st === st.toUpperCase() && st.length > 4);
+    }
+
+    function isNewItemLine(s) {
+      const st = s.trim();
+      if (bulletSyms.test(st)) return true;
+      if (isTrueTheoreticalHeading(st)) return true;
+      if (/^(?:Art\.|Súmula|ATENÇÃO|IMPORTANTE|OBS|[IVXLCDM]+\s*[-–—])/i.test(st)) return true;
+      if (/^[A-Z\u00C0-\u017F][A-Za-z\u00C0-\u017F\s\(\)/]{2,40}\s+[-–—]\s+[A-Za-z\u00C0-\u017F]/.test(st)) return true;
+      return false;
+    }
+
+    const reconstructedLines = [];
+    for (const l of cleanLines) {
+      const s = l.trim();
+      if (isNoise(s)) continue;
+      if (s.startsWith('---')) {
+        reconstructedLines.push(s);
+        continue;
+      }
+      if (reconstructedLines.length &&
+          !isNewItemLine(s) &&
+          !isTerminalLine(reconstructedLines[reconstructedLines.length - 1]) &&
+          !reconstructedLines[reconstructedLines.length - 1].startsWith('---')) {
+        reconstructedLines[reconstructedLines.length - 1] += " " + s;
       } else {
-        let minDist = 999999;
-        for (const c of macroCategories) {
-          const dist = Math.abs(c.pagina - item.pagina);
-          if (dist < minDist) {
-            minDist = dist;
-            parentId = c.id;
+        reconstructedLines.push(s);
+      }
+    }
+
+    const rawSections = [];
+    let currentSec = null;
+    let currentPage = 1;
+
+    for (const s of reconstructedLines) {
+      const mPage = s.match(/^---\s*P[ÁA]GINA\s*(\d+)\s*---$/i);
+      if (mPage) {
+        currentPage = parseInt(mPage[1], 10);
+        continue;
+      }
+      if (isTrueTheoreticalHeading(s)) {
+        let cleanH = toTitleCase(s.replace(/[:.\s]+$/, ''));
+        cleanH = cleanH.replace(/^(?:Observação\s+Importante[!:]?|Atenção[!:]?|Cuidado[!:]?)\s*/i, '').trim();
+        if (cleanH.toLowerCase().includes("não confunda modalidade com critério de julgamento")) {
+          cleanH = "Critérios de Julgamento";
+        }
+        if (!cleanH.toLowerCase().includes(cleanRootTitle.toLowerCase()) && !cleanRootTitle.toLowerCase().includes(cleanH.toLowerCase())) {
+          if (!["Importante", "Atenção", "Cuidado", "Obs", "Reflexão"].includes(cleanH)) {
+            if (currentSec) rawSections.push(currentSec);
+            currentSec = {
+              heading: cleanH,
+              page: currentPage,
+              lines: []
+            };
+            continue;
           }
         }
       }
+      if (currentSec) currentSec.lines.push(s);
+    }
+    if (currentSec) rawSections.push(currentSec);
+
+    const groupedSections = [];
+    const seenH = new Set();
+    for (const s of rawSections) {
+      const hNorm = s.heading.toLowerCase();
+      if (seenH.has(hNorm)) {
+        if (groupedSections.length) groupedSections[groupedSections.length - 1].lines.push(...s.lines);
+        continue;
+      }
+      const usefulL = s.lines.filter(l => l.trim() && !isNoise(l));
+      if (usefulL.length < 2 && groupedSections.length) {
+        groupedSections[groupedSections.length - 1].lines.push(...s.lines);
+        continue;
+      }
+      seenH.add(hNorm);
+      groupedSections.push(s);
+    }
+
+    let selectedSections = groupedSections;
+    if (groupedSections.length > 8) {
+      const scored = groupedSections.map((sec, idx) => ({ idx, sec, len: sec.lines.length }))
+        .sort((a, b) => b.len - a.len);
+      const topIdx = scored.slice(0, 8).map(x => x.idx).sort((a,b)=>a-b);
+      selectedSections = topIdx.map(i => groupedSections[i]);
+    }
+
+    const nodes = [{
+      id: "root",
+      titulo: cleanRootTitle,
+      tipo: "root",
+      pagina: 1,
+      resumo: `Estrutura esquematizada das unidades conceituais essenciais de ${cleanRootTitle} para provas de concursos públicos.`
+    }];
+    const edges = [];
+    const seenNodeKeys = new Set([cleanRootTitle.toLowerCase()]);
+    let nodeIdSeq = 0;
+
+    for (let cIdx = 0; cIdx < selectedSections.length; cIdx++) {
+      const sec = selectedSections[cIdx];
+      const catId = `cat_${cIdx + 1}`;
+      const catPage = findPageForTerm(sec.heading, sec.page);
+      const catTitle = sec.heading;
+
+      const catSummaryLines = [];
+      for (const l of sec.lines) {
+        const ls = l.trim();
+        if (ls && !isNoise(ls) && ls.length >= 20 && ls !== ls.toUpperCase()) {
+          catSummaryLines.push(ls);
+          if (catSummaryLines.length >= 2) break;
+        }
+      }
+      const catSummary = catSummaryLines.length ? cleanSummaryText(catSummaryLines.join(' ')) : `Regras e fundamentos de ${catTitle.toLowerCase()} para concursos públicos.`;
 
       nodes.push({
-        id: nid,
-        titulo: item.titulo,
-        tipo: item.tipo,
-        pagina: item.pagina,
-        resumo: item.resumo
+        id: catId,
+        titulo: catTitle,
+        tipo: "category",
+        pagina: catPage,
+        resumo: catSummary
       });
-      edges.push({
-        source: parentId,
-        target: nid
-      });
-    });
+      edges.push({ source: "root", target: catId });
+      seenNodeKeys.add(catTitle.toLowerCase());
 
-    return {
-      titulo: cleanTitle,
-      nodes,
-      edges
-    };
+      const secLines = sec.lines;
+      let secItemsCount = 0;
+
+      for (let lineI = 0; lineI < secLines.length; lineI++) {
+        if (secItemsCount >= 10) break;
+        const l = secLines[lineI].trim();
+        if (!l || isNoise(l)) continue;
+
+        // Inciso / Alínea / Item
+        const mInciso = l.match(/^([IVXLCDM]+|\d{1,2}|[a-z])\s*[-–—.]\s*(.{4,})$/);
+        if (mInciso) {
+          const rawMarker = mInciso[1].toUpperCase();
+          const markerStr = /^[IVXLCDM]+$/.test(rawMarker) ? `Inciso ${rawMarker}` : `Item ${rawMarker}`;
+          const didacticTitle = extractDidacticTitleFromClause(markerStr, mInciso[2]);
+          const defRaw = cleanSummaryText(mInciso[2]);
+          if (!seenNodeKeys.has(didacticTitle.toLowerCase())) {
+            seenNodeKeys.add(didacticTitle.toLowerCase());
+            nodeIdSeq++;
+            secItemsCount++;
+            const nid = `item_${nodeIdSeq}`;
+            nodes.push({
+              id: nid,
+              titulo: didacticTitle,
+              tipo: "rule",
+              pagina: findPageForTerm(didacticTitle, catPage),
+              resumo: defRaw
+            });
+            edges.push({ source: catId, target: nid });
+          }
+          continue;
+        }
+
+        // Linha com travessão "Termo – Definição"
+        const mDash = l.match(/^(?:[•\-\*►▪▸✓✔\uf0d8\uf0fc\+]\s*)?([A-Za-z\u00C0-\u017F\s\(\)/]{3,45})\s+[-–—]\s+(.{12,})$/);
+        if (mDash && !l.startsWith('Art.') && !l.startsWith('*')) {
+          const candidateTerm = mDash[1].trim();
+          if (/^(?:[IVXLCDM]+|\d+|[A-Z])$/i.test(candidateTerm)) {
+            const markerStr = `Inciso ${candidateTerm.toUpperCase()}`;
+            const didacticTitle = extractDidacticTitleFromClause(markerStr, mDash[2]);
+            const defRaw = cleanSummaryText(mDash[2]);
+            if (!seenNodeKeys.has(didacticTitle.toLowerCase())) {
+              seenNodeKeys.add(didacticTitle.toLowerCase());
+              nodeIdSeq++;
+              secItemsCount++;
+              const nid = `item_${nodeIdSeq}`;
+              nodes.push({
+                id: nid,
+                titulo: didacticTitle,
+                tipo: "rule",
+                pagina: findPageForTerm(didacticTitle, catPage),
+                resumo: defRaw
+              });
+              edges.push({ source: catId, target: nid });
+            }
+            continue;
+          }
+
+          const termRaw = toTitleCase(candidateTerm);
+          const defRaw = cleanSummaryText(mDash[2].trim());
+          const essenceMatch = defRaw.match(/^(?:pessoas jurídicas de|ocorre quando|são|não possuem|com criação|dotada de|modalidade de licitação para|critério de julgamento)\s+([^,.;]{5,30})/i);
+          const essence = essenceMatch ? essenceMatch[1].trim() : "";
+          const shortLabel = compressLabel(termRaw, essence, 5);
+
+          if (!seenNodeKeys.has(termRaw.toLowerCase()) && termRaw.length >= 3) {
+            seenNodeKeys.add(termRaw.toLowerCase());
+            nodeIdSeq++;
+            secItemsCount++;
+            const nid = `item_${nodeIdSeq}`;
+            const pNum = findPageForTerm(termRaw, catPage);
+            const isComp = ["desconcentração", "descentralização", "versus", "outorga", "delegação", "sociedades", "dispensada", "dispensável"].some(k => termRaw.toLowerCase().includes(k));
+            nodes.push({
+              id: nid,
+              titulo: shortLabel,
+              tipo: isComp ? "comparison" : "concept",
+              pagina: pNum,
+              resumo: defRaw
+            });
+            edges.push({ source: catId, target: nid });
+          }
+          continue;
+        }
+
+        // Marcador bullet com termo na linha atual e definição na próxima
+        const mBulletOnly = l.match(/^[•\-\*►▪▸✓✔\uf0d8\uf0fc\+]\s*([A-Za-z\u00C0-\u017F\s\(\)/]{4,45})$/);
+        if (mBulletOnly) {
+          const termRaw = toTitleCase(mBulletOnly[1].trim());
+          const nextDesc = [];
+          for (const nxt of secLines.slice(lineI + 1, lineI + 4)) {
+            const ns = nxt.trim();
+            if (ns && !isNoise(ns) && !bulletSyms.test(ns) && ns !== ns.toUpperCase()) {
+              nextDesc.push(ns);
+            }
+          }
+          const defRaw = nextDesc.length ? cleanSummaryText(nextDesc.join(' ')) : `Regime jurídico e características de ${termRaw.toLowerCase()}.`;
+          const essenceMatch = defRaw.match(/^(?:diretamente|subordinados|possuem|são aqueles|aqueles que|formados por)\s+([^,.;]{5,30})/i);
+          const essence = essenceMatch ? essenceMatch[1].trim() : "";
+          const shortLabel = compressLabel(termRaw, essence, 5);
+
+          if (!seenNodeKeys.has(termRaw.toLowerCase()) && termRaw.length >= 3) {
+            seenNodeKeys.add(termRaw.toLowerCase());
+            nodeIdSeq++;
+            secItemsCount++;
+            const nid = `item_${nodeIdSeq}`;
+            const pNum = findPageForTerm(termRaw, catPage);
+            nodes.push({
+              id: nid,
+              titulo: shortLabel,
+              tipo: "concept",
+              pagina: pNum,
+              resumo: defRaw
+            });
+            edges.push({ source: catId, target: nid });
+          }
+          continue;
+        }
+
+        // Súmula ou Artigo importante
+        const mSumula = l.match(/^(Súmula\s+n?º?\s*\d+\s+[A-Z]{3}|Art\.\s*\d+[^–—:]*)\s*[-–—:]\s*(.{15,})$/i);
+        if (mSumula) {
+          const sName = mSumula[1].trim();
+          const sDesc = cleanSummaryText(mSumula[2].trim());
+          const shortLabel = compressLabel(toTitleCase(sName), "Regra Legal", 5);
+          if (!seenNodeKeys.has(sName.toLowerCase())) {
+            seenNodeKeys.add(sName.toLowerCase());
+            nodeIdSeq++;
+            secItemsCount++;
+            const nid = `item_${nodeIdSeq}`;
+            nodes.push({
+              id: nid,
+              titulo: shortLabel,
+              tipo: "rule",
+              pagina: findPageForTerm(sName, catPage),
+              resumo: sDesc
+            });
+            edges.push({ source: catId, target: nid });
+          }
+          continue;
+        }
+
+        // Alertas de Prova (ATENÇÃO / IMPORTANTE)
+        const mAlert = l.match(/(?:ATENÇÃO|IMPORTANTE|CUIDADO)[!:]?\s*([^.\n]{15,100})/i);
+        if (mAlert) {
+          const shortLabel = makeDidacticPegadinhaTitle(mAlert[1]);
+          const fullAlert = cleanSummaryText(l);
+          if (!seenNodeKeys.has(shortLabel.toLowerCase())) {
+            seenNodeKeys.add(shortLabel.toLowerCase());
+            nodeIdSeq++;
+            secItemsCount++;
+            const nid = `item_${nodeIdSeq}`;
+            nodes.push({
+              id: nid,
+              titulo: shortLabel,
+              tipo: "trap",
+              pagina: catPage,
+              resumo: fullAlert
+            });
+            edges.push({ source: catId, target: nid });
+          }
+          continue;
+        }
+      }
+    }
+
+    // Categoria de Pegadinhas da Banca (Pilar 2)
+    const trapCatId = `cat_${selectedSections.length + 1}`;
+    const trapNodes = [];
+
+    for (const pnum of Object.keys(pageMap).map(Number).sort((a,b)=>a-b)) {
+      const ptxt = pageMap[pnum];
+      for (const lineP of ptxt.split('\n')) {
+        const lp = lineP.trim();
+        const mTr = lp.match(/(?:não\s+confunda|não\s+há\s+hierarquia|banca\s+costuma|pegadinha|cuidado\s+com|atenção)[!:\s]+([^.\n]{12,100})/i);
+        if (mTr) {
+          const tTitle = makeDidacticPegadinhaTitle(mTr[1]);
+          if (!seenNodeKeys.has(tTitle.toLowerCase())) {
+            seenNodeKeys.add(tTitle.toLowerCase());
+            trapNodes.push({
+              titulo: tTitle,
+              pagina: pnum,
+              resumo: cleanSummaryText(lp)
+            });
+          }
+        }
+        if (trapNodes.length >= 6) break;
+      }
+      if (trapNodes.length >= 6) break;
+    }
+
+    if (trapNodes.length > 0) {
+      nodes.push({
+        id: trapCatId,
+        titulo: "Raio-X de Pegadinhas da Banca",
+        tipo: "category",
+        pagina: trapNodes[0].pagina,
+        resumo: "Principais armadilhas, inversões conceituais e assertivas com palavras absolutas recorrentes nas bancas examinadoras."
+      });
+      edges.push({ source: "root", target: trapCatId });
+
+      for (const tn of trapNodes) {
+        nodeIdSeq++;
+        const nid = `item_${nodeIdSeq}`;
+        nodes.push({
+          id: nid,
+          titulo: tn.titulo,
+          tipo: "trap",
+          pagina: tn.pagina,
+          resumo: tn.resumo
+        });
+        edges.push({ source: trapCatId, target: nid });
+      }
+    }
+
+    return { titulo: cleanRootTitle, nodes, edges };
   };
 
   function renderInteractiveMindmapFromJson(rawJsonOrStr, containerId) {
@@ -8771,24 +9138,14 @@
     const edges = data.edges || [];
     const titulo = data.titulo || 'Mapa Mental Interativo';
 
-    // Estimar altura dinâmica real do nó com base no texto integral
-    function estimateNodeHeight(n, width = 290) {
-      const titleLen = (n.titulo || '').length;
-      const summaryLen = (n.resumo || '').length;
-      let h = 54;
-      const titleLines = Math.max(1, Math.ceil(titleLen / 28));
-      h += titleLines * 18;
-      if (summaryLen > 0) {
-        const summaryLines = Math.max(1, Math.ceil(summaryLen / 38));
-        h += 6 + summaryLines * 16;
-      }
-      return Math.max(88, Math.round(h));
-    }
+    const typeIcons = {
+      root: '🎯', category: '📁', concept: '💡', rule: '⚖️', trap: '🚨',
+      comparison: '⚖️', mnemonic: '🧠', definition: '📖', example: '🔍', exception: '⚠️'
+    };
 
-    // Construir mapa de nós
     const nodeMap = {};
     nodes.forEach(n => {
-      nodeMap[n.id] = { ...n, children: [], parents: [], level: 0, x: 0, y: 0, height: estimateNodeHeight(n, 290) };
+      nodeMap[n.id] = { ...n, children: [], parents: [], level: 0, x: 0, y: 0, w: 0, h: 42, collapsed: false };
     });
 
     edges.forEach(e => {
@@ -8798,269 +9155,244 @@
       }
     });
 
-    // Identificar nó raiz
-    let root = nodes.find(n => n.tipo === 'root');
-    if (!root) {
-      root = nodes.find(n => (nodeMap[n.id].parents.length === 0)) || nodes[0];
-    }
+    let root = nodes.find(n => n.tipo === 'root') || nodes[0];
     const rootNode = nodeMap[root.id];
 
-    // Atribuir níveis hierárquicos via BFS
-    const queue = [rootNode];
     rootNode.level = 0;
+    const q = [rootNode];
     const visited = new Set([rootNode.id]);
-    while (queue.length > 0) {
-      const curr = queue.shift();
-      curr.children.forEach(ch => {
+    while (q.length > 0) {
+      const cur = q.shift();
+      cur.children.forEach(ch => {
         if (!visited.has(ch.id)) {
           visited.add(ch.id);
-          ch.level = curr.level + 1;
-          queue.push(ch);
+          ch.level = cur.level + 1;
+          q.push(ch);
         }
       });
     }
-
-    // Nós órfãos recebem níveis padrão
-    nodes.forEach(n => {
-      if (!visited.has(n.id)) {
-        const nm = nodeMap[n.id];
-        nm.level = n.tipo === 'category' ? 1 : (n.tipo === 'concept' ? 2 : 3);
-        visited.add(n.id);
-      }
-    });
-
-    // Atribuir Y recursivamente com layout balanceado e dinâmico
-    let currentLeafY = 40;
-    const cardW = 290;
-    const gapY = 22;
-    const gapX = 80;
-    const colStep = cardW + gapX;
-
-    const processedForY = new Set();
-    function positionSubtreeY(node) {
-      processedForY.add(node.id);
-      if (!node.children || node.children.length === 0) {
-        node.y = currentLeafY;
-        currentLeafY += node.height + gapY;
-        return node.y;
-      }
-      const childYs = [];
-      node.children.forEach(ch => {
-        if (!processedForY.has(ch.id)) {
-          childYs.push(positionSubtreeY(ch));
-        }
-      });
-      if (childYs.length === 0) {
-        node.y = currentLeafY;
-        currentLeafY += node.height + gapY;
-      } else {
-        const firstChild = node.children[0];
-        const lastChild = node.children[node.children.length - 1];
-        const childrenSpanMid = (firstChild.y + (lastChild.y + lastChild.height)) / 2;
-        node.y = Math.round(childrenSpanMid - (node.height / 2));
-      }
-      return node.y;
-    }
-
-    positionSubtreeY(rootNode);
-
-    nodes.forEach(n => {
-      const nm = nodeMap[n.id];
-      if (!processedForY.has(nm.id)) {
-        positionSubtreeY(nm);
-      }
-    });
-
-    // Resolução de colisões verticais por coluna (garante zero sobreposição)
-    const levels = {};
-    Object.values(nodeMap).forEach(n => {
-      if (!levels[n.level]) levels[n.level] = [];
-      levels[n.level].push(n);
-    });
-
-    Object.keys(levels).sort((a,b) => a-b).forEach(lvl => {
-      const colNodes = levels[lvl];
-      colNodes.sort((a, b) => a.y - b.y);
-      for (let i = 1; i < colNodes.length; i++) {
-        const prev = colNodes[i - 1];
-        const curr = colNodes[i];
-        const minRequiredY = prev.y + prev.height + gapY;
-        if (curr.y < minRequiredY) {
-          const diff = minRequiredY - curr.y;
-          curr.y = minRequiredY;
-          function shiftDescendants(pn, delta) {
-            pn.children.forEach(ch => {
-              ch.y += delta;
-              shiftDescendants(ch, delta);
-            });
-          }
-          shiftDescendants(curr, diff);
-        }
-      }
-    });
-
-    // Atribuir X por nível e calcular limites
-    let maxLevel = 0;
-    let maxY = 0;
-    Object.values(nodeMap).forEach(n => {
-      n.x = 40 + n.level * colStep;
-      if (n.level > maxLevel) maxLevel = n.level;
-      if (n.y + n.height > maxY) maxY = n.y + n.height;
-    });
-
-    const totalWidth = 40 + (maxLevel + 1) * colStep + 80;
-    const totalHeight = maxY + 60;
-
-    // Gerar arestas em SVG com curvas Bezier cúbicas suaves
-    let edgesSvg = '';
-    edges.forEach((e, idx) => {
-      const s = nodeMap[e.source];
-      const t = nodeMap[e.target];
-      if (s && t) {
-        const x1 = s.x + cardW;
-        const y1 = s.y + (s.height / 2);
-        const x2 = t.x;
-        const y2 = t.y + (t.height / 2);
-        const dx = Math.max(35, (x2 - x1) / 2);
-        const pathD = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
-
-        let strokeCol = 'rgba(148, 163, 184, 0.45)';
-        if (t.tipo === 'trap') strokeCol = 'rgba(244, 63, 94, 0.65)';
-        else if (t.tipo === 'mnemonic') strokeCol = 'rgba(168, 85, 247, 0.65)';
-        else if (t.tipo === 'rule') strokeCol = 'rgba(245, 158, 11, 0.65)';
-        else if (t.tipo === 'category') strokeCol = 'rgba(56, 189, 248, 0.65)';
-        else if (t.tipo === 'concept') strokeCol = 'rgba(16, 185, 129, 0.65)';
-
-        edgesSvg += `<path id="${id}-edge-${idx}" class="nlm-edge" d="${pathD}" fill="none" stroke="${strokeCol}" stroke-width="2.2" stroke-linecap="round" marker-end="url(#${id}-arrow)" />`;
-      }
-    });
-
-    // Estilos por tipo de nó
-    const typeStyles = {
-      root: { border: '#6366f1', bg: 'rgba(99, 102, 241, 0.16)', badgeBg: 'rgba(99, 102, 241, 0.3)', badgeColor: '#c7d2fe', badgeText: '🎯 TÓPICO CENTRAL' },
-      category: { border: '#38bdf8', bg: 'rgba(56, 189, 248, 0.12)', badgeBg: 'rgba(56, 189, 248, 0.25)', badgeColor: '#7dd3fc', badgeText: '📁 CATEGORIA' },
-      concept: { border: '#10b981', bg: 'rgba(16, 185, 129, 0.12)', badgeBg: 'rgba(16, 185, 129, 0.25)', badgeColor: '#6ee7b7', badgeText: '💡 CONCEITO' },
-      definition: { border: '#06b6d4', bg: 'rgba(6, 182, 212, 0.12)', badgeBg: 'rgba(6, 182, 212, 0.25)', badgeColor: '#67e8f9', badgeText: '📖 DEFINIÇÃO' },
-      rule: { border: '#f59e0b', bg: 'rgba(245, 158, 11, 0.12)', badgeBg: 'rgba(245, 158, 11, 0.25)', badgeColor: '#fcd34d', badgeText: '⚖️ REGRA GERAL' },
-      exception: { border: '#ef4444', bg: 'rgba(239, 68, 68, 0.15)', badgeBg: 'rgba(239, 68, 68, 0.25)', badgeColor: '#fca5a5', badgeText: '⚠️ EXCEÇÃO' },
-      trap: { border: '#f43f5e', bg: 'rgba(244, 63, 94, 0.16)', badgeBg: 'rgba(244, 63, 94, 0.3)', badgeColor: '#fda4af', badgeText: '🚨 PEGADINHA' },
-      mnemonic: { border: '#a855f7', bg: 'rgba(168, 85, 247, 0.16)', badgeBg: 'rgba(168, 85, 247, 0.3)', badgeColor: '#d8b4fe', badgeText: '🧠 MNEMÔNICO' },
-      comparison: { border: '#8b5cf6', bg: 'rgba(139, 92, 246, 0.14)', badgeBg: 'rgba(139, 92, 246, 0.25)', badgeColor: '#c4b5fd', badgeText: '⚖️ DIFERENCIAÇÃO' },
-      example: { border: '#eab308', bg: 'rgba(234, 179, 8, 0.12)', badgeBg: 'rgba(234, 179, 8, 0.25)', badgeColor: '#fde047', badgeText: '🔍 EXEMPLO' }
-    };
-
-    let nodesHtml = '';
-    window['nlmNodes_' + id.replace(/-/g, '_')] = nodeMap;
-
-    Object.values(nodeMap).forEach(n => {
-      const style = typeStyles[n.tipo] || { border: '#94a3b8', bg: 'rgba(148, 163, 184, 0.12)', badgeBg: 'rgba(148, 163, 184, 0.2)', badgeColor: '#e2e8f0', badgeText: (n.tipo || 'NÓ').toUpperCase() };
-      const pageBadge = n.pagina ? `<span class="nlm-node-page-badge" title="Página ${n.pagina} do PDF original">Pág. ${n.pagina}</span>` : '';
-      const safeTitle = (n.titulo || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      const safeSummary = (n.resumo || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      const fnCall = `window.openKnowledgeUnitDrawer(window['nlmNodes_${id.replace(/-/g, '_')}']['${n.id}'])`;
-
-      nodesHtml += `
-        <div id="${id}-node-${n.id}" class="nlm-node-card-rf" 
-             style="left: ${n.x}px; top: ${n.y}px; width: ${cardW}px; border-color: ${style.border}; background: ${style.bg};"
-             data-node-id="${n.id}"
-             data-title="${safeTitle.toLowerCase()}"
-             data-summary="${safeSummary.toLowerCase()}"
-             onclick="${fnCall}">
-          <div>
-            <div class="nlm-node-header-row">
-              <span class="nlm-node-type-badge" style="background: ${style.badgeBg}; color: ${style.badgeColor};">
-                ${style.badgeText}
-              </span>
-              ${pageBadge}
-            </div>
-            <div class="nlm-node-title" style="color: ${style.border};">${safeTitle}</div>
-          </div>
-          ${safeSummary ? `<div class="nlm-node-preview">${safeSummary}</div>` : ''}
-        </div>
-      `;
-    });
 
     window.mindmapGraphStates[id] = {
-      panX: 20,
-      panY: 40,
+      panX: 40,
+      panY: 50,
       zoom: 0.95,
-      totalWidth,
-      totalHeight
+      selectedNodeId: null,
+      allCollapsed: false,
+      nodeMap,
+      rootNode,
+      typeIcons,
+      data
     };
+
+    setTimeout(() => {
+      window.redrawMindmapGraph(id);
+      setTimeout(() => window.fitMindmapGraphView(id), 60);
+    }, 25);
 
     return `
   <div class="nlm-graph-container" id="${id}">
     <div class="nlm-graph-toolbar">
       <div class="nlm-graph-toolbar-group">
-        <span style="font-size: 16px;">🗺️</span>
-        <span style="font-weight: 800; font-size: 12.5px; color: #f1f5f9; letter-spacing: 0.2px;">${titulo}</span>
-        <span class="nlm-mindmap-badge" style="background: rgba(99, 102, 241, 0.25); color: #c7d2fe; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 99px;">${nodes.length} nós • ${edges.length} conexões</span>
+        <span style="font-size: 16px;">🧠</span>
+        <span style="font-weight: 800; font-size: 13.5px; color: #f1f5f9; letter-spacing: 0.2px;">${titulo}</span>
+        <span id="${id}-stats" style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.35); color: #93c5fd; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px;">
+          ${nodes.length} nós • ${edges.length} conexões
+        </span>
       </div>
 
       <div class="nlm-graph-toolbar-group">
-        <input type="text" class="nlm-graph-search-input" placeholder="🔍 Filtrar nós..." oninput="filterMindmapNodes('${id}', this.value)" title="Busque por termos, conceitos ou pegadinhas no mapa">
+        <input type="text" class="nlm-graph-search-input" placeholder="🔍 Filtrar no mapa..." oninput="filterMindmapNodes('${id}', this.value)" title="Filtre nós por palavra-chave">
         <div style="width: 1px; height: 16px; background: rgba(255,255,255,0.15); margin: 0 2px;"></div>
-        <button class="nlm-tool-btn" onclick="zoomMindmapGraph('${id}', -0.1)" title="Diminuir Zoom">➖</button>
+        <button class="nlm-tool-btn" onclick="zoomMindmapGraph('${id}', 0.12)" title="Aumentar Zoom">➕ Zoom</button>
+        <button class="nlm-tool-btn" onclick="zoomMindmapGraph('${id}', -0.12)" title="Diminuir Zoom">➖ Zoom</button>
         <button class="nlm-tool-btn" onclick="resetMindmapGraphView('${id}')" title="Resetar Visualização">100%</button>
-        <button class="nlm-tool-btn" onclick="zoomMindmapGraph('${id}', 0.1)" title="Aumentar Zoom">➕</button>
         <button class="nlm-tool-btn" onclick="fitMindmapGraphView('${id}')" title="Ajustar à Tela">🔲 Ajustar</button>
+        <button class="nlm-tool-btn" onclick="toggleAllMindmapBranches('${id}')" id="${id}-btn-toggle-all">↕ Recolher</button>
         <div style="width: 1px; height: 16px; background: rgba(255,255,255,0.15); margin: 0 2px;"></div>
         <button class="nlm-tool-btn" onclick="toggleMindmapGraphFullscreen('${id}')" title="Tela Cheia">🗖</button>
-        <button class="nlm-tool-btn" onclick="closeMindmapGraph('${id}')" title="Fechar / Recolher Mapa para liberar espaço na tela" style="color: #f87171; font-weight: 700; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3);">✖ Fechar</button>
+        <button class="nlm-tool-btn" onclick="closeMindmapGraph('${id}')" title="Fechar / Ocultar Mapa" style="color: #f87171; font-weight: 700; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3);">✖ Fechar</button>
       </div>
     </div>
 
     <div class="nlm-graph-viewport" id="${id}-viewport" onmousedown="startMindmapPan(event, '${id}')" onwheel="handleMindmapWheel(event, '${id}')">
-      <div class="nlm-graph-canvas" id="${id}-canvas" style="position: absolute; transform: translate(20px, 40px) scale(0.95); transform-origin: 0 0; width: ${totalWidth}px; height: ${totalHeight}px;">
-        
-        <svg class="nlm-svg-edges" style="width: ${totalWidth + 200}px; height: ${totalHeight + 200}px;">
-          <defs>
-            <marker id="${id}-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M 0 1 L 10 5 L 0 9 z" fill="#64748b" />
-            </marker>
-          </defs>
-          ${edgesSvg}
-        </svg>
-
-        ${nodesHtml}
-
+      <div class="nlm-graph-canvas" id="${id}-canvas" style="position: absolute; transform: translate(40px, 50px) scale(0.95); transform-origin: 0 0;">
+        <svg id="${id}-svg" class="nlm-svg-lines" style="position: absolute; top: 0; left: 0; width: 14000px; height: 14000px; pointer-events: none; z-index: 1;"></svg>
+        <div id="${id}-nodes" class="nlm-nodes-container" style="position: absolute; top: 0; left: 0; z-index: 10; pointer-events: auto;"></div>
       </div>
     </div>
   </div>
     `;
   }
 
+  window.redrawMindmapGraph = function(id) {
+    const st = window.mindmapGraphStates[id];
+    if (!st) return;
+    const { nodeMap, rootNode, typeIcons } = st;
+    const nodesContainer = document.getElementById(`${id}-nodes`);
+    const svgLines = document.getElementById(`${id}-svg`);
+    if (!nodesContainer || !svgLines) return;
+
+    let currentY = 50;
+    const gapX = 90;
+    const gapY = 24;
+
+    function measureSubtree(node) {
+      if (node.collapsed || !node.children || node.children.length === 0) {
+        node.y = currentY;
+        node.h = 42;
+        currentY += node.h + gapY;
+        return;
+      }
+      const childYs = [];
+      node.children.forEach(ch => {
+        measureSubtree(ch);
+        childYs.push(ch.y);
+      });
+      if (childYs.length > 0) {
+        node.y = (childYs[0] + childYs[childYs.length - 1]) / 2;
+      } else {
+        node.y = currentY;
+        currentY += 42 + gapY;
+      }
+      node.h = 42;
+    }
+
+    currentY = 50;
+    measureSubtree(rootNode);
+
+    Object.values(nodeMap).forEach(n => {
+      n.x = 40 + n.level * (240 + gapX);
+    });
+
+    nodesContainer.innerHTML = '';
+
+    function createNodeEl(node) {
+      const el = document.createElement('div');
+      el.className = `mm-node type-${node.tipo || 'concept'}`;
+      if (node.id === st.selectedNodeId) el.classList.add('selected');
+      el.id = `${id}-node-${node.id}`;
+      el.style.left = `${node.x}px`;
+      el.style.top = `${node.y}px`;
+
+      const icon = typeIcons[node.tipo] || '💡';
+      const page = node.pagina ? `<span class="page-tag">P.${node.pagina}</span>` : '';
+      const hasKids = node.children && node.children.length > 0;
+      const toggleBtn = hasKids ? `<span class="node-toggle" title="Recolher/Expandir">${node.collapsed ? '+' : '−'}</span>` : '';
+
+      el.innerHTML = `
+        <span class="node-icon">${icon}</span>
+        <span class="node-text">${node.titulo}</span>
+        ${page}
+        ${toggleBtn}
+      `;
+
+      el.onclick = (e) => {
+        if (e.target.classList.contains('node-toggle')) {
+          e.stopPropagation();
+          node.collapsed = !node.collapsed;
+          window.redrawMindmapGraph(id);
+          return;
+        }
+        st.selectedNodeId = node.id;
+        document.querySelectorAll(`#${id} .mm-node`).forEach(n => n.classList.remove('selected'));
+        el.classList.add('selected');
+        if (typeof window.openKnowledgeUnitDrawer === 'function') {
+          window.openKnowledgeUnitDrawer(node);
+        }
+      };
+
+      nodesContainer.appendChild(el);
+      node.actualW = el.offsetWidth;
+
+      if (!node.collapsed && node.children) {
+        node.children.forEach(createNodeEl);
+      }
+    }
+
+    createNodeEl(rootNode);
+
+    // Conectores Bézier elegantes
+    let paths = '';
+    function drawBranches(node) {
+      if (node.collapsed || !node.children) return;
+      node.children.forEach(ch => {
+        const x1 = node.x + (node.actualW || 180);
+        const y1 = node.y + 19;
+        const x2 = ch.x;
+        const y2 = ch.y + 19;
+        const dx = Math.max(35, (x2 - x1) * 0.52);
+
+        let strokeColor = 'rgba(59, 130, 246, 0.7)';
+        if (ch.tipo === 'trap') strokeColor = 'rgba(239, 68, 68, 0.8)';
+        else if (ch.tipo === 'rule') strokeColor = 'rgba(245, 158, 11, 0.8)';
+        else if (ch.tipo === 'comparison') strokeColor = 'rgba(139, 92, 246, 0.8)';
+        else if (ch.tipo === 'mnemonic') strokeColor = 'rgba(168, 85, 247, 0.8)';
+        else if (ch.tipo === 'category') strokeColor = 'rgba(16, 185, 129, 0.8)';
+
+        paths += `<path d="M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}"
+                        fill="none" stroke="${strokeColor}" stroke-width="2.2" stroke-linecap="round"/>`;
+        drawBranches(ch);
+      });
+    }
+    drawBranches(rootNode);
+    svgLines.innerHTML = paths;
+  };
+
   window.zoomMindmapGraph = function(id, delta) {
     const st = window.mindmapGraphStates[id];
-    const canvas = document.getElementById(id + '-canvas');
+    const canvas = document.getElementById(`${id}-canvas`);
     if (!st || !canvas) return;
-    st.zoom = Math.max(0.3, Math.min(2.0, st.zoom + delta));
+    st.zoom = Math.min(2.0, Math.max(0.3, st.zoom + delta));
     canvas.style.transform = `translate(${st.panX}px, ${st.panY}px) scale(${st.zoom})`;
   };
 
   window.resetMindmapGraphView = function(id) {
     const st = window.mindmapGraphStates[id];
-    const canvas = document.getElementById(id + '-canvas');
+    const canvas = document.getElementById(`${id}-canvas`);
     if (!st || !canvas) return;
-    st.panX = 20;
-    st.panY = 40;
     st.zoom = 1.0;
+    st.panX = 40;
+    st.panY = 50;
     canvas.style.transform = `translate(${st.panX}px, ${st.panY}px) scale(${st.zoom})`;
   };
 
   window.fitMindmapGraphView = function(id) {
     const st = window.mindmapGraphStates[id];
     const container = document.getElementById(id);
-    const canvas = document.getElementById(id + '-canvas');
+    const canvas = document.getElementById(`${id}-canvas`);
     if (!st || !container || !canvas) return;
+
+    let minY = Infinity, maxY = -Infinity, maxX = -Infinity;
+    Object.values(st.nodeMap).forEach(n => {
+      if (n.y < minY) minY = n.y;
+      if (n.y > maxY) maxY = n.y;
+      if (n.x + (n.actualW || 200) > maxX) maxX = n.x + (n.actualW || 200);
+    });
     const cw = container.clientWidth || 900;
     const ch = container.clientHeight || 700;
-    const scaleX = (cw - 80) / st.totalWidth;
-    const scaleY = (ch - 80) / st.totalHeight;
-    st.zoom = Math.max(0.3, Math.min(1.1, Math.min(scaleX, scaleY)));
+    const mapW = maxX - 40 + 100;
+    const mapH = maxY - minY + 140;
+    const scaleX = (cw - 80) / mapW;
+    const scaleY = (ch - 80) / mapH;
+    st.zoom = Math.min(1.1, Math.max(0.35, Math.min(scaleX, scaleY)));
     st.panX = 40;
-    st.panY = 40;
+    st.panY = Math.max(40, (ch - (maxY + minY) * st.zoom) / 2);
     canvas.style.transform = `translate(${st.panX}px, ${st.panY}px) scale(${st.zoom})`;
+  };
+
+  window.toggleAllMindmapBranches = function(id) {
+    const st = window.mindmapGraphStates[id];
+    if (!st) return;
+    st.allCollapsed = !st.allCollapsed;
+    Object.values(st.nodeMap).forEach(n => {
+      if (n.children && n.children.length > 0 && n.level > 0) {
+        n.collapsed = st.allCollapsed;
+      }
+    });
+    const btn = document.getElementById(`${id}-btn-toggle-all`);
+    if (btn) btn.textContent = st.allCollapsed ? '↕ Expandir' : '↕ Recolher';
+    window.redrawMindmapGraph(id);
+    setTimeout(() => window.fitMindmapGraphView(id), 50);
   };
 
   window.toggleMindmapGraphFullscreen = function(id) {
@@ -9072,6 +9404,7 @@
     } else {
       document.body.style.overflow = '';
     }
+    setTimeout(() => window.fitMindmapGraphView(id), 100);
   };
 
   window.toggleMindmapVisibility = function() {
@@ -9087,9 +9420,8 @@
       if (btnIcon) btnIcon.textContent = '🙈';
       container.scrollIntoView({ behavior: 'smooth' });
     } else {
-      if (container.classList.contains('fullscreen') || container.classList.contains('nlm-fullscreen')) {
+      if (container.classList.contains('fullscreen')) {
         container.classList.remove('fullscreen');
-        container.classList.remove('nlm-fullscreen');
         document.body.style.overflow = '';
       }
       container.style.display = 'none';
@@ -9101,9 +9433,8 @@
   window.closeMindmapGraph = function(id) {
     const container = id ? document.getElementById(id) : document.querySelector('.nlm-graph-container, .nlm-mindmap-wrapper');
     if (!container) return;
-    if (container.classList.contains('fullscreen') || container.classList.contains('nlm-fullscreen')) {
+    if (container.classList.contains('fullscreen')) {
       container.classList.remove('fullscreen');
-      container.classList.remove('nlm-fullscreen');
       document.body.style.overflow = '';
     }
     container.style.display = 'none';
@@ -9112,39 +9443,37 @@
     if (btnText) btnText.textContent = 'Abrir Mapa Mental';
     if (btnIcon) btnIcon.textContent = '🗺️';
     if (typeof showToast === 'function') {
-      showToast('Mapa mental ocultado para liberar espaço.', '🗺️');
+      showToast('Mapa mental recolhido para liberar espaço.', '🗺️');
     }
   };
 
   window.filterMindmapNodes = function(id, query) {
-    const container = document.getElementById(id);
-    if (!container) return;
-    const q = (query || '').trim().toLowerCase();
-    const nodeEls = container.querySelectorAll('.nlm-node-card-rf');
-    if (!q) {
-      nodeEls.forEach(el => {
+    const st = window.mindmapGraphStates[id];
+    if (!st) return;
+    const q = (query || '').toLowerCase().trim();
+    document.querySelectorAll(`#${id} .mm-node`).forEach(el => {
+      if (!q) {
+        el.classList.remove('matched', 'dimmed');
+        return;
+      }
+      const txt = el.textContent.toLowerCase();
+      const nid = el.id.replace(`${id}-node-`, '');
+      const nData = st.nodeMap[nid];
+      const sum = (nData?.resumo || '').toLowerCase();
+      if (txt.includes(q) || sum.includes(q)) {
+        el.classList.add('matched');
         el.classList.remove('dimmed');
-        el.classList.remove('highlighted');
-      });
-      return;
-    }
-    nodeEls.forEach(el => {
-      const title = el.getAttribute('data-title') || '';
-      const summary = el.getAttribute('data-summary') || '';
-      if (title.includes(q) || summary.includes(q)) {
-        el.classList.remove('dimmed');
-        el.classList.add('highlighted');
       } else {
+        el.classList.remove('matched');
         el.classList.add('dimmed');
-        el.classList.remove('highlighted');
       }
     });
   };
 
   window.startMindmapPan = function(e, id) {
-    if (e.target.closest('.nlm-node-card-rf') || e.target.closest('.nlm-graph-toolbar')) return;
+    if (e.target.closest('.mm-node') || e.target.closest('.nlm-graph-toolbar')) return;
     const st = window.mindmapGraphStates[id];
-    const canvas = document.getElementById(id + '-canvas');
+    const canvas = document.getElementById(`${id}-canvas`);
     if (!st || !canvas) return;
 
     let startX = e.clientX;

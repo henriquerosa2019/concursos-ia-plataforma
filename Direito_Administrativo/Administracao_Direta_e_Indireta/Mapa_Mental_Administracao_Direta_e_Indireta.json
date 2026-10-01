@@ -1,0 +1,399 @@
+{
+  "titulo": "Administração Direta e Indireta",
+  "nodes": [
+    {
+      "id": "root",
+      "titulo": "Administração Direta e Indireta",
+      "tipo": "root",
+      "pagina": 1,
+      "resumo": "Estrutura esquematizada das unidades essenciais de Administração Direta e Indireta com definições, regras e distinções de prova."
+    },
+    {
+      "id": "cat_1",
+      "titulo": "1. Definições Formais",
+      "tipo": "category",
+      "pagina": 2,
+      "resumo": "Administração Indireta: Compreende entidades que possuem personalidade jurídica própria e atuam de forma descentralizada, realizando atividades administrativas em nome do..."
+    },
+    {
+      "id": "cat_2",
+      "titulo": "2. Entidades Políticas e Administrativas",
+      "tipo": "category",
+      "pagina": 1,
+      "resumo": "Dispositivos normativos, conceitos essenciais e regras aplicáveis a entidades políticas e administrativas."
+    },
+    {
+      "id": "cat_3",
+      "titulo": "3. Desconcentração vs. Descentralização",
+      "tipo": "category",
+      "pagina": 1,
+      "resumo": "Termo: Definição Desconcentração: Distribuição interna de competências dentro da mesma pessoa jurídica (ex.: órgãos públicos)."
+    },
+    {
+      "id": "cat_4",
+      "titulo": "4. Tipos de Descentralização",
+      "tipo": "category",
+      "pagina": 1,
+      "resumo": "Ocorre quando entes descentralizados exercem atribuições próprias, com competência legislativa que não decorre do ente central."
+    },
+    {
+      "id": "cat_5",
+      "titulo": "5. Órgãos Públicos",
+      "tipo": "category",
+      "pagina": 2,
+      "resumo": "Órgãos Independentes: Presidência, Governadorias, Prefeituras Órgãos Autônomos: Ministérios, Secretarias Órgãos Superiores: Departamentos, Divisões Órgãos Subalternos: Seções..."
+    },
+    {
+      "id": "cat_6",
+      "titulo": "6. Entidades da Administração Pública",
+      "tipo": "category",
+      "pagina": 1,
+      "resumo": "Tipo: Personalidade Jurídica Autarquias: Direito Público Fundações Públicas: Direito Público ou Privado Empresas Públicas: Direito Privado Sociedades de Economia Mista:..."
+    },
+    {
+      "id": "cat_7",
+      "titulo": "7. Raio-X de Pegadinhas da Banca",
+      "tipo": "category",
+      "pagina": 12,
+      "resumo": "Principais armadilhas, inversões de conceitos e assertivas com palavras absolutas exploradas pelas bancas examinadoras."
+    },
+    {
+      "id": "item_1",
+      "titulo": "Administração Direta e Indireta",
+      "tipo": "concept",
+      "pagina": 1,
+      "resumo": "Administração Indireta: Compreende entidades que possuem personalidade jurídica própria e atuam de forma descentralizada, realizando atividades administrativas..."
+    },
+    {
+      "id": "item_2",
+      "titulo": "Entidades Políticas",
+      "tipo": "concept",
+      "pagina": 1,
+      "resumo": "Aspectos e critérios aplicáveis a Entidades Políticas."
+    },
+    {
+      "id": "item_3",
+      "titulo": "Entidades Administrativas",
+      "tipo": "concept",
+      "pagina": 1,
+      "resumo": "Aspectos e critérios aplicáveis a Entidades Administrativas."
+    },
+    {
+      "id": "item_4",
+      "titulo": "Desconcentração",
+      "tipo": "comparison",
+      "pagina": 1,
+      "resumo": "Distribuição interna de competências dentro da mesma pessoa jurídica (ex.: órgãos públicos)."
+    },
+    {
+      "id": "item_5",
+      "titulo": "Descentralização",
+      "tipo": "comparison",
+      "pagina": 1,
+      "resumo": "Distribuição de competências entre pessoas jurídicas distintas (ex.: autarquias, empresas públicas)."
+    },
+    {
+      "id": "item_6",
+      "titulo": "Regra: Ausência de Hierarquia",
+      "tipo": "rule",
+      "pagina": 1,
+      "resumo": "Não há hierarquia entre a Administração Direta e as entidades da Administração Indireta."
+    },
+    {
+      "id": "item_7",
+      "titulo": "Descentralização Política",
+      "tipo": "concept",
+      "pagina": 1,
+      "resumo": "Ocorre quando entes descentralizados exercem atribuições próprias, com competência legislativa que não decorre do ente central."
+    },
+    {
+      "id": "item_8",
+      "titulo": "Descentralização Administrativa",
+      "tipo": "concept",
+      "pagina": 1,
+      "resumo": "Aspectos e critérios aplicáveis a Descentralização Administrativa."
+    },
+    {
+      "id": "item_9",
+      "titulo": "Órgãos Independentes",
+      "tipo": "concept",
+      "pagina": 3,
+      "resumo": "Presidência, Governadorias, Prefeituras"
+    },
+    {
+      "id": "item_10",
+      "titulo": "Órgãos Autônomos",
+      "tipo": "concept",
+      "pagina": 3,
+      "resumo": "Ministérios, Secretarias"
+    },
+    {
+      "id": "item_11",
+      "titulo": "Órgãos Superiores",
+      "tipo": "concept",
+      "pagina": 3,
+      "resumo": "Departamentos, Divisões"
+    },
+    {
+      "id": "item_12",
+      "titulo": "Órgãos Subalternos",
+      "tipo": "concept",
+      "pagina": 3,
+      "resumo": "Seções de almoxarifado, portarias"
+    },
+    {
+      "id": "item_13",
+      "titulo": "Órgãos Compostos",
+      "tipo": "concept",
+      "pagina": 3,
+      "resumo": "Ministérios"
+    },
+    {
+      "id": "item_14",
+      "titulo": "Órgãos Simples",
+      "tipo": "concept",
+      "pagina": 3,
+      "resumo": "Unidades de atendimento"
+    },
+    {
+      "id": "item_15",
+      "titulo": "Órgãos Singulares",
+      "tipo": "concept",
+      "pagina": 3,
+      "resumo": "Presidência da República"
+    },
+    {
+      "id": "item_16",
+      "titulo": "Órgãos Colegiados",
+      "tipo": "concept",
+      "pagina": 4,
+      "resumo": "Assembleias Legislativas"
+    },
+    {
+      "id": "item_17",
+      "titulo": "Classificação dos Órgãos Públicos",
+      "tipo": "concept",
+      "pagina": 3,
+      "resumo": "Órgãos Independentes: Presidência, Governadorias, Prefeituras Órgãos Autônomos: Ministérios, Secretarias Órgãos Superiores: Departamentos, Divisões Órgãos..."
+    },
+    {
+      "id": "item_18",
+      "titulo": "Autarquias",
+      "tipo": "concept",
+      "pagina": 1,
+      "resumo": "Direito Público"
+    },
+    {
+      "id": "item_19",
+      "titulo": "Fundações Públicas",
+      "tipo": "concept",
+      "pagina": 1,
+      "resumo": "Direito Público ou Privado"
+    },
+    {
+      "id": "item_20",
+      "titulo": "Empresas Públicas",
+      "tipo": "concept",
+      "pagina": 1,
+      "resumo": "Direito Privado"
+    },
+    {
+      "id": "item_21",
+      "titulo": "Sociedades de Economia Mista",
+      "tipo": "concept",
+      "pagina": 1,
+      "resumo": "Direito Privado"
+    },
+    {
+      "id": "item_22",
+      "titulo": "Tipos de Entidades",
+      "tipo": "concept",
+      "pagina": 1,
+      "resumo": "Tipo: Personalidade Jurídica Autarquias: Direito Público Fundações Públicas: Direito Público ou Privado Empresas Públicas: Direito Privado Sociedades de..."
+    },
+    {
+      "id": "item_23",
+      "titulo": "Pegadinha: Desconcentração vs.",
+      "tipo": "trap",
+      "pagina": 1,
+      "resumo": "Regra de Ouro: “Descentralização é entre diferentes; desconcentração é dentro.."
+    },
+    {
+      "id": "item_24",
+      "titulo": "Pegadinha: Entidades Políticas e",
+      "tipo": "trap",
+      "pagina": 1,
+      "resumo": "Regra de Ouro: “Autarquias não votam, entidades políticas sim.."
+    },
+    {
+      "id": "item_25",
+      "titulo": "Pegadinha: Prazos para Lei e Criação",
+      "tipo": "trap",
+      "pagina": 5,
+      "resumo": "Regra de Ouro: “Autarquia? Só por lei específica!."
+    },
+    {
+      "id": "item_26",
+      "titulo": "Pegadinha: Controle e Supervisão das",
+      "tipo": "trap",
+      "pagina": 7,
+      "resumo": "Regra de Ouro: “Privado, mas não livre do olhar do público.."
+    },
+    {
+      "id": "item_27",
+      "titulo": "Pegadinha: Rigidez na Acumulação de",
+      "tipo": "trap",
+      "pagina": 4,
+      "resumo": "Regra de Ouro: “Acumulação tem exceções; não é uma regra geral.."
+    },
+    {
+      "id": "item_28",
+      "titulo": "Pegadinha: Teoria do Órgão",
+      "tipo": "trap",
+      "pagina": 2,
+      "resumo": "Regra de Ouro: “A vontade do órgão, não do agente.."
+    }
+  ],
+  "edges": [
+    {
+      "source": "root",
+      "target": "cat_1"
+    },
+    {
+      "source": "root",
+      "target": "cat_2"
+    },
+    {
+      "source": "root",
+      "target": "cat_3"
+    },
+    {
+      "source": "root",
+      "target": "cat_4"
+    },
+    {
+      "source": "root",
+      "target": "cat_5"
+    },
+    {
+      "source": "root",
+      "target": "cat_6"
+    },
+    {
+      "source": "root",
+      "target": "cat_7"
+    },
+    {
+      "source": "cat_1",
+      "target": "item_1"
+    },
+    {
+      "source": "cat_2",
+      "target": "item_2"
+    },
+    {
+      "source": "cat_2",
+      "target": "item_3"
+    },
+    {
+      "source": "cat_3",
+      "target": "item_4"
+    },
+    {
+      "source": "cat_3",
+      "target": "item_5"
+    },
+    {
+      "source": "cat_3",
+      "target": "item_6"
+    },
+    {
+      "source": "cat_4",
+      "target": "item_7"
+    },
+    {
+      "source": "cat_4",
+      "target": "item_8"
+    },
+    {
+      "source": "cat_5",
+      "target": "item_9"
+    },
+    {
+      "source": "cat_5",
+      "target": "item_10"
+    },
+    {
+      "source": "cat_5",
+      "target": "item_11"
+    },
+    {
+      "source": "cat_5",
+      "target": "item_12"
+    },
+    {
+      "source": "cat_5",
+      "target": "item_13"
+    },
+    {
+      "source": "cat_5",
+      "target": "item_14"
+    },
+    {
+      "source": "cat_5",
+      "target": "item_15"
+    },
+    {
+      "source": "cat_5",
+      "target": "item_16"
+    },
+    {
+      "source": "cat_5",
+      "target": "item_17"
+    },
+    {
+      "source": "cat_6",
+      "target": "item_18"
+    },
+    {
+      "source": "cat_6",
+      "target": "item_19"
+    },
+    {
+      "source": "cat_6",
+      "target": "item_20"
+    },
+    {
+      "source": "cat_6",
+      "target": "item_21"
+    },
+    {
+      "source": "cat_6",
+      "target": "item_22"
+    },
+    {
+      "source": "cat_7",
+      "target": "item_23"
+    },
+    {
+      "source": "cat_7",
+      "target": "item_24"
+    },
+    {
+      "source": "cat_7",
+      "target": "item_25"
+    },
+    {
+      "source": "cat_7",
+      "target": "item_26"
+    },
+    {
+      "source": "cat_7",
+      "target": "item_27"
+    },
+    {
+      "source": "cat_7",
+      "target": "item_28"
+    }
+  ]
+}

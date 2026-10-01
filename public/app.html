@@ -8339,6 +8339,97 @@
   window.mindmapGraphStates = window.mindmapGraphStates || {};
   window.activeMindmapNode = null;
 
+  function sanitizeMindmapTitle(rawStr, discipline) {
+    let s = (rawStr || '').replace(/\.pdf$/i, '').replace(/_/g, ' ');
+    s = s.replace(/kverna\s*\d*/gi, '')
+         .replace(/carreiras/gi, '')
+         .replace(/noite|manh[ãa]|tarde/gi, '')
+         .replace(/teoria/gi, '')
+         .replace(/\bSG\b|\bPF\b|\bPRF\b/gi, '')
+         .replace(/\b20\d\d\b/g, '')
+         .replace(/direito\s+[a-z\u00C0-\u017F]+/gi, '')
+         .replace(/[-–—]/g, ' ')
+         .replace(/\s+/g, ' ')
+         .trim();
+
+    if (!s || s.length < 3) {
+      s = (discipline || 'Mapa Mental').replace(/_/g, ' ');
+    }
+    return s.split(' ')
+      .filter(w => w.length > 0)
+      .map(w => ['de', 'da', 'do', 'das', 'dos', 'e', 'em'].includes(w.toLowerCase()) ? w.toLowerCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+      .join(' ');
+  }
+
+  function truncateAtWord(text, maxLen) {
+    maxLen = maxLen || 42;
+    const t = (text || '').trim();
+    if (t.length <= maxLen) return t;
+    const sub = t.slice(0, maxLen);
+    const lastSpace = sub.lastIndexOf(' ');
+    if (lastSpace > 18) {
+      return sub.slice(0, lastSpace).trim();
+    }
+    return sub.trim();
+  }
+
+  function cleanMindmapHeading(text) {
+    let t = (text || '').trim();
+    t = t.replace(/^#{1,6}\s+/, '');
+    t = t.replace(/^(?:\d+[\.\)]\s*)+/, '');
+    t = t.replace(/^[A-Z][\.\)]\s+/, '');
+    t = t.replace(/\*\*/g, '').replace(/[-–—]\s*/, '').trim();
+    return truncateAtWord(t, 42);
+  }
+
+  function extractMindmapSubstantiveSummary(lines, maxChars) {
+    maxChars = maxChars || 175;
+    const substantiveSentences = [];
+    for (const l of lines) {
+      const s = l.trim();
+      if (!s || s.startsWith('#') || s.startsWith('|--') || s.length < 15) continue;
+      if (/kaverna|rodrigo motta|p[áa]gina|youtube|instagram|www\./i.test(s)) continue;
+
+      if (s.startsWith('|') && s.endsWith('|')) {
+        const parts = s.split('|').map(p => p.trim()).filter(Boolean);
+        if (parts.length >= 2 && !parts[0].includes('---') && !/crit[ée]rio|requisito|estrutura/i.test(parts[0])) {
+          const term = parts[0].replace(/\*\*/g, '').trim();
+          const def = parts[1].replace(/\*\*/g, '').trim();
+          if (term.length >= 3 && def.length >= 8) {
+            substantiveSentences.push(`${term}: ${def}`);
+            continue;
+          }
+        }
+      }
+
+      const mDef = s.match(/\*\*([A-Za-z\u00C0-\u017F\s\(\)/,:-]{3,35})\*\*[:–-]\s*(.{10,120})/);
+      if (mDef) {
+        const term = mDef[1].trim();
+        const text = mDef[2].replace(/\*\*/g, '').trim();
+        if (text.length > 10 && !/professor|link|dura[çc][ãa]o|categoria|fonte/i.test(term)) {
+          substantiveSentences.push(`${term}: ${text}`);
+          continue;
+        }
+      }
+
+      if (/compreende|ocorre quando|s[ãa]o pessoas|n[ãa]o h[áa] hierarquia|distribui[çc][ãa]o|imputados|depende de|adota a/i.test(s)) {
+        const cleanL = s.replace(/^[-*•\s>]+/, '').replace(/\*\*/g, '').trim();
+        substantiveSentences.push(cleanL);
+      }
+    }
+
+    if (substantiveSentences.length > 0) {
+      let combined = substantiveSentences.join(' ').replace(/\s+/g, ' ').trim();
+      if (combined.length > maxChars) {
+        const cutoff = combined.slice(0, maxChars).lastIndexOf('.');
+        if (cutoff > 80) return combined.slice(0, cutoff + 1);
+        return truncateAtWord(combined, maxChars) + '...';
+      }
+      return combined;
+    }
+    return '';
+  }
+
   window.generateUniversalMindmapFromText = function(discipline, subarea, title, contextText, focus) {
     const cleanTitle = (focus || title || (subarea || 'Novo Tópico').replace(/_/g, ' ')).trim();
     const normTopic = `${discipline || ''} ${subarea || ''} ${cleanTitle}`.toLowerCase().replace(/-/g, '_');

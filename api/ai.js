@@ -84,6 +84,95 @@ function findTopicData(disc, sub) {
   return null;
 }
 
+function sanitizeMindmapTitle(rawStr, discipline = '') {
+  let s = (rawStr || '').replace(/\.pdf$/i, '').replace(/_/g, ' ');
+  s = s.replace(/kverna\s*\d*/gi, '')
+       .replace(/carreiras/gi, '')
+       .replace(/noite|manh[ãa]|tarde/gi, '')
+       .replace(/teoria/gi, '')
+       .replace(/\bSG\b|\bPF\b|\bPRF\b/gi, '')
+       .replace(/\b20\d\d\b/g, '')
+       .replace(/direito\s+[a-z\u00C0-\u017F]+/gi, '')
+       .replace(/[-–—]/g, ' ')
+       .replace(/\s+/g, ' ')
+       .trim();
+
+  if (!s || s.length < 3) {
+    s = (discipline || 'Mapa Mental').replace(/_/g, ' ');
+  }
+  return s.split(' ')
+    .filter(w => w.length > 0)
+    .map(w => ['de', 'da', 'do', 'das', 'dos', 'e', 'em'].includes(w.toLowerCase()) ? w.toLowerCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .join(' ');
+}
+
+function truncateAtWord(text, maxLen = 42) {
+  const t = (text || '').trim();
+  if (t.length <= maxLen) return t;
+  const sub = t.slice(0, maxLen);
+  const lastSpace = sub.lastIndexOf(' ');
+  if (lastSpace > 18) {
+    return sub.slice(0, lastSpace).trim();
+  }
+  return sub.trim();
+}
+
+function cleanMindmapHeading(text) {
+  let t = (text || '').trim();
+  t = t.replace(/^#{1,6}\s+/, '');
+  t = t.replace(/^(?:\d+[\.\)]\s*)+/, '');
+  t = t.replace(/^[A-Z][\.\)]\s+/, '');
+  t = t.replace(/\*\*/g, '').replace(/[-–—]\s*/, '').trim();
+  return truncateAtWord(t, 42);
+}
+
+function extractMindmapSubstantiveSummary(lines, maxChars = 175) {
+  const substantiveSentences = [];
+  for (const l of lines) {
+    const s = l.trim();
+    if (!s || s.startsWith('#') || s.startsWith('|--') || s.length < 15) continue;
+    if (/kaverna|rodrigo motta|p[áa]gina|youtube|instagram|www\./i.test(s)) continue;
+
+    if (s.startsWith('|') && s.endsWith('|')) {
+      const parts = s.split('|').map(p => p.trim()).filter(Boolean);
+      if (parts.length >= 2 && !parts[0].includes('---') && !/crit[ée]rio|requisito|estrutura/i.test(parts[0])) {
+        const term = parts[0].replace(/\*\*/g, '').trim();
+        const def = parts[1].replace(/\*\*/g, '').trim();
+        if (term.length >= 3 && def.length >= 8) {
+          substantiveSentences.push(`${term}: ${def}`);
+          continue;
+        }
+      }
+    }
+
+    const mDef = s.match(/\*\*([A-Za-z\u00C0-\u017F\s\(\)/,:-]{3,35})\*\*[:–-]\s*(.{10,120})/);
+    if (mDef) {
+      const term = mDef[1].trim();
+      const text = mDef[2].replace(/\*\*/g, '').trim();
+      if (text.length > 10 && !/professor|link|dura[çc][ãa]o|categoria|fonte/i.test(term)) {
+        substantiveSentences.push(`${term}: ${text}`);
+        continue;
+      }
+    }
+
+    if (/compreende|ocorre quando|s[ãa]o pessoas|n[ãa]o h[áa] hierarquia|distribui[çc][ãa]o|imputados|depende de|adota a/i.test(s)) {
+      const cleanL = s.replace(/^[-*•\s>]+/, '').replace(/\*\*/g, '').trim();
+      substantiveSentences.push(cleanL);
+    }
+  }
+
+  if (substantiveSentences.length > 0) {
+    let combined = substantiveSentences.join(' ').replace(/\s+/g, ' ').trim();
+    if (combined.length > maxChars) {
+      const cutoff = combined.slice(0, maxChars).lastIndexOf('.');
+      if (cutoff > 80) return combined.slice(0, cutoff + 1);
+      return truncateAtWord(combined, maxChars) + '...';
+    }
+    return combined;
+  }
+  return '';
+}
+
 function extractSemanticMindmapFromCorpus(disc, sub, title, contextText, focus = '') {
   const cleanTitle = (focus || title || sub.replace(/_/g, ' ')).trim();
   const normTopic = `${disc} ${sub} ${cleanTitle}`.toLowerCase().replace(/-/g, '_');
@@ -471,321 +560,373 @@ function extractSemanticMindmapFromCorpus(disc, sub, title, contextText, focus =
   }
 
   // 6. Extrator Semântico Dinâmico Estilo NotebookLM para Qualquer PDF Importado (Robusto & Preciso)
+  const cleanRootTitle = sanitizeMindmapTitle(focus || title || sub, disc);
   const rawPages = (contextText || '').split(/---\s*P[ÁA]GINA\s*(\d+)\s*---/i);
   const pageMap = {};
+
   if (rawPages.length > 1) {
     for (let i = 1; i < rawPages.length; i += 2) {
       const pnum = parseInt(rawPages[i], 10);
-      const ptxt = rawPages[i + 1] || '';
-      pageMap[pnum] = ptxt;
+      pageMap[pnum] = (rawPages[i + 1] || '');
     }
   } else {
     pageMap[1] = contextText || '';
   }
 
   const pageKeys = Object.keys(pageMap).map(Number).sort((a, b) => a - b);
-  const totalP = pageKeys.length ? pageKeys[pageKeys.length - 1] : 1;
+  const totalPages = pageKeys.length ? pageKeys[pageKeys.length - 1] : 1;
 
-  // 1. Descoberta de Cabeçalhos e Macro-Eixos Estruturantes
-  const headings = [];
-  const seenHeadings = new Set();
-  const discNorm = (disc || '').toLowerCase().replace(/_/g, ' ');
-  const titleNorm = cleanTitle.toLowerCase();
+  function findPageForTerm(termStr, defaultPage = 1) {
+    if (!pageKeys.length) return defaultPage;
+    const tClean = (termStr || '').toLowerCase().trim();
+    const tWords = (tClean.match(/[a-z\u00C0-\u017F]{4,}/g) || []).filter(w => !['para', 'com', 'como', 'sobre', 'pela', 'pelo', 'pegadinha'].includes(w));
+    if (!tWords.length) return defaultPage;
 
-  for (const pnum of pageKeys) {
-    const ptxt = pageMap[pnum];
-    const lines = ptxt.split('\n');
-    for (const l of lines) {
-      const lStr = l.trim();
-      if (!lStr || lStr.length < 4) continue;
-      if (/rodrigo\s+motta|kaverna|p[áa]gina|youtube|instagram|gabarito|sum[áa]rio|[ií]ndice|www\./i.test(lStr)) continue;
+    let bestPage = defaultPage;
+    let maxMatches = 0;
+    for (const pnum of pageKeys) {
+      const ptxt = (pageMap[pnum] || '').toLowerCase();
+      let matches = 0;
+      for (const w of tWords) {
+        if (ptxt.includes(w)) matches++;
+      }
+      if (matches > maxMatches) {
+        maxMatches = matches;
+        bestPage = pnum;
+      }
+    }
+    return bestPage;
+  }
 
-      const m_md = lStr.match(/^#{1,3}\s+(.+)$/);
-      const m_num = lStr.match(/^(?:[0-9]{1,2}\.|\b[IVXLCDM]+\s*[-–.]|\bArt\.\s*\d+[º\w\s-]*)\s+([A-Za-z\u00C0-\u017F\s\(\)/,:-]{4,60})/);
-      const isUpper = (lStr === lStr.toUpperCase() && lStr.length >= 5 && lStr.length <= 55 && !lStr.startsWith('(') && !lStr.endsWith(')'));
+  // 1. Extração de Seções e Linhas (suporta Markdown ## / ###, numeração e maiúsculas)
+  const sections = [];
+  const pegadinhaItems = [];
+  const lines = (contextText || '').split('\n');
+  let currentSec = null;
+  let inPilar2 = false;
+  let currentPegadinha = null;
 
-      let cand = "";
-      if (m_md) cand = m_md[1];
-      else if (m_num) cand = m_num[1];
-      else if (isUpper) cand = lStr;
+  for (const line of lines) {
+    const l = line.trim();
+    if (!l) continue;
+    if (/rodrigo motta|kaverna|p[áa]gina\s*\d+|youtube|instagram|gabarito|sum[áa]rio|[ií]ndice|www\./i.test(l)) continue;
 
-      if (cand) {
-        const cleanCand = cand.replace(/^[0-9.\-–*#\s]+/, '').replace(/\*\*/g, '').trim();
-        const norm = cleanCand.toLowerCase();
-        if (cleanCand.length >= 4 && cleanCand.length <= 50 && !seenHeadings.has(norm)) {
-          if (norm !== discNorm && norm !== titleNorm && !/vis[ãa]o\s+geral|mapa\s+mental|mini-simulado|exerc[ií]cios|resumo\s+estruturado|raio-x|flashcards|pilar/i.test(norm)) {
-            seenHeadings.add(norm);
-            headings.push({ title: cleanCand, page: pnum });
-          }
+    if (/##\s*2\.\s*Raio-X de Banca/i.test(l)) {
+      inPilar2 = true;
+      currentSec = null;
+      continue;
+    }
+
+    if (inPilar2) {
+      const mPeg = l.match(/^###\s+(?:🚨\s*)?(?:Pegadinha\s*\d*:\s*)?(.+)$/i);
+      if (mPeg) {
+        if (currentPegadinha) pegadinhaItems.push(currentPegadinha);
+        const pRaw = mPeg[1].trim();
+        currentPegadinha = {
+          raw_title: pRaw,
+          clean_title: cleanMindmapHeading(pRaw),
+          lines: []
+        };
+      } else if (currentPegadinha) {
+        currentPegadinha.lines.push(line);
+      }
+    } else {
+      const mHeading = l.match(/^(?:#{2,3}\s+|(?:\d{1,2}\.|\b[IVXLCDM]+\s*[-–.]|[A-Z]\.)\s+)([A-Za-z0-9\.\s\u00C0-\u017F\-\/–—:]{4,65})$/);
+      const isUpper = (l === l.toUpperCase() && l.length >= 6 && l.length <= 65 && !l.startsWith('(') && !l.endsWith(')') && !/RODRIGO|DIREITO|P[ÁA]GINA|EXERC[IÍ]CIO|QUEST[ÃA]O|GABARITO|IMPORTANTE|PROF\.|YOUTUBE|WWW\./i.test(l));
+
+      let rawH = null;
+      if (mHeading) {
+        rawH = mHeading[1].trim();
+      } else if (isUpper && (!currentSec || currentSec.lines.length >= 2)) {
+        rawH = l.trim();
+      }
+
+      if (rawH) {
+        const cleanH = cleanMindmapHeading(rawH);
+        if (cleanH.length >= 4 && !/resumo estruturado|raio-x|mnem[ôo]nicos|mini-simulado|quadro esquem[áa]tico|gabarito|quest[õo]es|pilar/i.test(cleanH)) {
+          if (currentSec) sections.push(currentSec);
+          currentSec = {
+            heading: rawH,
+            clean_title: cleanH,
+            lines: []
+          };
+          continue;
         }
+      }
+
+      if (currentSec) {
+        currentSec.lines.push(line);
       }
     }
   }
 
-  // 2. Formação Dinâmica de 5 a 8 Macro-Categorias (Nível 1)
+  if (currentSec) sections.push(currentSec);
+  if (currentPegadinha) pegadinhaItems.push(currentPegadinha);
+
+  // 2. Formação Dinâmica das Macro-Categorias (Nível 1)
   const macroCategories = [];
-  if (headings.length >= 5) {
-    const targetCount = Math.min(8, Math.max(5, headings.length));
-    const step = headings.length / targetCount;
+  if (sections.length >= 4) {
+    const targetCount = Math.min(7, sections.length);
+    const step = sections.length / targetCount;
     for (let i = 0; i < targetCount; i++) {
       const idx = Math.floor(i * step);
-      const sh = headings[idx];
-      const catTitle = `${i + 1}. ${sh.title.slice(0, 38)}`;
+      const s = sections[idx];
+      let subSum = extractMindmapSubstantiveSummary(s.lines);
+      if (!subSum) {
+        subSum = `Dispositivos normativos, conceitos essenciais e regras aplicáveis a ${s.clean_title.toLowerCase()}.`;
+      }
+      const page = findPageForTerm(s.clean_title, Math.max(1, Math.floor((i + 1) * (totalPages / targetCount))));
+      const shortTitle = truncateAtWord(s.clean_title, 38);
+
       macroCategories.push({
         id: `cat_${i + 1}`,
-        titulo: catTitle,
-        pagina: sh.page,
-        resumo: `Eixo estruturante sobre ${sh.title.toLowerCase()} com regras essenciais e diretrizes de prova.`
+        titulo: `${i + 1}. ${shortTitle}`,
+        clean_name: s.clean_title,
+        tipo: "category",
+        pagina: page,
+        resumo: subSum,
+        section: s
       });
     }
   } else {
-    // Blueprints taxonômicos pedagógicos por matéria
+    const normT = `${disc} ${sub} ${cleanRootTitle}`.toLowerCase();
     let blueprints = [];
-    if (/const/i.test(normTopic)) {
+    if (/adm|licita/i.test(normT)) {
+      blueprints = [
+        ["1. Definições e Regime Jurídico", 1, "Conceitos fundamentais da Administração Pública, distinção entre direta e indireta e regime de direito público."],
+        ["2. Entidades Políticas e Administrativas", Math.max(1, Math.floor(totalPages * 0.18)), "União, Estados, DF e Municípios versus entidades descentralizadas da administração indireta."],
+        ["3. Desconcentração vs. Descentralização", Math.max(1, Math.floor(totalPages * 0.35)), "Criação interna de órgãos sem personalidade versus criação de novas pessoas jurídicas por lei."],
+        ["4. Órgãos Públicos e Classificações", Math.max(1, Math.floor(totalPages * 0.52)), "Centros de competência despersonalizados: independentes, autônomos, superiores e subalternos."],
+        ["5. Entidades da Administração Indireta", Math.max(1, Math.floor(totalPages * 0.7)), "Autarquias, fundações públicas, empresas públicas e sociedades de economia mista."],
+        ["6. Atividades e Prerrogativas Estatais", Math.max(1, Math.floor(totalPages * 0.85)), "Atividades típicas de Estado, exploração de atividade econômica e regime de pessoal."]
+      ];
+    } else if (/const/i.test(normT)) {
       blueprints = [
         ["1. Fundamentos e Princípios", 1, "Bases axiológicas, forma de Estado e princípios fundamentais."],
-        ["2. Hermenêutica e Eficácia", Math.max(1, Math.floor(totalP * 0.15)), "Métodos de interpretação e aplicabilidade das normas."],
-        ["3. Direitos e Garantias Individuais", Math.max(1, Math.floor(totalP * 0.3)), "Núcleo protetivo dos direitos individuais e remédios constitucionais."],
-        ["4. Organização do Estado", Math.max(1, Math.floor(totalP * 0.45)), "Repartição de competências e autonomia dos entes federados."],
-        ["5. Organização dos Poderes", Math.max(1, Math.floor(totalP * 0.6)), "Funções típicas e atípicas dos Poderes da República."],
-        ["6. Processo Legislativo e Controle", Math.max(1, Math.floor(totalP * 0.75)), "Espécies normativas, processo legislativo e controle de constitucionalidade."],
-        ["7. Pegadinhas e Regras de Banca", Math.max(1, Math.floor(totalP * 0.9)), "Inversões clássicas de prova, termos absolutos e armadilhas da banca."]
-      ];
-    } else if (/adm|licita/i.test(normTopic)) {
-      blueprints = [
-        ["1. Conceitos e Regime Jurídico", 1, "Princípios expressos e implícitos da Administração Pública."],
-        ["2. Poderes e Prerrogativas", Math.max(1, Math.floor(totalP * 0.18)), "Poder de polícia, poder disciplinar e hierárquico."],
-        ["3. Atos Administrativos e Requisitos", Math.max(1, Math.floor(totalP * 0.35)), "Competência, finalidade, forma, motivo e objeto."],
-        ["4. Licitações e Contratos", Math.max(1, Math.floor(totalP * 0.52)), "Modalidades licitatórias, julgamento e contratação direta."],
-        ["5. Agentes e Responsabilidade Civil", Math.max(1, Math.floor(totalP * 0.7)), "Regime jurídico funcional, responsabilidade civil e improbidade."],
-        ["6. Extinção, Anulação e Convalidação", Math.max(1, Math.floor(totalP * 0.85)), "Revogação (mérito) versus anulação (ilegalidade) e efeitos."],
-        ["7. Pegadinhas e Casos Críticos de Prova", Math.max(1, Math.floor(totalP * 0.95)), "Armadilhas frequentes de bancas examinadoras."]
-      ];
-    } else if (/penal/i.test(normTopic)) {
-      blueprints = [
-        ["1. Princípios e Teoria da Norma", 1, "Legalidade, anterioridade e aplicação da lei penal no tempo e espaço."],
-        ["2. Fato Típico e Conduta", Math.max(1, Math.floor(totalP * 0.18)), "Conduta, resultado, nexo de causalidade e tipicidade penal."],
-        ["3. Dolo, Culpa e Omissão", Math.max(1, Math.floor(totalP * 0.35)), "Espécies de dolo, modalidades de culpa e relevância da omissão."],
-        ["4. Ilicitude e Causas Excludentes", Math.max(1, Math.floor(totalP * 0.52)), "Legítima defesa, estado de necessidade e estrito cumprimento."],
-        ["5. Culpabilidade e Imputabilidade", Math.max(1, Math.floor(totalP * 0.7)), "Imputabilidade, potencial consciência e exigibilidade de conduta diversa."],
-        ["6. Concurso de Crimes e Penas", Math.max(1, Math.floor(totalP * 0.85)), "Concurso material, formal, crime continuado e fixação de penas."],
-        ["7. Pegadinhas e Regras de Banca", Math.max(1, Math.floor(totalP * 0.95)), "Inversões e diferenças conceituais cobradas em provas."]
-      ];
-    } else if (/info|excel|rede|dados/i.test(normTopic)) {
-      blueprints = [
-        ["1. Fundamentos e Arquitetura", 1, "Conceitos estruturais, hardware, software e definições operacionais."],
-        ["2. Funções e Comandos Centrais", Math.max(1, Math.floor(totalP * 0.2)), "Sintaxes, funções operacionais e parâmetros essenciais."],
-        ["3. Protocolos, Padrões e Portas", Math.max(1, Math.floor(totalP * 0.4)), "Modelos OSI/TCP, portas oficiais e regras de rede."],
-        ["4. Segurança da Informação e Ameaças", Math.max(1, Math.floor(totalP * 0.6)), "Malwares, criptografia, autenticação e certificados digitais."],
-        ["5. Procedimentos Operacionais e Atalhos", Math.max(1, Math.floor(totalP * 0.8)), "Práticas recomendadas, sequências operacionais e teclas de atalho."],
-        ["6. Pegadinhas e Armadilhas de Banca", Math.max(1, Math.floor(totalP * 0.95)), "Erros de digitação de fórmula, termos absolutos e armadilhas."]
+        ["2. Hermenêutica e Eficácia", Math.max(1, Math.floor(totalPages * 0.2)), "Métodos de interpretação e aplicabilidade das normas."],
+        ["3. Direitos e Garantias Individuais", Math.max(1, Math.floor(totalPages * 0.4)), "Núcleo protetivo dos direitos individuais e remédios constitucionais."],
+        ["4. Organização do Estado e Poderes", Math.max(1, Math.floor(totalPages * 0.6)), "Repartição de competências e tripartição dos Poderes da República."],
+        ["5. Processo Legislativo e Controle", Math.max(1, Math.floor(totalPages * 0.8)), "Espécies normativas e fiscalização de constitucionalidade."]
       ];
     } else {
       blueprints = [
-        ["1. Fundamentos e Visão Geral", 1, `Conceitos primários e definições de ${cleanTitle}.`],
-        ["2. Estrutura e Classificações", Math.max(1, Math.floor(totalP * 0.2)), "Divisões taxonômicas e espécies doutrinárias."],
-        ["3. Regime de Regras e Aplicações", Math.max(1, Math.floor(totalP * 0.4)), "Critérios práticos e parâmetros normativos."],
-        ["4. Prerrogativas e Obrigações", Math.max(1, Math.floor(totalP * 0.6)), "Deveres, requisitos formais e procedimentos operacionais."],
-        ["5. Exceções e Vedações Legais", Math.max(1, Math.floor(totalP * 0.8)), "Hipóteses restritivas e ressalvas legais."],
-        ["6. Raio-X de Pegadinhas da Banca", Math.max(1, Math.floor(totalP * 0.95)), "Armadilhas conceituais e inversões de prova."]
+        ["1. Fundamentos e Visão Geral", 1, `Conceitos primários e definições de ${cleanRootTitle}.`],
+        ["2. Estrutura e Classificações", Math.max(1, Math.floor(totalPages * 0.25)), "Divisões taxonômicas e espécies doutrinárias."],
+        ["3. Regime de Regras e Aplicações", Math.max(1, Math.floor(totalPages * 0.5)), "Critérios práticos e parâmetros normativos."],
+        ["4. Prerrogativas, Exceções e Obrigações", Math.max(1, Math.floor(totalPages * 0.75)), "Deveres, requisitos formais, restrições e procedimentos."]
       ];
     }
-
     blueprints.forEach(([titleB, pageB, descB], idx) => {
       macroCategories.push({
         id: `cat_${idx + 1}`,
         titulo: titleB,
-        pagina: Math.min(pageB, totalP),
-        resumo: descB
+        clean_name: titleB.replace(/^\d+\.\s*/, ''),
+        tipo: "category",
+        pagina: Math.min(pageB, totalPages),
+        resumo: descB,
+        section: sections[idx] || null
       });
     });
   }
 
-  // 3. Montar Nó Raiz e Categorias Oficiais
+  // Raio-X de Pegadinhas permanente
+  const catPegNum = macroCategories.length + 1;
+  macroCategories.push({
+    id: `cat_${catPegNum}`,
+    titulo: `${catPegNum}. Raio-X de Pegadinhas da Banca`,
+    clean_name: "Pegadinhas de Prova",
+    tipo: "category",
+    pagina: findPageForTerm("pegadinha", totalPages),
+    resumo: "Principais armadilhas, inversões de conceitos e assertivas com palavras absolutas exploradas pelas bancas examinadoras.",
+    section: null
+  });
+
+  // 3. Montar Nó Raiz
   const nodes = [{
     id: "root",
-    titulo: cleanTitle.slice(0, 45),
+    titulo: cleanRootTitle.slice(0, 45),
     tipo: "root",
     pagina: 1,
-    resumo: `Estrutura esquematizada das unidades essenciais de ${cleanTitle} para retenção rápida em concursos.`
+    resumo: `Estrutura esquematizada das unidades essenciais de ${cleanRootTitle} com definições, regras e distinções de prova.`
   }];
   const edges = [];
 
   for (const c of macroCategories) {
-    nodes.push({ id: c.id, titulo: c.titulo, tipo: "category", pagina: c.pagina, resumo: c.resumo });
+    nodes.push({
+      id: c.id,
+      titulo: c.titulo,
+      tipo: "category",
+      pagina: c.pagina,
+      resumo: c.resumo
+    });
     edges.push({ source: "root", target: c.id });
   }
 
-  // 4. Extração de Conceitos, Definições, Regras, Exceções, Mnemônicos e Pegadinhas
-  const foundItems = [];
-  const seenItems = new Set();
+  // 4. Extração de Subconceitos por Section Locality
+  const seenNodeTitles = new Set();
+  let itemCounter = 0;
 
-  const knownMnemonics = [
-    [/\bSO[\s\-]CI[\s\-]DI[\s\-]VA[\s\-]PLU\b/i, 'Fundamentos (SO-CI-DI-VA-PLU)', 'Soberania, Cidadania, Dignidade, Valores sociais, Pluralismo.'],
-    [/\bCON[\s\-]GA[\s\-]ERRA[\s\-]PRO\b/i, 'Objetivos (CON-GA-ERRA-PRO)', 'Construir sociedade, Garantir desenv., Erradicar pobreza, Promover bem.'],
-    [/\bCO[\s\-]FI[\s\-]FO[\s\-]MO[\s\-]OB\b/i, 'Requisitos do Ato (COFIFOMOB)', 'Competência, Finalidade, Forma, Motivo e Objeto.'],
-    [/\bPA[\s\-]TI\b/i, 'Atributos do Ato (PATI)', 'Presunção de legitimidade, Autoexecutoriedade, Tipicidade, Imperatividade.'],
-    [/\bLIMPE\b/i, 'Princípios Expressos (LIMPE)', 'Legalidade, Impessoalidade, Moralidade, Publicidade, Eficiência.'],
-    [/\bRAÇÃO\b/i, 'Imprescritíveis (RAÇÃO)', 'Racismo e Ação de grupos armados são imprescritíveis.'],
-    [/\b3T\+H\b/i, 'Inafiançáveis (3T+H)', 'Tortura, Tráfico, Terrorismo e Hediondos.'],
-    [/\bPRE[\s\-]CON[\s\-]CON[\s\-]LEI[\s\-]DIA\b/i, 'Modalidades (PRE-CON-CON-LEI-DIA)', 'Pregão, Concorrência, Concurso, Leilão e Diálogo Competitivo.']
-  ];
+  for (const c of macroCategories) {
+    const s = c.section;
+    const secLines = s ? s.lines : [];
+    const secItems = [];
 
-  for (const pnum of pageKeys) {
-    const ptxt = pageMap[pnum];
+    // Tabelas Markdown
+    for (const l of secLines) {
+      if (l.startsWith('|') && l.includes('|', 1)) {
+        const parts = l.split('|').map(p => p.trim()).filter(Boolean);
+        if (parts.length >= 2 && !parts[0].split('').every(ch => '-: '.includes(ch))) {
+          const term = parts[0].replace(/\*\*/g, '').trim();
+          const defi = parts[1].replace(/\*\*/g, '').trim();
+          if (term.length >= 3 && defi.length >= 8 && !/termo|tipo|item|estrutura|posi[çc][ãa]o/i.test(term)) {
+            const cleanT = cleanMindmapHeading(term);
+            const isComp = /desconcentra[çc][ãa]o|descentraliza[çc][ãa]o|versus|outorga|delega[çc][ãa]o/i.test(cleanT);
+            secItems.push({
+              titulo: truncateAtWord(cleanT, 42),
+              tipo: isComp ? "comparison" : "concept",
+              resumo: defi.slice(0, 180)
+            });
+          }
+        }
+      }
+    }
 
-    for (const [pat, mTitle, mDesc] of knownMnemonics) {
-      if (pat.test(ptxt) && !seenItems.has(mTitle.toLowerCase())) {
-        seenItems.add(mTitle.toLowerCase());
-        foundItems.push({
-          titulo: mTitle,
-          tipo: "mnemonic",
-          pagina: pnum,
-          resumo: mDesc
+    // Subcabeçalhos #### ou negrito
+    for (let idxL = 0; idxL < secLines.length; idxL++) {
+      const lStr = secLines[idxL].trim();
+      const mSubh = lStr.match(/^####\s+(?:[0-9]{1,2}\.|\b[A-Z]\.)?\s*(.+)$/);
+      if (mSubh) {
+        const rawSt = mSubh[1].trim();
+        const cleanSt = cleanMindmapHeading(rawSt);
+        if (cleanSt.length >= 3 && !/caracter[íi]sticas comuns|defini[çc][ãa]o|conceito/i.test(cleanSt)) {
+          const nextLines = secLines.slice(idxL + 1, idxL + 8);
+          let sumTxt = extractMindmapSubstantiveSummary(nextLines, 160);
+          if (!sumTxt) sumTxt = `Aspectos e critérios aplicáveis a ${cleanSt}.`;
+          secItems.push({
+            titulo: truncateAtWord(cleanSt, 42),
+            tipo: "concept",
+            resumo: sumTxt
+          });
+        }
+      }
+
+      const mAtencao = lStr.match(/\*\*(?:Atenção|Importante|Cuidado|Lembre-se)[!:]?\*\*\s*(.+)$/i);
+      if (mAtencao) {
+        const alertaTxt = mAtencao[1].replace(/\*\*/g, '').trim();
+        const tTit = /hierarquia/i.test(alertaTxt) ? "Regra: Ausência de Hierarquia" : "Alerta de Prova";
+        secItems.push({
+          titulo: truncateAtWord(tTit, 42),
+          tipo: /regra/i.test(tTit) ? "rule" : "trap",
+          resumo: alertaTxt.slice(0, 180)
         });
       }
     }
 
-    const lines = ptxt.split('\n');
-    for (const l of lines) {
+    // Marcadores de lista / bullets / travessões
+    for (const l of secLines) {
       const lStr = l.trim();
-      if (!lStr || lStr.length < 6) continue;
-      if (/rodrigo\s+motta|kaverna|p[áa]gina|youtube|instagram|www\./i.test(lStr)) continue;
-
-      const m_trap = lStr.match(/(?:pegadinha|cuidado|atenção|armadilha|não confundir|inversão)[\s:–-]+([^\.\n]{5,55})/i);
-      const m_exc = lStr.match(/(?:exceção|ressalva|salvo|exceto|vedado)[\s:–-]+([^\.\n]{5,55})/i);
-      const m_rule = lStr.match(/(?:regra geral|requisito|dever|prazo|obrigatoriamente)[\s:–-]+([^\.\n]{5,55})/i);
-      const m_comp = lStr.match(/([A-Za-z\u00C0-\u017F\s]{3,20})\s+(?:versus|x|não se confunde com)\s+([A-Za-z\u00C0-\u017F\s]{3,20})/i);
-      const m_def = lStr.match(/\*\*([A-Za-z\u00C0-\u017F\s]{3,35})\*\*[:–-]\s*(.{10,90})/);
-
-      if (m_trap) {
-        const tTitle = `Pegadinha: ${m_trap[1].trim().slice(0, 30)}`;
-        if (!seenItems.has(tTitle.toLowerCase())) {
-          seenItems.add(tTitle.toLowerCase());
-          foundItems.push({
-            titulo: tTitle.slice(0, 45),
-            tipo: "trap",
-            pagina: pnum,
-            resumo: `Ponto de alerta crítico para evitar pegadinha de banca examinadora.`
-          });
-        }
-      } else if (m_exc) {
-        const tTitle = `Exceção: ${m_exc[1].trim().slice(0, 32)}`;
-        if (!seenItems.has(tTitle.toLowerCase())) {
-          seenItems.add(tTitle.toLowerCase());
-          foundItems.push({
-            titulo: tTitle.slice(0, 45),
-            tipo: "exception",
-            pagina: pnum,
-            resumo: `Hipótese restritiva ou excepcional prevista expressamente no conteúdo.`
-          });
-        }
-      } else if (m_comp) {
-        const term1 = m_comp[1].trim();
-        const term2 = m_comp[2].trim();
-        const tTitle = `${term1} × ${term2}`;
-        if (!seenItems.has(tTitle.toLowerCase())) {
-          seenItems.add(tTitle.toLowerCase());
-          foundItems.push({
-            titulo: tTitle.slice(0, 45),
-            tipo: "comparison",
-            pagina: pnum,
-            resumo: `Distinção conceitual entre ${term1} e ${term2} frequentemente explorada em provas.`
-          });
-        }
-      } else if (m_def) {
-        const term = m_def[1].trim();
-        const expl = m_def[2].trim();
-        if (!seenItems.has(term.toLowerCase())) {
-          seenItems.add(term.toLowerCase());
-          foundItems.push({
-            titulo: term.slice(0, 45),
-            tipo: "definition",
-            pagina: pnum,
-            resumo: expl.slice(0, 120)
-          });
-        }
-      } else if (m_rule) {
-        const tTitle = `Regra: ${m_rule[1].trim().slice(0, 32)}`;
-        if (!seenItems.has(tTitle.toLowerCase())) {
-          seenItems.add(tTitle.toLowerCase());
-          foundItems.push({
-            titulo: tTitle.slice(0, 45),
-            tipo: "rule",
-            pagina: pnum,
-            resumo: `Requisito ou critério vinculante previsto nas regras da matéria.`
+      const mBullet = lStr.match(/^[•\-\*\+]\s*([A-Za-z\u00C0-\u017F\s\(\)/,:-]{3,35})\s*[-–—:]\s*(.{8,140})/);
+      if (mBullet) {
+        const bTerm = cleanMindmapHeading(mBullet[1]);
+        const bDef = mBullet[2].replace(/\*\*/g, '').trim();
+        if (bTerm.length >= 3 && bDef.length >= 8 && !/termo|tipo|item|estrutura/i.test(bTerm)) {
+          secItems.push({
+            titulo: truncateAtWord(bTerm, 42),
+            tipo: "concept",
+            resumo: bDef.slice(0, 180)
           });
         }
       }
-
-      if (foundItems.length >= 28) break;
     }
-    if (foundItems.length >= 28) break;
+
+    for (const it of secItems) {
+      const normK = it.titulo.toLowerCase();
+      if (seenNodeTitles.has(normK)) continue;
+      seenNodeTitles.add(normK);
+      itemCounter++;
+      const nid = `item_${itemCounter}`;
+      const pItem = findPageForTerm(it.titulo, c.pagina);
+
+      nodes.push({
+        id: nid,
+        titulo: it.titulo,
+        tipo: it.tipo,
+        pagina: pItem,
+        resumo: it.resumo
+      });
+      edges.push({ source: c.id, target: nid });
+    }
   }
 
-  // Complementar com pontos conceituais adicionais se necessário
-  if (foundItems.length < 12) {
+  // 5. Anexar Pegadinhas
+  const trapCat = macroCategories[macroCategories.length - 1];
+  if (pegadinhaItems.length > 0) {
+    for (const ps of pegadinhaItems) {
+      const pText = ps.lines.map(l => l.trim()).filter(Boolean).join(' ');
+      const mBanca = pText.match(/O que a banca afirma[^:]*:\s*(?:["“])?([^"”\n]{10,140})/i);
+      const mRegra = pText.match(/Regra de Ouro[^:]*:\s*(?:["“])?([^"”\n]{10,140})/i);
+
+      let bancaClaim = mBanca ? mBanca[1].replace(/\*\*/g, '').trim() : '';
+      let goldenRule = mRegra ? mRegra[1].replace(/\*\*/g, '').trim() : '';
+
+      let trapSummary = '';
+      if (bancaClaim && goldenRule) {
+        trapSummary = `Banca afirma: ${truncateAtWord(bancaClaim, 85)}. Regra: ${truncateAtWord(goldenRule, 85)}.`;
+      } else if (goldenRule) {
+        trapSummary = `Regra de Ouro: ${truncateAtWord(goldenRule, 170)}.`;
+      } else if (bancaClaim) {
+        trapSummary = `Armadilha de prova: ${truncateAtWord(bancaClaim, 170)}.`;
+      } else {
+        trapSummary = extractMindmapSubstantiveSummary(ps.lines, 170) || "Ponto de atenção crítico contra pegadinha frequente de banca examinadora.";
+      }
+
+      itemCounter++;
+      const nid = `item_${itemCounter}`;
+      const pTrap = findPageForTerm(ps.clean_title, 8);
+
+      nodes.push({
+        id: nid,
+        titulo: truncateAtWord(`Pegadinha: ${ps.clean_title}`, 38),
+        tipo: "trap",
+        pagina: pTrap,
+        resumo: trapSummary
+      });
+      edges.push({ source: trapCat.id, target: nid });
+    }
+  } else {
     for (const pnum of pageKeys) {
-      const ptxt = pageMap[pnum];
-      const lines = ptxt.split('\n');
-      for (const l of lines) {
-        const m_bullet = l.trim().match(/^[-*•]\s+([A-Za-z\u00C0-\u017F\s\(\)/,:-]{5,50})/);
-        if (m_bullet) {
-          const cTitle = m_bullet[1].replace(/\*\*/g, '').trim();
-          if (cTitle.length >= 5 && !seenItems.has(cTitle.toLowerCase())) {
-            seenItems.add(cTitle.toLowerCase());
-            foundItems.push({
-              titulo: cTitle.slice(0, 45),
-              tipo: "concept",
+      const ptxt = pageMap[pnum] || '';
+      for (const lp of ptxt.split('\n')) {
+        const mTr = lp.match(/(?:pegadinha|cuidado|atenção|armadilha|não confundir|inversão)[\s:–-]+([^\.\n]{5,55})/i);
+        if (mTr) {
+          const phrase = mTr[1].trim();
+          const pTitle = truncateAtWord(`Pegadinha: ${phrase}`, 36);
+          if (!seenNodeTitles.has(pTitle.toLowerCase())) {
+            seenNodeTitles.add(pTitle.toLowerCase());
+            itemCounter++;
+            const nid = `item_${itemCounter}`;
+            nodes.push({
+              id: nid,
+              titulo: pTitle,
+              tipo: "trap",
               pagina: pnum,
-              resumo: `Tópico sobre ${cTitle.slice(0, 45)} extraído da página ${pnum} do material.`
+              resumo: `Ponto de atenção crítico contra armadilha frequente de banca examinadora: ${phrase}.`
             });
+            edges.push({ source: trapCat.id, target: nid });
           }
         }
-        if (foundItems.length >= 24) break;
+        if (itemCounter >= 30) break;
       }
-      if (foundItems.length >= 24) break;
+      if (itemCounter >= 30) break;
     }
   }
 
-  // 5. Vincular nós filhos às categorias correspondentes por proximidade de página ou categoria de pegadinhas
-  const trapCat = macroCategories.find(c => /pegadinha|banca/i.test(c.titulo));
-
-  foundItems.forEach((item, idx) => {
-    const nid = `item_${idx + 1}`;
-    let parentId = macroCategories[0].id;
-
-    if (item.tipo === "trap" && trapCat) {
-      parentId = trapCat.id;
-    } else {
-      let minDist = 999999;
-      for (const c of macroCategories) {
-        const dist = Math.abs(c.pagina - item.pagina);
-        if (dist < minDist) {
-          minDist = dist;
-          parentId = c.id;
-        }
-      }
-    }
-
-    nodes.push({
-      id: nid,
-      titulo: item.titulo,
-      tipo: item.tipo,
-      pagina: item.pagina,
-      resumo: item.resumo
-    });
-    edges.push({
-      source: parentId,
-      target: nid
-    });
-  });
-
   return {
-    titulo: cleanTitle,
+    titulo: cleanRootTitle,
     nodes,
     edges
   };
+}
 }
 
 export default async function handler(req, res) {

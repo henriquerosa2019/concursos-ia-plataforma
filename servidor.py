@@ -2329,6 +2329,86 @@ def generate_notebooklm_briefing(discipline, subarea, title, context_text, banca
         return res.strip()
     return f"> 📋 **VISÃO GERAL DA FONTE (BRIEFING EXECUTIVO — ESTILO NOTEBOOKLM):**  \n> Este material didático reúne os fundamentos estratégicos de {subarea.replace('_', ' ')} para a disciplina de {discipline.replace('_', ' ')}, consolidando regras essenciais, distinções de prova e pontos de alto impacto para a banca {banca}."
 
+def sanitize_mindmap_title(raw_str, discipline=""):
+    s = (raw_str or "").replace(".pdf", "").replace(".PDF", "").replace("_", " ")
+    s = re.sub(r'kverna\s*\d*', '', s, flags=re.IGNORECASE)
+    s = re.sub(r'carreiras', '', s, flags=re.IGNORECASE)
+    s = re.sub(r'noite|manh[ãa]|tarde', '', s, flags=re.IGNORECASE)
+    s = re.sub(r'teoria', '', s, flags=re.IGNORECASE)
+    s = re.sub(r'\bSG\b|\bPF\b|\bPRF\b', '', s, flags=re.IGNORECASE)
+    s = re.sub(r'\b20\d\d\b', '', s)
+    s = re.sub(r'direito\s+[a-z\u00C0-\u017F]+', '', s, flags=re.IGNORECASE)
+    s = re.sub(r'[-–—]', ' ', s)
+    s = re.sub(r'\s+', ' ', s).strip()
+    if not s or len(s) < 3:
+        s = (discipline or "Mapa Mental").replace("_", " ")
+    words = s.split()
+    clean_words = []
+    for w in words:
+        wl = w.lower()
+        if wl in ["de", "da", "do", "das", "dos", "e", "em", "por", "com", "na", "no"]:
+            clean_words.append(wl)
+        else:
+            clean_words.append(w.capitalize())
+    return " ".join(clean_words)
+
+def truncate_at_word(text, max_len=42):
+    t = (text or "").strip()
+    if len(t) <= max_len:
+        return t
+    sub = t[:max_len]
+    last_space = sub.rfind(" ")
+    if last_space > 18:
+        return sub[:last_space].strip()
+    return sub.strip()
+
+def clean_mindmap_heading(text):
+    t = (text or "").strip()
+    t = re.sub(r'^#{1,6}\s+', '', t)
+    t = re.sub(r'^(?:\d+[\.\)]\s*)+', '', t)
+    t = re.sub(r'^[A-Z][\.\)]\s+', '', t)
+    t = t.replace('**', '').replace('---', '').strip()
+    t = re.sub(r'^[-–—]\s*', '', t).strip()
+    return truncate_at_word(t, 42)
+
+def extract_mindmap_substantive_summary(lines, max_chars=175):
+    substantive_sentences = []
+    for l in lines:
+        s = l.strip()
+        if not s or s.startswith('#') or s.startswith('|--') or len(s) < 15:
+            continue
+        if any(k in s.lower() for k in ["kaverna", "rodrigo motta", "página", "youtube", "instagram", "www."]):
+            continue
+        if s.startswith('|') and s.endswith('|'):
+            parts = [p.strip() for p in s.split('|') if p.strip()]
+            if len(parts) >= 2 and '---' not in parts[0] and not any(k in parts[0].lower() for k in ["critério", "requisito", "estrutura"]):
+                term = parts[0].replace('**', '').strip()
+                defi = parts[1].replace('**', '').strip()
+                if len(term) >= 3 and len(defi) >= 8:
+                    substantive_sentences.append(f"{term}: {defi}")
+                    continue
+        m_def = re.match(r'\*\*([A-Za-z\u00C0-\u017F\s\(\)/,:-]{3,35})\*\*[:–-]\s*(.{10,120})', s)
+        if m_def:
+            term = m_def.group(1).strip()
+            text = m_def.group(2).replace('**', '').strip()
+            if len(text) > 10 and not any(k in term.lower() for k in ["professor", "link", "duração", "categoria", "fonte"]):
+                substantive_sentences.append(f"{term}: {text}")
+                continue
+        if any(kw in s.lower() for kw in ["compreende", "ocorre quando", "são pessoas", "não há hierarquia", "distribuição", "imputados", "depende de", "adota a"]):
+            clean_l = re.sub(r'^[-*•\s>]+', '', s).replace('**', '').strip()
+            substantive_sentences.append(clean_l)
+            
+    if substantive_sentences:
+        combined = " ".join(substantive_sentences)
+        combined = re.sub(r'\s+', ' ', combined).strip()
+        if len(combined) > max_chars:
+            cutoff = combined[:max_chars].rfind('.')
+            if cutoff > 80:
+                return combined[:cutoff+1]
+            return truncate_at_word(combined, max_chars) + "..."
+        return combined
+    return ""
+
 def extract_semantic_mindmap_from_corpus(discipline, subarea, title, context_text, focus=""):
     """
     Extrator semântico offline de alta fidelidade para mapas mentais em JSON.
@@ -2644,7 +2724,8 @@ def extract_semantic_mindmap_from_corpus(discipline, subarea, title, context_tex
         ]
         return {"titulo": clean_title, "nodes": nodes, "edges": edges}
 
-    # 6. Extrator semântico dinâmico para QUALQUER PDF importado (Robusto & Preciso)
+    # 6. Extrator Semântico Dinâmico Estilo NotebookLM para Qualquer PDF Importado (Robusto & Preciso)
+    clean_root_title = sanitize_mindmap_title(focus or title or subarea, discipline)
     pages = re.split(r'---\s*P[ÁA]GINA\s*(\d+)\s*---', context_text or "", flags=re.IGNORECASE)
     page_map = {}
     if len(pages) > 1:
@@ -2654,288 +2735,331 @@ def extract_semantic_mindmap_from_corpus(discipline, subarea, title, context_tex
             page_map[pnum] = ptxt
     else:
         page_map[1] = context_text or ""
-    # 6. Extrator Semântico Dinâmico Estilo NotebookLM para Qualquer PDF Importado (Robusto & Preciso)
     total_pages = sorted(page_map.keys())[-1] if page_map else 1
 
-    # 1. Descoberta de Cabeçalhos e Macro-Eixos Estruturantes
-    headings = []
-    seen_headings = set()
-    disc_norm = (discipline or "").lower().replace("_", " ")
-    title_norm = clean_title.lower()
+    def find_page_for_term(term_str, default_page=1):
+        if not page_map:
+            return default_page
+        t_clean = (term_str or "").lower().strip()
+        t_words = [w for w in re.findall(r'\b[a-z\u00C0-\u017F]{4,}\b', t_clean) if w not in ["para", "com", "como", "sobre", "pela", "pelo", "pegadinha"]]
+        if not t_words:
+            return default_page
+        best_page = default_page
+        max_matches = 0
+        for pnum in sorted(page_map.keys()):
+            ptxt = (page_map[pnum] or "").lower()
+            matches = sum(1 for w in t_words if w in ptxt)
+            if matches > max_matches:
+                max_matches = matches
+                best_page = pnum
+        return best_page
 
-    for pnum in sorted(page_map.keys()):
-        ptxt = page_map[pnum]
-        lines = ptxt.split('\n')
-        for l in lines:
-            l_str = l.strip()
-            if not l_str or len(l_str) < 4:
-                continue
-            if any(ign in l_str.upper() for ign in ["RODRIGO MOTTA", "KAVERNA", "PÁGINA", "YOUTUBE", "INSTAGRAM", "GABARITO", "SUMÁRIO", "ÍNDICE", "WWW."]):
-                continue
+    # 1. Extração de Seções e Linhas (suporta Markdown ## / ###, numeração e maiúsculas)
+    sections = []
+    pegadinha_items = []
+    lines = (context_text or "").split('\n')
+    current_sec = None
+    in_pilar2 = False
+    current_pegadinha = None
 
-            m_md = re.match(r'^#{1,3}\s+(.+)$', l_str)
-            m_num = re.match(r'^(?:[0-9]{1,2}\.|\b[IVXLCDM]+\s*[-–.]|\bArt\.\s*\d+[º\w\s-]*)\s+([A-Za-z\u00C0-\u017F\s\(\)/,:-]{4,60})', l_str)
-            is_upper = (l_str.isupper() and 5 <= len(l_str) <= 55 and not l_str.startswith('(') and not l_str.endswith(')'))
+    for line in lines:
+        l = line.strip()
+        if not l:
+            continue
+        if any(ign in l.upper() for ign in ["RODRIGO MOTTA", "KAVERNA", "PÁGINA", "YOUTUBE", "INSTAGRAM", "GABARITO", "SUMÁRIO", "ÍNDICE", "WWW."]):
+            continue
 
-            cand = ""
-            if m_md:
-                cand = m_md.group(1).strip()
-            elif m_num:
-                cand = m_num.group(1).strip()
-            elif is_upper:
-                cand = l_str.strip()
+        if re.search(r'##\s*2\.\s*Raio-X de Banca', l, re.IGNORECASE):
+            in_pilar2 = True
+            current_sec = None
+            continue
 
-            if cand:
-                clean_cand = re.sub(r'^[0-9.\-–*#\s]+', '', cand).replace('**', '').strip()
-                norm = clean_cand.lower()
-                if 4 <= len(clean_cand) <= 50 and norm not in seen_headings:
-                    if norm != disc_norm and norm != title_norm and not any(sk in norm for sk in ["visão geral", "mapa mental", "mini-simulado", "exercícios", "resumo estruturado", "raio-x", "flashcards", "pilar"]):
-                        seen_headings.add(norm)
-                        headings.append({"title": clean_cand, "page": pnum})
+        if in_pilar2:
+            m_peg = re.match(r'^###\s+(?:🚨\s*)?(?:Pegadinha\s*\d*:\s*)?(.+)$', l, re.IGNORECASE)
+            if m_peg:
+                if current_pegadinha:
+                    pegadinha_items.append(current_pegadinha)
+                p_raw = m_peg.group(1).strip()
+                current_pegadinha = {
+                    "raw_title": p_raw,
+                    "clean_title": clean_mindmap_heading(p_raw),
+                    "lines": []
+                }
+            elif current_pegadinha:
+                current_pegadinha["lines"].append(line)
+        else:
+            m_heading = re.match(r'^(?:#{2,3}\s+|(?:\d{1,2}\.|\b[IVXLCDM]+\s*[-–.]|[A-Z]\.)\s+)([A-Za-z0-9\.\s\u00C0-\u017F\-\/–—:]{4,65})$', l)
+            is_upper = (l.isupper() and 6 <= len(l) <= 65 and not l.startswith('(') and not l.endsWith(')') if hasattr(l, 'endsWith') else (l.isupper() and 6 <= len(l) <= 65 and not l.startswith('(') and not l.endswith(')')) and not any(k in l for k in ["RODRIGO", "DIREITO", "PÁGINA", "EXERCÍCIO", "QUESTÃO", "GABARITO", "IMPORTANTE", "PROF.", "YOUTUBE", "WWW."]))
 
-    # 2. Formação Dinâmica de 5 a 8 Macro-Categorias (Nível 1)
+            raw_h = None
+            if m_heading:
+                raw_h = m_heading.group(1).strip()
+            elif is_upper and (not current_sec or len(current_sec["lines"]) >= 2):
+                raw_h = l.strip()
+
+            if raw_h:
+                clean_h = clean_mindmap_heading(raw_h)
+                if len(clean_h) >= 4 and not any(sk in clean_h.lower() for sk in ["resumo estruturado", "raio-x", "mnemônicos", "mini-simulado", "quadro esquemático", "gabarito", "questões", "pilar"]):
+                    if current_sec:
+                        sections.append(current_sec)
+                    current_sec = {
+                        "heading": raw_h,
+                        "clean_title": clean_h,
+                        "lines": []
+                    }
+                    continue
+
+            if current_sec:
+                current_sec["lines"].append(line)
+
+    if current_sec:
+        sections.append(current_sec)
+    if current_pegadinha:
+        pegadinha_items.append(current_pegadinha)
+
+    # 2. Formação Dinâmica das Macro-Categorias (Nível 1)
     macro_categories = []
-    if len(headings) >= 5:
-        target_count = min(8, max(5, len(headings)))
-        step = len(headings) / target_count
+    if len(sections) >= 4:
+        target_count = min(7, len(sections))
+        step = len(sections) / target_count
         for i in range(target_count):
             idx = int(i * step)
-            sh = headings[idx]
-            cat_title = f"{i + 1}. {sh['title'][:38]}"
+            s = sections[idx]
+            sub_sum = extract_mindmap_substantive_summary(s["lines"])
+            if not sub_sum:
+                sub_sum = f"Dispositivos normativos, conceitos essenciais e regras aplicáveis a {s['clean_title'].lower()}."
+            page = find_page_for_term(s["clean_title"], max(1, int((i + 1) * (total_pages / target_count))))
+            short_title = truncate_at_word(s["clean_title"], 38)
             macro_categories.append({
                 "id": f"cat_{i + 1}",
-                "titulo": cat_title,
-                "pagina": sh["page"],
-                "resumo": f"Eixo estruturante sobre {sh['title'].lower()} com regras essenciais e diretrizes de prova."
+                "titulo": f"{i + 1}. {short_title}",
+                "clean_name": s["clean_title"],
+                "tipo": "category",
+                "pagina": page,
+                "resumo": sub_sum,
+                "section": s
             })
     else:
-        # Blueprints taxonômicos pedagógicos por matéria
-        norm_t = (discipline + " " + subarea + " " + clean_title).lower()
-        if "const" in norm_t:
+        norm_t = (discipline + " " + subarea + " " + clean_root_title).lower()
+        if any(k in norm_t for k in ["adm", "licita"]):
+            blueprints = [
+                ("1. Definições e Regime Jurídico", 1, "Conceitos fundamentais da Administração Pública, distinção entre direta e indireta e regime de direito público."),
+                ("2. Entidades Políticas e Administrativas", max(1, int(total_pages * 0.18)), "União, Estados, DF e Municípios versus entidades descentralizadas da administração indireta."),
+                ("3. Desconcentração vs. Descentralização", max(1, int(total_pages * 0.35)), "Criação interna de órgãos sem personalidade versus criação de novas pessoas jurídicas por lei."),
+                ("4. Órgãos Públicos e Classificações", max(1, int(total_pages * 0.52)), "Centros de competência despersonalizados: independentes, autônomos, superiores e subalternos."),
+                ("5. Entidades da Administração Indireta", max(1, int(total_pages * 0.7)), "Autarquias, fundações públicas, empresas públicas e sociedades de economia mista."),
+                ("6. Atividades e Prerrogativas Estatais", max(1, int(total_pages * 0.85)), "Atividades típicas de Estado, exploração de atividade econômica e regime de pessoal.")
+            ]
+        elif "const" in norm_t:
             blueprints = [
                 ("1. Fundamentos e Princípios", 1, "Bases axiológicas, forma de Estado e princípios fundamentais."),
-                ("2. Hermenêutica e Eficácia", max(1, int(total_pages * 0.15)), "Métodos de interpretação e aplicabilidade das normas."),
-                ("3. Direitos e Garantias Individuais", max(1, int(total_pages * 0.3)), "Núcleo protetivo dos direitos individuais e remédios constitucionais."),
-                ("4. Organização do Estado", max(1, int(total_pages * 0.45)), "Repartição de competências e autonomia dos entes federados."),
-                ("5. Organização dos Poderes", max(1, int(total_pages * 0.6)), "Funções típicas e atípicas dos Poderes da República."),
-                ("6. Processo Legislativo e Controle", max(1, int(total_pages * 0.75)), "Espécies normativas, processo legislativo e controle de constitucionalidade."),
-                ("7. Pegadinhas e Regras de Banca", max(1, int(total_pages * 0.9)), "Inversões clássicas de prova, termos absolutos e armadilhas da banca.")
-            ]
-        elif any(k in norm_t for k in ["adm", "licita"]):
-            blueprints = [
-                ("1. Conceitos e Regime Jurídico", 1, "Princípios expressos e implícitos da Administração Pública."),
-                ("2. Poderes e Prerrogativas", max(1, int(total_pages * 0.18)), "Poder de polícia, poder disciplinar e hierárquico."),
-                ("3. Atos Administrativos e Requisitos", max(1, int(total_pages * 0.35)), "Competência, finalidade, forma, motivo e objeto."),
-                ("4. Licitações e Contratos", max(1, int(total_pages * 0.52)), "Modalidades licitatórias, julgamento e contratação direta."),
-                ("5. Agentes e Responsabilidade Civil", max(1, int(total_pages * 0.7)), "Regime jurídico funcional, responsabilidade civil e improbidade."),
-                ("6. Extinção, Anulação e Convalidação", max(1, int(total_pages * 0.85)), "Revogação (mérito) versus anulação (ilegalidade) e efeitos."),
-                ("7. Pegadinhas e Casos Críticos de Prova", max(1, int(total_pages * 0.95)), "Armadilhas frequentes de bancas examinadoras.")
-            ]
-        elif "penal" in norm_t:
-            blueprints = [
-                ("1. Princípios e Teoria da Norma", 1, "Legalidade, anterioridade e aplicação da lei penal no tempo e espaço."),
-                ("2. Fato Típico e Conduta", max(1, int(total_pages * 0.18)), "Conduta, resultado, nexo de causalidade e tipicidade penal."),
-                ("3. Dolo, Culpa e Omissão", max(1, int(total_pages * 0.35)), "Espécies de dolo, modalidades de culpa e relevância da omissão."),
-                ("4. Ilicitude e Causas Excludentes", max(1, int(total_pages * 0.52)), "Legítima defesa, estado de necessidade e estrito cumprimento."),
-                ("5. Culpabilidade e Imputabilidade", max(1, int(total_pages * 0.7)), "Imputabilidade, potencial consciência e exigibilidade de conduta diversa."),
-                ("6. Concurso de Crimes e Penas", max(1, int(total_pages * 0.85)), "Concurso material, formal, crime continuado e fixação de penas."),
-                ("7. Pegadinhas e Regras de Banca", max(1, int(total_pages * 0.95)), "Inversões e diferenças conceituais cobradas em provas.")
-            ]
-        elif any(k in norm_t for k in ["info", "excel", "rede", "dados"]):
-            blueprints = [
-                ("1. Fundamentos e Arquitetura", 1, "Conceitos estruturais, hardware, software e definições operacionais."),
-                ("2. Funções e Comandos Centrais", max(1, int(total_pages * 0.2)), "Sintaxes, funções operacionais e parâmetros essenciais."),
-                ("3. Protocolos, Padrões e Portas", max(1, int(total_pages * 0.4)), "Modelos OSI/TCP, portas oficiais e regras de rede."),
-                ("4. Segurança da Informação e Ameaças", max(1, int(total_pages * 0.6)), "Malwares, criptografia, autenticação e certificados digitais."),
-                ("5. Procedimentos Operacionais e Atalhos", max(1, int(total_pages * 0.8)), "Práticas recomendadas, sequências operacionais e teclas de atalho."),
-                ("6. Pegadinhas e Armadilhas de Banca", max(1, int(total_pages * 0.95)), "Erros de digitação de fórmula, termos absolutos e armadilhas.")
+                ("2. Hermenêutica e Eficácia", max(1, int(total_pages * 0.2)), "Métodos de interpretação e aplicabilidade das normas."),
+                ("3. Direitos e Garantias Individuais", max(1, int(total_pages * 0.4)), "Núcleo protetivo dos direitos individuais e remédios constitucionais."),
+                ("4. Organização do Estado e Poderes", max(1, int(total_pages * 0.6)), "Repartição de competências e tripartição dos Poderes da República."),
+                ("5. Processo Legislativo e Controle", max(1, int(total_pages * 0.8)), "Espécies normativas e fiscalização de constitucionalidade.")
             ]
         else:
             blueprints = [
-                ("1. Fundamentos e Visão Geral", 1, f"Conceitos primários e definições de {clean_title}."),
-                ("2. Estrutura e Classificações", max(1, int(total_pages * 0.2)), "Divisões taxonômicas e espécies doutrinárias."),
-                ("3. Regime de Regras e Aplicações", max(1, int(total_pages * 0.4)), "Critérios práticos e parâmetros normativos."),
-                ("4. Prerrogativas e Obrigações", max(1, int(total_pages * 0.6)), "Deveres, requisitos formais e procedimentos operacionais."),
-                ("5. Exceções e Vedações Legais", max(1, int(total_pages * 0.8)), "Hipóteses restritivas e ressalvas legais."),
-                ("6. Raio-X de Pegadinhas da Banca", max(1, int(total_pages * 0.95)), "Armadilhas conceituais e inversões de prova.")
+                ("1. Fundamentos e Visão Geral", 1, f"Conceitos primários e definições de {clean_root_title}."),
+                ("2. Estrutura e Classificações", max(1, int(total_pages * 0.25)), "Divisões taxonômicas e espécies doutrinárias."),
+                ("3. Regime de Regras e Aplicações", max(1, int(total_pages * 0.5)), "Critérios práticos e parâmetros normativos."),
+                ("4. Prerrogativas, Exceções e Obrigações", max(1, int(total_pages * 0.75)), "Deveres, requisitos formais, restrições e procedimentos.")
             ]
-
         for idx, (title_b, page_b, desc_b) in enumerate(blueprints):
             macro_categories.append({
                 "id": f"cat_{idx + 1}",
                 "titulo": title_b,
+                "clean_name": re.sub(r'^\d+\.\s*', '', title_b),
+                "tipo": "category",
                 "pagina": min(page_b, total_pages),
-                "resumo": desc_b
+                "resumo": desc_b,
+                "section": sections[idx] if idx < len(sections) else None
             })
 
-    # 3. Montar Nó Raiz e Categorias Oficiais
+    # Raio-X de Pegadinhas permanente
+    cat_peg_num = len(macro_categories) + 1
+    macro_categories.append({
+        "id": f"cat_{cat_peg_num}",
+        "titulo": f"{cat_peg_num}. Raio-X de Pegadinhas da Banca",
+        "clean_name": "Pegadinhas de Prova",
+        "tipo": "category",
+        "pagina": find_page_for_term("pegadinha", total_pages),
+        "resumo": "Principais armadilhas, inversões de conceitos e assertivas com palavras absolutas exploradas pelas bancas examinadoras.",
+        "section": None
+    })
+
+    # 3. Montar Nó Raiz
     nodes = [{
         "id": "root",
-        "titulo": clean_title[:45],
+        "titulo": clean_root_title[:45],
         "tipo": "root",
         "pagina": 1,
-        "resumo": f"Estrutura esquematizada das unidades essenciais de {clean_title} para retenção rápida em concursos."
+        "resumo": f"Estrutura esquematizada das unidades essenciais de {clean_root_title} com definições, regras e distinções de prova."
     }]
     edges = []
 
     for c in macro_categories:
-        nodes.append({"id": c["id"], "titulo": c["titulo"], "tipo": "category", "pagina": c["pagina"], "resumo": c["resumo"]})
+        nodes.append({
+            "id": c["id"],
+            "titulo": c["titulo"],
+            "tipo": "category",
+            "pagina": c["pagina"],
+            "resumo": c["resumo"]
+        })
         edges.append({"source": "root", "target": c["id"]})
 
-    # 4. Extração de Conceitos, Definições, Regras, Exceções, Mnemônicos e Pegadinhas
-    found_items = []
-    seen_items = set()
+    # 4. Extração de Subconceitos por Section Locality
+    seen_node_titles = set()
+    item_counter = 0
 
-    known_mnemonics = [
-        (r'\bSO[\s\-]CI[\s\-]DI[\s\-]VA[\s\-]PLU\b', 'Fundamentos (SO-CI-DI-VA-PLU)', 'Soberania, Cidadania, Dignidade, Valores sociais, Pluralismo.'),
-        (r'\bCON[\s\-]GA[\s\-]ERRA[\s\-]PRO\b', 'Objetivos (CON-GA-ERRA-PRO)', 'Construir sociedade, Garantir desenv., Erradicar pobreza, Promover bem.'),
-        (r'\bCO[\s\-]FI[\s\-]FO[\s\-]MO[\s\-]OB\b', 'Requisitos do Ato (COFIFOMOB)', 'Competência, Finalidade, Forma, Motivo e Objeto.'),
-        (r'\bPA[\s\-]TI\b', 'Atributos do Ato (PATI)', 'Presunção de legitimidade, Autoexecutoriedade, Tipicidade, Imperatividade.'),
-        (r'\bLIMPE\b', 'Princípios Expressos (LIMPE)', 'Legalidade, Impessoalidade, Moralidade, Publicidade, Eficiência.'),
-        (r'\bRAÇÃO\b', 'Imprescritíveis (RAÇÃO)', 'Racismo e Ação de grupos armados são imprescritíveis.'),
-        (r'\b3T\+H\b', 'Inafiançáveis (3T+H)', 'Tortura, Tráfico, Terrorismo e Hediondos.'),
-        (r'\bPRE[\s\-]CON[\s\-]CON[\s\-]LEI[\s\-]DIA\b', 'Modalidades (PRE-CON-CON-LEI-DIA)', 'Pregão, Concorrência, Concurso, Leilão e Diálogo Competitivo.')
-    ]
+    for c in macro_categories:
+        s = c.get("section")
+        sec_lines = s["lines"] if s else []
+        sec_items = []
 
-    for pnum in sorted(page_map.keys()):
-        ptxt = page_map[pnum]
+        # Tabelas Markdown
+        for l in sec_lines:
+            if l.startswith('|') and '|' in l[1:]:
+                parts = [p.strip() for p in l.split('|') if p.strip()]
+                if len(parts) >= 2 and not all(ch in '-: ' for ch in parts[0]):
+                    term = parts[0].replace('**', '').strip()
+                    defi = parts[1].replace('**', '').strip()
+                    if len(term) >= 3 and len(defi) >= 8 and not any(k in term.lower() for k in ["termo", "tipo", "item", "estrutura", "posição"]):
+                        clean_t = clean_mindmap_heading(term)
+                        is_comp = any(k in clean_t.lower() for k in ["desconcentração", "descentralização", "versus", "outorga", "delegação"])
+                        sec_items.append({
+                            "titulo": truncate_at_word(clean_t, 42),
+                            "tipo": "comparison" if is_comp else "concept",
+                            "resumo": defi[:180]
+                        })
 
-        for pat, m_title, m_desc in known_mnemonics:
-            if re.search(pat, ptxt, re.IGNORECASE) and m_title.lower() not in seen_items:
-                seen_items.add(m_title.lower())
-                found_items.append({
-                    "titulo": m_title,
-                    "tipo": "mnemonic",
-                    "pagina": pnum,
-                    "resumo": m_desc
+        # Subcabeçalhos #### ou negrito
+        for idx_l, l in enumerate(sec_lines):
+            l_str = l.strip()
+            m_subh = re.match(r'^####\s+(?:[0-9]{1,2}\.|\b[A-Z]\.)?\s*(.+)$', l_str)
+            if m_subh:
+                raw_st = m_subh.group(1).strip()
+                clean_st = clean_mindmap_heading(raw_st)
+                if len(clean_st) >= 3 and not any(sk in clean_st.lower() for sk in ["características comuns", "definição", "conceito"]):
+                    next_lines = sec_lines[idx_l+1:idx_l+8]
+                    sum_txt = extract_mindmap_substantive_summary(next_lines, max_chars=160)
+                    if not sum_txt:
+                        sum_txt = f"Aspectos e critérios aplicáveis a {clean_st}."
+                    sec_items.append({
+                        "titulo": truncate_at_word(clean_st, 42),
+                        "tipo": "concept",
+                        "resumo": sum_txt
+                    })
+
+            m_atencao = re.search(r'\*\*(?:Atenção|Importante|Cuidado|Lembre-se)[!:]?\*\*\s*(.+)$', l_str, re.IGNORECASE)
+            if m_atencao:
+                alerta_txt = m_atencao.group(1).replace('**', '').strip()
+                t_tit = "Regra: Ausência de Hierarquia" if "hierarquia" in alerta_txt.lower() else "Alerta de Prova"
+                sec_items.append({
+                    "titulo": truncate_at_word(t_tit, 42),
+                    "tipo": "rule" if "regra" in t_tit.lower() else "trap",
+                    "resumo": alerta_txt[:180]
                 })
 
-        lines = ptxt.split('\n')
-        for l in lines:
+        # Marcadores de lista / bullets / travessões
+        for l in sec_lines:
             l_str = l.strip()
-            if not l_str or len(l_str) < 6:
+            m_bullet = re.match(r'^[•\-\*\+]\s*([A-Za-z\u00C0-\u017F\s\(\)/,:-]{3,35})\s*[-–—:]\s*(.{8,140})', l_str)
+            if m_bullet:
+                b_term = clean_mindmap_heading(m_bullet.group(1))
+                b_def = m_bullet.group(2).replace('**', '').strip()
+                if len(b_term) >= 3 and len(b_def) >= 8 and not any(k in b_term.lower() for k in ["termo", "tipo", "item", "estrutura"]):
+                    sec_items.append({
+                        "titulo": truncate_at_word(b_term, 42),
+                        "tipo": "concept",
+                        "resumo": b_def[:180]
+                    })
+
+        for it in sec_items:
+            norm_k = it["titulo"].lower()
+            if norm_k in seen_node_titles:
                 continue
-            if any(ign in l_str.upper() for ign in ["RODRIGO MOTTA", "KAVERNA", "PÁGINA", "YOUTUBE", "INSTAGRAM", "WWW."]):
-                continue
+            seen_node_titles.add(norm_k)
+            item_counter += 1
+            nid = f"item_{item_counter}"
+            p_item = find_page_for_term(it["titulo"], default_page=c["pagina"])
 
-            m_trap = re.search(r'(?:pegadinha|cuidado|atenção|armadilha|não confundir|inversão)[\s:–-]+([^\.\n]{5,55})', l_str, re.IGNORECASE)
-            m_exc = re.search(r'(?:exceção|ressalva|salvo|exceto|vedado)[\s:–-]+([^\.\n]{5,55})', l_str, re.IGNORECASE)
-            m_rule = re.search(r'(?:regra geral|requisito|dever|prazo|obrigatoriamente)[\s:–-]+([^\.\n]{5,55})', l_str, re.IGNORECASE)
-            m_comp = re.search(r'([A-Za-z\u00C0-\u017F\s]{3,20})\s+(?:versus|x|não se confunde com)\s+([A-Za-z\u00C0-\u017F\s]{3,20})', l_str, re.IGNORECASE)
-            m_def = re.search(r'\*\*([A-Za-z\u00C0-\u017F\s]{3,35})\*\*[:–-]\s*(.{10,90})', l_str)
+            nodes.append({
+                "id": nid,
+                "titulo": it["titulo"],
+                "tipo": it["tipo"],
+                "pagina": p_item,
+                "resumo": it["resumo"]
+            })
+            edges.append({
+                "source": c["id"],
+                "target": nid
+            })
 
-            if m_trap:
-                phrase = m_trap.group(1).strip()
-                t_title = f"Pegadinha: {phrase[:30]}"
-                if t_title.lower() not in seen_items:
-                    seen_items.add(t_title.lower())
-                    found_items.append({
-                        "titulo": t_title[:45],
-                        "tipo": "trap",
-                        "pagina": pnum,
-                        "resumo": "Ponto de alerta crítico para evitar pegadinha de banca examinadora."
-                    })
-            elif m_exc:
-                phrase = m_exc.group(1).strip()
-                t_title = f"Exceção: {phrase[:32]}"
-                if t_title.lower() not in seen_items:
-                    seen_items.add(t_title.lower())
-                    found_items.append({
-                        "titulo": t_title[:45],
-                        "tipo": "exception",
-                        "pagina": pnum,
-                        "resumo": "Hipótese restritiva ou excepcional prevista expressamente no conteúdo."
-                    })
-            elif m_comp:
-                term1 = m_comp.group(1).strip()
-                term2 = m_comp.group(2).strip()
-                t_title = f"{term1} × {term2}"
-                if t_title.lower() not in seen_items:
-                    seen_items.add(t_title.lower())
-                    found_items.append({
-                        "titulo": t_title[:45],
-                        "tipo": "comparison",
-                        "pagina": pnum,
-                        "resumo": f"Distinção conceitual entre {term1} e {term2} frequentemente explorada em provas."
-                    })
-            elif m_def:
-                term = m_def.group(1).strip()
-                expl = m_def.group(2).strip()
-                if term.lower() not in seen_items:
-                    seen_items.add(term.lower())
-                    found_items.append({
-                        "titulo": term[:45],
-                        "tipo": "definition",
-                        "pagina": pnum,
-                        "resumo": expl[:120]
-                    })
-            elif m_rule:
-                phrase = m_rule.group(1).strip()
-                t_title = f"Regra: {phrase[:32]}"
-                if t_title.lower() not in seen_items:
-                    seen_items.add(t_title.lower())
-                    found_items.append({
-                        "titulo": t_title[:45],
-                        "tipo": "rule",
-                        "pagina": pnum,
-                        "resumo": "Requisito ou critério vinculante previsto nas regras da matéria."
-                    })
+    # 5. Anexar Pegadinhas
+    trap_cat = macro_categories[-1]
+    if pegadinha_items:
+        for ps in pegadinha_items:
+            p_text = " ".join([l.strip() for l in ps["lines"] if l.strip()])
+            m_banca = re.search(r'O que a banca afirma[^:]*:\s*(?:["“])?([^"”\n]{10,140})', p_text, re.IGNORECASE)
+            m_regra = re.search(r'Regra de Ouro[^:]*:\s*(?:["“])?([^"”\n]{10,140})', p_text, re.IGNORECASE)
 
-            if len(found_items) >= 28:
-                break
-        if len(found_items) >= 28:
-            break
+            banca_claim = m_banca.group(1).replace('**', '').strip() if m_banca else ""
+            golden_rule = m_regra.group(1).replace('**', '').strip() if m_regra else ""
 
-    # Complementar com tópicos conceituais adicionais se necessário
-    if len(found_items) < 12:
+            if banca_claim and golden_rule:
+                trap_summary = f"Banca afirma: {truncate_at_word(banca_claim, 85)}. Regra: {truncate_at_word(golden_rule, 85)}."
+            elif golden_rule:
+                trap_summary = f"Regra de Ouro: {truncate_at_word(golden_rule, 170)}."
+            elif banca_claim:
+                trap_summary = f"Armadilha de prova: {truncate_at_word(banca_claim, 170)}."
+            else:
+                trap_summary = extract_mindmap_substantive_summary(ps["lines"], max_chars=170) or "Ponto de atenção crítico contra pegadinha frequente de banca examinadora."
+
+            item_counter += 1
+            nid = f"item_{item_counter}"
+            p_trap = find_page_for_term(ps["clean_title"], default_page=8)
+
+            nodes.append({
+                "id": nid,
+                "titulo": truncate_at_word(f"Pegadinha: {ps['clean_title']}", 38),
+                "tipo": "trap",
+                "pagina": p_trap,
+                "resumo": trap_summary
+            })
+            edges.append({
+                "source": trap_cat["id"],
+                "target": nid
+            })
+    else:
         for pnum in sorted(page_map.keys()):
-            lines = page_map[pnum].split('\n')
-            for l in lines:
-                m_bullet = re.match(r'^[-*•]\s+([A-Za-z\u00C0-\u017F\s\(\)/,:-]{5,50})', l.strip())
-                if m_bullet:
-                    c_title = m_bullet.group(1).replace('**', '').strip()
-                    if len(c_title) >= 5 and c_title.lower() not in seen_items:
-                        seen_items.add(c_title.lower())
-                        found_items.append({
-                            "titulo": c_title[:45],
-                            "tipo": "concept",
+            ptxt = page_map[pnum] or ""
+            for lp in ptxt.split('\n'):
+                m_tr = re.search(r'(?:pegadinha|cuidado|atenção|armadilha|não confundir|inversão)[\s:–-]+([^\.\n]{5,55})', lp, re.IGNORECASE)
+                if m_tr:
+                    phrase = m_tr.group(1).strip()
+                    p_tit = truncate_at_word(f"Pegadinha: {phrase}", 36)
+                    if p_tit.lower() not in seen_node_titles:
+                        seen_node_titles.add(p_tit.lower())
+                        item_counter += 1
+                        nid = f"item_{item_counter}"
+                        nodes.append({
+                            "id": nid,
+                            "titulo": p_tit,
+                            "tipo": "trap",
                             "pagina": pnum,
-                            "resumo": f"Tópico sobre {c_title[:45]} extraído da página {pnum} do material."
+                            "resumo": f"Ponto de atenção crítico contra armadilha frequente de banca examinadora: {phrase}."
                         })
-                if len(found_items) >= 24:
+                        edges.append({
+                            "source": trap_cat["id"],
+                            "target": nid
+                        })
+                if item_counter >= 30:
                     break
-            if len(found_items) >= 24:
+            if item_counter >= 30:
                 break
 
-    # 5. Vincular nós filhos às categorias correspondentes por proximidade de página ou categoria de pegadinhas
-    trap_cat = next((c for c in macro_categories if any(k in c["titulo"].lower() for k in ["pegadinha", "banca"])), None)
-
-    for idx, item in enumerate(found_items):
-        nid = f"item_{idx + 1}"
-        if item["tipo"] == "trap" and trap_cat:
-            parent_id = trap_cat["id"]
-        else:
-            min_dist = 999999
-            parent_id = macro_categories[0]["id"]
-            for c in macro_categories:
-                dist = abs(c["pagina"] - item["pagina"])
-                if dist < min_dist:
-                    min_dist = dist
-                    parent_id = c["id"]
-
-        nodes.append({
-            "id": nid,
-            "titulo": item["titulo"],
-            "tipo": item["tipo"],
-            "pagina": item["pagina"],
-            "resumo": item["resumo"]
-        })
-        edges.append({
-            "source": parent_id,
-            "target": nid
-        })
-
-    return {"titulo": clean_title, "nodes": nodes, "edges": edges}
+    return {"titulo": clean_root_title, "nodes": nodes, "edges": edges}
 
 def generate_mindmap_json(discipline, subarea, title, context_text, focus="", pdf_filename="material.pdf"):
     """

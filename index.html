@@ -7717,14 +7717,44 @@
 
         switchTab(0);
         setTimeout(() => {
-          document.querySelector('.nlm-mindmap-wrapper')?.scrollIntoView({ behavior: 'smooth' });
+          document.querySelector('.nlm-mindmap-wrapper, .nlm-graph-container')?.scrollIntoView({ behavior: 'smooth' });
         }, 300);
       } else {
-        alert(data.error || 'Erro ao gerar mapa mental com IA.');
+        throw new Error(data.error || 'Falha na resposta do servidor.');
       }
     } catch (e) {
-      console.error('Erro ao gerar mapa mental:', e);
-      alert('Erro de conexão ao gerar mapa mental.');
+      console.warn('Tentando fallback do motor semântico universal offline:', e);
+      try {
+        const title = (currentSubarea || 'Tópico').replace(/_/g, ' ');
+        const context = (typeof readerRawContent !== 'undefined' && readerRawContent) ? readerRawContent : '';
+        const mm = window.generateUniversalMindmapFromText(currentDiscipline, currentSubarea, title, context, focus);
+        const mmBlock = `### 🗺️ Mapa Mental Interativo & Navegação do Conhecimento\n\n\`\`\`nlm-mindmap-json\n${JSON.stringify(mm, null, 2)}\n\`\`\``;
+        let updatedMd = context;
+        if (updatedMd.includes('### 🗺️ Mapa Mental')) {
+          updatedMd = updatedMd.replace(/### 🗺️ Mapa Mental[^\n]*\n+```(?:nlm-mindmap-json|nlm-mindmap|text|mermaid)?[\s\S]*?```/, mmBlock);
+        } else {
+          updatedMd = updatedMd ? updatedMd.replace('## 1.', `${mmBlock}\n\n---\n\n## 1.`) : mmBlock;
+        }
+        closeModal('modalAiMindmap');
+        showToast('Mapa mental estruturado com sucesso (Motor Semântico)!', '🗺️');
+
+        try {
+          const localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
+          if (!localLessons[currentDiscipline]) localLessons[currentDiscipline] = {};
+          if (!localLessons[currentDiscipline][currentSubarea]) localLessons[currentDiscipline][currentSubarea] = { meta: {} };
+          localLessons[currentDiscipline][currentSubarea].meta.markdown_content = updatedMd;
+          localStorage.setItem('concursos_local_lessons', JSON.stringify(localLessons));
+        } catch(eStorage) {}
+
+        renderDynamicLessonTabs(updatedMd, currentDiscipline, currentSubarea);
+        if (typeof readerRawContent !== 'undefined') readerRawContent = updatedMd;
+        switchTab(0);
+        setTimeout(() => {
+          document.querySelector('.nlm-mindmap-wrapper, .nlm-graph-container')?.scrollIntoView({ behavior: 'smooth' });
+        }, 300);
+      } catch (errFallback) {
+        alert('Erro ao gerar mapa mental: ' + e.message);
+      }
     } finally {
       if (spinner) spinner.style.display = 'none';
       if (btn) btn.disabled = false;
@@ -8308,6 +8338,324 @@
      ========================================================================== */
   window.mindmapGraphStates = window.mindmapGraphStates || {};
   window.activeMindmapNode = null;
+
+  window.generateUniversalMindmapFromText = function(discipline, subarea, title, contextText, focus) {
+    const cleanTitle = (focus || title || (subarea || 'Novo Tópico').replace(/_/g, ' ')).trim();
+    const normTopic = `${discipline || ''} ${subarea || ''} ${cleanTitle}`.toLowerCase().replace(/-/g, '_');
+
+    const rawPages = (contextText || '').split(/---\s*P[ÁA]GINA\s*(\d+)\s*---/i);
+    const pageMap = {};
+    if (rawPages.length > 1) {
+      for (let i = 1; i < rawPages.length; i += 2) {
+        const pnum = parseInt(rawPages[i], 10);
+        const ptxt = rawPages[i + 1] || '';
+        pageMap[pnum] = ptxt;
+      }
+    } else {
+      pageMap[1] = contextText || '';
+    }
+
+    const pageKeys = Object.keys(pageMap).map(Number).sort((a, b) => a - b);
+    const totalP = pageKeys.length ? pageKeys[pageKeys.length - 1] : 1;
+
+    // 1. Descoberta de Cabeçalhos e Macro-Eixos Estruturantes
+    const headings = [];
+    const seenHeadings = new Set();
+    const discNorm = (discipline || '').toLowerCase().replace(/_/g, ' ');
+    const titleNorm = cleanTitle.toLowerCase();
+
+    for (const pnum of pageKeys) {
+      const ptxt = pageMap[pnum];
+      const lines = ptxt.split('\n');
+      for (const l of lines) {
+        const lStr = l.trim();
+        if (!lStr || lStr.length < 4) continue;
+        if (/rodrigo\s+motta|kaverna|p[áa]gina|youtube|instagram|gabarito|sum[áa]rio|[ií]ndice|www\./i.test(lStr)) continue;
+
+        const m_md = lStr.match(/^#{1,3}\s+(.+)$/);
+        const m_num = lStr.match(/^(?:[0-9]{1,2}\.|\b[IVXLCDM]+\s*[-–.]|\bArt\.\s*\d+[º\w\s-]*)\s+([A-Za-z\u00C0-\u017F\s\(\)/,:-]{4,60})/);
+        const isUpper = (lStr === lStr.toUpperCase() && lStr.length >= 5 && lStr.length <= 55 && !lStr.startsWith('(') && !lStr.endsWith(')'));
+
+        let cand = "";
+        if (m_md) cand = m_md[1];
+        else if (m_num) cand = m_num[1];
+        else if (isUpper) cand = lStr;
+
+        if (cand) {
+          const cleanCand = cand.replace(/^[0-9.\-–*#\s]+/, '').replace(/\*\*/g, '').trim();
+          const norm = cleanCand.toLowerCase();
+          if (cleanCand.length >= 4 && cleanCand.length <= 50 && !seenHeadings.has(norm)) {
+            if (norm !== discNorm && norm !== titleNorm && !/vis[ãa]o\s+geral|mapa\s+mental|mini-simulado|exerc[ií]cios|resumo\s+estruturado|raio-x|flashcards|pilar/i.test(norm)) {
+              seenHeadings.add(norm);
+              headings.push({ title: cleanCand, page: pnum });
+            }
+          }
+        }
+      }
+    }
+
+    // 2. Formação Dinâmica de 5 a 8 Macro-Categorias (Nível 1)
+    const macroCategories = [];
+    if (headings.length >= 5) {
+      const targetCount = Math.min(8, Math.max(5, headings.length));
+      const step = headings.length / targetCount;
+      for (let i = 0; i < targetCount; i++) {
+        const idx = Math.floor(i * step);
+        const sh = headings[idx];
+        const catTitle = `${i + 1}. ${sh.title.slice(0, 38)}`;
+        macroCategories.push({
+          id: `cat_${i + 1}`,
+          titulo: catTitle,
+          pagina: sh.page,
+          resumo: `Eixo estruturante sobre ${sh.title.toLowerCase()} com regras essenciais e diretrizes de prova.`
+        });
+      }
+    } else {
+      let blueprints = [];
+      if (/const/i.test(normTopic)) {
+        blueprints = [
+          ["1. Fundamentos e Princípios", 1, "Bases axiológicas, forma de Estado e princípios fundamentais."],
+          ["2. Hermenêutica e Eficácia", Math.max(1, Math.floor(totalP * 0.15)), "Métodos de interpretação e aplicabilidade das normas."],
+          ["3. Direitos e Garantias Individuais", Math.max(1, Math.floor(totalP * 0.3)), "Núcleo protetivo dos direitos individuais e remédios constitucionais."],
+          ["4. Organização do Estado", Math.max(1, Math.floor(totalP * 0.45)), "Repartição de competências e autonomia dos entes federados."],
+          ["5. Organização dos Poderes", Math.max(1, Math.floor(totalP * 0.6)), "Funções típicas e atípicas dos Poderes da República."],
+          ["6. Processo Legislativo e Controle", Math.max(1, Math.floor(totalP * 0.75)), "Espécies normativas, processo legislativo e controle de constitucionalidade."],
+          ["7. Pegadinhas e Regras de Banca", Math.max(1, Math.floor(totalP * 0.9)), "Inversões clássicas de prova, termos absolutos e armadilhas da banca."]
+        ];
+      } else if (/adm|licita/i.test(normTopic)) {
+        blueprints = [
+          ["1. Conceitos e Regime Jurídico", 1, "Princípios expressos e implícitos da Administração Pública."],
+          ["2. Poderes e Prerrogativas", Math.max(1, Math.floor(totalP * 0.18)), "Poder de polícia, poder disciplinar e hierárquico."],
+          ["3. Atos Administrativos e Requisitos", Math.max(1, Math.floor(totalP * 0.35)), "Competência, finalidade, forma, motivo e objeto."],
+          ["4. Licitações e Contratos", Math.max(1, Math.floor(totalP * 0.52)), "Modalidades licitatórias, julgamento e contratação direta."],
+          ["5. Agentes e Responsabilidade Civil", Math.max(1, Math.floor(totalP * 0.7)), "Regime jurídico funcional, responsabilidade civil e improbidade."],
+          ["6. Extinção, Anulação e Convalidação", Math.max(1, Math.floor(totalP * 0.85)), "Revogação (mérito) versus anulação (ilegalidade) e efeitos."],
+          ["7. Pegadinhas e Casos Críticos de Prova", Math.max(1, Math.floor(totalP * 0.95)), "Armadilhas frequentes de bancas examinadoras."]
+        ];
+      } else if (/penal/i.test(normTopic)) {
+        blueprints = [
+          ["1. Princípios e Teoria da Norma", 1, "Legalidade, anterioridade e aplicação da lei penal no tempo e espaço."],
+          ["2. Fato Típico e Conduta", Math.max(1, Math.floor(totalP * 0.18)), "Conduta, resultado, nexo de causalidade e tipicidade penal."],
+          ["3. Dolo, Culpa e Omissão", Math.max(1, Math.floor(totalP * 0.35)), "Espécies de dolo, modalidades de culpa e relevância da omissão."],
+          ["4. Ilicitude e Causas Excludentes", Math.max(1, Math.floor(totalP * 0.52)), "Legítima defesa, estado de necessidade e estrito cumprimento."],
+          ["5. Culpabilidade e Imputabilidade", Math.max(1, Math.floor(totalP * 0.7)), "Imputabilidade, potencial consciência e exigibilidade de conduta diversa."],
+          ["6. Concurso de Crimes e Penas", Math.max(1, Math.floor(totalP * 0.85)), "Concurso material, formal, crime continuado e fixação de penas."],
+          ["7. Pegadinhas e Regras de Banca", Math.max(1, Math.floor(totalP * 0.95)), "Inversões e diferenças conceituais cobradas em provas."]
+        ];
+      } else if (/info|excel|rede|dados/i.test(normTopic)) {
+        blueprints = [
+          ["1. Fundamentos e Arquitetura", 1, "Conceitos estruturais, hardware, software e definições operacionais."],
+          ["2. Funções e Comandos Centrais", Math.max(1, Math.floor(totalP * 0.2)), "Sintaxes, funções operacionais e parâmetros essenciais."],
+          ["3. Protocolos, Padrões e Portas", Math.max(1, Math.floor(totalP * 0.4)), "Modelos OSI/TCP, portas oficiais e regras de rede."],
+          ["4. Segurança da Informação e Ameaças", Math.max(1, Math.floor(totalP * 0.6)), "Malwares, criptografia, autenticação e certificados digitais."],
+          ["5. Procedimentos Operacionais e Atalhos", Math.max(1, Math.floor(totalP * 0.8)), "Práticas recomendadas, sequências operacionais e teclas de atalho."],
+          ["6. Pegadinhas e Armadilhas de Banca", Math.max(1, Math.floor(totalP * 0.95)), "Erros de digitação de fórmula, termos absolutos e armadilhas."]
+        ];
+      } else {
+        blueprints = [
+          ["1. Fundamentos e Visão Geral", 1, `Conceitos primários e definições de ${cleanTitle}.`],
+          ["2. Estrutura e Classificações", Math.max(1, Math.floor(totalP * 0.2)), "Divisões taxonômicas e espécies doutrinárias."],
+          ["3. Regime de Regras e Aplicações", Math.max(1, Math.floor(totalP * 0.4)), "Critérios práticos e parâmetros normativos."],
+          ["4. Prerrogativas e Obrigações", Math.max(1, Math.floor(totalP * 0.6)), "Deveres, requisitos formais e procedimentos operacionais."],
+          ["5. Exceções e Vedações Legais", Math.max(1, Math.floor(totalP * 0.8)), "Hipóteses restritivas e ressalvas legais."],
+          ["6. Raio-X de Pegadinhas da Banca", Math.max(1, Math.floor(totalP * 0.95)), "Armadilhas conceituais e inversões de prova."]
+        ];
+      }
+
+      blueprints.forEach(([titleB, pageB, descB], idx) => {
+        macroCategories.push({
+          id: `cat_${idx + 1}`,
+          titulo: titleB,
+          pagina: Math.min(pageB, totalP),
+          resumo: descB
+        });
+      });
+    }
+
+    // 3. Montar Nó Raiz e Categorias Oficiais
+    const nodes = [{
+      id: "root",
+      titulo: cleanTitle.slice(0, 45),
+      tipo: "root",
+      pagina: 1,
+      resumo: `Estrutura esquematizada das unidades essenciais de ${cleanTitle} para retenção rápida em concursos.`
+    }];
+    const edges = [];
+
+    for (const c of macroCategories) {
+      nodes.push({ id: c.id, titulo: c.titulo, tipo: "category", pagina: c.pagina, resumo: c.resumo });
+      edges.push({ source: "root", target: c.id });
+    }
+
+    // 4. Extração de Conceitos, Definições, Regras, Exceções, Mnemônicos e Pegadinhas
+    const foundItems = [];
+    const seenItems = new Set();
+
+    const knownMnemonics = [
+      [/\bSO[\s\-]CI[\s\-]DI[\s\-]VA[\s\-]PLU\b/i, 'Fundamentos (SO-CI-DI-VA-PLU)', 'Soberania, Cidadania, Dignidade, Valores sociais, Pluralismo.'],
+      [/\bCON[\s\-]GA[\s\-]ERRA[\s\-]PRO\b/i, 'Objetivos (CON-GA-ERRA-PRO)', 'Construir sociedade, Garantir desenv., Erradicar pobreza, Promover bem.'],
+      [/\bCO[\s\-]FI[\s\-]FO[\s\-]MO[\s\-]OB\b/i, 'Requisitos do Ato (COFIFOMOB)', 'Competência, Finalidade, Forma, Motivo e Objeto.'],
+      [/\bPA[\s\-]TI\b/i, 'Atributos do Ato (PATI)', 'Presunção de legitimidade, Autoexecutoriedade, Tipicidade, Imperatividade.'],
+      [/\bLIMPE\b/i, 'Princípios Expressos (LIMPE)', 'Legalidade, Impessoalidade, Moralidade, Publicidade, Eficiência.'],
+      [/\bRAÇÃO\b/i, 'Imprescritíveis (RAÇÃO)', 'Racismo e Ação de grupos armados são imprescritíveis.'],
+      [/\b3T\+H\b/i, 'Inafiançáveis (3T+H)', 'Tortura, Tráfico, Terrorismo e Hediondos.'],
+      [/\bPRE[\s\-]CON[\s\-]CON[\s\-]LEI[\s\-]DIA\b/i, 'Modalidades (PRE-CON-CON-LEI-DIA)', 'Pregão, Concorrência, Concurso, Leilão e Diálogo Competitivo.']
+    ];
+
+    for (const pnum of pageKeys) {
+      const ptxt = pageMap[pnum];
+
+      for (const [pat, mTitle, mDesc] of knownMnemonics) {
+        if (pat.test(ptxt) && !seenItems.has(mTitle.toLowerCase())) {
+          seenItems.add(mTitle.toLowerCase());
+          foundItems.push({
+            titulo: mTitle,
+            tipo: "mnemonic",
+            pagina: pnum,
+            resumo: mDesc
+          });
+        }
+      }
+
+      const lines = ptxt.split('\n');
+      for (const l of lines) {
+        const lStr = l.trim();
+        if (!lStr || lStr.length < 6) continue;
+        if (/rodrigo\s+motta|kaverna|p[áa]gina|youtube|instagram|www\./i.test(lStr)) continue;
+
+        const m_trap = lStr.match(/(?:pegadinha|cuidado|atenção|armadilha|não confundir|inversão)[\s:–-]+([^\.\n]{5,55})/i);
+        const m_exc = lStr.match(/(?:exceção|ressalva|salvo|exceto|vedado)[\s:–-]+([^\.\n]{5,55})/i);
+        const m_rule = lStr.match(/(?:regra geral|requisito|dever|prazo|obrigatoriamente)[\s:–-]+([^\.\n]{5,55})/i);
+        const m_comp = lStr.match(/([A-Za-z\u00C0-\u017F\s]{3,20})\s+(?:versus|x|não se confunde com)\s+([A-Za-z\u00C0-\u017F\s]{3,20})/i);
+        const m_def = lStr.match(/\*\*([A-Za-z\u00C0-\u017F\s]{3,35})\*\*[:–-]\s*(.{10,90})/);
+
+        if (m_trap) {
+          const tTitle = `Pegadinha: ${m_trap[1].trim().slice(0, 30)}`;
+          if (!seenItems.has(tTitle.toLowerCase())) {
+            seenItems.add(tTitle.toLowerCase());
+            foundItems.push({
+              titulo: tTitle.slice(0, 45),
+              tipo: "trap",
+              pagina: pnum,
+              resumo: `Ponto de alerta crítico para evitar pegadinha de banca examinadora.`
+            });
+          }
+        } else if (m_exc) {
+          const tTitle = `Exceção: ${m_exc[1].trim().slice(0, 32)}`;
+          if (!seenItems.has(tTitle.toLowerCase())) {
+            seenItems.add(tTitle.toLowerCase());
+            foundItems.push({
+              titulo: tTitle.slice(0, 45),
+              tipo: "exception",
+              pagina: pnum,
+              resumo: `Hipótese restritiva ou excepcional prevista expressamente no conteúdo.`
+            });
+          }
+        } else if (m_comp) {
+          const term1 = m_comp[1].trim();
+          const term2 = m_comp[2].trim();
+          const tTitle = `${term1} × ${term2}`;
+          if (!seenItems.has(tTitle.toLowerCase())) {
+            seenItems.add(tTitle.toLowerCase());
+            foundItems.push({
+              titulo: tTitle.slice(0, 45),
+              tipo: "comparison",
+              pagina: pnum,
+              resumo: `Distinção conceitual entre ${term1} e ${term2} frequentemente explorada em provas.`
+            });
+          }
+        } else if (m_def) {
+          const term = m_def[1].trim();
+          const expl = m_def[2].trim();
+          if (!seenItems.has(term.toLowerCase())) {
+            seenItems.add(term.toLowerCase());
+            foundItems.push({
+              titulo: term.slice(0, 45),
+              tipo: "definition",
+              pagina: pnum,
+              resumo: expl.slice(0, 120)
+            });
+          }
+        } else if (m_rule) {
+          const tTitle = `Regra: ${m_rule[1].trim().slice(0, 32)}`;
+          if (!seenItems.has(tTitle.toLowerCase())) {
+            seenItems.add(tTitle.toLowerCase());
+            foundItems.push({
+              titulo: tTitle.slice(0, 45),
+              tipo: "rule",
+              pagina: pnum,
+              resumo: `Requisito ou critério vinculante previsto nas regras da matéria.`
+            });
+          }
+        }
+
+        if (foundItems.length >= 28) break;
+      }
+      if (foundItems.length >= 28) break;
+    }
+
+    if (foundItems.length < 12) {
+      for (const pnum of pageKeys) {
+        const ptxt = pageMap[pnum];
+        const lines = ptxt.split('\n');
+        for (const l of lines) {
+          const m_bullet = l.trim().match(/^[-*•]\s+([A-Za-z\u00C0-\u017F\s\(\)/,:-]{5,50})/);
+          if (m_bullet) {
+            const cTitle = m_bullet[1].replace(/\*\*/g, '').trim();
+            if (cTitle.length >= 5 && !seenItems.has(cTitle.toLowerCase())) {
+              seenItems.add(cTitle.toLowerCase());
+              foundItems.push({
+                titulo: cTitle.slice(0, 45),
+                tipo: "concept",
+                pagina: pnum,
+                resumo: `Tópico sobre ${cTitle.slice(0, 45)} extraído da página ${pnum} do material.`
+              });
+            }
+          }
+          if (foundItems.length >= 24) break;
+        }
+        if (foundItems.length >= 24) break;
+      }
+    }
+
+    const trapCat = macroCategories.find(c => /pegadinha|banca/i.test(c.titulo));
+
+    foundItems.forEach((item, idx) => {
+      const nid = `item_${idx + 1}`;
+      let parentId = macroCategories[0].id;
+
+      if (item.tipo === "trap" && trapCat) {
+        parentId = trapCat.id;
+      } else {
+        let minDist = 999999;
+        for (const c of macroCategories) {
+          const dist = Math.abs(c.pagina - item.pagina);
+          if (dist < minDist) {
+            minDist = dist;
+            parentId = c.id;
+          }
+        }
+      }
+
+      nodes.push({
+        id: nid,
+        titulo: item.titulo,
+        tipo: item.tipo,
+        pagina: item.pagina,
+        resumo: item.resumo
+      });
+      edges.push({
+        source: parentId,
+        target: nid
+      });
+    });
+
+    return {
+      titulo: cleanTitle,
+      nodes,
+      edges
+    };
+  };
 
   function renderInteractiveMindmapFromJson(rawJsonOrStr, containerId) {
     let data;

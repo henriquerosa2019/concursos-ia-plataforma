@@ -194,4 +194,22 @@ Organizar em estrutura lógica e progressiva:
   2. `normalizeQuizItem` conta com auto-recuperação resiliente: caso qualquer item receba opções embutidas no enunciado por imperfeição de OCR ou extração de PDF, o frontend extrai automaticamente as alternativas `(A)` a `(E)` para `options` e remove do `enunciado`, garantindo a exibição dos botões interativos de resposta ao aluno.
   3. `renderQuiz` limpa prefixos redundantes de opções (`^[([A-E])]`) para evitar duplicidade de badges visuais.
 
+---
+
+## 13. Padrão Oficial de Mapas Mentais Semânticos Estilo NotebookLM para Concursos (Geração Universal via PDF)
+- **Regra Fundamental de Seleção Estrutural:** O mapa mental **NÃO É O ÍNDICE DO DOCUMENTO**. Ele é uma representação condensada e seletiva dos conceitos estruturalmente relevantes para provas de concursos públicos. A omissão de um conteúdo do mapa visual não significa exclusão do conhecimento (o conteúdo integral permanece nos Pilares 1, 2, 3 e 4).
+- **Estrutura e Profundidade Máxima:**
+  1. **Nível 0 (Raiz):** Título oficial do documento ou tema estruturante.
+  2. **Nível 1 (Grandes Blocos):** De 5 a no máximo 9 macro-temas essenciais (tipo: `category`).
+  3. **Nível 2 (Subconceitos/Eixos):** Desdobramentos conceituais e métodos/princípios estruturantes (tipo: `category` ou `concept`).
+  4. **Nível 3 (Elementos e Espécies):** Classificações, regras, mnemônicos, pegadinhas e exceções (máximo de 3 níveis de profundidade a partir da raiz).
+- **Fórmula de Compressão Semântica:** Rótulos dos nós curtos (máximo 4 a 6 palavras), seguindo estritamente o padrão:
+  `CONCEITO + essência em poucas palavras` (ex: `Sociológico (Fatores Reais de Poder)`, `Político (Decisão Fundamental)`, `Fundamentos (SO-CI-DI-VA-PLU)`). O detalhamento e explicações completas ficam restritos ao campo `resumo`.
+- **Preservação de Relações e Ontologia:** O sistema deve reconhecer e preservar árvores de classificação (ex: `Hermenêutica` $\rightarrow$ `Métodos` e `Princípios` $\rightarrow$ tipos), conectando os nós filhos às suas respectivas categorias por meio da matriz de arestas (`edges`).
+- **Mnemônicos Verdadeiros:** Somente siglas ou acrônimos formulados expressamente como técnicas mnemônicas de memorização (ex: `SO-CI-DI-VA-PLU`, `CON-GA-ERRA-PRO`, `COFIFOMOB`, `PATI`, `LIMPE`) podem ser classificados como tipo `mnemonic`. Macetes genéricos permanecem como `rule` ou `trap`.
+- **Rastreabilidade Documental Direta:** Todo nó deve manter o atributo `pagina` com o número exato da página do PDF de onde foi extraído, permitindo que o clique no nó abra imediatamente a página correspondente do material no painel lateral de conhecimento.
+- **Pipeline em 6 Etapas:** `Extração` $\rightarrow$ `Estrutura` $\rightarrow$ `Conceitos` $\rightarrow$ `Relações` $\rightarrow$ `Priorização` $\rightarrow$ `Compressão`.
+- **Disponibilidade Permanente ao Aluno:** O aluno pode gerar ou regenerar o mapa mental a qualquer momento na interface através do botão **"✨ Gerar Mapa Mental com IA"** ou na importação de novos PDFs, aplicando este mesmo padrão a qualquer disciplina e edital.
+
+
 

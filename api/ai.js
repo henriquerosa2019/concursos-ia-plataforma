@@ -470,16 +470,7 @@ function extractSemanticMindmapFromCorpus(disc, sub, title, contextText, focus =
     };
   }
 
-  // 6. Extrator Semântico Dinâmico para Qualquer PDF Importado (Robusto & Preciso)
-  const nodes = [{
-    id: "root",
-    titulo: cleanTitle.slice(0, 45),
-    tipo: "root",
-    pagina: 1,
-    resumo: `Estrutura esquematizada das unidades essenciais de ${cleanTitle} para retenção rápida em concursos.`
-  }];
-  const edges = [];
-
+  // 6. Extrator Semântico Dinâmico Estilo NotebookLM para Qualquer PDF Importado (Robusto & Preciso)
   const rawPages = (contextText || '').split(/---\s*P[ÁA]GINA\s*(\d+)\s*---/i);
   const pageMap = {};
   if (rawPages.length > 1) {
@@ -493,74 +484,301 @@ function extractSemanticMindmapFromCorpus(disc, sub, title, contextText, focus =
   }
 
   const pageKeys = Object.keys(pageMap).map(Number).sort((a, b) => a - b);
-  const totalP = pageKeys.length || 1;
+  const totalP = pageKeys.length ? pageKeys[pageKeys.length - 1] : 1;
 
-  const catEixos = [
-    { id: "cat_1", titulo: "1. Conceitos e Fundamentos", pagina: 1, resumo: `Definições essenciais e princípios fundamentais de ${cleanTitle}.` },
-    { id: "cat_2", titulo: "2. Regras e Aplicações Práticas", pagina: Math.max(1, Math.min(2, totalP)), resumo: `Dispositivos normativos e critérios aplicáveis a ${cleanTitle}.` },
-    { id: "cat_3", titulo: "3. Pegadinhas e Regras de Banca", pagina: Math.max(1, Math.min(3, totalP)), resumo: `Inversões conceituais, termos absolutos e armadilhas em ${cleanTitle}.` }
-  ];
-
-  for (const c of catEixos) {
-    nodes.push({ id: c.id, titulo: c.titulo, tipo: "category", pagina: c.pagina, resumo: c.resumo });
-    edges.push({ source: "root", target: c.id });
-  }
-
-  const foundUnits = [];
-  const seenTitles = new Set();
+  // 1. Descoberta de Cabeçalhos e Macro-Eixos Estruturantes
+  const headings = [];
+  const seenHeadings = new Set();
+  const discNorm = (disc || '').toLowerCase().replace(/_/g, ' ');
+  const titleNorm = cleanTitle.toLowerCase();
 
   for (const pnum of pageKeys) {
     const ptxt = pageMap[pnum];
     const lines = ptxt.split('\n');
     for (const l of lines) {
       const lStr = l.trim();
-      if (/rodrigo\s+motta|youtube|instagram|kaverna|p[áa]gina/i.test(lStr)) continue;
+      if (!lStr || lStr.length < 4) continue;
+      if (/rodrigo\s+motta|kaverna|p[áa]gina|youtube|instagram|gabarito|sum[áa]rio|[ií]ndice|www\./i.test(lStr)) continue;
 
-      const isUpperTitle = (lStr === lStr.toUpperCase() && lStr.length > 5 && lStr.length < 55 && !lStr.startsWith('(') && !lStr.endsWith(')'));
-      const isNumbered = /^(?:[0-9]{1,2}\.|\bArt\.\s*\d+)\s+([A-Za-z\u00C0-\u017F\s]{5,50})/.test(lStr);
-      const isMarkdownHeading = (lStr.startsWith('### ') || lStr.startsWith('## ')) && lStr.length > 5;
-      const isAlert = /pegadinha|cuidado|atenção|mnem[ôo]nico|macete|exceção|ressalva|importante/i.test(lStr);
+      const m_md = lStr.match(/^#{1,3}\s+(.+)$/);
+      const m_num = lStr.match(/^(?:[0-9]{1,2}\.|\b[IVXLCDM]+\s*[-–.]|\bArt\.\s*\d+[º\w\s-]*)\s+([A-Za-z\u00C0-\u017F\s\(\)/,:-]{4,60})/);
+      const isUpper = (lStr === lStr.toUpperCase() && lStr.length >= 5 && lStr.length <= 55 && !lStr.startsWith('(') && !lStr.endsWith(')'));
 
-      if (isUpperTitle || isNumbered || isMarkdownHeading || isAlert) {
-        const cleanUnitTitle = lStr.replace(/^[0-9.\-*\s#]+/, '').replace(/\*\*/g, '').trim();
-        if (cleanUnitTitle.length < 5 || cleanUnitTitle.length > 60) continue;
-        const normKey = cleanUnitTitle.toLowerCase();
-        if (seenTitles.has(normKey) || /gabarito|mini-simulado|exerc[ií]cios|j[áa]\s+caiu|vis[ãa]o\s+geral|mapa\s+mental|quadro\s+sin[óo]ptico/i.test(normKey)) {
-          continue;
+      let cand = "";
+      if (m_md) cand = m_md[1];
+      else if (m_num) cand = m_num[1];
+      else if (isUpper) cand = lStr;
+
+      if (cand) {
+        const cleanCand = cand.replace(/^[0-9.\-–*#\s]+/, '').replace(/\*\*/g, '').trim();
+        const norm = cleanCand.toLowerCase();
+        if (cleanCand.length >= 4 && cleanCand.length <= 50 && !seenHeadings.has(norm)) {
+          if (norm !== discNorm && norm !== titleNorm && !/vis[ãa]o\s+geral|mapa\s+mental|mini-simulado|exerc[ií]cios|resumo\s+estruturado|raio-x|flashcards|pilar/i.test(norm)) {
+            seenHeadings.add(norm);
+            headings.push({ title: cleanCand, page: pnum });
+          }
         }
-        seenTitles.add(normKey);
-
-        let tipo = "concept";
-        if (/pegadinha|cuidado|armadilha|atenção|não\s+confundir/i.test(normKey)) tipo = "trap";
-        else if (/mnem[ôo]nico|macete/i.test(normKey)) tipo = "mnemonic";
-        else if (/regra|requisito|dever|art\.|prazo|fase/i.test(normKey)) tipo = "rule";
-        else if (/exceção|ressalva|salvo/i.test(normKey)) tipo = "exception";
-        else if (/diferença|versus|\sx\s|confronto|distinção/i.test(normKey)) tipo = "comparison";
-        else if (isUpperTitle) tipo = "definition";
-
-        foundUnits.push({
-          titulo: cleanUnitTitle.slice(0, 45),
-          tipo,
-          pagina: pnum,
-          resumo: `Tópico sobre ${cleanUnitTitle.slice(0, 45)} extraído da página ${pnum} do material.`
-        });
-        if (foundUnits.length >= 18) break;
       }
     }
-    if (foundUnits.length >= 18) break;
   }
 
-  foundUnits.forEach((u, idx) => {
-    const parentCat = u.tipo === "trap" ? "cat_3" : (u.tipo === "rule" || u.tipo === "exception" ? "cat_2" : "cat_1");
-    const nid = `unit_${idx + 1}`;
+  // 2. Formação Dinâmica de 5 a 8 Macro-Categorias (Nível 1)
+  const macroCategories = [];
+  if (headings.length >= 5) {
+    const targetCount = Math.min(8, Math.max(5, headings.length));
+    const step = headings.length / targetCount;
+    for (let i = 0; i < targetCount; i++) {
+      const idx = Math.floor(i * step);
+      const sh = headings[idx];
+      const catTitle = `${i + 1}. ${sh.title.slice(0, 38)}`;
+      macroCategories.push({
+        id: `cat_${i + 1}`,
+        titulo: catTitle,
+        pagina: sh.page,
+        resumo: `Eixo estruturante sobre ${sh.title.toLowerCase()} com regras essenciais e diretrizes de prova.`
+      });
+    }
+  } else {
+    // Blueprints taxonômicos pedagógicos por matéria
+    let blueprints = [];
+    if (/const/i.test(normTopic)) {
+      blueprints = [
+        ["1. Fundamentos e Princípios", 1, "Bases axiológicas, forma de Estado e princípios fundamentais."],
+        ["2. Hermenêutica e Eficácia", Math.max(1, Math.floor(totalP * 0.15)), "Métodos de interpretação e aplicabilidade das normas."],
+        ["3. Direitos e Garantias Individuais", Math.max(1, Math.floor(totalP * 0.3)), "Núcleo protetivo dos direitos individuais e remédios constitucionais."],
+        ["4. Organização do Estado", Math.max(1, Math.floor(totalP * 0.45)), "Repartição de competências e autonomia dos entes federados."],
+        ["5. Organização dos Poderes", Math.max(1, Math.floor(totalP * 0.6)), "Funções típicas e atípicas dos Poderes da República."],
+        ["6. Processo Legislativo e Controle", Math.max(1, Math.floor(totalP * 0.75)), "Espécies normativas, processo legislativo e controle de constitucionalidade."],
+        ["7. Pegadinhas e Regras de Banca", Math.max(1, Math.floor(totalP * 0.9)), "Inversões clássicas de prova, termos absolutos e armadilhas da banca."]
+      ];
+    } else if (/adm|licita/i.test(normTopic)) {
+      blueprints = [
+        ["1. Conceitos e Regime Jurídico", 1, "Princípios expressos e implícitos da Administração Pública."],
+        ["2. Poderes e Prerrogativas", Math.max(1, Math.floor(totalP * 0.18)), "Poder de polícia, poder disciplinar e hierárquico."],
+        ["3. Atos Administrativos e Requisitos", Math.max(1, Math.floor(totalP * 0.35)), "Competência, finalidade, forma, motivo e objeto."],
+        ["4. Licitações e Contratos", Math.max(1, Math.floor(totalP * 0.52)), "Modalidades licitatórias, julgamento e contratação direta."],
+        ["5. Agentes e Responsabilidade Civil", Math.max(1, Math.floor(totalP * 0.7)), "Regime jurídico funcional, responsabilidade civil e improbidade."],
+        ["6. Extinção, Anulação e Convalidação", Math.max(1, Math.floor(totalP * 0.85)), "Revogação (mérito) versus anulação (ilegalidade) e efeitos."],
+        ["7. Pegadinhas e Casos Críticos de Prova", Math.max(1, Math.floor(totalP * 0.95)), "Armadilhas frequentes de bancas examinadoras."]
+      ];
+    } else if (/penal/i.test(normTopic)) {
+      blueprints = [
+        ["1. Princípios e Teoria da Norma", 1, "Legalidade, anterioridade e aplicação da lei penal no tempo e espaço."],
+        ["2. Fato Típico e Conduta", Math.max(1, Math.floor(totalP * 0.18)), "Conduta, resultado, nexo de causalidade e tipicidade penal."],
+        ["3. Dolo, Culpa e Omissão", Math.max(1, Math.floor(totalP * 0.35)), "Espécies de dolo, modalidades de culpa e relevância da omissão."],
+        ["4. Ilicitude e Causas Excludentes", Math.max(1, Math.floor(totalP * 0.52)), "Legítima defesa, estado de necessidade e estrito cumprimento."],
+        ["5. Culpabilidade e Imputabilidade", Math.max(1, Math.floor(totalP * 0.7)), "Imputabilidade, potencial consciência e exigibilidade de conduta diversa."],
+        ["6. Concurso de Crimes e Penas", Math.max(1, Math.floor(totalP * 0.85)), "Concurso material, formal, crime continuado e fixação de penas."],
+        ["7. Pegadinhas e Regras de Banca", Math.max(1, Math.floor(totalP * 0.95)), "Inversões e diferenças conceituais cobradas em provas."]
+      ];
+    } else if (/info|excel|rede|dados/i.test(normTopic)) {
+      blueprints = [
+        ["1. Fundamentos e Arquitetura", 1, "Conceitos estruturais, hardware, software e definições operacionais."],
+        ["2. Funções e Comandos Centrais", Math.max(1, Math.floor(totalP * 0.2)), "Sintaxes, funções operacionais e parâmetros essenciais."],
+        ["3. Protocolos, Padrões e Portas", Math.max(1, Math.floor(totalP * 0.4)), "Modelos OSI/TCP, portas oficiais e regras de rede."],
+        ["4. Segurança da Informação e Ameaças", Math.max(1, Math.floor(totalP * 0.6)), "Malwares, criptografia, autenticação e certificados digitais."],
+        ["5. Procedimentos Operacionais e Atalhos", Math.max(1, Math.floor(totalP * 0.8)), "Práticas recomendadas, sequências operacionais e teclas de atalho."],
+        ["6. Pegadinhas e Armadilhas de Banca", Math.max(1, Math.floor(totalP * 0.95)), "Erros de digitação de fórmula, termos absolutos e armadilhas."]
+      ];
+    } else {
+      blueprints = [
+        ["1. Fundamentos e Visão Geral", 1, `Conceitos primários e definições de ${cleanTitle}.`],
+        ["2. Estrutura e Classificações", Math.max(1, Math.floor(totalP * 0.2)), "Divisões taxonômicas e espécies doutrinárias."],
+        ["3. Regime de Regras e Aplicações", Math.max(1, Math.floor(totalP * 0.4)), "Critérios práticos e parâmetros normativos."],
+        ["4. Prerrogativas e Obrigações", Math.max(1, Math.floor(totalP * 0.6)), "Deveres, requisitos formais e procedimentos operacionais."],
+        ["5. Exceções e Vedações Legais", Math.max(1, Math.floor(totalP * 0.8)), "Hipóteses restritivas e ressalvas legais."],
+        ["6. Raio-X de Pegadinhas da Banca", Math.max(1, Math.floor(totalP * 0.95)), "Armadilhas conceituais e inversões de prova."]
+      ];
+    }
+
+    blueprints.forEach(([titleB, pageB, descB], idx) => {
+      macroCategories.push({
+        id: `cat_${idx + 1}`,
+        titulo: titleB,
+        pagina: Math.min(pageB, totalP),
+        resumo: descB
+      });
+    });
+  }
+
+  // 3. Montar Nó Raiz e Categorias Oficiais
+  const nodes = [{
+    id: "root",
+    titulo: cleanTitle.slice(0, 45),
+    tipo: "root",
+    pagina: 1,
+    resumo: `Estrutura esquematizada das unidades essenciais de ${cleanTitle} para retenção rápida em concursos.`
+  }];
+  const edges = [];
+
+  for (const c of macroCategories) {
+    nodes.push({ id: c.id, titulo: c.titulo, tipo: "category", pagina: c.pagina, resumo: c.resumo });
+    edges.push({ source: "root", target: c.id });
+  }
+
+  // 4. Extração de Conceitos, Definições, Regras, Exceções, Mnemônicos e Pegadinhas
+  const foundItems = [];
+  const seenItems = new Set();
+
+  const knownMnemonics = [
+    [/\bSO[\s\-]CI[\s\-]DI[\s\-]VA[\s\-]PLU\b/i, 'Fundamentos (SO-CI-DI-VA-PLU)', 'Soberania, Cidadania, Dignidade, Valores sociais, Pluralismo.'],
+    [/\bCON[\s\-]GA[\s\-]ERRA[\s\-]PRO\b/i, 'Objetivos (CON-GA-ERRA-PRO)', 'Construir sociedade, Garantir desenv., Erradicar pobreza, Promover bem.'],
+    [/\bCO[\s\-]FI[\s\-]FO[\s\-]MO[\s\-]OB\b/i, 'Requisitos do Ato (COFIFOMOB)', 'Competência, Finalidade, Forma, Motivo e Objeto.'],
+    [/\bPA[\s\-]TI\b/i, 'Atributos do Ato (PATI)', 'Presunção de legitimidade, Autoexecutoriedade, Tipicidade, Imperatividade.'],
+    [/\bLIMPE\b/i, 'Princípios Expressos (LIMPE)', 'Legalidade, Impessoalidade, Moralidade, Publicidade, Eficiência.'],
+    [/\bRAÇÃO\b/i, 'Imprescritíveis (RAÇÃO)', 'Racismo e Ação de grupos armados são imprescritíveis.'],
+    [/\b3T\+H\b/i, 'Inafiançáveis (3T+H)', 'Tortura, Tráfico, Terrorismo e Hediondos.'],
+    [/\bPRE[\s\-]CON[\s\-]CON[\s\-]LEI[\s\-]DIA\b/i, 'Modalidades (PRE-CON-CON-LEI-DIA)', 'Pregão, Concorrência, Concurso, Leilão e Diálogo Competitivo.']
+  ];
+
+  for (const pnum of pageKeys) {
+    const ptxt = pageMap[pnum];
+
+    for (const [pat, mTitle, mDesc] of knownMnemonics) {
+      if (pat.test(ptxt) && !seenItems.has(mTitle.toLowerCase())) {
+        seenItems.add(mTitle.toLowerCase());
+        foundItems.push({
+          titulo: mTitle,
+          tipo: "mnemonic",
+          pagina: pnum,
+          resumo: mDesc
+        });
+      }
+    }
+
+    const lines = ptxt.split('\n');
+    for (const l of lines) {
+      const lStr = l.trim();
+      if (!lStr || lStr.length < 6) continue;
+      if (/rodrigo\s+motta|kaverna|p[áa]gina|youtube|instagram|www\./i.test(lStr)) continue;
+
+      const m_trap = lStr.match(/(?:pegadinha|cuidado|atenção|armadilha|não confundir|inversão)[\s:–-]+([^\.\n]{5,55})/i);
+      const m_exc = lStr.match(/(?:exceção|ressalva|salvo|exceto|vedado)[\s:–-]+([^\.\n]{5,55})/i);
+      const m_rule = lStr.match(/(?:regra geral|requisito|dever|prazo|obrigatoriamente)[\s:–-]+([^\.\n]{5,55})/i);
+      const m_comp = lStr.match(/([A-Za-z\u00C0-\u017F\s]{3,20})\s+(?:versus|x|não se confunde com)\s+([A-Za-z\u00C0-\u017F\s]{3,20})/i);
+      const m_def = lStr.match(/\*\*([A-Za-z\u00C0-\u017F\s]{3,35})\*\*[:–-]\s*(.{10,90})/);
+
+      if (m_trap) {
+        const tTitle = `Pegadinha: ${m_trap[1].trim().slice(0, 30)}`;
+        if (!seenItems.has(tTitle.toLowerCase())) {
+          seenItems.add(tTitle.toLowerCase());
+          foundItems.push({
+            titulo: tTitle.slice(0, 45),
+            tipo: "trap",
+            pagina: pnum,
+            resumo: `Ponto de alerta crítico para evitar pegadinha de banca examinadora.`
+          });
+        }
+      } else if (m_exc) {
+        const tTitle = `Exceção: ${m_exc[1].trim().slice(0, 32)}`;
+        if (!seenItems.has(tTitle.toLowerCase())) {
+          seenItems.add(tTitle.toLowerCase());
+          foundItems.push({
+            titulo: tTitle.slice(0, 45),
+            tipo: "exception",
+            pagina: pnum,
+            resumo: `Hipótese restritiva ou excepcional prevista expressamente no conteúdo.`
+          });
+        }
+      } else if (m_comp) {
+        const term1 = m_comp[1].trim();
+        const term2 = m_comp[2].trim();
+        const tTitle = `${term1} × ${term2}`;
+        if (!seenItems.has(tTitle.toLowerCase())) {
+          seenItems.add(tTitle.toLowerCase());
+          foundItems.push({
+            titulo: tTitle.slice(0, 45),
+            tipo: "comparison",
+            pagina: pnum,
+            resumo: `Distinção conceitual entre ${term1} e ${term2} frequentemente explorada em provas.`
+          });
+        }
+      } else if (m_def) {
+        const term = m_def[1].trim();
+        const expl = m_def[2].trim();
+        if (!seenItems.has(term.toLowerCase())) {
+          seenItems.add(term.toLowerCase());
+          foundItems.push({
+            titulo: term.slice(0, 45),
+            tipo: "definition",
+            pagina: pnum,
+            resumo: expl.slice(0, 120)
+          });
+        }
+      } else if (m_rule) {
+        const tTitle = `Regra: ${m_rule[1].trim().slice(0, 32)}`;
+        if (!seenItems.has(tTitle.toLowerCase())) {
+          seenItems.add(tTitle.toLowerCase());
+          foundItems.push({
+            titulo: tTitle.slice(0, 45),
+            tipo: "rule",
+            pagina: pnum,
+            resumo: `Requisito ou critério vinculante previsto nas regras da matéria.`
+          });
+        }
+      }
+
+      if (foundItems.length >= 28) break;
+    }
+    if (foundItems.length >= 28) break;
+  }
+
+  // Complementar com pontos conceituais adicionais se necessário
+  if (foundItems.length < 12) {
+    for (const pnum of pageKeys) {
+      const ptxt = pageMap[pnum];
+      const lines = ptxt.split('\n');
+      for (const l of lines) {
+        const m_bullet = l.trim().match(/^[-*•]\s+([A-Za-z\u00C0-\u017F\s\(\)/,:-]{5,50})/);
+        if (m_bullet) {
+          const cTitle = m_bullet[1].replace(/\*\*/g, '').trim();
+          if (cTitle.length >= 5 && !seenItems.has(cTitle.toLowerCase())) {
+            seenItems.add(cTitle.toLowerCase());
+            foundItems.push({
+              titulo: cTitle.slice(0, 45),
+              tipo: "concept",
+              pagina: pnum,
+              resumo: `Tópico sobre ${cTitle.slice(0, 45)} extraído da página ${pnum} do material.`
+            });
+          }
+        }
+        if (foundItems.length >= 24) break;
+      }
+      if (foundItems.length >= 24) break;
+    }
+  }
+
+  // 5. Vincular nós filhos às categorias correspondentes por proximidade de página ou categoria de pegadinhas
+  const trapCat = macroCategories.find(c => /pegadinha|banca/i.test(c.titulo));
+
+  foundItems.forEach((item, idx) => {
+    const nid = `item_${idx + 1}`;
+    let parentId = macroCategories[0].id;
+
+    if (item.tipo === "trap" && trapCat) {
+      parentId = trapCat.id;
+    } else {
+      let minDist = 999999;
+      for (const c of macroCategories) {
+        const dist = Math.abs(c.pagina - item.pagina);
+        if (dist < minDist) {
+          minDist = dist;
+          parentId = c.id;
+        }
+      }
+    }
+
     nodes.push({
       id: nid,
-      titulo: u.titulo,
-      tipo: u.tipo,
-      pagina: u.pagina,
-      resumo: u.resumo
+      titulo: item.titulo,
+      tipo: item.tipo,
+      pagina: item.pagina,
+      resumo: item.resumo
     });
-    edges.push({ source: parentCat, target: nid });
+    edges.push({
+      source: parentId,
+      target: nid
+    });
   });
 
   return {
@@ -1630,38 +1848,45 @@ export default async function handler(req, res) {
 
     if (apiKey) {
       try {
-        const prompt = `Você é o ENGINE DE MAPA MENTAL de uma plataforma de preparação para concursos públicos.
-Sua tarefa é transformar o conteúdo abaixo em uma estrutura hierárquica semântica de conhecimento (JSON).
+        const prompt = `Você é o ENGINE DE MAPA MENTAL SEMÂNTICO (ESTILO NOTEBOOKLM) de uma plataforma de preparação para concursos públicos.
+Sua missão: Transformar o documento em uma estrutura conceitual de alta retenção no formato JSON.
 
-REGRAS:
-1. O nó raiz deve representar o assunto principal.
-2. Crie de 3 a 7 grandes ramificações (tipo = 'category').
-3. Não invente categorias.
-4. Não invente informações que não estejam presentes no documento.
-5. Preserve definições importantes (tipo = 'definition').
-6. Preserve classificações.
-7. Preserve características.
-8. Preserve regras (tipo = 'rule').
-9. Preserve exceções (tipo = 'exception').
-10. Preserve diferenças entre conceitos (tipo = 'comparison').
-11. Preserve exemplos existentes no documento (tipo = 'example').
-12. Preserve mnemônicos reais encontrados no documento (tipo = 'mnemonic').
-13. Não transforme "dica", "atenção", "macete de prova" ou "importante" automaticamente em mnemônico.
-14. Se existir uma pegadinha explicitamente apresentada pelo autor ou examinador, marque como: tipo = 'trap'.
-15. Se houver um mnemônico verdadeiro, marque como: tipo = 'mnemonic'.
-16. Não crie mnemônicos novos.
-17. Não invente exemplos.
-18. Não transforme interpretação da IA em afirmação do autor.
-19. Cada informação deve manter a página do PDF de onde foi extraída (campo 'pagina' como inteiro 1, 2, 3...).
-20. Os títulos dos nós devem ser curtos (máximo 45 caracteres).
-21. Evite parágrafos dentro dos títulos dos nós; coloque a explicação sucinta no campo 'resumo'.
-22. Um nó deve representar uma ideia.
-23. Organize conceitos relacionados hierarquicamente conectando as edges da raiz às categorias e das categorias aos nós filhos.
-24. Não crie profundidade excessiva.
-25. O mapa deve facilitar revisão para concursos públicos.
+DIRETRIZES FUNDAMENTAIS (DIRETRIZ 13 DO AGENTS.MD):
+1. MAPA MENTAL NÃO É O ÍNDICE DO DOCUMENTO:
+   - Não tente indexar todos os artigos ou parágrafos. Faça uma seleção cirúrgica de 5 a no máximo 8 GRANDES BLOCOS estruturalmente relevantes (tipo: "category").
+   - A omissão de detalhes do mapa não exclui o conhecimento (o conteúdo integral permanece nos pilares textuais).
 
-TIPOS PERMITIDOS NO CAMPO 'tipo':
-root, category, concept, definition, rule, exception, comparison, example, mnemonic, trap
+2. PROFUNDIDADE MÁXIMA DE 3 NÍVEIS:
+   - Nível 0 (Raiz): Título oficial do documento ou tema (tipo: "root").
+   - Nível 1 (Grandes Blocos): De 5 a 8 macro-temas essenciais (tipo: "category").
+   - Nível 2 (Subconceitos / Eixos): Desdobramentos conceituais e métodos/princípios estruturantes (tipo: "category" ou "concept").
+   - Nível 3 (Elementos / Espécies): Classificações, regras, mnemônicos, pegadinhas e exceções (tipo: "rule", "exception", "trap", "mnemonic", "comparison", "definition").
+   - NENHUM nó pode ter profundidade maior que 3 níveis a partir da raiz.
+
+3. FÓRMULA DE COMPRESSÃO SEMÂNTICA NOS TÍTULOS:
+   - Rótulos dos nós devem ser CURTOS (máximo 4 a 6 palavras / até 45 caracteres), seguindo estritamente a fórmula:
+     CONCEITO + essência em poucas palavras
+     Exemplos: "Sociológico (Fatores Reais do Poder)", "Político (Decisão Fundamental)", "Fundamentos (SO-CI-DI-VA-PLU)", "Forma (Regra Geral Escrita)", "Motivo ≠ Motivação".
+   - Todo o detalhamento e explicação aprofundada para concurso deve ficar no campo "resumo".
+
+4. TIPOS SEMÂNTICOS PERMITIDOS:
+   - "root": nó central
+   - "category": grandes blocos ou subeixos
+   - "concept": conceito ou instituto
+   - "definition": definição formal do autor/lei
+   - "rule": regra geral ou critério vinculante
+   - "exception": hipótese excepcional ou ressalva
+   - "comparison": diferenciação técnica entre dois institutos (ex: Inexigibilidade × Dispensa)
+   - "example": exemplo prático relevante
+   - "mnemonic": SOMENTE acrônimos ou técnicas deliberadas de memorização (ex: SO-CI-DI-VA-PLU, PATI, COFIFOMOB). Não invente nem chame qualquer dica de mnemônico.
+   - "trap": pegadinha clássica de banca ou inversão conceitual expressa.
+
+5. RASTREABILIDADE DOCUMENTAL:
+   - O campo "pagina" deve conter o número inteiro exato (ex: 1, 5, 14) da página do PDF de onde o conceito foi extraído.
+
+6. MATRIZ DE CONEXÕES (EDGES):
+   - Conecte a raiz às categorias ("source": "root", "target": "cat_1").
+   - Conecte as categorias aos seus respectivos subconceitos e elementos ("source": "cat_1", "target": "...").
 
 RETORNE SOMENTE JSON NO FORMATO:
 {
@@ -1672,11 +1897,18 @@ RETORNE SOMENTE JSON NO FORMATO:
       "titulo": "${title}",
       "tipo": "root",
       "pagina": 1,
-      "resumo": "Visão geral do tema."
+      "resumo": "Visão geral e escopo temático para concursos públicos."
+    },
+    {
+      "id": "cat_1",
+      "titulo": "1. Macro-Tema 1",
+      "tipo": "category",
+      "pagina": 1,
+      "resumo": "Síntese do eixo temático."
     }
   ],
   "edges": [
-    { "source": "root", "target": "..." }
+    { "source": "root", "target": "cat_1" }
   ]
 }
 
@@ -2907,6 +3139,13 @@ Organizar em estrutura lógica e progressiva:
 12. Todos os mnemônicos, dicas e alertas existentes no PDF foram preservados? → VERIFICAR.
 
 DEMAIS PILARES:
+- Mapa Mental Semântico (Estilo NotebookLM - Diretriz 13):
+   * NÃO É ÍNDICE DO DOCUMENTO: Selecione cirurgicamente de 5 a 8 GRANDES BLOCOS estruturais essenciais (tipo: "category").
+   * PROFUNDIDADE MÁXIMA DE 3 NÍVEIS: Raiz (0) -> Categorias (1) -> Subconceitos (2) -> Elementos/Classificações/Regras/Mnemônicos/Pegadinhas (3).
+   * COMPRESSÃO SEMÂNTICA: Títulos curtos (máximo 4 a 6 palavras / até 45 chars) no formato "CONCEITO + essência" (ex: "Sociológico (Fatores Reais)", "Forma (Regra Geral Escrita)", "Motivo ≠ Motivação"). Explicação detalhada no campo "resumo".
+   * TIPOS: root, category, concept, definition, rule, exception, comparison, example, mnemonic, trap.
+   * RASTREABILIDADE: Campo "pagina" com inteiro exato da página de origem no PDF.
+   * EDGES: Matriz hierárquica conectando raiz -> categorias e categorias -> filhos.
 - Pilar 2: Raio-X de Banca dividido em:
    * PARTE 1: Pegadinhas e Alertas do Autor 👨‍🏫 [MATERIAL DO AUTOR] (se existirem na fonte)
    * PARTE 2: Análise Complementar de Banca da IA 🤖 [INSIGHT PEDAGÓGICO COMPLEMENTAR]
@@ -2924,11 +3163,13 @@ Retorne APENAS um JSON no formato:
   "mindmap": {
     "titulo": "${title}",
     "nodes": [
-      { "id": "root", "titulo": "${title}", "tipo": "root", "pagina": 1, "resumo": "Visão geral" },
-      { "id": "cat_1", "titulo": "1. Eixo 1", "tipo": "category", "pagina": 1, "resumo": "..." }
+      { "id": "root", "titulo": "${title}", "tipo": "root", "pagina": 1, "resumo": "Visão geral e escopo temático." },
+      { "id": "cat_1", "titulo": "1. Macro-Tema 1", "tipo": "category", "pagina": 1, "resumo": "Síntese do eixo estruturante." },
+      { "id": "item_1", "titulo": "Conceito (Essência)", "tipo": "concept", "pagina": 1, "resumo": "Explicação técnica sucinta." }
     ],
     "edges": [
-      { "source": "root", "target": "cat_1" }
+      { "source": "root", "target": "cat_1" },
+      { "source": "cat_1", "target": "item_1" }
     ]
   },
   "pilar1": "## 1. Resumo Estruturado e Conceitos-Chave...",

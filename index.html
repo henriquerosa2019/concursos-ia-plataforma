@@ -3079,6 +3079,8 @@
   .mkd-p-title { font-size: 13px; font-weight: 700; color: #ffffff; margin-bottom: 2px; }
   .mkd-p-desc { font-size: 11.5px; color: #94a3b8; }
   .mkd-p-arrow { font-size: 14px; color: #64748b; font-weight: bold; }
+  .mkd-pillar-btn.mkd-p1:hover { border-color: #38bdf8; }
+  .mkd-pillar-btn.mkd-p1:hover .mkd-p-arrow { color: #38bdf8; }
   .mkd-pillar-btn.mkd-p2:hover { border-color: #f59e0b; }
   .mkd-pillar-btn.mkd-p2:hover .mkd-p-arrow { color: #f59e0b; }
   .mkd-pillar-btn.mkd-p3:hover { border-color: #10b981; }
@@ -4615,14 +4617,16 @@
 
 <!-- Painel Lateral do Conhecimento (Drawer dos 4 Pilares - React Flow Style) -->
 <div id="mindmapKnowledgeDrawer" class="mindmap-knowledge-drawer" style="display: none;">
-  <div class="mkd-backdrop" onclick="closeMindmapKnowledgeDrawer()"></div>
+  <div class="mkd-backdrop" onclick="closeMindmapKnowledgeDrawerAndFullscreen()"></div>
   <div class="mkd-content">
     <div class="mkd-header">
       <div style="display: flex; align-items: center; gap: 8px;">
         <span id="mkdNodeBadge" class="mkd-badge">CONCEITO</span>
         <span id="mkdNodePageBadge" class="mkd-page-badge" style="display: none;">Pág. 01</span>
       </div>
-      <button class="mkd-close-btn" onclick="closeMindmapKnowledgeDrawer()" title="Fechar painel">✖</button>
+      <button class="mkd-close-btn" onclick="closeMindmapKnowledgeDrawerAndFullscreen()" title="Fechar painel e retornar à aula" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; color: #f1f5f9; font-weight: 700; font-size: 12px; cursor: pointer;">
+        <span>✕</span><span>Fechar</span>
+      </button>
     </div>
     
     <h3 id="mkdNodeTitle" class="mkd-title">Título do Conceito</h3>
@@ -4647,7 +4651,16 @@
     <div class="mkd-section">
       <div class="mkd-section-lbl">🔗 NAVEGAÇÃO INTEGRADA AOS 4 PILARES</div>
       <div class="mkd-pillars-grid">
-        <button class="mkd-pillar-btn mkd-p2" onclick="jumpToRaioxFromMindmap()">
+        <button class="mkd-pillar-btn mkd-p1" onclick="jumpToResumoFromMindmap()" style="border-left: 3px solid #38bdf8;">
+          <div class="mkd-p-icon">📑</div>
+          <div class="mkd-p-info">
+            <div class="mkd-p-title">Pilar 1 • Resumo & Sintaxe</div>
+            <div class="mkd-p-desc">Ver explicação detalhada e esquematizações</div>
+          </div>
+          <div class="mkd-p-arrow">➔</div>
+        </button>
+
+        <button class="mkd-pillar-btn mkd-p2" onclick="jumpToRaioxFromMindmap()" style="border-left: 3px solid #f59e0b;">
           <div class="mkd-p-icon">🔎</div>
           <div class="mkd-p-info">
             <div class="mkd-p-title">Pilar 2 • Raio-X de Banca</div>
@@ -4656,7 +4669,7 @@
           <div class="mkd-p-arrow">➔</div>
         </button>
         
-        <button class="mkd-pillar-btn mkd-p3" onclick="jumpToFlashcardsFromMindmap()">
+        <button class="mkd-pillar-btn mkd-p3" onclick="jumpToFlashcardsFromMindmap()" style="border-left: 3px solid #10b981;">
           <div class="mkd-p-icon">🧠</div>
           <div class="mkd-p-info">
             <div class="mkd-p-title">Pilar 3 • Flashcards Anki</div>
@@ -4665,7 +4678,7 @@
           <div class="mkd-p-arrow">➔</div>
         </button>
         
-        <button class="mkd-pillar-btn mkd-p4" onclick="jumpToQuizFromMindmap()">
+        <button class="mkd-pillar-btn mkd-p4" onclick="jumpToQuizFromMindmap()" style="border-left: 3px solid #a855f7;">
           <div class="mkd-p-icon">📝</div>
           <div class="mkd-p-info">
             <div class="mkd-p-title">Pilar 4 • Mini-Simulado</div>
@@ -4674,6 +4687,12 @@
           <div class="mkd-p-arrow">➔</div>
         </button>
       </div>
+    </div>
+
+    <div style="margin-top: auto; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
+      <button class="btn" onclick="closeMindmapKnowledgeDrawerAndFullscreen()" style="width: 100%; padding: 11px; font-weight: 700; font-size: 13px; color: #f1f5f9; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.22); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <span>↩</span><span>Fechar e Retornar à Aula</span>
+      </button>
     </div>
   </div>
 </div>
@@ -8133,6 +8152,16 @@
 
   // Tabs Switcher
   function switchTab(index, keepCardPosition = false) {
+    if (typeof exitAllMindmapFullscreen === 'function') {
+      exitAllMindmapFullscreen();
+    }
+    const drawer = document.getElementById('mindmapKnowledgeDrawer');
+    if (drawer && drawer.style.display !== 'none') {
+      drawer.style.display = 'none';
+    }
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+
     currentTab = index;
     const tabs = document.querySelectorAll('.nav-tab');
     const panes = document.querySelectorAll('.tab-pane');
@@ -8172,6 +8201,12 @@
       if (typeof ytPlayer !== 'undefined' && ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
         try { ytPlayer.pauseVideo(); } catch(e) {}
       }
+    }
+
+    // Rola a área de conteúdo para o topo ao trocar de aba (no Desktop e Celular)
+    const contentArea = document.querySelector('.content-area');
+    if (contentArea) {
+      contentArea.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // No celular, posiciona suavemente no conteúdo da aba ativa (Flashcards, Simulado, etc.)
@@ -9209,8 +9244,9 @@
         <button class="nlm-tool-btn" onclick="fitMindmapGraphView('${id}')" title="Ajustar à Tela">🔲 Ajustar</button>
         <button class="nlm-tool-btn" onclick="toggleAllMindmapBranches('${id}')" id="${id}-btn-toggle-all">↕ Recolher</button>
         <div style="width: 1px; height: 16px; background: rgba(255,255,255,0.15); margin: 0 2px;"></div>
-        <button class="nlm-tool-btn" onclick="toggleMindmapGraphFullscreen('${id}')" title="Tela Cheia">🗖</button>
-        <button class="nlm-tool-btn" onclick="closeMindmapGraph('${id}')" title="Fechar / Ocultar Mapa" style="color: #f87171; font-weight: 700; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3);">✖ Fechar</button>
+        <button class="nlm-tool-btn" id="${id}-btn-exit-fs" onclick="toggleMindmapGraphFullscreen('${id}')" title="Sair da tela cheia e voltar à aula" style="display: none; background: rgba(16, 185, 129, 0.25); border: 1px solid rgba(16, 185, 129, 0.5); color: #6ee7b7; font-weight: 700;">↩ Voltar à Aula (Esc)</button>
+        <button class="nlm-tool-btn nlm-tool-btn-fs" id="${id}-btn-fullscreen" onclick="toggleMindmapGraphFullscreen('${id}')" title="Abrir em Tela Cheia">🗖 Tela Cheia</button>
+        <button class="nlm-tool-btn" onclick="closeMindmapGraph('${id}')" title="Ocultar Mapa Mental" style="color: #f87171; font-weight: 700; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3);">✖ Ocultar</button>
       </div>
     </div>
 
@@ -9399,10 +9435,32 @@
     const container = document.getElementById(id);
     if (!container) return;
     container.classList.toggle('fullscreen');
-    if (container.classList.contains('fullscreen')) {
+    const isFs = container.classList.contains('fullscreen');
+    const btnFs = document.getElementById(`${id}-btn-fullscreen`);
+    const btnExitFs = document.getElementById(`${id}-btn-exit-fs`);
+
+    if (isFs) {
       document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      if (btnFs) {
+        btnFs.innerHTML = '🗗 Sair da Tela Cheia';
+        btnFs.title = 'Sair da Tela Cheia (ou tecle Esc)';
+        btnFs.style.background = 'rgba(239, 68, 68, 0.25)';
+        btnFs.style.borderColor = 'rgba(239, 68, 68, 0.5)';
+        btnFs.style.color = '#fca5a5';
+      }
+      if (btnExitFs) btnExitFs.style.display = 'inline-flex';
     } else {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      if (btnFs) {
+        btnFs.innerHTML = '🗖 Tela Cheia';
+        btnFs.title = 'Abrir em Tela Cheia';
+        btnFs.style.background = '';
+        btnFs.style.borderColor = '';
+        btnFs.style.color = '';
+      }
+      if (btnExitFs) btnExitFs.style.display = 'none';
     }
     setTimeout(() => window.fitMindmapGraphView(id), 100);
   };
@@ -9498,10 +9556,38 @@
     window.addEventListener('mouseup', onMouseUp);
   };
 
+  let mindmapScrollHintTimeout = null;
+  function showMindmapScrollHint(id) {
+    let hint = document.getElementById(`${id}-scroll-hint`);
+    if (!hint) {
+      const container = document.getElementById(id);
+      if (!container) return;
+      hint = document.createElement('div');
+      hint.id = `${id}-scroll-hint`;
+      hint.style.cssText = 'position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(15, 23, 42, 0.92); color: #93c5fd; padding: 7px 16px; border-radius: 20px; font-size: 11.5px; font-weight: 600; border: 1px solid rgba(59, 130, 246, 0.4); pointer-events: none; z-index: 50; transition: opacity 0.25s ease; opacity: 0; box-shadow: 0 4px 16px rgba(0,0,0,0.6);';
+      hint.textContent = '💡 Segure Ctrl + roda do mouse para aproximar o mapa, ou use os botões ➕ / ➖';
+      container.appendChild(hint);
+    }
+    hint.style.opacity = '1';
+    clearTimeout(mindmapScrollHintTimeout);
+    mindmapScrollHintTimeout = setTimeout(() => {
+      if (hint) hint.style.opacity = '0';
+    }, 1800);
+  }
+
   window.handleMindmapWheel = function(e, id) {
-    e.preventDefault();
-    const delta = e.deltaY < 0 ? 0.08 : -0.08;
-    zoomMindmapGraph(id, delta);
+    const container = document.getElementById(id);
+    const isFullscreen = container && container.classList.contains('fullscreen');
+
+    // Se estiver em modo tela cheia OU se o usuário estiver segurando Ctrl / Meta: aplica o zoom
+    if (isFullscreen || e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      const delta = e.deltaY < 0 ? 0.08 : -0.08;
+      zoomMindmapGraph(id, delta);
+    } else {
+      // Quando embutido no Resumo e sem Ctrl: NÃO impede o scroll da página, permitindo ler o texto livremente!
+      showMindmapScrollHint(id);
+    }
   };
 
   /* Drawer dos 4 Pilares & Navegação */
@@ -9558,9 +9644,41 @@
     drawer.style.display = 'flex';
   };
 
+  window.exitAllMindmapFullscreen = function() {
+    document.querySelectorAll('.nlm-graph-container.fullscreen, .nlm-mindmap-wrapper.nlm-fullscreen').forEach(el => {
+      el.classList.remove('fullscreen');
+      el.classList.remove('nlm-fullscreen');
+      const fsBtn = el.querySelector('[title*="Tela Cheia"], .nlm-tool-btn-fs, button[id$="-btn-fullscreen"]');
+      if (fsBtn) {
+        fsBtn.innerHTML = '🗖 Tela Cheia';
+        fsBtn.title = 'Abrir em Tela Cheia';
+        fsBtn.style.background = '';
+        fsBtn.style.borderColor = '';
+        fsBtn.style.color = '';
+      }
+      const exitBtn = el.querySelector('button[id$="-btn-exit-fs"]');
+      if (exitBtn) exitBtn.style.display = 'none';
+    });
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+  };
+
   window.closeMindmapKnowledgeDrawer = function() {
     const drawer = document.getElementById('mindmapKnowledgeDrawer');
     if (drawer) drawer.style.display = 'none';
+    const isAnyFullscreen = document.querySelector('.nlm-graph-container.fullscreen, .nlm-mindmap-wrapper.nlm-fullscreen');
+    if (!isAnyFullscreen) {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+  };
+
+  window.closeMindmapKnowledgeDrawerAndFullscreen = function() {
+    exitAllMindmapFullscreen();
+    closeMindmapKnowledgeDrawer();
+    const contentArea = document.querySelector('.content-area');
+    if (contentArea) contentArea.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   window.openPdfAtCurrentNodePage = function() {
@@ -9600,21 +9718,37 @@
     }
   };
 
+  window.jumpToResumoFromMindmap = function() {
+    exitAllMindmapFullscreen();
+    closeMindmapKnowledgeDrawer();
+    switchTab(0);
+    const contentArea = document.querySelector('.content-area');
+    if (contentArea) contentArea.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   window.jumpToRaioxFromMindmap = function() {
+    exitAllMindmapFullscreen();
     closeMindmapKnowledgeDrawer();
     switchTab(1);
+    const contentArea = document.querySelector('.content-area');
+    if (contentArea) {
+      contentArea.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     const container = document.getElementById('tab1');
     if (container) {
       container.scrollIntoView({ behavior: 'smooth' });
-      if (window.activeMindmapNode && window.activeMindmapNode.tipo === 'trap') {
+      if (window.activeMindmapNode) {
         const q = (window.activeMindmapNode.titulo || '').toLowerCase();
-        const cards = container.querySelectorAll('.trap-card, .trap-section, .rich-content h3');
+        const cards = container.querySelectorAll('.trap-card, .trap-section, .rich-content h3, #tab1Content > div');
         for (const c of cards) {
           if (c.textContent.toLowerCase().includes(q.substring(0, 15))) {
             c.scrollIntoView({ behavior: 'smooth' });
-            c.style.transition = 'outline 0.3s';
-            c.style.outline = '3px solid #f43f5e';
-            setTimeout(() => { c.style.outline = ''; }, 3000);
+            c.style.transition = 'outline 0.3s, box-shadow 0.3s';
+            c.style.outline = '3px solid #f59e0b';
+            c.style.boxShadow = '0 0 20px rgba(245, 158, 11, 0.4)';
+            setTimeout(() => { c.style.outline = ''; c.style.boxShadow = ''; }, 3000);
             break;
           }
         }
@@ -9623,18 +9757,42 @@
   };
 
   window.jumpToFlashcardsFromMindmap = function() {
+    exitAllMindmapFullscreen();
     closeMindmapKnowledgeDrawer();
     switchTab(2);
-    const tab2 = document.getElementById('tab2');
-    if (tab2) tab2.scrollIntoView({ behavior: 'smooth' });
+    const contentArea = document.querySelector('.content-area');
+    if (contentArea) {
+      contentArea.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   window.jumpToQuizFromMindmap = function() {
+    exitAllMindmapFullscreen();
     closeMindmapKnowledgeDrawer();
     switchTab(3);
-    const tab3 = document.getElementById('tab3');
-    if (tab3) tab3.scrollIntoView({ behavior: 'smooth' });
+    const contentArea = document.querySelector('.content-area');
+    if (contentArea) {
+      contentArea.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  // Tecla Escape para fechar gaveta de conhecimento ou sair da tela cheia do mapa mental
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' || e.keyCode === 27) {
+      const drawer = document.getElementById('mindmapKnowledgeDrawer');
+      const isDrawerOpen = drawer && drawer.style.display !== 'none';
+      if (isDrawerOpen) {
+        closeMindmapKnowledgeDrawer();
+        return;
+      }
+      const isAnyFullscreen = document.querySelector('.nlm-graph-container.fullscreen, .nlm-mindmap-wrapper.nlm-fullscreen');
+      if (isAnyFullscreen) {
+        exitAllMindmapFullscreen();
+      }
+    }
+  });
 
 
   /* ==========================================================================

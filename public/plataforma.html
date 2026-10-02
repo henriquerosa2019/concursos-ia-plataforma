@@ -2629,13 +2629,329 @@
     position: relative;
     width: 100%;
     height: 720px;
-    background: #080c14;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background-color: #f8fafc;
+    background-image: radial-gradient(#cbd5e1 1.2px, transparent 1.2px);
+    background-size: 20px 20px;
+    border: 1px solid #e2e8f0;
     border-radius: 16px;
     overflow: hidden;
     user-select: none;
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
     margin: 20px 0 28px 0;
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+  .nlm-graph-container.nlm-theme-dark {
+    background-color: #080c14;
+    background-image: radial-gradient(#1e293b 1.2px, transparent 1.2px);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
+  }
+  .nlm-graph-container.nlm-theme-dark .nlm-graph-toolbar-group {
+    background: rgba(15, 23, 42, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  }
+  .nlm-graph-container.nlm-theme-dark .nlm-graph-toolbar-group span {
+    color: #f1f5f9 !important;
+  }
+  .nlm-graph-container.nlm-theme-dark .nlm-graph-search-input {
+    background: rgba(30, 41, 59, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #f1f5f9;
+  }
+  .nlm-graph-container.nlm-theme-dark .nlm-tool-btn {
+    color: #94a3b8;
+  }
+  .nlm-graph-container.nlm-theme-dark .nlm-tool-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+  }
+
+  /* NotebookLM Original Light Toolbar */
+  .nlm-graph-toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 6px 10px;
+    pointer-events: auto;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+  .nlm-graph-toolbar-group span {
+    color: #0f172a;
+  }
+  .nlm-graph-search-input {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: #0f172a;
+    outline: none;
+    width: 180px;
+    transition: width 0.2s, border-color 0.2s;
+  }
+  .nlm-graph-search-input:focus {
+    width: 230px;
+    border-color: #38bdf8;
+  }
+  .nlm-tool-btn {
+    background: transparent;
+    border: none;
+    color: #475569;
+    cursor: pointer;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 5px 8px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.15s ease;
+  }
+  .nlm-tool-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: #0f172a;
+  }
+
+  /* Floating vertical toolbar estilo NotebookLM original */
+  .nlm-floating-toolbar {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid #e2e8f0;
+    border-radius: 30px;
+    padding: 8px 6px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+    z-index: 22;
+    pointer-events: auto;
+  }
+  .nlm-graph-container.nlm-theme-dark .nlm-floating-toolbar {
+    background: rgba(15, 23, 42, 0.92);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+  }
+  .nlm-float-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    color: #334155;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    transition: transform 0.15s ease, background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .nlm-graph-container.nlm-theme-dark .nlm-float-btn {
+    background: rgba(30, 41, 59, 0.85);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #cbd5e1;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  .nlm-float-btn:hover {
+    transform: scale(1.12);
+    background: #f0fdf4;
+    color: #0284c7;
+    border-color: #38bdf8;
+  }
+  .nlm-graph-container.nlm-theme-dark .nlm-float-btn:hover {
+    background: #1e293b;
+    color: #38bdf8;
+    border-color: #38bdf8;
+  }
+
+  /* NotebookLM Original Node Pills Styling */
+  .mm-node {
+    position: absolute;
+    border-radius: 9999px;
+    padding: 8px 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    white-space: nowrap;
+    border-width: 1.5px;
+    border-style: solid;
+    user-select: none;
+    z-index: 10;
+  }
+  .mm-node:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    z-index: 30;
+  }
+  .mm-node.selected {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.5), 0 8px 24px rgba(0, 0, 0, 0.2);
+    z-index: 35;
+  }
+  .mm-node.dimmed {
+    opacity: 0.22;
+    filter: grayscale(80%);
+  }
+  .mm-node.matched {
+    animation: nlmPulseMatch 1.5s infinite alternate;
+    z-index: 25;
+  }
+
+  /* Light Theme Node Badges */
+  .mm-node.type-root {
+    background: #e0e7ff;
+    border-color: #818cf8;
+    color: #1e1b4b;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 22px;
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.22);
+  }
+  .mm-node.type-category {
+    background: #e0f2fe;
+    border-color: #38bdf8;
+    color: #0369a1;
+    font-size: 13px;
+    box-shadow: 0 2px 10px rgba(14, 165, 233, 0.18);
+  }
+  .mm-node.type-concept {
+    background: #ccfbf1;
+    border-color: #14b8a6;
+    color: #115e59;
+  }
+  .mm-node.type-rule {
+    background: #fef3c7;
+    border-color: #f59e0b;
+    color: #92400e;
+  }
+  .mm-node.type-trap {
+    background: #fee2e2;
+    border-color: #ef4444;
+    color: #991b1b;
+  }
+  .mm-node.type-comparison {
+    background: #ede9fe;
+    border-color: #8b5cf6;
+    color: #5b21b6;
+  }
+  .mm-node.type-mnemonic {
+    background: #fae8ff;
+    border-color: #d946ef;
+    color: #86198f;
+  }
+  .mm-node.type-definition {
+    background: #cffafe;
+    border-color: #06b6d4;
+    color: #155e75;
+  }
+  .mm-node.type-exception {
+    background: #fef9c3;
+    border-color: #eab308;
+    color: #854d0e;
+  }
+  .mm-node.type-example {
+    background: #fef3c7;
+    border-color: #f59e0b;
+    color: #92400e;
+  }
+  .page-tag {
+    background: rgba(0, 0, 0, 0.08);
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    color: #475569;
+    font-weight: 700;
+  }
+  .node-toggle {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #334155;
+    margin-left: 2px;
+  }
+
+  /* Dark Theme Overrides for Nodes */
+  .nlm-graph-container.nlm-theme-dark .mm-node.type-root {
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+    border-color: #60a5fa;
+    color: #ffffff;
+    box-shadow: 0 0 26px rgba(37, 99, 235, 0.45);
+  }
+  .nlm-graph-container.nlm-theme-dark .mm-node.type-category {
+    background: linear-gradient(135deg, #064e3b 0%, #047857 100%);
+    border-color: #34d399;
+    color: #ecfdf5;
+  }
+  .nlm-graph-container.nlm-theme-dark .mm-node.type-concept {
+    background: #1f2937;
+    border-color: #4b5563;
+    color: #f3f4f6;
+  }
+  .nlm-graph-container.nlm-theme-dark .mm-node.type-rule {
+    background: rgba(245, 158, 11, 0.15);
+    border-color: #f59e0b;
+    color: #fef3c7;
+  }
+  .nlm-graph-container.nlm-theme-dark .mm-node.type-trap {
+    background: rgba(239, 68, 68, 0.18);
+    border-color: #ef4444;
+    color: #fee2e2;
+  }
+  .nlm-graph-container.nlm-theme-dark .mm-node.type-comparison {
+    background: rgba(139, 92, 246, 0.18);
+    border-color: #8b5cf6;
+    color: #ede9fe;
+  }
+  .nlm-graph-container.nlm-theme-dark .mm-node.type-mnemonic {
+    background: rgba(168, 85, 247, 0.2);
+    border-color: #a855f7;
+    color: #f3e8ff;
+  }
+  .nlm-graph-container.nlm-theme-dark .mm-node.type-definition {
+    background: rgba(6, 182, 212, 0.18);
+    border-color: #06b6d4;
+    color: #cffafe;
+  }
+  .nlm-graph-container.nlm-theme-dark .mm-node.type-exception {
+    background: rgba(239, 68, 68, 0.18);
+    border-color: #ef4444;
+    color: #fee2e2;
+  }
+  .nlm-graph-container.nlm-theme-dark .mm-node.type-example {
+    background: rgba(234, 179, 8, 0.18);
+    border-color: #eab308;
+    color: #fef9c3;
+  }
+  .nlm-graph-container.nlm-theme-dark .page-tag {
+    background: rgba(0, 0, 0, 0.35);
+    color: rgba(255, 255, 255, 0.75);
+  }
+  .nlm-graph-container.nlm-theme-dark .node-toggle {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #ffffff;
   }
   .nlm-graph-container.fullscreen {
     position: fixed !important;
@@ -8830,9 +9146,19 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
     tabs.forEach((t, i) => {
       const isActive = (i === index);
       t.classList.toggle('active', isActive);
-      t.setAttribute('aria-selected', isActive ? 'true' : 'false');
       if (panes[i]) panes[i].classList.toggle('active', isActive);
     });
+
+    // 0. Ao entrar ou retornar no Pilar 1 (Resumo & Sintaxe), garante montagem do mapa mental
+    if (index === 0) {
+      setTimeout(() => {
+        document.querySelectorAll('.nlm-graph-container').forEach(gc => {
+          if (gc.id && typeof window.ensureMindmapGraphMounted === 'function') {
+            window.ensureMindmapGraphMounted(gc.id);
+          }
+        });
+      }, 50);
+    }
 
     // 1. Ao entrar ou retornar nos Flashcards (Tab 2), limpa e reinicia no Card 1 virado para frente
     if (index === 2) {
@@ -10235,13 +10561,18 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
       data
     };
 
+    // Auto-mounting resiliente e imediato (nunca mais tela preta)
     setTimeout(() => {
-      window.redrawMindmapGraph(id);
-      setTimeout(() => window.fitMindmapGraphView(id), 60);
-    }, 25);
+      if (typeof window.ensureMindmapGraphMounted === 'function') {
+        window.ensureMindmapGraphMounted(id);
+      } else {
+        window.redrawMindmapGraph(id);
+        setTimeout(() => window.fitMindmapGraphView(id), 60);
+      }
+    }, 15);
 
     return `
-  <div class="nlm-graph-container" id="${id}">
+  <div class="nlm-graph-container nlm-theme-nlm" id="${id}">
     <div class="nlm-graph-toolbar">
       <div class="nlm-graph-toolbar-group">
         <span style="font-size: 16px;">🧠</span>
@@ -10272,6 +10603,7 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
         <button class="nlm-tool-btn" onclick="resetMindmapGraphView('${id}')" title="Resetar Visualização" style="${activeMode === 'graph' ? '' : 'display: none;'}">100%</button>
         <button class="nlm-tool-btn" onclick="fitMindmapGraphView('${id}')" title="Ajustar à Tela" style="${activeMode === 'graph' ? '' : 'display: none;'}">🔲 Ajustar</button>
         <button class="nlm-tool-btn" onclick="toggleAllMindmapBranches('${id}')" id="${id}-btn-toggle-all" style="${activeMode === 'graph' ? '' : 'display: none;'}">↕ Recolher</button>
+        <button class="nlm-tool-btn" id="${id}-theme-toggle" onclick="toggleMindmapTheme('${id}')" title="Alternar entre Estilo NotebookLM e Tema Escuro" style="${activeMode === 'graph' ? '' : 'display: none;'}">🎨 Tema</button>
         <div style="width: 1px; height: 16px; background: rgba(255,255,255,0.15); margin: 0 2px;"></div>
         <button class="nlm-tool-btn" id="${id}-btn-exit-fs" onclick="toggleMindmapGraphFullscreen('${id}')" title="Sair da tela cheia e voltar à aula" style="display: none; background: rgba(16, 185, 129, 0.25); border: 1px solid rgba(16, 185, 129, 0.5); color: #6ee7b7; font-weight: 700;">↩ Voltar à Aula (Esc)</button>
         <button class="nlm-tool-btn nlm-tool-btn-fs" id="${id}-btn-fullscreen" onclick="toggleMindmapGraphFullscreen('${id}')" title="Abrir em Tela Cheia">🗖 Tela Cheia</button>
@@ -10281,6 +10613,16 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
 
     <!-- VIEWPORT 1: GRAFO INTERATIVO DE NÓS (IA / PDF) -->
     <div class="nlm-graph-viewport" id="${id}-viewport" onmousedown="startMindmapPan(event, '${id}')" onwheel="handleMindmapWheel(event, '${id}')" style="${activeMode === 'graph' ? '' : 'display: none;'}">
+      
+      <!-- BARRA FLUTUANTE VERTICAL ESTILO NOTEBOOKLM ORIGINAL -->
+      <div class="nlm-floating-toolbar" id="${id}-floating-bar">
+        <button class="nlm-float-btn" onclick="toggleAllMindmapBranches('${id}')" title="Expandir ou Recolher Tudo (↕)">↕</button>
+        <button class="nlm-float-btn" onclick="zoomMindmapGraph('${id}', 0.15)" title="Aumentar Zoom (+)">➕</button>
+        <button class="nlm-float-btn" onclick="zoomMindmapGraph('${id}', -0.15)" title="Diminuir Zoom (-)">➖</button>
+        <button class="nlm-float-btn" onclick="fitMindmapGraphView('${id}')" title="Centralizar e Ajustar à Tela (🔲)">🔲</button>
+        <button class="nlm-float-btn" onclick="downloadMindmapSvg('${id}')" title="Baixar Mapa Mental em Imagem (⬇)">⬇</button>
+      </div>
+
       <div class="nlm-graph-canvas" id="${id}-canvas" style="position: absolute; transform: translate(40px, 50px) scale(0.95); transform-origin: 0 0;">
         <svg id="${id}-svg" class="nlm-svg-lines" style="position: absolute; top: 0; left: 0; width: 14000px; height: 14000px; pointer-events: none; z-index: 1;"></svg>
         <div id="${id}-nodes" class="nlm-nodes-container" style="position: absolute; top: 0; left: 0; z-index: 10; pointer-events: auto;"></div>
@@ -10321,13 +10663,127 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
     `;
   }
 
+  window.ensureMindmapGraphMounted = function(id, attempts = 0) {
+    const nodesContainer = document.getElementById(`${id}-nodes`);
+    const svgLines = document.getElementById(`${id}-svg`);
+    const container = document.getElementById(id);
+    if (!nodesContainer || !svgLines || !container || container.clientWidth === 0) {
+      if (attempts < 35) {
+        requestAnimationFrame(() => {
+          setTimeout(() => window.ensureMindmapGraphMounted(id, attempts + 1), 50);
+        });
+      }
+      return;
+    }
+    window.redrawMindmapGraph(id);
+    setTimeout(() => {
+      window.fitMindmapGraphView(id);
+    }, 40);
+  };
+
+  window.toggleMindmapTheme = function(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.toggle('nlm-theme-dark');
+    el.classList.toggle('nlm-theme-nlm');
+    const isDark = el.classList.contains('nlm-theme-dark');
+    const btn = document.getElementById(`${id}-theme-toggle`);
+    if (btn) {
+      btn.innerHTML = isDark ? '🎨 Escuro' : '🎨 NotebookLM';
+    }
+    window.redrawMindmapGraph(id);
+  };
+
+  window.downloadMindmapSvg = function(id) {
+    const st = window.mindmapGraphStates[id];
+    const container = document.getElementById(id);
+    if (!st || !container) return;
+
+    if (window.activeMindmapModes && window.activeMindmapModes[id] === 'png') {
+      window.downloadNlmPngImage(id);
+      return;
+    }
+
+    try {
+      const svgOriginal = document.getElementById(`${id}-svg`);
+      const nodesContainer = document.getElementById(`${id}-nodes`);
+      if (!nodesContainer) return;
+
+      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      nodesContainer.querySelectorAll('.mm-node').forEach(el => {
+        const x = parseFloat(el.style.left) || 0;
+        const y = parseFloat(el.style.top) || 0;
+        const w = el.offsetWidth || 200;
+        const h = el.offsetHeight || 40;
+        if (x < minX) minX = x;
+        if (y < minY) minY = y;
+        if (x + w > maxX) maxX = x + w;
+        if (y + h > maxY) maxY = y + h;
+      });
+
+      const pad = 50;
+      const svgW = maxX - minX + pad * 2;
+      const svgH = maxY - minY + pad * 2;
+      const isDark = container.classList.contains('nlm-theme-dark');
+      const bgColor = isDark ? '#080c14' : '#f8fafc';
+
+      let svgContent = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgW}" height="${svgH}" viewBox="${minX - pad} ${minY - pad} ${svgW} ${svgH}">
+        <rect x="${minX - pad}" y="${minY - pad}" width="${svgW}" height="${svgH}" fill="${bgColor}"/>
+        ${svgOriginal ? svgOriginal.innerHTML : ''}
+      `;
+
+      nodesContainer.querySelectorAll('.mm-node').forEach(el => {
+        const x = parseFloat(el.style.left) || 0;
+        const y = parseFloat(el.style.top) || 0;
+        const w = el.offsetWidth || 200;
+        const h = el.offsetHeight || 40;
+        const text = (el.querySelector('.node-text')?.textContent || el.textContent || '').trim();
+        const icon = (el.querySelector('.node-icon')?.textContent || '💡').trim();
+        const page = (el.querySelector('.page-tag')?.textContent || '').trim();
+        const pillFill = isDark ? '#1e293b' : '#e0f2fe';
+        const pillStroke = isDark ? '#3b82f6' : '#38bdf8';
+        const textColor = isDark ? '#ffffff' : '#0369a1';
+
+        svgContent += `
+          <g transform="translate(${x}, ${y})">
+            <rect width="${w}" height="${h}" rx="20" ry="20" fill="${pillFill}" stroke="${pillStroke}" stroke-width="1.5"/>
+            <text x="14" y="24" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="${textColor}">${icon} ${text.substring(0, 32)} ${page}</text>
+          </g>
+        `;
+      });
+      svgContent += `</svg>`;
+
+      const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      const safeTitle = (st.data?.titulo || 'Mapa_Mental_NotebookLM').replace(/[^a-zA-Z0-9_-]/g, '_');
+      a.download = `${safeTitle}.svg`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      if (typeof showToast === 'function') showToast("Mapa Mental exportado com sucesso!", "📥");
+    } catch(err) {
+      console.warn("Erro ao exportar mapa:", err);
+      if (typeof showToast === 'function') showToast("Use o botão Tela Cheia para capturar o mapa.", "ℹ️");
+    }
+  };
+
   window.redrawMindmapGraph = function(id) {
     const st = window.mindmapGraphStates[id];
     if (!st) return;
     const { nodeMap, rootNode, typeIcons } = st;
     const nodesContainer = document.getElementById(`${id}-nodes`);
     const svgLines = document.getElementById(`${id}-svg`);
-    if (!nodesContainer || !svgLines) return;
+    if (!nodesContainer || !svgLines) {
+      setTimeout(() => {
+        if (typeof window.ensureMindmapGraphMounted === 'function') {
+          window.ensureMindmapGraphMounted(id);
+        }
+      }, 50);
+      return;
+    }
 
     let currentY = 50;
     const gapX = 90;
@@ -10459,21 +10915,39 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
     const canvas = document.getElementById(`${id}-canvas`);
     if (!st || !container || !canvas) return;
 
-    let minY = Infinity, maxY = -Infinity, maxX = -Infinity;
+    let minY = Infinity, maxY = -Infinity, minX = Infinity, maxX = -Infinity;
+    let visibleNodes = 0;
+
     Object.values(st.nodeMap).forEach(n => {
-      if (n.y < minY) minY = n.y;
-      if (n.y > maxY) maxY = n.y;
-      if (n.x + (n.actualW || 200) > maxX) maxX = n.x + (n.actualW || 200);
+      if (n.collapsed && n.level > 0) return;
+      visibleNodes++;
+      const ny = n.y || 0;
+      const nx = n.x || 0;
+      const nw = n.actualW || 220;
+      const nh = n.h || 42;
+      if (ny < minY) minY = ny;
+      if (ny + nh > maxY) maxY = ny + nh;
+      if (nx < minX) minX = nx;
+      if (nx + nw > maxX) maxX = nx + nw;
     });
-    const cw = container.clientWidth || 900;
-    const ch = container.clientHeight || 700;
-    const mapW = maxX - 40 + 100;
-    const mapH = maxY - minY + 140;
-    const scaleX = (cw - 80) / mapW;
-    const scaleY = (ch - 80) / mapH;
-    st.zoom = Math.min(1.1, Math.max(0.35, Math.min(scaleX, scaleY)));
-    st.panX = 40;
-    st.panY = Math.max(40, (ch - (maxY + minY) * st.zoom) / 2);
+
+    if (minY === Infinity || maxY === -Infinity) {
+      minY = 50; maxY = 650; minX = 40; maxX = 850;
+    }
+
+    const cw = container.clientWidth || 950;
+    const ch = container.clientHeight || 720;
+    const totalW = Math.max(300, maxX - minX + 100);
+    const totalH = Math.max(200, maxY - minY + 100);
+
+    const scaleX = (cw - 120) / totalW;
+    const scaleY = (ch - 100) / totalH;
+    st.zoom = Math.min(1.05, Math.max(0.42, Math.min(scaleX, scaleY)));
+
+    // Centralização elegante vertical e horizontal com folga para a barra flutuante
+    st.panX = Math.max(70, (cw - totalW * st.zoom) / 2 - minX * st.zoom + 30);
+    st.panY = (ch - totalH * st.zoom) / 2 - minY * st.zoom;
+
     canvas.style.transform = `translate(${st.panX}px, ${st.panY}px) scale(${st.zoom})`;
   };
 
@@ -13020,10 +13494,31 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
         readerRawContent = meta.markdown_content;
       }
 
+      // Limpeza de cache residual antigo para garantir integridade do mapa mental oficial
+      try {
+        const savedMaps = JSON.parse(localStorage.getItem('concursos_saved_mindmaps') || '{}');
+        const k1 = `${disc}:::${sub}`;
+        const k2 = `${typeof normalizeKey === 'function' ? normalizeKey(disc) : disc}:::${typeof normalizeKey === 'function' ? normalizeKey(sub) : sub}`;
+        if (savedMaps[k1] && savedMaps[k1].mindmap && savedMaps[k1].mindmap.nodes && (savedMaps[k1].mindmap.nodes.length > 50 || savedMaps[k1].mindmap.nodes.length !== 27) && sub === 'Licitacoes_Lei_14133') {
+          delete savedMaps[k1];
+          if (savedMaps[k2]) delete savedMaps[k2];
+          localStorage.setItem('concursos_saved_mindmaps', JSON.stringify(savedMaps));
+        }
+      } catch(e) {}
+
       renderDynamicLessonTabs(meta.markdown_content, disc, sub);
 
       // Reafirma a ativação do Pilar 1 (Resumo & Sintaxe)
       switchTab(0);
+
+      // Ativar montagem dos grafos de mapa mental na tela
+      setTimeout(() => {
+        document.querySelectorAll('.nlm-graph-container').forEach(gc => {
+          if (gc.id && typeof window.ensureMindmapGraphMounted === 'function') {
+            window.ensureMindmapGraphMounted(gc.id);
+          }
+        });
+      }, 60);
     } catch(e) {
       console.warn("Erro ao selecionar subárea:", e);
     }

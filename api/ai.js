@@ -1835,116 +1835,9 @@ export default async function handler(req, res) {
     const title = topic?.meta?.title || sub.replace(/_/g, ' ');
     const context = topic?.meta?.markdown_content || topic?.transcript?.full_text || `${disc} • ${sub}`;
 
-    let mindmapObj = null;
-    const apiKey = process.env.GEMINI_API_KEY;
+    // Sempre utilizar o algoritmo oficial didático e determinístico de testar_mapa_pdf.bat (testar_mapa.py)
+    const mindmapObj = extractSemanticMindmapFromCorpus(disc, sub, title, context, focus);
 
-    if (apiKey) {
-      try {
-        const prompt = `Você é o ENGINE DE MAPA MENTAL SEMÂNTICO (ESTILO NOTEBOOKLM) de uma plataforma de preparação para concursos públicos.
-Sua missão: Transformar o documento em uma estrutura conceitual de alta retenção no formato JSON.
-
-DIRETRIZES FUNDAMENTAIS (DIRETRIZ 13 DO AGENTS.MD):
-1. MAPA MENTAL NÃO É O ÍNDICE DO DOCUMENTO:
-   - Não tente indexar todos os artigos ou parágrafos. Faça uma seleção cirúrgica de 5 a no máximo 8 GRANDES BLOCOS estruturalmente relevantes (tipo: "category").
-   - A omissão de detalhes do mapa não exclui o conhecimento (o conteúdo integral permanece nos pilares textuais).
-
-2. PROFUNDIDADE MÁXIMA DE 3 NÍVEIS:
-   - Nível 0 (Raiz): Título oficial do documento ou tema (tipo: "root").
-   - Nível 1 (Grandes Blocos): De 5 a 8 macro-temas essenciais (tipo: "category").
-   - Nível 2 (Subconceitos / Eixos): Desdobramentos conceituais e métodos/princípios estruturantes (tipo: "category" ou "concept").
-   - Nível 3 (Elementos / Espécies): Classificações, regras, mnemônicos, pegadinhas e exceções (tipo: "rule", "exception", "trap", "mnemonic", "comparison", "definition").
-   - NENHUM nó pode ter profundidade maior que 3 níveis a partir da raiz.
-
-3. FÓRMULA DE COMPRESSÃO SEMÂNTICA NOS TÍTULOS:
-   - Rótulos dos nós devem ser CURTOS (máximo 4 a 6 palavras / até 45 caracteres), seguindo estritamente a fórmula:
-     CONCEITO + essência em poucas palavras
-     Exemplos: "Sociológico (Fatores Reais do Poder)", "Político (Decisão Fundamental)", "Fundamentos (SO-CI-DI-VA-PLU)", "Forma (Regra Geral Escrita)", "Motivo ≠ Motivação".
-   - Todo o detalhamento e explicação aprofundada para concurso deve ficar no campo "resumo".
-
-4. TIPOS SEMÂNTICOS PERMITIDOS:
-   - "root": nó central
-   - "category": grandes blocos ou subeixos
-   - "concept": conceito ou instituto
-   - "definition": definição formal do autor/lei
-   - "rule": regra geral ou critério vinculante
-   - "exception": hipótese excepcional ou ressalva
-   - "comparison": diferenciação técnica entre dois institutos (ex: Inexigibilidade × Dispensa)
-   - "example": exemplo prático relevante
-   - "mnemonic": SOMENTE acrônimos ou técnicas deliberadas de memorização (ex: SO-CI-DI-VA-PLU, PATI, COFIFOMOB). Não invente nem chame qualquer dica de mnemônico.
-   - "trap": pegadinha clássica de banca ou inversão conceitual expressa.
-
-5. RASTREABILIDADE DOCUMENTAL:
-   - O campo "pagina" deve conter o número inteiro exato (ex: 1, 5, 14) da página do PDF de onde o conceito foi extraído.
-
-6. MATRIZ DE CONEXÕES (EDGES):
-   - Conecte a raiz às categorias ("source": "root", "target": "cat_1").
-   - Conecte as categorias aos seus respectivos subconceitos e elementos ("source": "cat_1", "target": "...").
-
-RETORNE SOMENTE JSON NO FORMATO:
-{
-  "titulo": "${title}",
-  "nodes": [
-    {
-      "id": "root",
-      "titulo": "${title}",
-      "tipo": "root",
-      "pagina": 1,
-      "resumo": "Visão geral e escopo temático para concursos públicos."
-    },
-    {
-      "id": "cat_1",
-      "titulo": "1. Macro-Tema 1",
-      "tipo": "category",
-      "pagina": 1,
-      "resumo": "Síntese do eixo temático."
-    }
-  ],
-  "edges": [
-    { "source": "root", "target": "cat_1" }
-  ]
-}
-
-DOCUMENTO: ${sub}.pdf
-DISCIPLINA: ${disc}
-TÓPICO: ${sub}
-TÍTULO: ${title}
-FOCO: ${focus || 'Conceitos Centrais, Distinções e Regras de Prova'}
-
-CONTEÚDO:
-${context.slice(0, 14000)}`;
-
-        const geminiAbort = new AbortController();
-        const geminiTimeout = setTimeout(() => geminiAbort.abort(), 25000);
-        const geminiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          signal: geminiAbort.signal,
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: { temperature: 0.3 }
-          })
-        });
-        clearTimeout(geminiTimeout);
-
-        if (geminiResp.ok) {
-          const geminiData = await geminiResp.json();
-          let raw = geminiData.candidates?.[0]?.content?.parts?.[0]?.text || '';
-          if (raw) {
-            raw = raw.replace(/^```(?:json)?/i, '').replace(/```$/i, '').trim();
-            const parsed = JSON.parse(raw);
-            if (parsed && Array.isArray(parsed.nodes) && parsed.nodes.length >= 4) {
-              mindmapObj = parsed;
-            }
-          }
-        }
-      } catch (e_ai) {
-        console.error('Erro na chamada Gemini mindmap:', e_ai);
-      }
-    }
-
-    if (!mindmapObj) {
-      mindmapObj = extractSemanticMindmapFromCorpus(disc, sub, title, context, focus);
-    }
 
     // Atualizar markdown_content do tópico
     const cat = getCatalog();
@@ -3131,13 +3024,6 @@ Organizar em estrutura lógica e progressiva:
 12. Todos os mnemônicos, dicas e alertas existentes no PDF foram preservados? → VERIFICAR.
 
 DEMAIS PILARES:
-- Mapa Mental Semântico (Estilo NotebookLM - Diretriz 13):
-   * NÃO É ÍNDICE DO DOCUMENTO: Selecione cirurgicamente de 5 a 8 GRANDES BLOCOS estruturais essenciais (tipo: "category").
-   * PROFUNDIDADE MÁXIMA DE 3 NÍVEIS: Raiz (0) -> Categorias (1) -> Subconceitos (2) -> Elementos/Classificações/Regras/Mnemônicos/Pegadinhas (3).
-   * COMPRESSÃO SEMÂNTICA: Títulos curtos (máximo 4 a 6 palavras / até 45 chars) no formato "CONCEITO + essência" (ex: "Sociológico (Fatores Reais)", "Forma (Regra Geral Escrita)", "Motivo ≠ Motivação"). Explicação detalhada no campo "resumo".
-   * TIPOS: root, category, concept, definition, rule, exception, comparison, example, mnemonic, trap.
-   * RASTREABILIDADE: Campo "pagina" com inteiro exato da página de origem no PDF.
-   * EDGES: Matriz hierárquica conectando raiz -> categorias e categorias -> filhos.
 - Pilar 2: Raio-X de Banca dividido em:
    * PARTE 1: Pegadinhas e Alertas do Autor 👨‍🏫 [MATERIAL DO AUTOR] (se existirem na fonte)
    * PARTE 2: Análise Complementar de Banca da IA 🤖 [INSIGHT PEDAGÓGICO COMPLEMENTAR]
@@ -3152,18 +3038,6 @@ ${extractedText.slice(0, 12000)}
 Retorne APENAS um JSON no formato:
 {
   "briefing": "1 a 2 parágrafos objetivos sintetizando a matéria de forma panorâmica estilo NotebookLM",
-  "mindmap": {
-    "titulo": "${title}",
-    "nodes": [
-      { "id": "root", "titulo": "${title}", "tipo": "root", "pagina": 1, "resumo": "Visão geral e escopo temático." },
-      { "id": "cat_1", "titulo": "1. Macro-Tema 1", "tipo": "category", "pagina": 1, "resumo": "Síntese do eixo estruturante." },
-      { "id": "item_1", "titulo": "Conceito (Essência)", "tipo": "concept", "pagina": 1, "resumo": "Explicação técnica sucinta." }
-    ],
-    "edges": [
-      { "source": "root", "target": "cat_1" },
-      { "source": "cat_1", "target": "item_1" }
-    ]
-  },
   "pilar1": "## 1. Resumo Estruturado e Conceitos-Chave...",
   "pilar2": "## 2. Raio-X de Banca...",
   "cards": [{ "q": "Pergunta", "a": "Resposta" }],
@@ -3195,9 +3069,6 @@ Retorne APENAS um JSON no formato:
             questions = Array.isArray(parsed.quiz) ? parsed.quiz : [];
             knowledgeUnits = Array.isArray(parsed.knowledge_units) ? parsed.knowledge_units : [];
             briefingText = parsed.briefing || '';
-            if (parsed.mindmap && Array.isArray(parsed.mindmap.nodes) && parsed.mindmap.nodes.length >= 4) {
-              mindmapObj = parsed.mindmap;
-            }
           }
         }
       } catch (e_gemini) {
@@ -3238,9 +3109,9 @@ Retorne APENAS um JSON no formato:
       a: (c.a || '').replace(/\.\.\./g, '').trim()
     }));
 
-    if (!mindmapObj) {
-      mindmapObj = extractSemanticMindmapFromCorpus(disc, sub, title, extractedText);
-    }
+    // Sempre utilizar o algoritmo oficial didático e determinístico de testar_mapa_pdf.bat (testar_mapa.py)
+    const mindmapObj = extractSemanticMindmapFromCorpus(disc, sub, title, extractedText);
+
 
     if (!briefingText) {
       briefingText = `Este material didático consolida os conceitos fundamentais de ${sub.replace(/_/g, ' ')} para a disciplina de ${disc.replace(/_/g, ' ')}, abordando regras gerais, critérios normativos e pontos de maior incidência para a banca ${banca}.`;

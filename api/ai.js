@@ -1371,7 +1371,7 @@ export default async function handler(req, res) {
           duration: '50 minutos',
           category: 'Edital de Concursos Públicos',
           youtube_url: '',
-          markdown_content: `# ${disc.replace(/_/g, ' ').toUpperCase()} - ${sub.replace(/_/g, ' ')}\n**Professor:** Prof. Titular\n\n---\n\n## 1. Resumo Estruturado\nUtilize a IA para gerar flashcards e simulados para este tópico.\n`,
+          markdown_content: `# ${disc.replace(/_/g, ' ').toUpperCase()} - ${sub.replace(/_/g, ' ')}\n**Professor:** Prof. Titular\n\n---\n\n## 1. Resumo & Sintaxe\nUtilize a IA para gerar flashcards e simulados para este tópico.\n`,
           has_lesson: true,
           moments: []
         },
@@ -1417,6 +1417,11 @@ export default async function handler(req, res) {
     const sub = url.searchParams.get('subarea') || 'Excel';
     const topic = findTopicData(disc, sub);
     if (topic && topic.meta) {
+      if (topic.meta.mindmap_json && topic.meta.markdown_content && !topic.meta.markdown_content.includes('nlm-mindmap-json')) {
+        const jsonStr = JSON.stringify(topic.meta.mindmap_json, null, 2);
+        const mmBlock = `### 🗺️ Mapa Mental Interativo & Navegação do Conhecimento\n\n\`\`\`nlm-mindmap-json\n${jsonStr}\n\`\`\`\n\n---\n\n`;
+        topic.meta.markdown_content = topic.meta.markdown_content.replace(/##\s*1\./, `${mmBlock}## 1.`);
+      }
       return res.status(200).json(topic.meta);
     }
     return res.status(200).json({
@@ -2267,8 +2272,9 @@ ${context.slice(0, 10000)}`;
       });
     }
 
-    // 5. Montagem do Pilar 1 (Resumo & Síntese Pedagógica de Alto Valor - Regra 10)
-    let p1 = `## 1. Resumo Estruturado e Conceitos-Chave\n\n`;
+    // 5. Montagem do Pilar 1 (Resumo & Sintaxe - Padrão Oficial dos 4 Pilares)
+    let p1 = `## 1. Resumo & Sintaxe\n\n`;
+
     p1 += `> 👨‍🏫 **FONTE DO CONHECIMENTO:** ${title}  \n`;
     p1 += `> **Professor/Autor:** ${professor} | **Material:** PDF Oficial (${numPages} págs.) | **Banca Alvo:** ${cleanBanca}\n\n`;
 
@@ -3038,7 +3044,7 @@ ${extractedText.slice(0, 12000)}
 Retorne APENAS um JSON no formato:
 {
   "briefing": "1 a 2 parágrafos objetivos sintetizando a matéria de forma panorâmica estilo NotebookLM",
-  "pilar1": "## 1. Resumo Estruturado e Conceitos-Chave...",
+  "pilar1": "## 1. Resumo & Sintaxe...",
   "pilar2": "## 2. Raio-X de Banca...",
   "cards": [{ "q": "Pergunta", "a": "Resposta" }],
   "quiz": [{ "enunciado": "...", "options": ${optionsExample}, "correct_index": 0, "comentario": "...", "banca": "${banca}" }],
@@ -3194,7 +3200,7 @@ Retorne APENAS um JSON no formato:
 Disciplina: ${disc.replace(/_/g, ' ')} | Tópico: ${sub.replace(/_/g, ' ')} | Título: ${title} | Professor: ${professor}
 
 Crie os 4 Pilares de Alta Retenção com base estrita no material abaixo:
-- Pilar 1: Resumo Estruturado com Visão Geral, Conceitos, Classificações, Quadro Esquemático.
+- Pilar 1: Resumo & Sintaxe com Visão Geral, Conceitos, Classificações, Quadro Esquemático.
 - Pilar 2: Raio-X de Banca (Uso de termos absolutos pela ${banca} e Inversões conceituais).
 - Pilar 3: 6 Flashcards no formato Anki.
 - Pilar 4: 5 Questões inéditas no formato da banca ${banca}.
@@ -3204,7 +3210,7 @@ ${content.slice(0, 12000)}
 
 Retorne APENAS um JSON no formato:
 {
-  "pilar1": "## 1. Resumo Estruturado e Conceitos-Chave...",
+  "pilar1": "## 1. Resumo & Sintaxe...",
   "pilar2": "## 2. Raio-X de Banca...",
   "cards": [{ "q": "Pergunta", "a": "Resposta" }],
   "quiz": [{ "enunciado": "...", "options": ${optionsExample}, "correct_index": 0, "comentario": "...", "banca": "${banca}" }],

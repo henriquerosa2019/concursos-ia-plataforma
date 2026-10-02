@@ -5281,7 +5281,7 @@
 
     <!-- Aviso dos 4 Pilares -->
     <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 8px; padding: 10px 14px; margin: 12px 0; font-size: 12px; color: var(--text2); line-height: 1.5;">
-      ⚡ <strong>Processamento Inteligente:</strong> Ao salvar, o sistema processará o PDF e gerará automaticamente: <strong>1) Resumo Estruturado</strong>, <strong>2) Raio-X & Pegadinhas de Banca</strong>, <strong>3) Flashcards Anki</strong> e <strong>4) Simulado Interativo com Gabarito</strong>.
+      ⚡ <strong>Processamento Inteligente:</strong> Ao salvar, o sistema processará o PDF e gerará automaticamente: <strong>1) Resumo & Sintaxe</strong>, <strong>2) Raio-X & Pegadinhas de Banca</strong>, <strong>3) Flashcards Anki</strong> e <strong>4) Simulado Interativo com Gabarito</strong>.
     </div>
 
     <!-- Rodapé Fixo com Botão Salvar Destacado -->
@@ -7206,7 +7206,7 @@
     } else if (accuracy >= 60) {
       diagHtml = `<strong style="color: #e3b341;">👍 Bom Desempenho (${accuracy}%)!</strong><br>Você acertou a maioria das questões, mas teve <strong>${wrongCount} erro(s)</strong>. As questões erradas já estão no seu Caderno de Revisões para você fixar.`;
     } else {
-      diagHtml = `<strong style="color: #f87171;">⚠️ Atenção para Revisão (${accuracy}%)!</strong><br>Você acertou ${correctCount} de ${answeredCount} respondidas. Recomendamos reler o resumo estruturado e os momentos-chave da aula antes de refazer o simulado.`;
+      diagHtml = `<strong style="color: #f87171;">⚠️ Atenção para Revisão (${accuracy}%)!</strong><br>Você acertou ${correctCount} de ${answeredCount} respondidas. Recomendamos reler o resumo & sintaxe e os momentos-chave da aula antes de refazer o simulado.`;
     }
     diagEl.innerHTML = diagHtml;
 
@@ -7853,8 +7853,32 @@
           if (!localLessons[currentDiscipline]) localLessons[currentDiscipline] = {};
           if (!localLessons[currentDiscipline][currentSubarea]) localLessons[currentDiscipline][currentSubarea] = { meta: {} };
           localLessons[currentDiscipline][currentSubarea].meta.markdown_content = data.markdown;
+          if (data.mindmap) {
+            localLessons[currentDiscipline][currentSubarea].meta.mindmap_json = data.mindmap;
+          }
           localStorage.setItem('concursos_local_lessons', JSON.stringify(localLessons));
         } catch(e) {}
+
+        try {
+          const savedMaps = JSON.parse(localStorage.getItem('concursos_saved_mindmaps') || '{}');
+          const mKey = `${currentDiscipline}:::${currentSubarea}`;
+          savedMaps[mKey] = {
+            mindmap: data.mindmap,
+            markdown: data.markdown,
+            timestamp: Date.now()
+          };
+          localStorage.setItem('concursos_saved_mindmaps', JSON.stringify(savedMaps));
+        } catch(e) {}
+
+        if (typeof currentLessonMeta !== 'undefined' && currentLessonMeta) {
+          currentLessonMeta.markdown_content = data.markdown;
+          if (data.mindmap) currentLessonMeta.mindmap_json = data.mindmap;
+        }
+
+        if (typeof globalPreseededCatalog !== 'undefined' && globalPreseededCatalog?.[currentDiscipline]?.[currentSubarea]?.meta) {
+          globalPreseededCatalog[currentDiscipline][currentSubarea].meta.markdown_content = data.markdown;
+          if (data.mindmap) globalPreseededCatalog[currentDiscipline][currentSubarea].meta.mindmap_json = data.mindmap;
+        }
 
         renderDynamicLessonTabs(data.markdown, currentDiscipline, currentSubarea);
 
@@ -7880,7 +7904,7 @@
         if (updatedMd.includes('### 🗺️ Mapa Mental')) {
           updatedMd = updatedMd.replace(/### 🗺️ Mapa Mental[^\n]*\n+```(?:nlm-mindmap-json|nlm-mindmap|text|mermaid)?[\s\S]*?```/, mmBlock);
         } else {
-          updatedMd = updatedMd ? updatedMd.replace('## 1.', `${mmBlock}\n\n---\n\n## 1.`) : mmBlock;
+          updatedMd = updatedMd ? updatedMd.replace(/##\s*1\./, `${mmBlock}\n\n---\n\n## 1.`) : mmBlock;
         }
         closeModal('modalAiMindmap');
         showToast('Mapa mental estruturado com sucesso (Motor Semântico)!', '🗺️');
@@ -7890,8 +7914,30 @@
           if (!localLessons[currentDiscipline]) localLessons[currentDiscipline] = {};
           if (!localLessons[currentDiscipline][currentSubarea]) localLessons[currentDiscipline][currentSubarea] = { meta: {} };
           localLessons[currentDiscipline][currentSubarea].meta.markdown_content = updatedMd;
+          localLessons[currentDiscipline][currentSubarea].meta.mindmap_json = mm;
           localStorage.setItem('concursos_local_lessons', JSON.stringify(localLessons));
         } catch(eStorage) {}
+
+        try {
+          const savedMaps = JSON.parse(localStorage.getItem('concursos_saved_mindmaps') || '{}');
+          const mKey = `${currentDiscipline}:::${currentSubarea}`;
+          savedMaps[mKey] = {
+            mindmap: mm,
+            markdown: updatedMd,
+            timestamp: Date.now()
+          };
+          localStorage.setItem('concursos_saved_mindmaps', JSON.stringify(savedMaps));
+        } catch(eStorage2) {}
+
+        if (typeof currentLessonMeta !== 'undefined' && currentLessonMeta) {
+          currentLessonMeta.markdown_content = updatedMd;
+          currentLessonMeta.mindmap_json = mm;
+        }
+
+        if (typeof globalPreseededCatalog !== 'undefined' && globalPreseededCatalog?.[currentDiscipline]?.[currentSubarea]?.meta) {
+          globalPreseededCatalog[currentDiscipline][currentSubarea].meta.markdown_content = updatedMd;
+          globalPreseededCatalog[currentDiscipline][currentSubarea].meta.mindmap_json = mm;
+        }
 
         renderDynamicLessonTabs(updatedMd, currentDiscipline, currentSubarea);
         if (typeof readerRawContent !== 'undefined') readerRawContent = updatedMd;
@@ -8422,7 +8468,7 @@
       tab0El.innerHTML = `
         <div class="rich-content">
           <h3>${disc.replace(/_/g, ' ')} • ${sub.replace(/_/g, ' ')}</h3>
-          <p>Nenhum resumo estruturado cadastrado ainda para este tópico.</p>
+          <p>Nenhum resumo & sintaxe cadastrado ainda para este tópico.</p>
           <button class="btn btn-primary" onclick="openImportLessonModal()">📥 Inserir Conteúdo da Aula</button>
         </div>
       `;
@@ -8463,7 +8509,7 @@
     const resumoActionBar = `
       <div class="tab-action-bar" style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
         <div style="font-weight: 600; color: var(--text2); display: flex; align-items: center; gap: 8px;">
-          <span>📑 1. Resumo Estruturado & Síntese Pedagógica</span>
+          <span>📑 1. Resumo & Sintaxe</span>
           <span class="badge" style="background: rgba(88, 166, 255, 0.15); color: #58a6ff; font-size: 11px; padding: 3px 8px; border-radius: 12px; border: 1px solid rgba(88, 166, 255, 0.3);">Pilar 1</span>
         </div>
         <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
@@ -10835,6 +10881,19 @@
             if (!localLessons[targetDisc]) localLessons[targetDisc] = {};
             localLessons[targetDisc][targetSub] = lessonObj;
             localStorage.setItem('concursos_local_lessons', JSON.stringify(localLessons));
+
+            if (lessonObj.meta) {
+              const savedMaps = JSON.parse(localStorage.getItem('concursos_saved_mindmaps') || '{}');
+              const mKey = `${targetDisc}:::${targetSub}`;
+              if (lessonObj.meta.mindmap_json || (lessonObj.meta.markdown_content && lessonObj.meta.markdown_content.includes('nlm-mindmap-json'))) {
+                savedMaps[mKey] = {
+                  mindmap: lessonObj.meta.mindmap_json,
+                  markdown: lessonObj.meta.markdown_content,
+                  timestamp: Date.now()
+                };
+                localStorage.setItem('concursos_saved_mindmaps', JSON.stringify(savedMaps));
+              }
+            }
           } catch(e) {}
 
           if (typeof globalPreseededCatalog !== 'undefined' && globalPreseededCatalog) {
@@ -10955,6 +11014,19 @@
             if (!localLessons[targetDisc]) localLessons[targetDisc] = {};
             localLessons[targetDisc][targetSub] = lessonObj;
             localStorage.setItem('concursos_local_lessons', JSON.stringify(localLessons));
+
+            if (lessonObj.meta) {
+              const savedMaps = JSON.parse(localStorage.getItem('concursos_saved_mindmaps') || '{}');
+              const mKey = `${targetDisc}:::${targetSub}`;
+              if (lessonObj.meta.mindmap_json || (lessonObj.meta.markdown_content && lessonObj.meta.markdown_content.includes('nlm-mindmap-json'))) {
+                savedMaps[mKey] = {
+                  mindmap: lessonObj.meta.mindmap_json,
+                  markdown: lessonObj.meta.markdown_content,
+                  timestamp: Date.now()
+                };
+                localStorage.setItem('concursos_saved_mindmaps', JSON.stringify(savedMaps));
+              }
+            }
           } catch(e) {}
 
           if (!globalTreeCache[targetDisc]) globalTreeCache[targetDisc] = {};
@@ -11788,6 +11860,73 @@
         } else {
           metaSpans[3].style.display = 'none';
         }
+      }
+
+      // GARANTIA TOTAL DE PERMANÊNCIA DO MAPA MENTAL GERADO NO TÓPICO
+      let hasMindmapBlock = meta.markdown_content && (
+        meta.markdown_content.includes('nlm-mindmap-json') ||
+        meta.markdown_content.includes('### 🗺️ Mapa Mental')
+      );
+
+      // Se o markdown vindo do servidor ou catálogo não tiver o bloco do mapa mental,
+      // buscar no cache local e nos mapas salvos
+      if (!hasMindmapBlock) {
+        let savedMindmapObj = meta.mindmap_json || null;
+
+        // 1. Verificar em concursos_saved_mindmaps
+        if (!savedMindmapObj) {
+          try {
+            const savedMaps = JSON.parse(localStorage.getItem('concursos_saved_mindmaps') || '{}');
+            const k1 = `${disc}:::${sub}`;
+            const k2 = `${normalizeKey(disc)}:::${normalizeKey(sub)}`;
+            const found = savedMaps[k1] || savedMaps[k2];
+            if (found) {
+              savedMindmapObj = found.mindmap || found;
+              if (found.markdown && found.markdown.includes('nlm-mindmap-json')) {
+                meta.markdown_content = found.markdown;
+                hasMindmapBlock = true;
+              }
+            }
+          } catch(e) {}
+        }
+
+        // 2. Verificar em concursos_local_lessons
+        if (!hasMindmapBlock && !savedMindmapObj) {
+          try {
+            const localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
+            const locMeta = localLessons[disc]?.[sub]?.meta;
+            if (locMeta) {
+              if (locMeta.mindmap_json) {
+                savedMindmapObj = locMeta.mindmap_json;
+              }
+              if (locMeta.markdown_content && locMeta.markdown_content.includes('nlm-mindmap-json')) {
+                meta.markdown_content = locMeta.markdown_content;
+                hasMindmapBlock = true;
+              }
+            }
+          } catch(e) {}
+        }
+
+        // 3. Se temos o objeto do mapa mental mas ele não está injetado no markdown_content, injetar agora
+        if (!hasMindmapBlock && savedMindmapObj && meta.markdown_content) {
+          try {
+            const jsonStr = (typeof savedMindmapObj === 'string')
+              ? savedMindmapObj
+              : JSON.stringify(savedMindmapObj, null, 2);
+            const mmBlock = `### 🗺️ Mapa Mental Interativo & Navegação do Conhecimento\n\n\`\`\`nlm-mindmap-json\n${jsonStr}\n\`\`\`\n\n---\n\n`;
+            if (meta.markdown_content.search(/##\s*1\./) !== -1) {
+              meta.markdown_content = meta.markdown_content.replace(/##\s*1\./, `${mmBlock}## 1.`);
+            } else {
+              meta.markdown_content = `${meta.markdown_content}\n\n${mmBlock}`;
+            }
+            meta.mindmap_json = savedMindmapObj;
+            hasMindmapBlock = true;
+          } catch(e) {}
+        }
+      }
+
+      if (typeof readerRawContent !== 'undefined') {
+        readerRawContent = meta.markdown_content;
       }
 
       renderDynamicLessonTabs(meta.markdown_content, disc, sub);

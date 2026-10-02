@@ -1969,6 +1969,24 @@ def get_lesson_metadata(discipline, subarea):
         except Exception:
             pass
 
+    # Carregar Mapa Mental dedicado se existir na pasta e garantir que permaneça no markdown
+    mm_file = os.path.join(folder, f"Mapa_Mental_{subarea}.json")
+    mm_json = None
+    if os.path.exists(mm_file):
+        try:
+            with open(mm_file, "r", encoding="utf-8") as f_mm:
+                mm_json = json.load(f_mm)
+        except Exception:
+            pass
+
+    if mm_json and "nlm-mindmap-json" not in content and "### 🗺️ Mapa Mental" not in content:
+        json_str = json.dumps(mm_json, indent=2, ensure_ascii=False)
+        mm_block = f"### 🗺️ Mapa Mental Interativo & Navegação do Conhecimento\n\n```nlm-mindmap-json\n{json_str}\n```\n\n---\n\n"
+        if "## 1." in content:
+            content = content.replace("## 1.", f"{mm_block}## 1.")
+        else:
+            content = f"{content}\n\n{mm_block}"
+
     return {
         "discipline": discipline,
         "subarea": subarea,
@@ -1978,6 +1996,7 @@ def get_lesson_metadata(discipline, subarea):
         "category": cat_m.group(1).strip() if cat_m else "Edital de Concursos",
         "youtube_url": link_m.group(1).strip() if link_m else "",
         "markdown_content": content,
+        "mindmap_json": mm_json,
         "has_lesson": has_full_lesson,
         "moments": moments_list
     }
@@ -2266,7 +2285,7 @@ def update_lesson_markdown_with_raiox(discipline, subarea, raiox_markdown, banca
             f"**Professor:** Prof. Especialista  \n"
             f"**Duração:** 50 minutos  \n"
             f"**Categoria:** Edital de Concursos Públicos  \n\n---\n\n"
-            f"## 1. Resumo Estruturado e Conceitos-Chave\n\n"
+            f"## 1. Resumo & Sintaxe\n\n"
             f"Conteúdo em estruturação.\n\n"
         )
         
@@ -3218,7 +3237,7 @@ def generate_pilar1_summary(discipline, subarea, title, professor, context_text)
         "5. AUTO-VERIFICAÇÃO OBRIGATÓRIA (CHECK FINAL DO PILAR 1):\n"
         "Remova falsos mnemônicos, corrija atribuições indevidas ao autor, reconstrua períodos fragmentados, garanta que nada foi inventado e que todas as dicas/alertas reais da fonte foram preservados.\n\n"
         "Inicie obrigatoriamente com o título:\n"
-        "## 1. Resumo Estruturado e Conceitos-Chave"
+        "## 1. Resumo & Sintaxe"
     )
     user_prompt = (
         f"Disciplina: {discipline} | Subárea: {subarea} | Título: {title} | Professor: {professor}\n\n"
@@ -3250,7 +3269,7 @@ def generate_pilar1_summary(discipline, subarea, title, professor, context_text)
     alert_sentences = [s for s in sentences if re.search(r'(?:cuidado|atenção|pegadinha|não confunda|vedado|proibido|exceção|apenas|somente|nunca|sempre)', s, re.I)]
     
     lines_p1 = [
-        "## 1. Resumo Estruturado e Conceitos-Chave\n",
+        "## 1. Resumo & Sintaxe\n",
         f"> 👨‍🏫 **FONTE DO CONHECIMENTO:** {title}  ",
         f"> **Professor/Autor:** {professor} | **Disciplina:** {disc_clean} | **Metodologia:** Rastreabilidade Pedagógica\n"
     ]
@@ -5995,7 +6014,7 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             aula_f = os.path.join(sub_path, f"Aula_01_{sub}.md")
             if not os.path.exists(aula_f):
                 with open(aula_f, "w", encoding="utf-8") as f:
-                    f.write(f"# {disc.replace('_', ' ').upper()} - {sub.replace('_', ' ')}\n**Professor:** Prof. Titular  \n**Categoria:** Edital de Concursos Públicos  \n\n---\n\n## 1. Resumo Estruturado\nUtilize o assistente de IA ou adicione os materiais desta subárea.\n")
+                    f.write(f"# {disc.replace('_', ' ').upper()} - {sub.replace('_', ' ')}\n**Professor:** Prof. Titular  \n**Categoria:** Edital de Concursos Públicos  \n\n---\n\n## 1. Resumo & Sintaxe\nUtilize o assistente de IA ou adicione os materiais desta subárea.\n")
 
             cards_f = os.path.join(sub_path, f"Flashcards_{sub}_Anki.txt")
             if not os.path.exists(cards_f):

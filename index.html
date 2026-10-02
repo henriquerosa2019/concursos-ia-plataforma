@@ -9333,7 +9333,7 @@
         document.querySelectorAll(`#${id} .mm-node`).forEach(n => n.classList.remove('selected'));
         el.classList.add('selected');
         if (typeof window.openKnowledgeUnitDrawer === 'function') {
-          window.openKnowledgeUnitDrawer(node);
+          window.openKnowledgeUnitDrawer(node, id);
         }
       };
 
@@ -9591,9 +9591,29 @@
   };
 
   /* Drawer dos 4 Pilares & Navegação */
-  window.openKnowledgeUnitDrawer = function(node) {
+  window.openKnowledgeUnitDrawer = function(node, graphId) {
     if (!node) return;
     window.activeMindmapNode = node;
+    window.activeMindmapGraphId = graphId || window.activeMindmapGraphId || null;
+
+    // Salvar contexto e posição exata onde o aluno estava dentro do mapa mental
+    const contentArea = document.querySelector('.content-area');
+    const gId = graphId || window.activeMindmapGraphId || document.querySelector('.nlm-graph-container')?.id || '';
+    const st = gId ? window.mindmapGraphStates[gId] : null;
+    const container = gId ? document.getElementById(gId) : document.querySelector('.nlm-graph-container, .nlm-mindmap-wrapper');
+    const isFs = Boolean(container && (container.classList.contains('fullscreen') || container.classList.contains('nlm-fullscreen')));
+
+    window.savedMindmapContext = {
+      graphId: gId,
+      nodeId: node.id,
+      nodeElId: gId ? `${gId}-node-${node.id}` : null,
+      contentAreaScrollTop: contentArea ? contentArea.scrollTop : 0,
+      windowScrollY: window.scrollY || window.pageYOffset || 0,
+      panX: st ? st.panX : null,
+      panY: st ? st.panY : null,
+      zoom: st ? st.zoom : null,
+      isFullscreen: isFs
+    };
 
     const drawer = document.getElementById('mindmapKnowledgeDrawer');
     const badge = document.getElementById('mkdNodeBadge');
@@ -9663,22 +9683,101 @@
     document.documentElement.style.overflow = '';
   };
 
+  window.returnToMindmapSavedPosition = function() {
+    const ctx = window.savedMindmapContext;
+    if (!ctx) return;
+
+    const gId = ctx.graphId;
+    const container = gId ? document.getElementById(gId) : document.querySelector('.nlm-graph-container, .nlm-mindmap-wrapper');
+    const contentArea = document.querySelector('.content-area');
+
+    // 1. Se o aluno estava em tela cheia, manter rigorosamente a tela cheia
+    if (ctx.isFullscreen && container) {
+      if (!container.classList.contains('fullscreen')) {
+        container.classList.add('fullscreen');
+      }
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      // 2. Se estava em visualização normal (inline na aula), restaurar posição de rolagem onde o aluno estava
+      if (contentArea && typeof ctx.contentAreaScrollTop === 'number') {
+        contentArea.scrollTo({ top: ctx.contentAreaScrollTop, behavior: 'smooth' });
+      } else if (container) {
+        container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    // 3. Restaurar / manter a posição exata da câmera do canvas (e centralizar se o nó estiver fora de vista)
+    if (gId && window.mindmapGraphStates && window.mindmapGraphStates[gId]) {
+      const st = window.mindmapGraphStates[gId];
+      const canvas = document.getElementById(`${gId}-canvas`);
+      const viewport = document.getElementById(`${gId}-viewport`);
+      const nodeData = st.nodeMap ? st.nodeMap[ctx.nodeId] : null;
+
+      if (canvas && typeof ctx.panX === 'number' && typeof ctx.panY === 'number') {
+        st.panX = ctx.panX;
+        st.panY = ctx.panY;
+        if (typeof ctx.zoom === 'number') st.zoom = ctx.zoom;
+
+        // Se o nó estava oculto ou atrás da área lateral do drawer, centralizar suavemente
+        if (nodeData && viewport) {
+          const vw = viewport.clientWidth || 800;
+          const vh = viewport.clientHeight || 600;
+          const nodeScreenX = st.panX + nodeData.x * st.zoom;
+          const nodeScreenY = st.panY + nodeData.y * st.zoom;
+
+          if (nodeScreenX > vw - 280 || nodeScreenX < 40 || nodeScreenY < 40 || nodeScreenY > vh - 60) {
+            st.panX = (vw / 2) - (nodeData.x + (nodeData.actualW || 180) / 2) * st.zoom;
+            st.panY = (vh / 2) - (nodeData.y + (nodeData.h || 42) / 2) * st.zoom;
+          }
+        }
+
+        canvas.style.transition = 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)';
+        canvas.style.transform = `translate(${st.panX}px, ${st.panY}px) scale(${st.zoom})`;
+        setTimeout(() => { if (canvas) canvas.style.transition = ''; }, 400);
+      }
+    }
+
+    // 4. Destacar e focar o nó exato com animação visual de pulso
+    if (ctx.nodeElId) {
+      const nodeEl = document.getElementById(ctx.nodeElId);
+      if (nodeEl) {
+        nodeEl.classList.add('selected');
+        nodeEl.style.transition = 'box-shadow 0.4s ease, transform 0.4s ease, outline 0.4s ease';
+        nodeEl.style.outline = '2px solid #38bdf8';
+        nodeEl.style.boxShadow = '0 0 25px rgba(56, 189, 248, 0.8), 0 0 45px rgba(59, 130, 246, 0.4)';
+        nodeEl.style.transform = 'scale(1.06)';
+        setTimeout(() => {
+          if (nodeEl) {
+            nodeEl.style.transform = '';
+            nodeEl.style.boxShadow = '';
+            nodeEl.style.outline = '';
+          }
+        }, 1600);
+      }
+    }
+  };
+
   window.closeMindmapKnowledgeDrawer = function() {
     const drawer = document.getElementById('mindmapKnowledgeDrawer');
     if (drawer) drawer.style.display = 'none';
     const isAnyFullscreen = document.querySelector('.nlm-graph-container.fullscreen, .nlm-mindmap-wrapper.nlm-fullscreen');
-    if (!isAnyFullscreen) {
+    if (isAnyFullscreen) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
+    }
+
+    // Retorna imediatamente ao ponto exato do aluno dentro do mapa mental
+    if (typeof window.returnToMindmapSavedPosition === 'function') {
+      window.returnToMindmapSavedPosition();
     }
   };
 
   window.closeMindmapKnowledgeDrawerAndFullscreen = function() {
-    exitAllMindmapFullscreen();
     closeMindmapKnowledgeDrawer();
-    const contentArea = document.querySelector('.content-area');
-    if (contentArea) contentArea.scrollTo({ top: 0, behavior: 'smooth' });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   window.openPdfAtCurrentNodePage = function() {

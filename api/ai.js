@@ -3110,7 +3110,8 @@ Retorne APENAS um JSON no formato:
     }));
 
     // Sempre utilizar o algoritmo oficial didático e determinístico de testar_mapa_pdf.bat (testar_mapa.py)
-    const mindmapObj = extractSemanticMindmapFromCorpus(disc, sub, title, extractedText);
+    mindmapObj = extractSemanticMindmapFromCorpus(disc, sub, title, extractedText);
+
 
 
     if (!briefingText) {

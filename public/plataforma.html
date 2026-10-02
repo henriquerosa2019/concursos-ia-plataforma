@@ -8364,6 +8364,11 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
     const title = currentLessonMeta?.title || (currentSubarea ? currentSubarea.replace(/_/g, ' ') : 'Aula');
     const mm = parseNotebookLmToMindmap(raw, currentDiscipline, currentSubarea, title);
 
+    if (raw.includes('<iframe') || raw.includes('scf.usercontent.goog')) {
+      alert('📌 Você copiou a tag <iframe> externa do NotebookLM.\n\nA tag <iframe> é apenas uma "moldura de janela"; os dados e nós do mapa mental ficam dentro dela.\n\nComo resolver rapidamente (escolha uma opção):\n\n1. No Chat do NotebookLM: peça "Liste a estrutura deste mapa mental em tópicos com marcadores (-)", copie a resposta e cole aqui.\n\n2. No Console do Inspecionar: mude o seletor "top" para o iframe e digite: copy(document.body.innerText)\n\n3. Ou na aba anterior "Importar PNG Baixado": selecione o PNG baixado do NotebookLM para visualização imediata em alta definição!');
+      return;
+    }
+
     if (!mm || !mm.nodes || mm.nodes.length < 2) {
       alert('Não foi possível identificar a estrutura de tópicos. Certifique-se de copiar a resposta do NotebookLM com marcadores (-) ou tópicos.');
       return;

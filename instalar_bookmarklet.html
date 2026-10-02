@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Instalador do Bookmarklet • Projeto Aprovação</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #090d16;
+      color: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .card {
+      background: #111827;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 640px;
+      width: 100%;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+      text-align: center;
+    }
+    h1 {
+      font-size: 22px;
+      margin-bottom: 12px;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    p {
+      color: #94a3b8;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .drag-box {
+      background: rgba(56, 189, 248, 0.08);
+      border: 2px dashed rgba(56, 189, 248, 0.4);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .bookmark-btn {
+      display: inline-block;
+      padding: 14px 28px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 15px;
+      text-decoration: none;
+      border-radius: 99px;
+      box-shadow: 0 4px 16px rgba(56, 189, 248, 0.4);
+      cursor: grab;
+      user-select: all;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .bookmark-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(56, 189, 248, 0.6);
+    }
+    .instruction {
+      margin-top: 14px;
+      font-size: 13px;
+      color: #7dd3fc;
+      font-weight: 600;
+    }
+    .steps {
+      text-align: left;
+      background: #1e293b;
+      padding: 18px 22px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #cbd5e1;
+      margin-bottom: 20px;
+    }
+    .steps b {
+      color: #f1f5f9;
+    }
+    .btn-copy {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #f8fafc;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 12px;
+    }
+    .btn-copy:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1><span>⚡</span> Bookmarklet: Exportar do NotebookLM</h1>
+    <p>
+      O favorito já foi <b>injetado nos arquivos de todos os perfis do seu Chrome</b>.<br>
+      Para tê-lo visível imediatamente na barra superior sem precisar fechar o Chrome, basta arrastar o botão abaixo:
+    </p>
+
+    <div class="drag-box">
+      <a class="bookmark-btn" href='javascript:(function(){try{const selectors=[  '.chat-message[data-message-author="bot"]',  '[data-message-author="bot"]',  '.model-response-text',  '.response-container',  '.rendered-markdown',  'mat-card.model-response',  '.to-user-content'];let foundText="";for(const sel of selectors){  const els=document.querySelectorAll(sel);  if(els.length>0){foundText=els[els.length-1].innerText;break;}}if(!foundText||foundText.length<20){  const allMd=document.querySelectorAll(".markdown,[role=\"region\"],article");  if(allMd.length>0){foundText=window.getSelection().toString()||allMd[allMd.length-1].innerText;}}if(!foundText||foundText.length<5){  foundText=window.getSelection().toString()||document.body.innerText;}navigator.clipboard.writeText(foundText).then(()=>{  const shortSnippet=foundText.substring(0,120).replace(/\n/g," ");  if(confirm("✅ MAPA DO NOTEBOOKLM COPIADO COM SUCESSO!\n\nPrévia: \""+shortSnippet+"...\"\n\nDeseja abrir o Projeto Aprovação para importar agora?")){    window.open("https://aprovacao-concursos.vercel.app","_blank");  }}).catch(()=>{  prompt("Copie o texto do mapa mental abaixo (Ctrl+C):",foundText);});}catch(e){alert("Erro: "+e.message);}})();' onclick="alert('👉 Para adicionar, basta ARRASTAR este botão azul para a sua BARRA DE FAVORITOS no topo do navegador (Ctrl+Shift+B)!'); return false;">
+        🚀 Exportar p/ Projeto Aprovação
+      </a>
+      <div class="instruction">
+        ⬆️ <b>Arraste este botão acima para a Barra de Favoritos do Chrome!</b> (Pressione <code>Ctrl + Shift + B</code> se a barra estiver oculta)
+      </div>
+    </div>
+
+    <div class="steps">
+      <b>Como usar no seu dia a dia (1 Clique):</b><br>
+      1. Abra qualquer conversa ou mapa gerado no seu <b>Google NotebookLM</b>.<br>
+      2. Clique no favorito <b>"🚀 Exportar p/ Projeto Aprovação"</b> na barra do Chrome.<br>
+      3. O código copia a resposta da tela e já abre a nossa plataforma!<br>
+      4. No app, clique em <b>"📥 Importar do NotebookLM"</b> e o mapa será renderizado.
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <button class="btn-copy" onclick="copyCode()">📋 Copiar Código JavaScript</button>
+      <a href="https://notebook.google.com/notebook/8794eb3d-06b5-430f-bf91-adadd6b93374?authuser=1&hl=pt-BR" target="_blank" style="color: #38bdf8; font-size: 13px; text-decoration: none; font-weight: 700;">
+        Ir para Meu NotebookLM ↗
+      </a>
+    </div>
+  </div>
+
+  <script>
+    function copyCode() {
+      const code = "javascript:(function(){try{const selectors=[  '.chat-message[data-message-author=\"bot\"]',  '[data-message-author=\"bot\"]',  '.model-response-text',  '.response-container',  '.rendered-markdown',  'mat-card.model-response',  '.to-user-content'];let foundText=\"\";for(const sel of selectors){  const els=document.querySelectorAll(sel);  if(els.length>0){foundText=els[els.length-1].innerText;break;}}if(!foundText||foundText.length<20){  const allMd=document.querySelectorAll(\".markdown,[role=\\\"region\\\"],article\");  if(allMd.length>0){foundText=window.getSelection().toString()||allMd[allMd.length-1].innerText;}}if(!foundText||foundText.length<5){  foundText=window.getSelection().toString()||document.body.innerText;}navigator.clipboard.writeText(foundText).then(()=>{  const shortSnippet=foundText.substring(0,120).replace(/\\n/g,\" \");  if(confirm(\"\u2705 MAPA DO NOTEBOOKLM COPIADO COM SUCESSO!\\n\\nPr\u00e9via: \\\"\"+shortSnippet+\"...\\\"\\n\\nDeseja abrir o Projeto Aprova\u00e7\u00e3o para importar agora?\")){    window.open(\"https://aprovacao-concursos.vercel.app\",\"_blank\");  }}).catch(()=>{  prompt(\"Copie o texto do mapa mental abaixo (Ctrl+C):\",foundText);});}catch(e){alert(\"Erro: \"+e.message);}})();";
+      navigator.clipboard.writeText(code).then(() => {
+        alert('Código copiado! Caso prefira, crie um novo favorito no Chrome e cole este código no campo URL.');
+      });
+    }
+  </script>
+</body>
+</html>

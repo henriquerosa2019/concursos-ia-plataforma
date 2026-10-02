@@ -5475,6 +5475,57 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 "message": f"Raio-X & Pegadinhas ({banca}) gerado com sucesso!"
             }, ensure_ascii=False).encode("utf-8"))
 
+        # 11.5. Salvar Imagem PNG do Mapa Mental (do Google NotebookLM)
+        elif path == "/api/upload-mindmap-png":
+            try:
+                disc = payload.get("discipline", "").strip() or "Direito_Administrativo"
+                sub = payload.get("subarea", "").strip() or "Atos_Administrativos"
+                image_b64 = payload.get("image_base64", "").strip()
+                if not image_b64:
+                    self.send_response(400)
+                    self.send_header("Content-type", "application/json; charset=utf-8")
+                    self.end_headers()
+                    self.wfile.write(json.dumps({"success": False, "error": "Imagem PNG obrigatória."}, ensure_ascii=False).encode("utf-8"))
+                    return
+
+                if "," in image_b64:
+                    image_b64 = image_b64.split(",", 1)[1]
+
+                img_data = base64.b64decode(image_b64)
+                
+                # Salvar na pasta oficial do tópico
+                topic_dir = os.path.join(ROOT_DIR, disc, sub)
+                os.makedirs(topic_dir, exist_ok=True)
+                png_path = os.path.join(topic_dir, "Mapa_Mental_NotebookLM.png")
+                with open(png_path, "wb") as f_img:
+                    f_img.write(img_data)
+
+                # Salvar também em public/mapas_notebooklm para exibição estática
+                public_dir = os.path.join(ROOT_DIR, "public", "mapas_notebooklm")
+                os.makedirs(public_dir, exist_ok=True)
+                pub_filename = f"{disc}_{sub}.png"
+                pub_path = os.path.join(public_dir, pub_filename)
+                with open(pub_path, "wb") as f_pub:
+                    f_pub.write(img_data)
+
+                rel_url = f"/mapas_notebooklm/{pub_filename}"
+                self.send_response(200)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    "success": True,
+                    "url": rel_url,
+                    "local_path": png_path,
+                    "message": "Mapa mental em PNG salvo com sucesso na pasta da matéria!"
+                }, ensure_ascii=False).encode("utf-8"))
+                return
+            except Exception as e:
+                self.send_response(500)
+                self.send_header("Content-type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": str(e)}, ensure_ascii=False).encode("utf-8"))
+                return
+
         # 12. Importar Arquivo PDF e Gerar Todos os 4 Pilares Automaticamente
         elif path == "/api/import-pdf":
             try:

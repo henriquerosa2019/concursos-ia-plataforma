@@ -4618,50 +4618,92 @@
 
 <!-- Modal: Importar Mapa Mental do Google NotebookLM -->
 <div class="modal-overlay" id="modalImportNotebookLm" style="display: none;" onclick="if(event.target === this) closeModal('modalImportNotebookLm')">
-  <div class="modal-box" style="max-width: 620px; width: 94%;">
+  <div class="modal-box" style="max-width: 650px; width: 95%;">
     <div class="modal-title" style="display: flex; align-items: center; justify-content: space-between;">
       <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="font-size: 20px;">📥</span>
-        <span style="font-weight: 800; font-size: 15.5px;">Importar Mapa do Google NotebookLM</span>
+        <span style="font-size: 22px;">📥</span>
+        <span style="font-weight: 800; font-size: 16px;">Importar Mapa do Google NotebookLM</span>
       </div>
       <button class="btn btn-sm" onclick="closeModal('modalImportNotebookLm')" style="background: transparent; border: none; font-size: 16px; cursor: pointer; color: var(--text-muted);">✕</button>
     </div>
     
-    <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 8px; padding: 12px; margin: 12px 0 16px; font-size: 12.5px; line-height: 1.5; color: #bae6fd;">
-      <b>⚡ Integração Direta com sua Conta Google:</b><br>
-      1. Gere o mapa mental no seu caderno do NotebookLM com o PDF anexado.<br>
-      2. Clique no ícone de <b>Copiar</b> na resposta do NotebookLM.<br>
-      3. Cole abaixo (ou use o botão automático) para converter na árvore interativa do app.
-    </div>
-
-    <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
-      <button class="btn btn-sm" onclick="copyNotebookLmMasterPrompt()" style="background: rgba(99, 102, 241, 0.2); border-color: rgba(99, 102, 241, 0.4); color: #c7d2fe; font-weight: 700;">
-        <span>📋 Copiar Prompt Mestre</span>
+    <!-- Abas do Modal -->
+    <div style="display: flex; gap: 8px; border-bottom: 1px solid var(--border); margin: 12px 0 16px;">
+      <button class="btn btn-sm" id="btnTabNlmPng" onclick="switchNlmImportTab('png')" style="border-bottom: 2px solid #38bdf8; background: rgba(56, 189, 248, 0.15); color: #38bdf8; font-weight: 700; border-radius: 6px 6px 0 0;">
+        <span>🖼️</span><span>Importar PNG Baixado</span>
       </button>
-      <a href="https://notebook.google.com/notebook/8794eb3d-06b5-430f-bf91-adadd6b93374?authuser=1&hl=pt-BR" target="_blank" class="btn btn-sm" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px; background: rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.4); color: #6ee7b7; font-weight: 700;">
-        <span>🔗 Abrir Meu NotebookLM ↗</span>
-      </a>
-      <button class="btn btn-sm" onclick="pasteFromClipboardToNotebookLmModal()" style="background: rgba(56, 189, 248, 0.2); border-color: rgba(56, 189, 248, 0.4); color: #7dd3fc; font-weight: 700;">
-        <span>📋 Colar do Clipboard</span>
+      <button class="btn btn-sm" id="btnTabNlmText" onclick="switchNlmImportTab('text')" style="background: transparent; color: var(--text2); font-weight: 600; border-radius: 6px 6px 0 0;">
+        <span>📝</span><span>Importar Texto / Markdown</span>
       </button>
     </div>
 
-    <div class="modal-input-group" style="margin-bottom: 14px;">
-      <label style="font-weight: 700; font-size: 12px; display: block; margin-bottom: 6px; color: var(--text2);">
-        Conteúdo Copiado do NotebookLM (Markdown, Tópicos ou JSON):
-      </label>
-      <textarea id="notebookLmRawInput" placeholder="Cole aqui a resposta gerada pelo NotebookLM..." style="width: 100%; box-sizing: border-box; height: 190px; padding: 10px 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: monospace; font-size: 12px; line-height: 1.4; resize: vertical;"></textarea>
-    </div>
+    <!-- Conteúdo da Aba 1: Upload de PNG Baixado -->
+    <div id="nlmImportTabPng">
+      <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; font-size: 12.5px; line-height: 1.5; color: #bae6fd;">
+        💡 <b>Como funciona:</b> No NotebookLM, gere o mapa visual e clique no botão de <b>Baixar PNG</b>. Depois, selecione ou arraste o arquivo PNG baixado abaixo para incorporá-lo na aula com zoom e alta resolução!
+      </div>
 
-    <div class="modal-actions" style="display: flex; justify-content: space-between; align-items: center;">
-      <span id="notebookLmImportStatus" style="font-size: 12px; color: #94a3b8;"></span>
-      <div style="display: flex; gap: 8px;">
-        <button class="btn" onclick="closeModal('modalImportNotebookLm')">Cancelar</button>
-        <button class="btn btn-primary" id="btnExecuteNotebookLmImport" onclick="executeNotebookLmImport()" style="background: linear-gradient(135deg, #0284c7, #0ea5e9); font-weight: 700;">
-          <span>🚀 Converter & Importar para a Aula</span>
-        </button>
+      <div id="dropzoneNotebookLmPng" 
+           onclick="document.getElementById('notebookLmPngFileInput').click()"
+           ondragover="event.preventDefault(); this.style.borderColor='#38bdf8'; this.style.background='rgba(56, 189, 248, 0.12)';"
+           ondragleave="this.style.borderColor='rgba(56, 189, 248, 0.4)'; this.style.background='rgba(56, 189, 248, 0.05)';"
+           ondrop="handleNotebookLmPngDrop(event)"
+           style="border: 2px dashed rgba(56, 189, 248, 0.45); background: rgba(56, 189, 248, 0.05); border-radius: 12px; padding: 26px 16px; text-align: center; cursor: pointer; transition: all 0.2s;">
+        <input type="file" id="notebookLmPngFileInput" accept="image/png,image/jpeg,image/webp" style="display: none;" onchange="handleNotebookLmPngSelected(event)">
+        <div style="font-size: 38px; margin-bottom: 8px;">🖼️</div>
+        <div style="font-weight: 700; color: #38bdf8; font-size: 14px; margin-bottom: 4px;">Clique para selecionar o PNG baixado do NotebookLM</div>
+        <div style="font-size: 12px; color: var(--text-muted);">ou arraste e solte o arquivo da sua pasta de Downloads aqui</div>
+        
+        <div id="notebookLmPngPreviewBox" style="display: none; margin-top: 14px;">
+          <img id="notebookLmPngPreviewImg" style="max-height: 200px; max-width: 100%; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 16px rgba(0,0,0,0.5);">
+          <div id="notebookLmPngFileName" style="font-size: 12px; color: #a5b4fc; margin-top: 6px; font-weight: 600;"></div>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+        <span id="notebookLmPngStatus" style="font-size: 12px; color: #94a3b8;"></span>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn" onclick="closeModal('modalImportNotebookLm')">Cancelar</button>
+          <button class="btn btn-primary" id="btnSaveNotebookLmPng" onclick="saveNotebookLmPngToLesson()" disabled style="background: linear-gradient(135deg, #0284c7, #0ea5e9); font-weight: 700; opacity: 0.5;">
+            <span>🚀 Salvar PNG & Exibir na Aula</span>
+          </button>
+        </div>
       </div>
     </div>
+
+    <!-- Conteúdo da Aba 2: Importar Texto / Markdown -->
+    <div id="nlmImportTabText" style="display: none;">
+      <div style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.25); border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; font-size: 12.5px; line-height: 1.5; color: #c7d2fe;">
+        Copie a resposta do chat do NotebookLM e cole abaixo para gerar os nós clicáveis interativos.
+      </div>
+
+      <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+        <button class="btn btn-sm" onclick="copyNotebookLmMasterPrompt()" style="background: rgba(99, 102, 241, 0.2); border-color: rgba(99, 102, 241, 0.4); color: #c7d2fe; font-weight: 700;">
+          <span>📋 Copiar Prompt Mestre</span>
+        </button>
+        <a href="https://notebook.google.com/notebook/8794eb3d-06b5-430f-bf91-adadd6b93374?authuser=1&hl=pt-BR" target="_blank" class="btn btn-sm" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px; background: rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.4); color: #6ee7b7; font-weight: 700;">
+          <span>🔗 Abrir Meu NotebookLM ↗</span>
+        </a>
+        <button class="btn btn-sm" onclick="pasteFromClipboardToNotebookLmModal()" style="background: rgba(56, 189, 248, 0.2); border-color: rgba(56, 189, 248, 0.4); color: #7dd3fc; font-weight: 700;">
+          <span>📋 Colar do Clipboard</span>
+        </button>
+      </div>
+
+      <div class="modal-input-group" style="margin-bottom: 14px;">
+        <textarea id="notebookLmRawInput" placeholder="Cole aqui a resposta gerada pelo NotebookLM..." style="width: 100%; box-sizing: border-box; height: 160px; padding: 10px 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: monospace; font-size: 12px; line-height: 1.4; resize: vertical;"></textarea>
+      </div>
+
+      <div class="modal-actions" style="display: flex; justify-content: space-between; align-items: center;">
+        <span id="notebookLmImportStatus" style="font-size: 12px; color: #94a3b8;"></span>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn" onclick="closeModal('modalImportNotebookLm')">Cancelar</button>
+          <button class="btn btn-primary" id="btnExecuteNotebookLmImport" onclick="executeNotebookLmImport()" style="background: linear-gradient(135deg, #0284c7, #0ea5e9); font-weight: 700;">
+            <span>🚀 Converter & Importar para a Aula</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -7870,6 +7912,186 @@
   // ==========================================
   // INTEGRAÇÃO NATIVA COM GOOGLE NOTEBOOKLM
   // ==========================================
+  
+  // Variável para armazenar o arquivo PNG em memória antes de salvar
+  let currentPendingNlmPngData = null;
+
+  function switchNlmImportTab(tab) {
+    const tabPng = document.getElementById('nlmImportTabPng');
+    const tabText = document.getElementById('nlmImportTabText');
+    const btnPng = document.getElementById('btnTabNlmPng');
+    const btnText = document.getElementById('btnTabNlmText');
+    if (!tabPng || !tabText) return;
+
+    if (tab === 'png') {
+      tabPng.style.display = 'block';
+      tabText.style.display = 'none';
+      if (btnPng) {
+        btnPng.style.borderBottom = '2px solid #38bdf8';
+        btnPng.style.background = 'rgba(56, 189, 248, 0.15)';
+        btnPng.style.color = '#38bdf8';
+      }
+      if (btnText) {
+        btnText.style.borderBottom = 'none';
+        btnText.style.background = 'transparent';
+        btnText.style.color = 'var(--text2)';
+      }
+    } else {
+      tabPng.style.display = 'none';
+      tabText.style.display = 'block';
+      if (btnText) {
+        btnText.style.borderBottom = '2px solid #6366f1';
+        btnText.style.background = 'rgba(99, 102, 241, 0.15)';
+        btnText.style.color = '#a5b4fc';
+      }
+      if (btnPng) {
+        btnPng.style.borderBottom = 'none';
+        btnPng.style.background = 'transparent';
+        btnPng.style.color = 'var(--text2)';
+      }
+    }
+  }
+
+  function handleNotebookLmPngSelected(event) {
+    const file = event.target.files?.[0];
+    if (file) processNotebookLmPngFile(file);
+  }
+
+  function handleNotebookLmPngDrop(event) {
+    event.preventDefault();
+    const dropzone = document.getElementById('dropzoneNotebookLmPng');
+    if (dropzone) {
+      dropzone.style.borderColor = 'rgba(56, 189, 248, 0.45)';
+      dropzone.style.background = 'rgba(56, 189, 248, 0.05)';
+    }
+    const file = event.dataTransfer?.files?.[0];
+    if (file) processNotebookLmPngFile(file);
+  }
+
+  function processNotebookLmPngFile(file) {
+    if (!file.type.startsWith('image/')) {
+      alert('Por favor, selecione um arquivo de imagem (PNG, JPEG ou WEBP).');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const dataUrl = e.target.result;
+      currentPendingNlmPngData = {
+        dataUrl: dataUrl,
+        name: file.name,
+        size: file.size
+      };
+      
+      const previewBox = document.getElementById('notebookLmPngPreviewBox');
+      const previewImg = document.getElementById('notebookLmPngPreviewImg');
+      const fileNameEl = document.getElementById('notebookLmPngFileName');
+      const status = document.getElementById('notebookLmPngStatus');
+      const saveBtn = document.getElementById('btnSaveNotebookLmPng');
+
+      if (previewBox && previewImg) {
+        previewImg.src = dataUrl;
+        previewBox.style.display = 'block';
+      }
+      if (fileNameEl) {
+        const sizeKb = Math.round(file.size / 1024);
+        fileNameEl.textContent = `Arquivo: ${file.name} (${sizeKb} KB)`;
+      }
+      if (status) {
+        status.textContent = '✅ Imagem pronta para importação!';
+        status.style.color = '#34d399';
+      }
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.style.opacity = '1';
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async function saveNotebookLmPngToLesson() {
+    if (!currentPendingNlmPngData) {
+      alert('Por favor, selecione ou arraste um arquivo PNG do NotebookLM.');
+      return;
+    }
+
+    const saveBtn = document.getElementById('btnSaveNotebookLmPng');
+    if (saveBtn) saveBtn.disabled = true;
+
+    try {
+      // 1. Tenta salvar no backend se disponível
+      let savedUrl = currentPendingNlmPngData.dataUrl;
+      try {
+        const resp = await fetch('/api/upload-mindmap-png', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            discipline: currentDiscipline,
+            subarea: currentSubarea,
+            image_base64: currentPendingNlmPngData.dataUrl,
+            filename: currentPendingNlmPngData.name
+          })
+        });
+        const resData = await resp.json();
+        if (resData.success && resData.url) {
+          savedUrl = resData.url;
+        }
+      } catch(eUpload) {
+        // Fallback para dataUrl local se offline ou Vercel
+      }
+
+      // 2. Persistência local no navegador
+      try {
+        const localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
+        if (!localLessons[currentDiscipline]) localLessons[currentDiscipline] = {};
+        if (!localLessons[currentDiscipline][currentSubarea]) localLessons[currentDiscipline][currentSubarea] = { meta: {} };
+        localLessons[currentDiscipline][currentSubarea].meta.mindmap_png = savedUrl;
+        localStorage.setItem('concursos_local_lessons', JSON.stringify(localLessons));
+      } catch(e) {}
+
+      try {
+        const savedMaps = JSON.parse(localStorage.getItem('concursos_saved_mindmaps') || '{}');
+        const mKey = `${currentDiscipline}:::${currentSubarea}`;
+        if (!savedMaps[mKey]) savedMaps[mKey] = {};
+        savedMaps[mKey].mindmap_png = savedUrl;
+        savedMaps[mKey].timestamp = Date.now();
+        localStorage.setItem('concursos_saved_mindmaps', JSON.stringify(savedMaps));
+      } catch(e) {}
+
+      if (typeof currentLessonMeta !== 'undefined' && currentLessonMeta) {
+        currentLessonMeta.mindmap_png = savedUrl;
+      }
+
+      if (typeof globalPreseededCatalog !== 'undefined' && globalPreseededCatalog?.[currentDiscipline]?.[currentSubarea]?.meta) {
+        globalPreseededCatalog[currentDiscipline][currentSubarea].meta.mindmap_png = savedUrl;
+      }
+
+      closeModal('modalImportNotebookLm');
+      showToast('Mapa mental em PNG do NotebookLM importado com sucesso!', '🖼️');
+
+      // Re-renderiza a aula e alterna para a aba PNG
+      if (typeof readerRawContent !== 'undefined' && readerRawContent) {
+        renderDynamicLessonTabs(readerRawContent, currentDiscipline, currentSubarea);
+      }
+      switchTab(0);
+
+      setTimeout(() => {
+        const wrapper = document.querySelector('.nlm-mindmap-wrapper');
+        if (wrapper) {
+          const wrapperId = wrapper.id;
+          if (typeof toggleNlmMindmapMode === 'function') {
+            toggleNlmMindmapMode(wrapperId, 'png');
+          }
+          wrapper.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 350);
+
+    } catch(err) {
+      alert('Erro ao salvar PNG: ' + err.message);
+    } finally {
+      if (saveBtn) saveBtn.disabled = false;
+    }
+  }
+
   function openImportNotebookLmMindmapModal() {
     const textarea = document.getElementById('notebookLmRawInput');
     const status = document.getElementById('notebookLmImportStatus');
@@ -10268,22 +10490,61 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
      ========================================================================== */
   window.nlmZoomLevels = window.nlmZoomLevels || {};
 
+  
+  window.nlmPngZoomLevels = window.nlmPngZoomLevels || {};
+
+  window.zoomNlmPngImage = function(id, delta) {
+    const img = document.getElementById(id + '-png-img');
+    if (!img) return;
+    if (!window.nlmPngZoomLevels[id]) window.nlmPngZoomLevels[id] = 1;
+    if (delta === 0) {
+      window.nlmPngZoomLevels[id] = 1;
+    } else {
+      window.nlmPngZoomLevels[id] = Math.max(0.4, Math.min(3.0, window.nlmPngZoomLevels[id] + delta));
+    }
+    img.style.transform = `scale(${window.nlmPngZoomLevels[id]})`;
+    img.style.transformOrigin = 'top center';
+  };
+
+  window.toggleNlmPngFullscreen = function(id) {
+    const img = document.getElementById(id + '-png-img');
+    if (!img) return;
+    if (!document.fullscreenElement) {
+      if (img.requestFullscreen) img.requestFullscreen();
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen();
+    }
+  };
+
   window.toggleNlmMindmapMode = function(id, mode) {
     const viewport = document.getElementById(id + '-viewport');
     const textview = document.getElementById(id + '-textview');
+    const pngview = document.getElementById(id + '-pngview');
     const btnVisual = document.getElementById(id + '-btn-visual');
     const btnText = document.getElementById(id + '-btn-text');
+    const btnPng = document.getElementById(id + '-btn-png');
     if (!viewport || !textview) return;
     if (mode === 'visual') {
       viewport.style.display = 'block';
       textview.style.display = 'none';
+      if (pngview) pngview.style.display = 'none';
       if (btnVisual) btnVisual.classList.add('active');
       if (btnText) btnText.classList.remove('active');
+      if (btnPng) btnPng.classList.remove('active');
+    } else if (mode === 'png') {
+      viewport.style.display = 'none';
+      textview.style.display = 'none';
+      if (pngview) pngview.style.display = 'block';
+      if (btnVisual) btnVisual.classList.remove('active');
+      if (btnText) btnText.classList.remove('active');
+      if (btnPng) btnPng.classList.add('active');
     } else {
       viewport.style.display = 'none';
       textview.style.display = 'block';
+      if (pngview) pngview.style.display = 'none';
       if (btnVisual) btnVisual.classList.remove('active');
       if (btnText) btnText.classList.add('active');
+      if (btnPng) btnPng.classList.remove('active');
     }
   };
 
@@ -10468,6 +10729,7 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
       <div class="nlm-mindmap-toolbar">
         <button class="nlm-tool-btn active" id="${id}-btn-visual" onclick="toggleNlmMindmapMode('${id}', 'visual')" title="Modo Visual em Nós">👁️ Visual</button>
         <button class="nlm-tool-btn" id="${id}-btn-text" onclick="toggleNlmMindmapMode('${id}', 'text')" title="Modo Texto Hierárquico">📝 Texto</button>
+        <button class="nlm-tool-btn" id="${id}-btn-png" onclick="toggleNlmMindmapMode('${id}', 'png')" title="Ver Imagem PNG do NotebookLM" style="${hasPng ? '' : 'display:none;'}">🖼️ PNG NotebookLM</button>
         <div style="width: 1px; height: 16px; background: rgba(255,255,255,0.15); margin: 0 4px;"></div>
         <button class="nlm-tool-btn" onclick="zoomNlmMindmap('${id}', -0.1)" title="Diminuir Zoom">➖</button>
         <button class="nlm-tool-btn" onclick="zoomNlmMindmap('${id}', 0)" title="Resetar Zoom">100%</button>
@@ -10499,6 +10761,16 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
       </div>
     </div>
 
+    <div class="nlm-mindmap-png-view" id="${id}-pngview" style="display:none; padding: 16px; background: #090d16; text-align: center; overflow: auto; max-height: 650px;">
+      <div style="display:flex; justify-content:center; gap: 8px; margin-bottom: 12px;">
+        <button class="btn btn-sm" onclick="zoomNlmPngImage('${id}', 0.15)">🔍 Zoom In (+)</button>
+        <button class="btn btn-sm" onclick="zoomNlmPngImage('${id}', 0)">🔄 100%</button>
+        <button class="btn btn-sm" onclick="zoomNlmPngImage('${id}', -0.15)">🔎 Zoom Out (-)</button>
+        <button class="btn btn-sm" onclick="toggleNlmPngFullscreen('${id}')">🖵 Tela Cheia</button>
+      </div>
+      <img id="${id}-png-img" src="${pngUrl}" style="max-width: 100%; border-radius: 8px; box-shadow: 0 8px 30px rgba(0,0,0,0.6); transition: transform 0.2s;" alt="Mapa Mental NotebookLM">
+    </div>
+    
     <div class="nlm-mindmap-text-view" id="${id}-textview" style="display:none; padding: 18px 24px; background: #0d1117; font-family: Consolas, monospace; font-size: 12.5px; line-height: 1.6; color: #c9d1d9; max-height: 520px; overflow: auto;">
       <pre style="margin: 0; white-space: pre-wrap;">${rawText.trim()}</pre>
     </div>

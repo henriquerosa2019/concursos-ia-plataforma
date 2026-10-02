@@ -1,52 +1,798 @@
 [
   {
-    "enunciado": "A afirmação de que \"nem todo ato praticado no exercício da função administrativa pode ser considerado ato administrativo\" está correta, pois existem atos que não são regidos pelo direito público.",
+    "id": 1,
+    "banca": "CEBRASPE",
+    "concurso": "PROCURADOR / CÂMARA MUNICIPAL DE BOA VISTA-RR / 2026",
+    "header": "(PROCURADOR / CÂMARA MUNICIPAL DE BOA VISTA-RR / 2026 / CEBRASPE)",
+    "enunciado": "Considerando a teoria sobre a constituição dos atos administrativos, assinale a opção que apresenta o elemento que representa o resultado prático do ato, o efeito jurídico imediato que ele produz.",
     "options": [
-      "A) CERTO",
-      "B) ERRADO"
+      "(A) motivação",
+      "(B) finalidade",
+      "(C) motivo",
+      "(D) forma",
+      "(E) objeto"
+    ],
+    "correct_index": 4,
+    "gabarito": "E",
+    "comentario": "Gabarito: Letra E. O OBJETO (ou conteúdo) é a própria alteração no mundo jurídico, correspondendo ao efeito jurídico imediato e ao resultado prático pretendido pela Administração Pública ao praticar o ato (ex: a demissão na portaria demissória, a interdição no auto de infração). Diferencia-se da finalidade (que é o efeito mediato, a satisfação do interesse público)."
+  },
+  {
+    "id": 2,
+    "banca": "CEBRASPE",
+    "concurso": "PROCURADOR / CÂMARA MUNICIPAL DE BOA VISTA-RR / 2026",
+    "header": "(PROCURADOR / CÂMARA MUNICIPAL DE BOA VISTA-RR / 2026 / CEBRASPE)",
+    "enunciado": "A Câmara Municipal concedeu ao servidor João a ocupação de um imóvel funcional, condicionando a validade da permanência no imóvel ao cumprimento das normas sanitárias e à continuidade no exercício da função de confiança. Durante a fiscalização, realizada um ano após o início da ocupação, constatou-se que João deixou de cumprir diversas exigências sanitárias previstas no ato concessivo, apesar de regularmente notificado para se adequar. João deixou, ainda, de exercer a função de confiança. Diante dos fatos, a Câmara determinou a extinção do ato e a devolução do imóvel.\nNessa situação hipotética, a referida extinção do ato administrativo caracteriza-se como",
+    "options": [
+      "(A) caducidade.",
+      "(B) anulação.",
+      "(C) nulidade.",
+      "(D) revogação.",
+      "(E) cassação."
+    ],
+    "correct_index": 4,
+    "gabarito": "E",
+    "comentario": "Gabarito: Letra E. A CASSAÇÃO é a extinção do ato administrativo em virtude do descumprimento de condições essenciais fixadas pela Administração Pública por parte do administrado beneficiário (ilegalidade superveniente cometida pelo particular)."
+  },
+  {
+    "id": 3,
+    "banca": "CEBRASPE",
+    "concurso": "PROCURADOR / CÂMARA MUNICIPAL DE BOA VISTA-RR / 2026",
+    "header": "(PROCURADOR / CÂMARA MUNICIPAL DE BOA VISTA-RR / 2026 / CEBRASPE)",
+    "enunciado": "O Diretor de Recursos Humanos da Câmara Municipal, após o recebimento de requerimento de servidor interessado, expediu em um ato formal a declaração de tempo total de serviço prestado pelo requerente à administração pública, com base exclusivamente nos registros funcionais constantes no Sistema interno, atestando fielmente as informações existentes nos assentamentos funcionais.\nNessa situação hipotética, o ato praticado pelo diretor classifica-se como ato",
+    "options": [
+      "(A) ordinatório.",
+      "(B) negocial.",
+      "(C) sancionador.",
+      "(D) normativo.",
+      "(E) enunciativo."
+    ],
+    "correct_index": 4,
+    "gabarito": "E",
+    "comentario": "Gabarito: Letra E. Atos ENUNCIATIVOS são aqueles em que a Administração se limita a certificar, atestar um fato, ou emitir uma opinião técnica, sem conter uma manifestação de vontade dispositiva própria (ex: certidões, atestados, declarações e pareceres)."
+  },
+  {
+    "id": 4,
+    "banca": "CEBRASPE",
+    "concurso": "AUDITOR / SEFAZ-RN / 2026",
+    "header": "(AUDITOR / SEFAZ-RN / 2026 / CEBRASPE)",
+    "enunciado": "A capacidade atribuída à administração pública para dispor sobre os próprios atos discricionários, com poder de anulação ou revogação, refere-se ao princípio de",
+    "options": [
+      "(A) autotutela.",
+      "(B) controle ou tutela.",
+      "(C) hierarquia.",
+      "(D) moralidade.",
+      "(E) razoabilidade."
     ],
     "correct_index": 0,
-    "comentario": "A afirmação está correta, pois existem atos que, apesar de praticados pela Administração Pública, não se enquadram como atos administrativos.",
-    "banca": "Cebraspe"
+    "gabarito": "A",
+    "comentario": "Gabarito: Letra A. O princípio da AUTOTUTELA (consagrado nas Súmulas 346 e 473 do STF e no art. 53 da Lei 9.784/99) confere à Administração o poder-dever de controlar seus próprios atos, anulando os ilegais e revogando os inoportunos ou inconvenientes."
   },
   {
-    "enunciado": "A presunção de veracidade dos atos administrativos é absoluta e não admite prova em contrário, segundo a doutrina.",
+    "id": 5,
+    "banca": "CEBRASPE",
+    "concurso": "ANALISTA / SEMA-AM / 2026",
+    "header": "(ANALISTA / SEMA-AM / 2026 / CEBRASPE)",
+    "enunciado": "O atributo pelo qual o ato administrativo pode ser posto em execução pela própria administração pública denomina-se",
     "options": [
-      "A) CERTO",
-      "B) ERRADO"
+      "(A) tipicidade.",
+      "(B) presunção de legitimidade.",
+      "(C) imperatividade.",
+      "(D) autoexecutoriedade.",
+      "(E) presunção de veracidade."
     ],
-    "correct_index": 1,
-    "comentario": "A presunção de veracidade é relativa (juris tantum) e admite prova em contrário, portanto a afirmação é errada.",
-    "banca": "Cebraspe"
+    "correct_index": 3,
+    "gabarito": "D",
+    "comentario": "Gabarito: Letra D. A AUTOEXECUTORIEDADE é o atributo que autoriza a Administração a executar material e diretamente suas próprias decisões, inclusive com uso de força moderada se necessário, sem precisar de prévia autorização judicial."
   },
   {
-    "enunciado": "De acordo com o conceito de ato administrativo, ele deve ser uma manifestação unilateral de vontade que visa exclusivamente interesses privados.",
+    "id": 6,
+    "banca": "FGV",
+    "concurso": "ESPECIALISTA LEGISLATIVO / ALERJ / 2026",
+    "header": "(ESPECIALISTA LEGISLATIVO / ALERJ / FGV / 2026)",
+    "enunciado": "No exercício da autotutela, a autoridade competente verificou as seguintes situações:\nI. Vício de forma, que não é essencial ao ato administrativo;\nII. Vício de competência em ato vinculado;\nIII. Ato editado sem qualquer vício, mas que não é mais conveniente e oportuno para o interesse público devidamente justificado.\nConsiderando as situações descritas, assinale a afirmativa correta.",
     "options": [
-      "A) CERTO",
-      "B) ERRADO"
-    ],
-    "correct_index": 1,
-    "comentario": "O ato administrativo visa ao interesse público e não exclusivamente a interesses privados, portanto a afirmação é errada.",
-    "banca": "Cebraspe"
-  },
-  {
-    "enunciado": "Os atos administrativos discricionários permitem que a Administração tenha liberdade de decisão, mas devem sempre respeitar os limites da legalidade.",
-    "options": [
-      "A) CERTO",
-      "B) ERRADO"
+      "(A) Tanto na situação I quanto na II, o vício é sanável, de modo que os atos administrativos não devem ser invalidados.",
+      "(B) Considerando as peculiaridades de cada uma das situações, é pertinente a revogação de tais atos administrativos.",
+      "(C) O vício apresentado na situação II é considerado insanável, de modo que ele deve ser necessariamente anulado a qualquer tempo.",
+      "(D) A ausência de conveniência e oportunidade na situação III deve ensejar a anulação do ato administrativo.",
+      "(E) Todas as situações descritas devem levar necessariamente à anulação dos respectivos atos administrativos."
     ],
     "correct_index": 0,
-    "comentario": "A afirmação está correta, pois atos discricionários possuem margem de liberdade, mas sempre dentro dos limites legais.",
-    "banca": "Cebraspe"
+    "gabarito": "A",
+    "comentario": "Gabarito: Letra A. Nos termos do art. 55 da Lei 9.784/99 e da regra do FO-CO (Forma não essencial e Competência não exclusiva), ambos os vícios são sanáveis mediante convalidação (efeito ex tunc), preservando os atos e evitando a invalidação."
   },
   {
-    "enunciado": "A convalidação de um ato administrativo é uma forma de extinção desse ato, com efeitos ex tunc, sanando vícios que podem prejudicar a Administração.",
+    "id": 7,
+    "banca": "FGV",
+    "concurso": "TÉCNICO JUDICIÁRIO / TJ-RJ / 2026",
+    "header": "(TÉCNICO JUDICIÁRIO / TJ-RJ / FGV / 2026)",
+    "enunciado": "A sociedade empresária Alfa iniciou a construção irregular de determinado prédio ao lado do fórum da Comarca de Rio das Ostras, no Estado do Rio de Janeiro, sem a observância das formalidades legais. Registre-se que há risco iminente à segurança da coletividade, pois as normas técnicas atinentes à construção não estão sendo observadas pela referida entidade privada, sendo certo que a Defesa Civil municipal emitiu laudo concluindo que a estrutura construída pode entrar em colapso a qualquer momento e desabar sobre as pessoas que trafegam pela calçada.\nNesse cenário, considerando o entendimento doutrinário dominante, é correto afirmar que o poder público municipal:",
     "options": [
-      "A) CERTO",
-      "B) ERRADO"
+      "(A) poderá demolir a construção irregular independentemente de autorização judicial, em razão da presunção absoluta de legitimidade dos atos administrativos;",
+      "(B) poderá demolir a construção irregular independentemente de autorização judicial, em razão da presunção absoluta de veracidade dos atos administrativos;",
+      "(C) poderá demolir a construção irregular independentemente de autorização judicial, em razão da autoexecutoriedade dos atos administrativos;",
+      "(D) não poderá demolir a construção irregular sem autorização da Câmara de Vereadores do Município de Rio das Ostras;",
+      "(E) não poderá demolir a construção irregular sem autorização judicial."
+    ],
+    "correct_index": 2,
+    "gabarito": "C",
+    "comentario": "Gabarito: Letra C. Diante de situação de urgência e risco iminente à segurança coletiva (embasado por laudo da Defesa Civil), o Poder Público pode exercer a autoexecutoriedade e demolir a obra imediatamente, sem necessidade de provimento judicial prévio."
+  },
+  {
+    "id": 8,
+    "banca": "FGV",
+    "concurso": "ANALISTA / AL-RO / 2026",
+    "header": "(ANALISTA / AL-RO / FGV / 2026)",
+    "enunciado": "O Estado de Rondônia procedeu à extinção de dois atos administrativos, por motivos distintos, quais sejam:\ni) no primeiro cenário, houve a extinção do ato administrativo posto que a situação nele contemplada não era mais tolerada por uma nova legislação. Tinha-se uma ilegalidade superveniente não imputada à atuação do administrado;\nii) no segundo cenário, ocorreu a extinção do ato administrativo por descumprimento, por parte do administrado, das condições fixadas pela Administração.\nNesse cenário, considerando o entendimento doutrinário dominante, é correto afirmar que o instituto da",
+    "options": [
+      "(A) cassação legitimou, no primeiro cenário, a extinção do ato administrativo. Por sua vez, no segundo cenário, ocorreu a caducidade do ato administrativo.",
+      "(B) caducidade legitimou, no primeiro cenário, a extinção do ato administrativo. Por sua vez, no segundo cenário, ocorreu a revogação do ato administrativo.",
+      "(C) caducidade legitimou, no primeiro cenário, a extinção do ato administrativo. Por sua vez, no segundo cenário, ocorreu a cassação do ato administrativo.",
+      "(D) caducidade legitimou a extinção do ato administrativo nos dois cenários.",
+      "(E) cassação legitimou a extinção do ato administrativo nos dois cenários."
+    ],
+    "correct_index": 2,
+    "gabarito": "C",
+    "comentario": "Gabarito: Letra C. No primeiro cenário, a superveniência de lei contrária que torna inviável a manutenção do ato gera CADUCIDADE. No segundo cenário, o descumprimento culposo das condições pelo particular enseja a CASSAÇÃO."
+  },
+  {
+    "id": 9,
+    "banca": "IDECAN",
+    "concurso": "ASSISTENTE ADMINISTRATIVO / EMPARN / 2025",
+    "header": "(ASSISTENTE ADMINISTRATIVO / EMPARN / 2025 / IDECAN)",
+    "enunciado": "A respeito dos atos administrativos, assinale a alternativa que indica quais são seus elementos ou requisitos de validade.",
+    "options": [
+      "(A) Competência, finalidade, forma, motivo e objeto.",
+      "(B) Legalidade, impessoalidade, moralidade, publicidade e eficiência.",
+      "(C) Conveniência, oportunidade, discricionariedade, vinculação e hierarquia.",
+      "(D) Competência, legalidade, tipicidade, autoexecutoriedade e imperatividade.",
+      "(E) Motivo, objeto, finalidade, legalidade e publicidade."
+    ],
+    "correct_index": 0,
+    "gabarito": "A",
+    "comentario": "Gabarito: Letra A. Conforme o art. 2º da Lei 4.717/1965 e o mnemônico clássico CO-FI-FO-MO-OB, os elementos são: Competência, Finalidade, Forma, Motivo e Objeto."
+  },
+  {
+    "id": 10,
+    "banca": "COSEAC-UFF",
+    "concurso": "AGENTE DE ADMINISTRAÇÃO / FME-NITERÓI / 2023",
+    "header": "(AGENTE DE ADMINISTRAÇÃO / FME-NITERÓI / 2023 / COSEAC-UFF)",
+    "enunciado": "Atos normativos são aqueles que contêm um comando geral do Poder Executivo, visando à correta aplicação da lei, tais como",
+    "options": [
+      "(A) ofícios.",
+      "(B) memorandos.",
+      "(C) despachos.",
+      "(D) decretos.",
+      "(E) telegramas."
+    ],
+    "correct_index": 3,
+    "gabarito": "D",
+    "comentario": "Gabarito: Letra D. Atos normativos contêm comandos gerais e abstratos para detalhar a fiel execução da lei (ex: decretos regulamentares, regulamentos, resoluções e instruções normativas)."
+  },
+  {
+    "id": 11,
+    "banca": "COSEAC-UFF",
+    "concurso": "ASSISTENTE EM ADMINISTRAÇÃO / UFF / 2023",
+    "header": "(ASSISTENTE EM ADMINISTRAÇÃO / UFF / 2023 / COSEAC-UFF)",
+    "enunciado": "São elementos do ato administrativo aqueles aspectos do ato que, se ausentes, provocam a invalidação do ato. Assim, o círculo definido por lei, dentro do qual podem os agentes públicos exercer legitimamente sua atividade, bem caracteriza o elemento do ato administrativo conhecido como:",
+    "options": [
+      "(A) competência.",
+      "(B) finalidade.",
+      "(C) motivo.",
+      "(D) objeto.",
+      "(E) forma."
+    ],
+    "correct_index": 0,
+    "gabarito": "A",
+    "comentario": "Gabarito: Letra A. COMPETÊNCIA é o conjunto de atribuições conferidas pela lei ao agente público para o desempenho legal de suas funções (o 'círculo de competências' formulado por Hely Lopes Meirelles)."
+  },
+  {
+    "id": 12,
+    "banca": "SELECON",
+    "concurso": "TÉCNICO ADMINISTRATIVO / CÂMARA MUNICIPAL DE BRILHANTE-MS / 2024",
+    "header": "(TÉCNICO ADMINISTRATIVO / CÂMARA MUNICIPAL DE BRILHANTE-MS / 2024 / SELECON)",
+    "enunciado": "Os atos administrativos são constituídos por elementos essenciais, cuja ausência importa a nulidade do ato. Nesse sentido, o ato nulificável por ilegalidade do objeto ocorre quando:",
+    "options": [
+      "(A) o ato não se incluir nas atribuições legais do agente que o praticou",
+      "(B) o resultado do ato importa em violação de lei, regulamento ou outro ato normativo",
+      "(C) há a omissão ou observância incompleta ou irregular de formalidades indispensáveis à existência ou seriedade do ato",
+      "(D) a matéria de fato ou de direito, em que se fundamenta o ato, é materialmente inexistente ou juridicamente inadequada ao resultado obtido",
+      "(E) a falta de defesa por ato advogado em processo administrativo"
     ],
     "correct_index": 1,
-    "comentario": "A convalidação não é uma forma de extinção, mas sim um ato que visa suprir vícios, portanto a afirmação é errada.",
-    "banca": "Cebraspe"
+    "gabarito": "B",
+    "comentario": "Gabarito: Letra B. Art. 2º, parágrafo único, alínea 'c', da Lei nº 4.717/1965: 'a ilegalidade do objeto ocorre quando o resultado do ato importa em violação de lei, regulamento ou outro ato normativo'."
+  },
+  {
+    "id": 13,
+    "banca": "SELECON",
+    "concurso": "ASSISTENTE ADMINISTRATIVO / CRO-MT / 2024",
+    "header": "(ASSISTENTE ADMINISTRATIVO / CRO-MT / 2024 / SELECON)",
+    "enunciado": "Um ato administrativo pode deixar de produzir efeitos quando a situação nele contemplada não é mais tolerada pela nova legislação. O ato administrativo, no caso, é editado regularmente, mas torna-se ilegal em virtude da alteração legislativa. A modalidade de extinção do ato administrativo que ocorre na situação descrita é denominada de:",
+    "options": [
+      "(A) cassação",
+      "(B) anulação",
+      "(C) revogação",
+      "(D) caducidade"
+    ],
+    "correct_index": 3,
+    "gabarito": "D",
+    "comentario": "Gabarito: Letra D. A CADUCIDADE ocorre quando o ato foi praticado de forma perfeitamente válida sob a legislação de sua época, mas uma lei superveniente torna insubsistente ou proibida a situação por ele contemplada."
+  },
+  {
+    "id": 14,
+    "banca": "CONSULPLAN",
+    "concurso": "RESIDÊNCIA JURÍDICA / TRF-1ª REGIÃO / 2025",
+    "header": "(RESIDÊNCIA JURÍDICA / TRF-1ª REGIÃO / 2025 / CONSULPLAN)",
+    "enunciado": "A maior parte das declarações de vontade emitidas pela Administração no exercício da função administrativa ocorre por meio da edição de atos administrativos. Nesse contexto, em relação aos atos administrativos, assinale a afirmativa correta.",
+    "options": [
+      "(A) A revogação dos atos administrativos, por incidir sobre atos lícitos, gera efeitos ex nunc.",
+      "(B) Não cabe ao Poder Judiciário, quando provocado, realizar controle sobre os atos administrativos considerados discricionários.",
+      "(C) A invalidação dos atos administrativos é matéria restrita à reserva de administração, somente cabendo à própria Administração Pública que praticou o ato realizá-la.",
+      "(D) Um dos atributos dos atos administrativos é a chamada imperatividade, que significa que deve haver um ato específico para cada finalidade própria a ser alcançada pela Administração."
+    ],
+    "correct_index": 0,
+    "gabarito": "A",
+    "comentario": "Gabarito: Letra A. A revogação incide exclusivamente sobre atos válidos e eficazes por motivo de conveniência e oportunidade, operando efeitos prospectivos (ex nunc), sem retroagir."
+  },
+  {
+    "id": 15,
+    "banca": "IBADE",
+    "concurso": "PRESTADOR / SESDEC-RO / 2023",
+    "header": "(PRESTADOR / SESDEC-RO / IBADE / 2023)",
+    "enunciado": "\"Ato administrativo perfeito é aquele que preenche todos os requisitos exigidos para tal.\" (Fonte: José Cretella Júnior)\nPara que o ato administrativo se aperfeiçoe, reunindo condições de eficácia para a produção de efeitos jurídicos válidos, a sua estrutura deverá ser composta por certos requisitos, dentre eles:",
+    "options": [
+      "(A) determinação.",
+      "(B) integridade.",
+      "(C) justiça.",
+      "(D) competência."
+    ],
+    "correct_index": 3,
+    "gabarito": "D",
+    "comentario": "Gabarito: Letra D. Dos termos listados, o único requisito/elemento estrutural de validade do ato administrativo é a COMPETÊNCIA (ao lado de finalidade, forma, motivo e objeto)."
+  },
+  {
+    "id": 16,
+    "banca": "FCC",
+    "concurso": "TÉCNICO JUDICIÁRIO / TRT-7ª REGIÃO / 2024",
+    "header": "(TÉCNICO JUDICIÁRIO / TRT-7ª REGIÃO / FCC / 2024)",
+    "enunciado": "A revogação do ato administrativo é modalidade de",
+    "options": [
+      "(A) invalidação do ato administrativo que apresente vício de natureza insanável, podendo ser declarada pela própria Administração ou pelo Poder Judiciário.",
+      "(B) invalidação por desconformidade com o ordenamento jurídico, operando, portanto, efeitos retroativos, desde a data em que editado.",
+      "(C) extinção discricionária do ato administrativo, por razões de conveniência e oportunidade, pois não se evidencia ilegalidade ou irregularidade, produzindo efeitos a partir da revogação (ex nunc).",
+      "(D) encampação do ato administrativo, ao se identificar a presença de vício de legalidade, para fins de retificação e convalidação.",
+      "(E) extinção do ato administrativo, que, embora seja válido, demanda a eliminação dos efeitos produzidos desde a sua edição."
+    ],
+    "correct_index": 2,
+    "gabarito": "C",
+    "comentario": "Gabarito: Letra C. A revogação é um ato privativo e discricionário da Administração Pública, fundada em juízo superveniente de conveniência e oportunidade sobre ato legítimo, gerando efeitos ex nunc."
+  },
+  {
+    "id": 17,
+    "banca": "FCC",
+    "concurso": "ANALISTA JUDICIÁRIO – ÁREA ADMINISTRATIVA / TRT-7ª REGIÃO / 2024",
+    "header": "(ANALISTA JUDICIÁRIO – ÁREA ADMINISTRATIVA / TRT-7ª REGIÃO / FCC / 2024)",
+    "enunciado": "A Administração Pública, no regular exercício de suas funções, pode editar atos administrativos de diversas naturezas e espécies, dentre eles os atos discricionários e vinculados. São exemplos de atos administrativos discricionários ou vinculados, quando preenchidos os requisitos para deferimento,",
+    "options": [
+      "(A) a autorização para realização de evento em praça pública, como ato vinculado.",
+      "(B) a concessão de adicional de insalubridade como ato vinculado.",
+      "(C) a concessão de licença para o trato de assuntos particulares, como ato vinculado.",
+      "(D) o alvará de construção como ato discricionário.",
+      "(E) a licença para edificação como ato discricionário."
+    ],
+    "correct_index": 1,
+    "gabarito": "B",
+    "comentario": "Gabarito: Letra B. Uma vez comprovados os requisitos fáticos e periciais de exposição à atividade nociva à saúde, a concessão do adicional de insalubridade é direito subjetivo do servidor e ATO VINCULADO da Administração."
+  },
+  {
+    "id": 18,
+    "banca": "FGV",
+    "concurso": "ASSESSOR JURÍDICO / AL-AM / 2025",
+    "header": "(ASSESSOR JURÍDICO / AL-AM / FGV / 2025)",
+    "enunciado": "Ao aprofundar os seus estudos acerca dos atos administrativos, Suelena verificou que nem todos os atos administrativos são dotados do atributo da imperatividade, vindo a concluir corretamente que um exemplo de ato em tais circunstâncias é o seguinte:",
+    "options": [
+      "(A) Certidão.",
+      "(B) Multa.",
+      "(C) Decreto.",
+      "(D) Portaria.",
+      "(E) Remoção de veículo."
+    ],
+    "correct_index": 0,
+    "gabarito": "A",
+    "comentario": "Gabarito: Letra A. A imperatividade não está presente em todos os atos administrativos; atos enunciativos (como a certidão e o atestado) e atos negociais não gozam de imperatividade porque não impõem coativamente obrigações unilaterais a terceiros."
+  },
+  {
+    "id": 19,
+    "banca": "FGV",
+    "concurso": "ANALISTA / PGM-RJ / 2025",
+    "header": "(ANALISTA / PGM-RJ / FGV / 2025)",
+    "enunciado": "Relacione os conceitos de atos administrativos a seguir com suas respectivas definições ou características principais.\n( ) Anulação\n( ) Revogação\n( ) Convalidação\n( ) Presunção de legitimidade\n1. Atributo do ato administrativo que assume sua validade até prova em contrário, permitindo execução imediata sem contestação inicial.\n2. Extinção do ato por motivo de vício de legalidade, com efeitos retroativos (ex tunc) à data de sua edição.\n3. Extinção do ato válido por motivo de conveniência ou oportunidade da administração, com efeitos não retroativos (ex nunc).\n4. Sanação de vício sanável no ato, tornando-o válido retroativamente desde sua origem, quando não lesar interesse público ou terceiros.\nA relação correta, na ordem apresentada, é:",
+    "options": [
+      "(A) 2 – 3 – 4 – 1.",
+      "(B) 2 – 4 – 1 – 3.",
+      "(C) 1 – 2 – 3 – 4.",
+      "(D) 4 – 1 – 2 – 3.",
+      "(E) 3 – 4 – 2 – 1."
+    ],
+    "correct_index": 0,
+    "gabarito": "A",
+    "comentario": "Gabarito: Letra A. Anulação = 2 (vício de legalidade, ex tunc); Revogação = 3 (conveniência/oportunidade, ex nunc); Convalidação = 4 (sanação de vício sanável, ex tunc); Presunção de legitimidade = 1 (validade até prova em contrário)."
+  },
+  {
+    "id": 20,
+    "banca": "FGV",
+    "concurso": "ANALISTA JUDICIÁRIO / TJ-MS / 2024",
+    "header": "(ANALISTA JUDICIÁRIO / TJ-MS / 2024 / FGV)",
+    "enunciado": "Em decorrência de razões de interesse público, certa autoridade administrativa, no regular exercício de suas atribuições, promoveu a remoção do servidor Aurélio, calcada em critérios objetivos, válidos e idôneos à realização do ato, considerando, ainda, a premente necessidade de servidores na lotação de destino, mas não formalizou, prontamente, a devida motivação de tal ato. Aurélio tem conhecimento de que não houve favoritismos ou perseguições, pois, de acordo com as regras estabelecidas, ele era, realmente, o servidor que poderia ser removido na aludida situação, mas está inconformado com o mencionado ato, pois estava satisfeito no local em que trabalhava, de modo que pretende suscitar que a ausência de justificativa caracteriza defeito insanável do ato administrativo.\nNesse contexto, a ausência de motivação na aludida remoção corresponde a vício no elemento:",
+    "options": [
+      "(A) forma;",
+      "(B) motivo;",
+      "(C) objeto;",
+      "(D) competência;",
+      "(E) finalidade."
+    ],
+    "correct_index": 0,
+    "gabarito": "A",
+    "comentario": "Gabarito: Letra A. O motivo consiste nos pressupostos fáticos e jurídicos. A MOTIVAÇÃO, por sua vez, é a exteriorização documental por escrito desses motivos, integrando o elemento FORMA. Portanto, vício na motivação é vício de forma."
+  },
+  {
+    "id": 21,
+    "banca": "CEBRASPE",
+    "concurso": "ANALISTA / CAPES / 2024",
+    "header": "(ANALISTA / CAPES / 2024 / CEBRASPE)",
+    "enunciado": "Entre os atributos dos atos administrativos está o da autoexecutoriedade, que consiste na obrigação de a administração pública utilizar-se da supremacia do interesse público sobre o privado para criar, unilateralmente, obrigações para si e para o particular, sem necessitar da anuência deste.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 1,
+    "gabarito": "E",
+    "comentario": "Gabarito: ERRADO. O atributo pelo qual os atos administrativos se impõem a terceiros independentemente de sua concordância, criando obrigações unilaterais, é a IMPERATIVIDADE (poder extroverso). A autoexecutoriedade consiste na prerrogativa de executar diretamente o ato material sem intervenção judicial prévia."
+  },
+  {
+    "id": 22,
+    "banca": "CEBRASPE",
+    "concurso": "AGENTE DE POLÍCIA / POLÍCIA FEDERAL / 2025",
+    "header": "(AGENTE DE POLÍCIA / POLÍCIA FEDERAL / 2025 / CEBRASPE)",
+    "enunciado": "A presunção de veracidade dos atos administrativos refere-se aos fatos, ou seja, presumem-se verdadeiros os fatos alegados pela administração pública, ao passo que a autoexecutoriedade constitui atributo pelo qual os atos administrativos se impõem a terceiros, independentemente de sua concordância.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 1,
+    "gabarito": "E",
+    "comentario": "Gabarito: ERRADO. A primeira parte está correta (presunção de veracidade refere-se à veracidade dos fatos), mas a segunda parte confunde autoexecutoriedade com IMPERATIVIDADE. É a imperatividade que impõe o ato a terceiros independentemente de sua vontade."
+  },
+  {
+    "id": 23,
+    "banca": "CEBRASPE",
+    "concurso": "ESPECIALISTA / ANM / 2025",
+    "header": "(ESPECIALISTA / ANM / CEBRASPE / 2025)",
+    "enunciado": "A imperatividade é a característica do ato administrativo que autoriza a imediata execução do seu conteúdo, independentemente de prévia submissão da matéria ao Poder Judiciário.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 1,
+    "gabarito": "E",
+    "comentario": "Gabarito: ERRADO. A imediata execução material do conteúdo do ato sem necessidade de autorização prévia judicial é a AUTOEXECUTORIEDADE, e não a imperatividade."
+  },
+  {
+    "id": 24,
+    "banca": "CEBRASPE",
+    "concurso": "ANALISTA / CAPES / 2024",
+    "header": "(ANALISTA / CAPES / 2024 / CEBRASPE)",
+    "enunciado": "Os elementos do ato administrativo são o sujeito, o objeto, a forma, o motivo e a finalidade.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 0,
+    "gabarito": "C",
+    "comentario": "Gabarito: CERTO. A doutrina clássica (Celso Antônio Bandeira de Mello) e a Lei 4.717/65 adotam como elementos: sujeito (competência), objeto (conteúdo), forma, motivo e finalidade."
+  },
+  {
+    "id": 25,
+    "banca": "CEBRASPE",
+    "concurso": "TÉCNICO JUDICIÁRIO / TRF-6ª REGIÃO / 2025",
+    "header": "(TÉCNICO JUDICIÁRIO / TRF-6ª REGIÃO / 2025 / CEBRASPE)",
+    "enunciado": "A omissão ou a observância incompleta ou irregular de formalidades indispensáveis à existência ou seriedade do ato administrativo configura o desvio de finalidade.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 1,
+    "gabarito": "E",
+    "comentario": "Gabarito: ERRADO. Art. 2º, parágrafo único, alínea 'b', da Lei nº 4.717/1965: 'o vício de forma consiste na omissão ou na observância incompleta ou irregular de formalidades indispensáveis à existência ou seriedade do ato'. Não se trata de desvio de finalidade."
+  },
+  {
+    "id": 26,
+    "banca": "CEBRASPE",
+    "concurso": "ESPECIALISTA / FNDE / 2023",
+    "header": "(ESPECIALISTA / FNDE / CEBRASPE / 2023)",
+    "enunciado": "Suponha-se que determinado servidor público tenha sido exonerado ad nutum do cargo que ocupava e que, no ato de exoneração, a administração tenha exposto seus motivos. Nessa situação hipotética, apesar de inicialmente ser desnecessária a motivação, haverá a vinculação aos motivos indicados, em razão da teoria dos motivos determinantes.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 0,
+    "gabarito": "C",
+    "comentario": "Gabarito: CERTO. Pela Teoria dos Motivos Determinantes, quando a autoridade administrativa motiva um ato que por lei não precisava de motivação obrigatória (como a exoneração ad nutum), ela fica vinculada à existência e veracidade dos motivos externados. Se o motivo for falso ou inexistente, o ato é nulo."
+  },
+  {
+    "id": 27,
+    "banca": "CEBRASPE",
+    "concurso": "ANALISTA / TJ-ES / 2023",
+    "header": "(ANALISTA / TJ-ES / 2023 / CEBRASPE)",
+    "enunciado": "Segundo a teoria dos motivos determinantes, a administração, ao adotar determinados motivos para a prática de ato administrativo, ainda que de natureza discricionária, fica a eles vinculada.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 0,
+    "gabarito": "C",
+    "comentario": "Gabarito: CERTO. A teoria dos motivos determinantes preceitua que a validade do ato fica adstrita à veracidade dos motivos alegados como seu fundamento, vinculando a Administração aos seus termos."
+  },
+  {
+    "id": 28,
+    "banca": "CEBRASPE",
+    "concurso": "ESPECIALISTA / ANM / 2025",
+    "header": "(ESPECIALISTA / ANM / CEBRASPE / 2025)",
+    "enunciado": "Ainda que se trate de ato administrativo discricionário, a motivação deve guardar correspondência com a realidade fática determinante da vontade administrativa, sob pena de nulidade.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 0,
+    "gabarito": "C",
+    "comentario": "Gabarito: CERTO. Jurisprudência consolidada do STJ (ex: MS 19.374/DF citado expressamente na apostila): no ato discricionário, uma vez declinada a motivação, esta deve ser real e congruente com a situação fática, ensejando anulação judicial caso se comprove incoerência ou falsidade fática."
+  },
+  {
+    "id": 29,
+    "banca": "CEBRASPE",
+    "concurso": "TÉCNICO DE CONTROLE EXTERNO / TCU / 2025",
+    "header": "(TÉCNICO DE CONTROLE EXTERNO / TCU / 2025 / CEBRASPE)",
+    "enunciado": "A anulação de um ato administrativo pelo Poder Judiciário possui, em regra, efeitos ex nunc, ou seja, a partir da decisão judicial, sendo preservados os efeitos já produzidos pelo ato enquanto este esteve em vigor.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 1,
+    "gabarito": "E",
+    "comentario": "Gabarito: ERRADO. A anulação judicial opera, em regra, efeitos RETROATIVOS (EX TUNC), fulminando o ato desde o seu nascimento, pois o ato nulo não gera direitos. Efeitos ex nunc são a regra da revogação."
+  },
+  {
+    "id": 30,
+    "banca": "CEBRASPE",
+    "concurso": "ANALISTA JUDICIÁRIO / TRT-10ª REGIÃO / 2025",
+    "header": "(ANALISTA JUDICIÁRIO / TRT-10ª REGIÃO / CEBRASPE / 2025)",
+    "enunciado": "Define-se como revogação a extinção, com efeitos ex nunc, de um ato administrativo legal que se tornou inoportuno ou inconveniente.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 0,
+    "gabarito": "C",
+    "comentario": "Gabarito: CERTO. A revogação recai sobre atos perfeitamente válidos e legais, retirando-os do mundo jurídico com efeitos ex nunc (para a frente) por juízo superveniente de oportunidade e conveniência."
+  },
+  {
+    "id": 31,
+    "banca": "CEBRASPE",
+    "concurso": "ESPECIALISTA / ANM / 2025",
+    "header": "(ESPECIALISTA / ANM / CEBRASPE / 2025)",
+    "enunciado": "Na cassação, a extinção do ato administrativo ocorre por motivo de descumprimento de condições que deveriam continuar a ser atendidas pelo destinatário do ato.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 0,
+    "gabarito": "C",
+    "comentario": "Gabarito: CERTO. A cassação é a sanção administrativa consistente na retirada de ato válido em sua origem em virtude de ilegalidade cometida pelo beneficiário que deixa de cumprir as condições impostas."
+  },
+  {
+    "id": 32,
+    "banca": "CEBRASPE",
+    "concurso": "ANALISTA JUDICIÁRIO / TRT-10ª REGIÃO / 2025",
+    "header": "(ANALISTA JUDICIÁRIO / TRT-10ª REGIÃO / CEBRASPE / 2025)",
+    "enunciado": "Os atos administrativos discricionários, em razão de sua natureza, não são passíveis de controle pelo Poder Judiciário, na medida em que envolvem juízo de conveniência e oportunidade da administração pública.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 1,
+    "gabarito": "E",
+    "comentario": "Gabarito: ERRADO. O Judiciário pode controlar atos discricionários quanto à legalidade estrita, desvio de finalidade, razoabilidade, proporcionalidade e motivação. O controle só não alcança o mérito administrativo legítimo (conveniência pura), mas o ato não é imune ao controle judicial."
+  },
+  {
+    "id": 33,
+    "banca": "CEBRASPE",
+    "concurso": "ANALISTA ADMINISTRATIVO / ANM / 2025",
+    "header": "(ANALISTA ADMINISTRATIVO / ANM / 2025 / CEBRASPE)",
+    "enunciado": "Os atos administrativos com defeitos sanáveis podem ser convalidados pela própria administração pública, mesmo que tal medida acarrete prejuízo a terceiros.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 1,
+    "gabarito": "E",
+    "comentario": "Gabarito: ERRADO. Conforme o art. 55 da Lei nº 9.784/1999, a convalidação só é cabível 'em decisão na qual se evidencie não acarretarem lesão ao interesse público nem prejuízo a terceiros'."
+  },
+  {
+    "id": 34,
+    "banca": "CEBRASPE",
+    "concurso": "ANALISTA DE PLANEJAMENTO E ORÇAMENTO / MPO / 2024",
+    "header": "(ANALISTA DE PLANEJAMENTO E ORÇAMENTO / MPO / 2024 / CEBRASPE)",
+    "enunciado": "O abuso de poder pode ser caracterizado pelo excesso de poder, situação em que o agente público atua fora dos limites de sua competência.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 0,
+    "gabarito": "C",
+    "comentario": "Gabarito: CERTO. O excesso de poder é modalidade de abuso de poder que se manifesta quando o agente ultrapassa os limites legais de suas atribuições (vício no elemento competência)."
+  },
+  {
+    "id": 35,
+    "banca": "CEBRASPE",
+    "concurso": "ANALISTA JUDICIÁRIO / TRT-10ª REGIÃO / 2025",
+    "header": "(ANALISTA JUDICIÁRIO / TRT-10ª REGIÃO / 2025 / CEBRASPE)",
+    "enunciado": "O excesso de poder e o desvio de poder são espécies de abuso de poder que se diferenciam porque, no primeiro, a atuação do agente público é eivada de vício de competência, enquanto, no segundo, há vício de finalidade.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 0,
+    "gabarito": "C",
+    "comentario": "Gabarito: CERTO. Perfeita distinção: o gênero abuso de poder compreende o excesso de poder (vício de competência) e o desvio de poder/finalidade (vício no elemento finalidade)."
+  },
+  {
+    "id": 36,
+    "banca": "CEBRASPE",
+    "concurso": "ADMINISTRADOR / FUB / 2025",
+    "header": "(ADMINISTRADOR / FUB / 2025 / CEBRASPE)",
+    "enunciado": "A anulação é a supressão de um ato administrativo legítimo e eficaz, realizada pela administração pública por não mais lhe convir sua existência.",
+    "options": [
+      "(C) CERTO",
+      "(E) ERRADO"
+    ],
+    "correct_index": 1,
+    "gabarito": "E",
+    "comentario": "Gabarito: ERRADO. A supressão de ato legítimo por conveniência e oportunidade é a REVOGAÇÃO. A anulação aplica-se a atos ilegítimos (ilegais)."
+  },
+  {
+    "id": 37,
+    "banca": "FGV",
+    "concurso": "ANALISTA / AMAZUL / 2026",
+    "header": "(ANALISTA / AMAZUL / FGV / 2026)",
+    "enunciado": "O ato administrativo que decorre do inadimplemento das condições fixadas das cláusulas condicionantes à eficácia e permanência do procedimento administrativo por parte do beneficiário, denomina-se",
+    "options": [
+      "(A) anulação.",
+      "(B) cassação.",
+      "(C) revogação.",
+      "(D) caducidade.",
+      "(E) convalidação."
+    ],
+    "correct_index": 1,
+    "gabarito": "B",
+    "comentario": "Gabarito: Letra B. O inadimplemento das cláusulas e condições fixadas por parte do administrado beneficiário caracteriza a CASSAÇÃO do ato."
+  },
+  {
+    "id": 38,
+    "banca": "FGV",
+    "concurso": "ANALISTA ADMINISTRATIVO / TJ-SC / 2024",
+    "header": "(ANALISTA ADMINISTRATIVO / TJ-SC / 2024 / FGV)",
+    "enunciado": "Ao realizar um levantamento acerca dos processos judiciais que têm por objeto a impugnação de atos administrativos do Poder Executivo, Daiane verificou que diversos atos discricionários são submetidos ao controle do Poder Judiciário, de modo que passou a aprofundar as peculiaridades acerca do tema, vindo a concluir corretamente que o Poder Judiciário:",
+    "options": [
+      "(A) não pode anular atos discricionários que apresentem vício de ilegalidade;",
+      "(B) pode substituir a Administração Pública no exercício da discricionariedade;",
+      "(C) não pode realizar controle sobre os atos administrativos discricionários, diante da conveniência e oportunidade que recaem sobre todos os seus elementos;",
+      "(D) pode invalidar ato discricionário com base na teoria dos motivos determinantes, bem como com fundamento em desvio de finalidade;",
+      "(E) pode revogar atos discricionários do Poder Executivo, no típico exercício da atividade jurisdicional."
+    ],
+    "correct_index": 3,
+    "gabarito": "D",
+    "comentario": "Gabarito: Letra D. O Judiciário tem competência para anular atos discricionários sempre que houver desvio de finalidade ou quando os motivos determinantes invocados forem comprovadamente falsos ou inexistentes."
+  },
+  {
+    "id": 39,
+    "banca": "FGV",
+    "concurso": "TÉCNICO JUDICIÁRIO / TJ-RR / 2024",
+    "header": "(TÉCNICO JUDICIÁRIO / TJ-RR / 2024 / FGV)",
+    "enunciado": "Rafael, no exercício de suas atribuições como servidor público no cargo de Técnico Judiciário do Tribunal de Justiça do Estado de Roraima, foi questionado sobre quais elementos do ato administrativo podem ser discricionários. Nesse contexto, ele indicou corretamente os seguintes elementos:",
+    "options": [
+      "(A) competência e objeto.",
+      "(B) motivo e finalidade.",
+      "(C) forma e competência.",
+      "(D) motivo e objeto.",
+      "(E) finalidade e forma."
+    ],
+    "correct_index": 3,
+    "gabarito": "D",
+    "comentario": "Gabarito: Letra D. Em regra, Competência, Finalidade e Forma são elementos estritamente vinculados (CO-FI-FO). A discricionariedade reside exclusivamente na valoração de oportunidade e conveniência do MOTIVO e do OBJETO (mérito administrativo)."
+  },
+  {
+    "id": 40,
+    "banca": "FGV",
+    "concurso": "ANALISTA ADMINISTRATIVO / TCE-RR / 2025",
+    "header": "(ANALISTA ADMINISTRATIVO / TCE-RR / FGV / 2025)",
+    "enunciado": "No âmbito dos atributos dos atos administrativos existe aquele que costuma ser indicado como fundamento para a inversão do ônus da prova, no sentido de que caberá ao administrado demonstrar a ilegalidade do ato administrativo. Nesse contexto, o mencionado atributo é a",
+    "options": [
+      "(A) presunção de veracidade, em razão do qual se presumem verdadeiros os fatos alegados pela Administração.",
+      "(B) autoexecutoriedade, que é condizente com a noção de que há conformidade do ato editado com os parâmetros estabelecidos em lei.",
+      "(C) imperatividade, segundo o qual a Administração pode levar a efeito as suas determinações sem a intervenção do Poder Judiciário.",
+      "(D) vinculação, considerando os parâmetros estabelecidos em lei para a definição do mérito administrativo.",
+      "(E) supremacia do interesse público, que, consoante explícito na Constituição, determina que a vontade da Administração deve prevalecer sobre a do administrado."
+    ],
+    "correct_index": 0,
+    "gabarito": "A",
+    "comentario": "Gabarito: Letra A. O atributo da presunção de legitimidade e veracidade inverte o ônus da prova, fazendo presumir que os fatos declarados pelo poder público são verídicos até cabal prova em contrário pelo administrado."
+  },
+  {
+    "id": 41,
+    "banca": "FGV",
+    "concurso": "ANALISTA LEGISLATIVO / CÂMARA DOS DEPUTADOS / 2023",
+    "header": "(ANALISTA LEGISLATIVO / CÂMARA DOS DEPUTADOS / 2023 / FGV)",
+    "enunciado": "A Administração Pública, em âmbito federal, descobre, a partir de estudos técnicos, a potencial existência de um campo de exploração de petróleo em área de preservação ambiental. Desta forma, o órgão público competente encomenda, junto à Advocacia Geral da União, a confecção de um parecer sobre a viabilidade jurídica de se proceder à exploração de petróleo na localidade supracitada. Nesse contexto, dois meses após o pedido, o parecer técnico é devidamente apresentado. Nesse cenário, é correto afirmar que o parecer caracteriza um ato administrativo",
+    "options": [
+      "(A) enunciativo.",
+      "(B) ordinatório.",
+      "(C) normativo.",
+      "(D) punitivo.",
+      "(E) negocial."
+    ],
+    "correct_index": 0,
+    "gabarito": "A",
+    "comentario": "Gabarito: Letra A. O parecer jurídico/técnico é ato ENUNCIATIVO, pois expressa opinião técnico-jurídica sem caráter decisório autônomo imediato."
+  },
+  {
+    "id": 42,
+    "banca": "FGV",
+    "concurso": "ASSISTENTE ADMINISTRATIVO / EBSERH / 2025",
+    "header": "(ASSISTENTE ADMINISTRATIVO / EBSERH / FGV / 2025)",
+    "enunciado": "Os atos administrativos devem obedecer a regras específicas para garantir sua validade, caso contrário, podem apresentar vícios que os tornam passíveis de invalidação. No entanto, dependendo do elemento afetado pelo vício, é possível sua correção. Nesse sentido, com base no arcabouço legal, é possível sanar o vício",
+    "options": [
+      "(A) de forma, desde que realizado por algum Chefe de Poder.",
+      "(B) de competência, desde que não seja exclusiva de uma autoridade.",
+      "(C) de motivo, desde que o ato não prejudique terceiros.",
+      "(D) de objeto, desde não seja vedado expressamente por lei.",
+      "(E) de finalidade, desde que não se trate de abuso de poder."
+    ],
+    "correct_index": 1,
+    "gabarito": "B",
+    "comentario": "Gabarito: Letra B. Conforme o art. 55 da Lei 9.784/99 e doutrina pacífica, a competência admite convalidação (ratificação), desde que não se trate de competência privativa/exclusiva ou competência em razão da matéria."
+  },
+  {
+    "id": 43,
+    "banca": "FGV",
+    "concurso": "AUDITOR PÚBLICO INTERNO / CGM-CUIABÁ / 2025",
+    "header": "(AUDITOR PÚBLICO INTERNO / CGM-CUIABÁ / FGV / 2025)",
+    "enunciado": "O ato administrativo refere-se a uma categoria específica de atos praticados no exercício da função administrativa. Uma característica própria do ato administrativo",
+    "options": [
+      "(A) é a de se tratar de uma manifestação implícita da vontade do Estado que não precisa ser exteriorizada.",
+      "(B) é a de produzir efeitos jurídicos imediatos e está sempre sujeito a controle judicial.",
+      "(C) é a de sujeitar-se apenas ao regime de direito privado, sem as prerrogativas do poder público.",
+      "(D) é a de poder ser praticado apenas pelo Poder Executivo, excluindo os demais Poderes.",
+      "(E) é a de não estar sujeito à lei, pois possui natureza autônoma."
+    ],
+    "correct_index": 1,
+    "gabarito": "B",
+    "comentario": "Gabarito: Letra B. O ato administrativo produz efeitos jurídicos imediatos sob regime de direito público e está universalmente sujeito ao controle de legalidade pelo Poder Judiciário (art. 5º, XXXV, CF/88)."
+  },
+  {
+    "id": 44,
+    "banca": "FGV",
+    "concurso": "AUDITOR FEDERAL DE FINANÇAS / STN / 2024",
+    "header": "(AUDITOR FEDERAL DE FINANÇAS / STN / 2024 / FGV)",
+    "enunciado": "João, agente público do Estado Alfa, em fiscalização de rotina por diversos estabelecimentos comerciais, verificou que a loja ABC não estava cumprindo uma série de normas legais, o que já havia sido apurado em inspeção anterior. Dessa forma, o referido servidor público lavrou, em observância às formalidades legais, auto de infração, com a aplicação de uma multa de mil reais em detrimento da entidade. Os sócios do estabelecimento, contudo, se recusaram a efetuar o pagamento da multa, mesmo após os seus recursos não terem sido providos, em decisão definitiva, na esfera administrativa. Nesse cenário, considerando o entendimento doutrinário e jurisprudencial dominante, é correto afirmar que a Administração Pública",
+    "options": [
+      "(A) não poderá, por conta própria, executar o valor da multa, pressupondo a atuação do Poder Judiciário, em um cenário de exceção ao atributo da presunção relativa de veracidade e de legitimidade do ato administrativo.",
+      "(B) não poderá, por conta própria, executar o valor da multa, pressupondo a atuação do Poder Judiciário, em um cenário de exceção ao atributo da autoexecutoriedade do ato administrativo.",
+      "(C) não poderá, por conta própria, executar o valor da multa, pressupondo a atuação do Poder Judiciário, em um cenário de exceção ao atributo da coercibilidade do ato administrativo.",
+      "(D) poderá, por conta própria, executar o valor da multa, independentemente da atuação do Poder Judiciário, em razão do atributo da autoexecutoriedade do ato administrativo.",
+      "(E) poderá, por conta própria, executar o valor da multa, independentemente da atuação do Poder Judiciário, em razão do atributo da coercibilidade do ato administrativo."
+    ],
+    "correct_index": 1,
+    "gabarito": "B",
+    "comentario": "Gabarito: Letra B. A cobrança de multa administrativa não goza de autoexecutoriedade na fase de exação coercitiva patrimonial; recusado o pagamento, o Poder Público deve ingressar com ação judicial de execução fiscal (Lei nº 6.830/1980)."
+  },
+  {
+    "id": 45,
+    "banca": "FGV",
+    "concurso": "ANALISTA JUDICIÁRIO - INSPETOR DE POLÍCIA JUDICIAL / TRF-1ª REGIÃO / 2024",
+    "header": "(ANALISTA JUDICIÁRIO - INSPETOR DE POLÍCIA JUDICIAL / TRF-1ª REGIÃO / FGV / 2024)",
+    "enunciado": "Ao estudar as hipóteses de extinção do ato administrativo, Júlia verificou que há uma modalidade em que isso ocorre em razão da incompatibilidade do ato administrativo com outro posterior, tal como ocorre com a nomeação do servidor, que é extinta com a sua exoneração. Tal modalidade de extinção corresponde a:",
+    "options": [
+      "(A) recusa;",
+      "(B) renúncia;",
+      "(C) anulação;",
+      "(D) revogação;",
+      "(E) contraposição."
+    ],
+    "correct_index": 4,
+    "gabarito": "E",
+    "comentario": "Gabarito: Letra E. A CONTRAPOSIÇÃO (ou derrubada) ocorre quando um ato novo é emitido com base em competência diversa, cujos efeitos são frontalmente antagônicos e incompatíveis com os efeitos do ato anterior (ex: nomeação extinta pela exoneração)."
+  },
+  {
+    "id": 46,
+    "banca": "SELECON",
+    "concurso": "TÉCNICO DE RH / CÂMARA MUNICIPAL DE BRILHANTE-MS / 2024",
+    "header": "(TÉCNICO DE RH / CÂMARA MUNICIPAL DE BRILHANTE-MS / 2024 / SELECON)",
+    "enunciado": "O ato administrativo é uma declaração unilateral de vontade da Administração Pública, que visa realizar seus objetivos e exercer suas funções. O elemento constitutivo do ato administrativo que define o poder do agente da administração para desempenhar suas funções específicas é o/a:",
+    "options": [
+      "(A) forma",
+      "(B) objeto",
+      "(C) motivo",
+      "(D) finalidade",
+      "(E) competência"
+    ],
+    "correct_index": 4,
+    "gabarito": "E",
+    "comentario": "Gabarito: Letra E. O poder legal atribuído ao agente público para praticar legitimamente o ato é o elemento COMPETÊNCIA."
+  },
+  {
+    "id": 47,
+    "banca": "SELECON",
+    "concurso": "FISCAL DE TRIBUTOS / PREFEITURA DE SAPEZAL-MT / 2024",
+    "header": "(FISCAL DE TRIBUTOS / PREFEITURA DE SAPEZAL-MT / 2024 / SELECON)",
+    "enunciado": "A extinção de ato por descumprimento de obrigações pelo destinatário e a retirada de ato por razões de conveniência e oportunidade ensejam, respectivamente, nas modalidades de extinção classificadas como:",
+    "options": [
+      "(A) invalidação e contraposição",
+      "(B) caducidade e anulação",
+      "(C) cassação e revogação",
+      "(D) anulação e cassação"
+    ],
+    "correct_index": 2,
+    "gabarito": "C",
+    "comentario": "Gabarito: Letra C. Descumprimento de obrigações = CASSAÇÃO. Razões de conveniência e oportunidade = REVOGAÇÃO."
+  },
+  {
+    "id": 48,
+    "banca": "SELECON",
+    "concurso": "FISCAL DE OBRAS / PREFEITURA DE SAPEZAL-MT / 2024",
+    "header": "(FISCAL DE OBRAS / PREFEITURA DE SAPEZAL-MT / 2024 / SELECON)",
+    "enunciado": "Há diferentes espécies de atos administrativos, que se diferenciam pelo conteúdo do ato emanado. Dessa forma, um exemplo de ato administrativo negocial é a:",
+    "options": [
+      "(A) portaria",
+      "(B) licença",
+      "(C) ordem de serviço",
+      "(D) interdição de atividades"
+    ],
+    "correct_index": 1,
+    "gabarito": "B",
+    "comentario": "Gabarito: Letra B. A LICENÇA é a espécie clássica de ato negocial vinculado, expedido quando o particular preenche todos os requisitos legais para o exercício de um direito."
+  },
+  {
+    "id": 49,
+    "banca": "FCC",
+    "concurso": "AGENTE DE APOIO / MP-AM / 2024",
+    "header": "(AGENTE DE APOIO / MP-AM / 2024 / FCC)",
+    "enunciado": "Os elementos do ato administrativo são: o sujeito, a forma, o objeto, o motivo e a finalidade. O motivo relaciona-se",
+    "options": [
+      "(A) ao efeito jurídico imediato decorrente do ato.",
+      "(B) à exteriorização do ato.",
+      "(C) ao pressuposto que autoriza a prática do ato.",
+      "(D) à legitimidade para praticar o ato.",
+      "(E) à finalidade pública mediata."
+    ],
+    "correct_index": 2,
+    "gabarito": "C",
+    "comentario": "Gabarito: Letra C. O MOTIVO corresponde aos pressupostos de fato e de direito que autorizam ou determinam a prática do ato administrativo."
+  },
+  {
+    "id": 50,
+    "banca": "CEBRASPE",
+    "concurso": "ESTAGIÁRIO / AGU / 2024",
+    "header": "(ESTAGIÁRIO / AGU / 2024 / CEBRASPE)",
+    "enunciado": "Considere-se que a pracinha Y do município W tenha sofrido variados danos em decorrência de uma forte tempestade, ensejando uma contratação urgente a ser realizada pelo prefeito. Nesse caso, o elemento integrante do ato administrativo que corresponde às razões de fato e de direito que precederam a emissão do referido ato de contratação urgente pelo poder público é o(a)",
+    "options": [
+      "(A) motivo.",
+      "(B) finalidade.",
+      "(C) objeto.",
+      "(D) forma."
+    ],
+    "correct_index": 0,
+    "gabarito": "A",
+    "comentario": "Gabarito: Letra A. O acontecimento da tempestade que danificou a praça (pressuposto de fato) aliado à autorização legal de dispensa de licitação por emergência (pressuposto de direito) compõem o elemento MOTIVO."
   }
 ]

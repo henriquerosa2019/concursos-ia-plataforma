@@ -6,218 +6,471 @@
       "titulo": "Atos Administrativos",
       "tipo": "root",
       "pagina": 1,
-      "resumo": "Estrutura esquematizada das unidades conceituais essenciais de Atos Administrativos para provas de concursos públicos."
+      "resumo": "Manifestação unilateral de vontade da Administração Pública que, sob regime de direito público, produz efeitos jurídicos imediatos com observância da lei e sujeita a controle judicial."
     },
     {
-      "id": "cat_1",
-      "titulo": "Introdução",
+      "id": "cat_conceito",
+      "titulo": "Conceito & Regime Jurídico",
       "tipo": "category",
       "pagina": 1,
-      "resumo": "Nem todo ato praticado no exercício da função administrativa pode ser considerado ato administrativo. Isso ocorre porque muitos atos praticados pela Administração Pública não são regidos pelo direito público, ou sequer expressam uma vontade. Desta forma, alguns autores utilizam, de forma mais genérica, o termo “atos da administração” para designar os atos praticados pela Administração Pública no exercício da função administrativa. Seu sentido é mais amplo que o de atos administrativos. Neste diapasão, percebe-se que o simples fato de ter sido praticado pela Administração Pública não induz à conclusão de tratar -se de um ato administrativo. É necessário que haja incidência de regime de direito público, constando as prerrogativas e restrições inerentes ao poder público. Há, naturalmente, um afastamento do direito privado, limitando o âmbito de enquadramento do ato instituído."
+      "resumo": "Fundamentos conceituais, distinção entre atos administrativos, atos da administração e fatos administrativos sob regime de direito público."
     },
     {
-      "id": "cat_2",
-      "titulo": "Fato Administrativo",
+      "id": "item_manifestacao",
+      "titulo": "Manifestação Unilateral de Vontade",
+      "tipo": "concept",
+      "pagina": 1,
+      "resumo": "Declaração unilateral do Estado ou de quem o represente para adquirir, resguardar, transferir, modificar, extinguir direitos ou impor obrigações aos administrados ou a si própria."
+    },
+    {
+      "id": "item_regime_pub",
+      "titulo": "Regime de Direito Público",
+      "tipo": "concept",
+      "pagina": 1,
+      "resumo": "Incidência de prerrogativas (supremacia) e restrições (indisponibilidade) inerentes ao poder público, com afastamento do direito privado."
+    },
+    {
+      "id": "item_atos_adm_vs_admin",
+      "titulo": "Atos da Administração (Gênero)",
+      "tipo": "comparison",
+      "pagina": 1,
+      "resumo": "Nem todo ato praticado no exercício da função administrativa é ato administrativo. Atos da administração têm sentido amplo e abrangem atos de direito privado, materiais e políticos."
+    },
+    {
+      "id": "item_fato_adm",
+      "titulo": "Fato Administrativo (Materialização)",
+      "tipo": "concept",
+      "pagina": 1,
+      "resumo": "Realização material da Administração em cumprimento de decisão administrativa ou fato da natureza que produz efeitos administrativos (ex: construção de ponte, morte de servidor gerando vacância)."
+    },
+    {
+      "id": "cat_atributos",
+      "titulo": "Atributos do Ato (PATI)",
       "tipo": "category",
       "pagina": 1,
-      "resumo": "Fato administrativo, segundo Hely Lopes Meirelles, é “ toda realização material da Administração em cumprimento de alguma decisão administrativa”. Consiste na materialização da vontade administrativa. Pode também decorrer de um fato da natureza que venha a produzir consequências administrativas. Ex: construção de uma ponte. A morte de um servidor (gera a vacância do cargo)"
+      "resumo": "Características jurídicas essenciais dos atos administrativos: Presunção de legitimidade, Autoexecutoriedade, Tipicidade e Imperatividade."
     },
     {
-      "id": "cat_3",
-      "titulo": "Motivo",
+      "id": "item_presuncao",
+      "titulo": "Presunção Legitimidade e Veracidade",
+      "tipo": "concept",
+      "pagina": 2,
+      "resumo": "Presume-se conformidade com a lei (legitimidade) e veracidade dos fatos alegados pela Administração. Presunção relativa (juris tantum) que inverte o ônus da prova para o administrado."
+    },
+    {
+      "id": "item_autoexec",
+      "titulo": "Autoexecutoriedade (Execução Direta)",
+      "tipo": "concept",
+      "pagina": 2,
+      "resumo": "Possibilidade de execução imediata e direta do ato pela própria Administração, sem necessidade de autorização judicial prévia. Não está presente em todos os atos (ex: cobrança de multa)."
+    },
+    {
+      "id": "item_tipicidade",
+      "titulo": "Tipicidade (Di Pietro / Legalidade)",
+      "tipo": "concept",
+      "pagina": 2,
+      "resumo": "O ato administrativo deve corresponder a figuras previamente definidas pela lei como aptas a produzir determinados resultados. Decorrência direta do princípio da legalidade e garantia ao administrado."
+    },
+    {
+      "id": "item_imperatividade",
+      "titulo": "Imperatividade (Poder Extroverso)",
+      "tipo": "concept",
+      "pagina": 2,
+      "resumo": "Imposição unilateral a terceiros independentemente de sua concordância, decorrente do poder extroverso do Estado. Ausente em atos negociais (licença) e enunciativos (certidão)."
+    },
+    {
+      "id": "item_excecao_multa",
+      "titulo": "Exceção: Execução de Multa",
+      "tipo": "exception",
+      "pagina": 2,
+      "resumo": "A aplicação da multa é ato administrativo, mas a sua cobrança forçada não é autoexecutória, exigindo execução fiscal no Poder Judiciário caso o particular não pague voluntariamente."
+    },
+    {
+      "id": "cat_elementos",
+      "titulo": "Elementos do Ato (COM-FI-FOR-M-OB)",
       "tipo": "category",
       "pagina": 2,
-      "resumo": "Corresponde aos pressupostos que levam à prática do ato. A razão, o porquê. ✓ Funciona como um pressuposto de justificação, sendo certo que deve ser um pressuposto de fato (por corresponder a uma circunstância ou acontecimento) ou de direito (por ter como alicerce um dispositivo legal)."
+      "resumo": "Requisitos de validade indispensáveis (Lei 4.717/65, art. 2º): Competência, Finalidade, Forma, Motivo e Objeto."
     },
     {
-      "id": "cat_4",
+      "id": "item_competencia",
+      "titulo": "Competência (Sujeito)",
+      "tipo": "rule",
+      "pagina": 3,
+      "resumo": "Poder legal conferido ao agente público para a prática do ato. Irrenunciável e vinculada em decorrência da indisponibilidade do interesse público (salvo delegação e avocação legais - art. 11, Lei 9.784/99)."
+    },
+    {
+      "id": "item_finalidade",
+      "titulo": "Finalidade (Interesse Público)",
+      "tipo": "rule",
+      "pagina": 3,
+      "resumo": "Resultado de interesse público pretendido com a prática do ato. É elemento estritamente vinculado; sucede o ato praticado e seu desvio gera nulidade insanável."
+    },
+    {
+      "id": "item_forma",
+      "titulo": "Forma (Exteriorização da Vontade)",
+      "tipo": "rule",
+      "pagina": 3,
+      "resumo": "Modo pelo qual a vontade da Administração é formalmente exteriorizada (em regra escrita). É elemento vinculado à solenidade legal exigida."
+    },
+    {
+      "id": "item_motivo",
+      "titulo": "Motivo (Razões de Fato e Direito)",
+      "tipo": "rule",
+      "pagina": 3,
+      "resumo": "Pressupostos fáticos (acontecimento concreto) e jurídicos (dispositivo legal) que determinam ou autorizam a edição do ato. Antecede a prática do ato."
+    },
+    {
+      "id": "item_objeto",
+      "titulo": "Objeto (Conteúdo / Efeito Imediato)",
+      "tipo": "rule",
+      "pagina": 3,
+      "resumo": "Efeito jurídico imediato gerado pelo ato: criação, modificação ou comprovação de situações jurídicas sobre pessoas, coisas ou atividades."
+    },
+    {
+      "id": "cat_motivacao",
+      "titulo": "Motivação & Motivos Determinantes",
+      "tipo": "category",
+      "pagina": 3,
+      "resumo": "Diferenciação dogmática entre motivo e motivação, e a submissão do ato administrativo à Teoria dos Motivos Determinantes do STJ."
+    },
+    {
+      "id": "item_motivo_vs_motivacao",
+      "titulo": "Motivo × Motivação",
+      "tipo": "comparison",
+      "pagina": 3,
+      "resumo": "Motivo é o pressuposto fático e legal que justifica o ato; Motivação é a declaração escrita desses pressupostos. A motivação formal integra o elemento forma."
+    },
+    {
+      "id": "item_teoria_motivos",
+      "titulo": "Teoria dos Motivos Determinantes",
+      "tipo": "rule",
+      "pagina": 3,
+      "resumo": "A validade do ato está indissoluvelmente vinculada à veracidade e existência dos motivos alegados pela autoridade (STJ MS 19.374/DF), inclusive quando a motivação for facultativa (ex: exoneração ad nutum)."
+    },
+    {
+      "id": "cat_vinculacao",
       "titulo": "Vinculação e Discricionariedade",
       "tipo": "category",
       "pagina": 3,
-      "resumo": "ATOS VINCULADOS – Não há faculdade de opção para o administrador. A lei determina todos os elementos necessários à sua prática, sem que haja margem de liberdade para a Administração. ATOS DISCRICIONÁRIOS – A Administração possui certa margem de liberdade, havendo liberdade de decisão no caso concreto. Pauta-se na conveniência e oportunidade."
+      "resumo": "Margem de liberdade do administrador público e extensão do controle judicial sobre os atos administrativos."
     },
     {
-      "id": "item_1",
-      "titulo": "Atos Vinculados",
+      "id": "item_atos_vinc",
+      "titulo": "Atos Vinculados (Sem Opção)",
       "tipo": "concept",
       "pagina": 3,
-      "resumo": "Não há faculdade de opção para o administrador. A lei determina todos os elementos necessários à sua prática, sem que haja margem de liberdade para a Administração."
+      "resumo": "A lei predetermina rigidamente todos os elementos do ato, não restando margem de escolha para a Administração (ex: licença para edificar, aposentadoria compulsória)."
     },
     {
-      "id": "item_2",
-      "titulo": "Atos Discricionários",
+      "id": "item_atos_disc",
+      "titulo": "Atos Discricionários (Margem Legal)",
       "tipo": "concept",
       "pagina": 3,
-      "resumo": "A Administração possui certa margem de liberdade, havendo liberdade de decisão no caso concreto. Pauta-se na conveniência e oportunidade."
+      "resumo": "A lei confere ao administrador certa margem de escolha no caso concreto, pautada em critérios de conveniência e oportunidade."
     },
     {
-      "id": "item_3",
-      "titulo": "Mérito Administrativo",
+      "id": "item_merito",
+      "titulo": "Mérito Administrativo (Motivo + Objeto)",
       "tipo": "concept",
       "pagina": 3,
-      "resumo": "Liberdade conferida ao agente, nos atos discricionários, para valorar motivo e objeto."
+      "resumo": "Esfera de valoração subjetiva do administrador referente aos elementos Motivo e Objeto nos atos discricionários. Competência, Finalidade e Forma são SEMPRE vinculados."
     },
     {
-      "id": "cat_5",
-      "titulo": "Vícios Nos Elementos do Ato Administrativo",
+      "id": "item_controle_jud",
+      "titulo": "Controle Judicial (Legalidade Sim)",
+      "tipo": "trap",
+      "pagina": 3,
+      "resumo": "O Poder Judiciário NUNCA pode avaliar o mérito administrativo (conveniência e oportunidade), mas DEVE controlar a legalidade, moralidade e motivos determinantes do ato discricionário."
+    },
+    {
+      "id": "cat_vicios",
+      "titulo": "Vícios e Convalidação (FO-CO)",
       "tipo": "category",
       "pagina": 4,
-      "resumo": "Art. 2º, Lei 4.717/1965 - “São nulos os atos lesivos ao patrimônio das entidades mencionadas no artigo anterior, nos casos de: Parágrafo único. Para a conceituação dos casos de nulidade observar-se-ão as seguintes normas."
+      "resumo": "Espécies de defeitos nos atos administrativos (Lei 4.717/65) e disciplina da convalidação ex tunc de defeitos sanáveis (Lei 9.784/99, art. 55)."
     },
     {
-      "id": "item_4",
-      "titulo": "Art. 2º, Lei 4.717/1965 (Regra)",
-      "tipo": "rule",
+      "id": "item_vicios_especies",
+      "titulo": "Espécies de Vícios (Lei 4.717/65)",
+      "tipo": "concept",
       "pagina": 4,
-      "resumo": "“São nulos os atos lesivos ao patrimônio das entidades mencionadas no artigo anterior, nos casos de."
+      "resumo": "Incompetência (excesso de poder), Vício de Forma (omissão de formalidade), Ilegalidade do Objeto, Inexistência do Motivo e Desvio de Finalidade (desvio de poder)."
     },
     {
-      "id": "cat_6",
-      "titulo": "Revogação",
+      "id": "item_convalidacao_regime",
+      "titulo": "Convalidação (Art. 55, Lei 9.784/99)",
+      "tipo": "rule",
+      "pagina": 5,
+      "resumo": "Ato administrativo pelo qual a Administração supre o defeito sanável de ato ilegal, com efeitos retroativos (ex tunc), desde que não cause lesão ao interesse público nem prejuízo a terceiros."
+    },
+    {
+      "id": "item_foco",
+      "titulo": "Elementos Convalidáveis: FO-CO",
+      "tipo": "mnemonic",
+      "pagina": 5,
+      "resumo": "Somente admitem convalidação vícios na FORMA (quando não essencial à validade) e na COMPETÊNCIA (quando não exclusiva). Motivo, Finalidade e Objeto (regra geral) são insanáveis."
+    },
+    {
+      "id": "cat_extincao",
+      "titulo": "Extinção dos Atos Administrativos",
       "tipo": "category",
       "pagina": 4,
-      "resumo": "Extinção do ato por razões de conveniência e oportunidade. ✓ Tem efeitos ex nunc (não retroativo)"
+      "resumo": "Formas de desfazimento e cessação de efeitos: Anulação, Revogação, Cassação, Caducidade e Contraposição."
     },
     {
-      "id": "item_5",
-      "titulo": "Tem Efeitos Ex Nunc (não Retroativo)",
-      "tipo": "concept",
-      "pagina": 4,
-      "resumo": "Regime jurídico e características de tem efeitos ex nunc (não retroativo)."
-    },
-    {
-      "id": "cat_7",
-      "titulo": "Súmula 473 STF",
-      "tipo": "category",
-      "pagina": 5,
-      "resumo": "“A administração pode anular seus próprios atos, quando eivados de vícios que os tornam ilegais, porque deles não se originam direitos; ou revogá-los, por motivo de conveniência ou oportunidade, respeitados os direitos adquiridos, e ressalvada, em todos os casos, a apreciação judicial.” CASSAÇÃO – O beneficiário do ato administrativo deixa de cumprir os requisitos que deveriam ser observados."
-    },
-    {
-      "id": "item_6",
-      "titulo": "Cassação",
-      "tipo": "concept",
-      "pagina": 5,
-      "resumo": "O beneficiário do ato administrativo deixa de cumprir os requisitos que deveriam ser observados."
-    },
-    {
-      "id": "item_7",
-      "titulo": "Caducidade (uma nova lei derruba)",
-      "tipo": "concept",
-      "pagina": 5,
-      "resumo": "Ocorre quando uma nova lei derruba os efeitos do ato anteriormente editado."
-    },
-    {
-      "id": "item_8",
-      "titulo": "Contraposição",
-      "tipo": "concept",
-      "pagina": 5,
-      "resumo": "Edita-se um outro ato com efeitos opostos ao ato anterior."
-    },
-    {
-      "id": "cat_8",
-      "titulo": "Convalidação",
-      "tipo": "category",
-      "pagina": 5,
-      "resumo": "Não é forma de extinção. ✓ Ato administrativo pelo qual é suprido o vício que o ato ilegal possui, com efeitos ex tunc."
-    },
-    {
-      "id": "item_9",
-      "titulo": "Extinção Do Ato Por Motivo (Item 2)",
+      "id": "item_anulacao",
+      "titulo": "Anulação (Ilegalidade / Ex Tunc)",
       "tipo": "rule",
       "pagina": 4,
-      "resumo": "Extinção do ato por motivo de vício de legalidade, com efeitos retroativos (ex tunc) à data de sua edição."
+      "resumo": "Extinção de ato ilegal operada pela Administração (autotutela) ou pelo Poder Judiciário, com efeitos retroativos (ex tunc). Súmula 473 do STF."
     },
     {
-      "id": "item_10",
-      "titulo": "Extinção Do Ato Válido Por (Item 3)",
+      "id": "item_revogacao",
+      "titulo": "Revogação (Conveniência / Ex Nunc)",
       "tipo": "rule",
-      "pagina": 9,
-      "resumo": "Extinção do ato válido por motivo de conveniência ou oportunidade da administração, com efeitos não retroativos (ex nunc)."
+      "pagina": 4,
+      "resumo": "Extinção de ato lícito e válido por razões de conveniência e oportunidade, privativa da Administração Pública, com efeitos prospectivos (ex nunc - não retroativos)."
     },
     {
-      "id": "item_11",
-      "titulo": "Sanação De Vício Sanável No (Item 4)",
-      "tipo": "rule",
-      "pagina": 10,
-      "resumo": "Sanação de vício sanável no ato, tornando-o válido retroativamente desde sua origem, quando não lesar interesse público ou terceiros."
+      "id": "item_limites_revog",
+      "titulo": "Limites à Revogação (Não Revogáveis)",
+      "tipo": "trap",
+      "pagina": 5,
+      "resumo": "Não comportam revogação: atos vinculados, atos consumados (exauriram efeitos), atos que geraram direitos adquiridos, atos integrantes de procedimento e meros atos administrativos."
+    },
+    {
+      "id": "item_cassacao",
+      "titulo": "Cassação (Descumprimento pelo Particular)",
+      "tipo": "concept",
+      "pagina": 5,
+      "resumo": "Extinção sancionatória porque o beneficiário deixou de cumprir requisitos ou condições legais supervenientes (ex: cassação de alvará por descumprimento de normas sanitárias)."
+    },
+    {
+      "id": "item_caducidade",
+      "titulo": "Caducidade (Lei Nova Superveniente)",
+      "tipo": "concept",
+      "pagina": 5,
+      "resumo": "Extinção decorrente de legislação superveniente incompatível com a situação antes permitida (ex: nova lei proíbe atividade anteriormente permitida)."
+    },
+    {
+      "id": "item_contraposicao",
+      "titulo": "Contraposição (Derrubada por Ato Oposto)",
+      "tipo": "concept",
+      "pagina": 5,
+      "resumo": "Edição de novo ato administrativo cujos efeitos são contrapostos e incompatíveis com o ato anterior (ex: exoneração extingue a nomeação anterior)."
+    },
+    {
+      "id": "cat_especies",
+      "titulo": "Espécies de Atos Administrativos",
+      "tipo": "category",
+      "pagina": 5,
+      "resumo": "Classificação doutrinária das espécies de atos administrativos quanto ao seu objeto e manifestação."
+    },
+    {
+      "id": "item_normativos",
+      "titulo": "Atos Normativos (Comando Geral)",
+      "tipo": "concept",
+      "pagina": 5,
+      "resumo": "Possuem comando geral e abstrato para a fiel execução da lei (ex: Decretos, Regulamentos, Resoluções, Regimentos)."
+    },
+    {
+      "id": "item_ordinatorios",
+      "titulo": "Atos Ordinatórios (Gestão Interna)",
+      "tipo": "concept",
+      "pagina": 5,
+      "resumo": "Disciplinam a estrutura interna da Administração e a conduta funcional de seus agentes subordinados (ex: Portarias, Ordens de Serviço, Circulares, Despachos)."
+    },
+    {
+      "id": "item_negociais",
+      "titulo": "Atos Negociais (Vontade Coincidente)",
+      "tipo": "concept",
+      "pagina": 5,
+      "resumo": "Declaração de vontade estatal que coincide com a pretensão do particular (ex: Licença [vinculada], Autorização [discricionária e precária], Permissão, Admissão)."
+    },
+    {
+      "id": "item_enunciativos",
+      "titulo": "Atos Enunciativos (Atestam Fatos)",
+      "tipo": "concept",
+      "pagina": 5,
+      "resumo": "Atestam, certificam ou opinam sobre uma situação jurídica ou de fato existente (ex: Certidões, Atestados, Pareceres técnicos, Apostilas)."
+    },
+    {
+      "id": "item_punitivos",
+      "titulo": "Atos Punitivos (Sanções Estatais)",
+      "tipo": "concept",
+      "pagina": 5,
+      "resumo": "Aplicação de penalidades administrativas por infração legal ou regulamentar (ex: Multa, Interdição de atividade, Apreensão de mercadoria, Demissão de servidor)."
     }
   ],
   "edges": [
     {
       "source": "root",
-      "target": "cat_1"
+      "target": "cat_conceito"
+    },
+    {
+      "source": "cat_conceito",
+      "target": "item_manifestacao"
+    },
+    {
+      "source": "cat_conceito",
+      "target": "item_regime_pub"
+    },
+    {
+      "source": "cat_conceito",
+      "target": "item_atos_adm_vs_admin"
+    },
+    {
+      "source": "cat_conceito",
+      "target": "item_fato_adm"
     },
     {
       "source": "root",
-      "target": "cat_2"
+      "target": "cat_atributos"
+    },
+    {
+      "source": "cat_atributos",
+      "target": "item_presuncao"
+    },
+    {
+      "source": "cat_atributos",
+      "target": "item_autoexec"
+    },
+    {
+      "source": "cat_atributos",
+      "target": "item_tipicidade"
+    },
+    {
+      "source": "cat_atributos",
+      "target": "item_imperatividade"
+    },
+    {
+      "source": "cat_atributos",
+      "target": "item_excecao_multa"
     },
     {
       "source": "root",
-      "target": "cat_3"
+      "target": "cat_elementos"
+    },
+    {
+      "source": "cat_elementos",
+      "target": "item_competencia"
+    },
+    {
+      "source": "cat_elementos",
+      "target": "item_finalidade"
+    },
+    {
+      "source": "cat_elementos",
+      "target": "item_forma"
+    },
+    {
+      "source": "cat_elementos",
+      "target": "item_motivo"
+    },
+    {
+      "source": "cat_elementos",
+      "target": "item_objeto"
     },
     {
       "source": "root",
-      "target": "cat_4"
+      "target": "cat_motivacao"
     },
     {
-      "source": "cat_4",
-      "target": "item_1"
+      "source": "cat_motivacao",
+      "target": "item_motivo_vs_motivacao"
     },
     {
-      "source": "cat_4",
-      "target": "item_2"
-    },
-    {
-      "source": "cat_4",
-      "target": "item_3"
+      "source": "cat_motivacao",
+      "target": "item_teoria_motivos"
     },
     {
       "source": "root",
-      "target": "cat_5"
+      "target": "cat_vinculacao"
     },
     {
-      "source": "cat_5",
-      "target": "item_4"
+      "source": "cat_vinculacao",
+      "target": "item_atos_vinc"
     },
     {
-      "source": "root",
-      "target": "cat_6"
+      "source": "cat_vinculacao",
+      "target": "item_atos_disc"
     },
     {
-      "source": "cat_6",
-      "target": "item_5"
+      "source": "cat_vinculacao",
+      "target": "item_merito"
     },
     {
-      "source": "root",
-      "target": "cat_7"
-    },
-    {
-      "source": "cat_7",
-      "target": "item_6"
-    },
-    {
-      "source": "cat_7",
-      "target": "item_7"
-    },
-    {
-      "source": "cat_7",
-      "target": "item_8"
+      "source": "cat_vinculacao",
+      "target": "item_controle_jud"
     },
     {
       "source": "root",
-      "target": "cat_8"
+      "target": "cat_vicios"
     },
     {
-      "source": "cat_8",
-      "target": "item_9"
+      "source": "cat_vicios",
+      "target": "item_vicios_especies"
     },
     {
-      "source": "cat_8",
-      "target": "item_10"
+      "source": "cat_vicios",
+      "target": "item_convalidacao_regime"
     },
     {
-      "source": "cat_8",
-      "target": "item_11"
+      "source": "cat_vicios",
+      "target": "item_foco"
+    },
+    {
+      "source": "root",
+      "target": "cat_extincao"
+    },
+    {
+      "source": "cat_extincao",
+      "target": "item_anulacao"
+    },
+    {
+      "source": "cat_extincao",
+      "target": "item_revogacao"
+    },
+    {
+      "source": "cat_extincao",
+      "target": "item_limites_revog"
+    },
+    {
+      "source": "cat_extincao",
+      "target": "item_cassacao"
+    },
+    {
+      "source": "cat_extincao",
+      "target": "item_caducidade"
+    },
+    {
+      "source": "cat_extincao",
+      "target": "item_contraposicao"
+    },
+    {
+      "source": "root",
+      "target": "cat_especies"
+    },
+    {
+      "source": "cat_especies",
+      "target": "item_normativos"
+    },
+    {
+      "source": "cat_especies",
+      "target": "item_ordinatorios"
+    },
+    {
+      "source": "cat_especies",
+      "target": "item_negociais"
+    },
+    {
+      "source": "cat_especies",
+      "target": "item_enunciativos"
+    },
+    {
+      "source": "cat_especies",
+      "target": "item_punitivos"
     }
   ]
 }

@@ -3136,6 +3136,7 @@ Retorne APENAS um JSON no formato:
     cloudDeletedDisciplines.delete(norm(disc));
     cloudDeletedDisciplines.delete(disc.toLowerCase());
 
+    const pdfPngUrl = `/mapas_notebooklm/${disc}_${sub}.png`;
     if (!cat[disc]) cat[disc] = {};
     cat[disc][sub] = {
       meta: {
@@ -3148,11 +3149,14 @@ Retorne APENAS um JSON no formato:
         youtube_url: "",
         markdown_content: aulaMd,
         mindmap_json: mindmapObj,
+        mindmap_png: pdfPngUrl,
         has_lesson: true,
         moments: []
       },
       flashcards: cards,
       quiz: questions,
+      mindmap: mindmapObj,
+      mindmap_png: pdfPngUrl,
       knowledge_units: knowledgeUnits
     };
 
@@ -3254,7 +3258,16 @@ Retorne APENAS um JSON no formato:
       knowledgeUnits = generated.knowledge_units || [];
     }
 
-    const aulaMd = `# ${disc.replace(/_/g, ' ').toUpperCase()} - ${title}\n**Professor:** ${professor}  \n${yt_url ? `**Link da Aula:** [Assistir no YouTube](${yt_url})  \n` : ''}**Duração:** 50 minutos  \n**Categoria:** Edital de Concursos Públicos (${banca})  \n\n---\n\n${pilar1Text}\n\n---\n\n${pilar2Text}\n`;
+    // Gerar Mapa Mental Semântico estilo NotebookLM Studio
+    const mindmapObj = extractSemanticMindmapFromCorpus(disc, sub, title, content);
+    let mindmapBlock = '';
+    if (mindmapObj && Array.isArray(mindmapObj.nodes) && mindmapObj.nodes.length > 0) {
+      const jsonStr = JSON.stringify(mindmapObj, null, 2);
+      mindmapBlock = `### 🗺️ Mapa Mental Interativo & Navegação do Conhecimento\n\n\`\`\`nlm-mindmap-json\n${jsonStr}\n\`\`\`\n\n---\n\n`;
+    }
+
+    const lessonPngUrl = `/mapas_notebooklm/${disc}_${sub}.png`;
+    const aulaMd = `# ${disc.replace(/_/g, ' ').toUpperCase()} - ${title}\n**Professor:** ${professor}  \n${yt_url ? `**Link da Aula:** [Assistir no YouTube](${yt_url})  \n` : ''}**Duração:** 50 minutos  \n**Categoria:** Edital de Concursos Públicos (${banca})  \n\n---\n\n${mindmapBlock}${pilar1Text}\n\n---\n\n${pilar2Text}\n`;
 
     const cat = getCatalog();
     const norm = s => String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -3274,11 +3287,15 @@ Retorne APENAS um JSON no formato:
         category: `Edital de Concursos Públicos (${banca})`,
         youtube_url: yt_url,
         markdown_content: aulaMd,
+        mindmap_json: mindmapObj,
+        mindmap_png: lessonPngUrl,
         has_lesson: true,
         moments: []
       },
       flashcards: cards,
       quiz: questions,
+      mindmap: mindmapObj,
+      mindmap_png: lessonPngUrl,
       knowledge_units: knowledgeUnits
     };
 
@@ -3289,7 +3306,7 @@ Retorne APENAS um JSON no formato:
       cards_count: cards.length,
       quiz_count: questions.length,
       lesson: cat[disc][sub],
-      message: 'Aula cadastrada com sucesso! Todos os 4 Pilares foram gerados.'
+      message: 'Aula cadastrada com sucesso! Todos os 4 Pilares e Mapa Mental gerados.'
     });
   }
 

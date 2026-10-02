@@ -3089,6 +3089,443 @@ def extract_semantic_mindmap_from_corpus(discipline, subarea, title, context_tex
     }
 
 
+def render_and_save_notebooklm_mindmap_png(discipline, subarea, title, mindmap_data):
+    """
+    Renderiza o Mapa Mental no padrão visual idêntico ao Google NotebookLM Studio
+    e salva o arquivo PNG de alta resolução para uso imediato no app e em novas aulas.
+    Gera nos destinos locais, estáticos e públicos.
+    """
+    if not mindmap_data or not isinstance(mindmap_data, dict):
+        return None
+    nodes = mindmap_data.get("nodes", [])
+    if not nodes or len(nodes) == 0:
+        return None
+
+    # Destinos dos arquivos PNG
+    topic_folder = os.path.join(BASE_DIR, discipline, subarea)
+    os.makedirs(topic_folder, exist_ok=True)
+    
+    pub_dir = os.path.join(BASE_DIR, "public", "mapas_notebooklm")
+    os.makedirs(pub_dir, exist_ok=True)
+    
+    root_mapas = os.path.join(BASE_DIR, "mapas_notebooklm")
+    os.makedirs(root_mapas, exist_ok=True)
+    
+    png_filename = f"{discipline}_{subarea}.png"
+    topic_png_path = os.path.join(topic_folder, "Mapa_Mental_NotebookLM.png")
+    pub_png_path = os.path.join(pub_dir, png_filename)
+    root_png_path = os.path.join(root_mapas, png_filename)
+    
+    header_title = mindmap_data.get("titulo") or title or subarea.replace('_', ' ')
+    
+    html_content = f"""<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>NotebookLM Mindmap • {header_title}</title>
+  <style>
+    * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+    body {{
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f8fafc;
+      background-image: radial-gradient(#cbd5e1 1.2px, transparent 1.2px);
+      background-size: 20px 20px;
+      overflow: hidden;
+      position: relative;
+    }}
+
+    .header-bar {{
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      right: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 50;
+    }}
+    .header-pill {{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 8px 18px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    }}
+    .header-title {{
+      font-weight: 800;
+      font-size: 15px;
+      color: #0f172a;
+      letter-spacing: -0.2px;
+    }}
+    .header-badge {{
+      background: #e0f2fe;
+      color: #0284c7;
+      border: 1px solid #bae6fd;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 9999px;
+    }}
+
+    .floating-toolbar {{
+      position: absolute;
+      left: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(14px);
+      border: 1px solid #e2e8f0;
+      border-radius: 36px;
+      padding: 10px 8px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+      z-index: 40;
+    }}
+    .float-btn {{
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid #e2e8f0;
+      background: #ffffff;
+      color: #334155;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      font-weight: 700;
+    }}
+
+    .viewport {{
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }}
+    .canvas {{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }}
+    svg {{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }}
+
+    .nodes-layer {{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+    }}
+    .node {{
+      position: absolute;
+      border-radius: 9999px;
+      padding: 9px 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 13.5px;
+      font-weight: 600;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
+      white-space: nowrap;
+      border-width: 1.5px;
+      border-style: solid;
+      user-select: none;
+    }}
+
+    .type-root {{
+      background: #e0e7ff;
+      border-color: #818cf8;
+      color: #1e1b4b;
+      font-size: 15px;
+      font-weight: 800;
+      padding: 13px 28px;
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.25);
+    }}
+    .type-category {{
+      background: #e0f2fe;
+      border-color: #38bdf8;
+      color: #0369a1;
+      font-size: 13.5px;
+      font-weight: 700;
+      padding: 10px 22px;
+      box-shadow: 0 3px 14px rgba(14, 165, 233, 0.18);
+    }}
+    .type-concept {{
+      background: #ccfbf1;
+      border-color: #14b8a6;
+      color: #0f766e;
+    }}
+    .type-rule {{
+      background: #fef3c7;
+      border-color: #f59e0b;
+      color: #92400e;
+    }}
+    .type-trap {{
+      background: #fee2e2;
+      border-color: #ef4444;
+      color: #991b1b;
+      font-weight: 700;
+    }}
+    .type-comparison {{
+      background: #ede9fe;
+      border-color: #8b5cf6;
+      color: #5b21b6;
+    }}
+    .type-mnemonic {{
+      background: #fae8ff;
+      border-color: #d946ef;
+      color: #86198f;
+      font-weight: 700;
+    }}
+    .type-example {{
+      background: #fef9c3;
+      border-color: #eab308;
+      color: #854d0e;
+    }}
+    .type-exception {{
+      background: #fee2e2;
+      border-color: #f87171;
+      color: #991b1b;
+    }}
+
+    .page-tag {{
+      background: rgba(0, 0, 0, 0.08);
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 8px;
+      color: #475569;
+      font-weight: 700;
+    }}
+
+    .footer-hint {{
+      position: absolute;
+      bottom: 20px;
+      right: 30px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+      border: 1px solid #e2e8f0;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-size: 11.5px;
+      color: #64748b;
+      font-weight: 600;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      z-index: 50;
+    }}
+  </style>
+</head>
+<body>
+  <div class="header-bar">
+    <div class="header-pill">
+      <span style="font-size: 18px;">🧠</span>
+      <span class="header-title">{header_title}</span>
+      <span class="header-badge">NotebookLM Studio • {len(nodes)} Nós</span>
+    </div>
+    <div class="header-pill">
+      <span style="font-size: 13px; font-weight: 700; color: #0284c7;">{discipline.replace('_', ' ')}</span>
+    </div>
+  </div>
+
+  <div class="floating-toolbar">
+    <div class="float-btn" title="Expandir Tudo">↕</div>
+    <div class="float-btn" title="Zoom In">➕</div>
+    <div class="float-btn" title="Zoom Out">➖</div>
+    <div class="float-btn" title="Ajustar">🔲</div>
+    <div class="float-btn" title="Download">⬇</div>
+  </div>
+
+  <div class="viewport">
+    <div class="canvas" id="canvas">
+      <svg id="svgLines"></svg>
+      <div class="nodes-layer" id="nodesLayer"></div>
+    </div>
+  </div>
+
+  <div class="footer-hint">
+    ✨ Renderizado com o Motor NotebookLM Studio • Projeto Aprovação
+  </div>
+
+  <script>
+    const data = {json.dumps(mindmap_data, ensure_ascii=False)};
+    const nodes = data.nodes || [];
+    const edges = data.edges || [];
+
+    const nodeMap = {{}};
+    nodes.forEach(n => {{
+      nodeMap[n.id] = {{ ...n, children: [], parents: [], level: 0, x: 0, y: 0, h: 42 }};
+    }});
+
+    edges.forEach(e => {{
+      if (nodeMap[e.source] && nodeMap[e.target]) {{
+        nodeMap[e.source].children.push(nodeMap[e.target]);
+        nodeMap[e.target].parents.push(nodeMap[e.source]);
+      }}
+    }});
+
+    let rootNode = nodes.find(n => n.tipo === 'root') || nodes[0];
+    rootNode = nodeMap[rootNode.id];
+    rootNode.level = 0;
+
+    const q = [rootNode];
+    const visited = new Set([rootNode.id]);
+    while (q.length > 0) {{
+      const cur = q.shift();
+      cur.children.forEach(ch => {{
+        if (!visited.has(ch.id)) {{
+          visited.add(ch.id);
+          ch.level = cur.level + 1;
+          q.push(ch);
+        }}
+      }});
+    }}
+
+    let currentY = 70;
+    const gapY = 16;
+    const gapX = 85;
+
+    function measureSubtree(node) {{
+      if (!node.children || node.children.length === 0) {{
+        node.y = currentY;
+        currentY += 42 + gapY;
+        return;
+      }}
+      const childYs = [];
+      node.children.forEach(ch => {{
+        measureSubtree(ch);
+        childYs.push(ch.y);
+      }});
+      node.y = (childYs[0] + childYs[childYs.length - 1]) / 2;
+    }}
+
+    measureSubtree(rootNode);
+
+    Object.values(nodeMap).forEach(n => {{
+      n.x = 120 + n.level * (285 + gapX);
+    }});
+
+    const nodesLayer = document.getElementById('nodesLayer');
+    const svgLines = document.getElementById('svgLines');
+
+    const typeIcons = {{
+      root: '🎯', category: '📁', concept: '💡', rule: '⚖️', trap: '🚨',
+      comparison: '⚖️', mnemonic: '🧠', definition: '📖', example: '🔍', exception: '⚠️'
+    }};
+
+    function renderNodeEl(node) {{
+      const el = document.createElement('div');
+      el.className = `node type-${{node.tipo || 'concept'}}`;
+      el.style.left = `${{node.x}}px`;
+      el.style.top = `${{node.y}}px`;
+
+      const icon = typeIcons[node.tipo] || '💡';
+      const page = node.pagina ? `<span class="page-tag">P.${{node.pagina}}</span>` : '';
+
+      el.innerHTML = `<span>${{icon}}</span> <span>${{node.titulo}}</span> ${{page}}`;
+      nodesLayer.appendChild(el);
+      node.actualW = el.offsetWidth;
+
+      if (node.children) {{
+        node.children.forEach(renderNodeEl);
+      }}
+    }}
+
+    renderNodeEl(rootNode);
+
+    let paths = '';
+    function drawConnections(node) {{
+      if (!node.children) return;
+      node.children.forEach(ch => {{
+        const x1 = node.x + (node.actualW || 240);
+        const y1 = node.y + 21;
+        const x2 = ch.x;
+        const y2 = ch.y + 21;
+        const dx = Math.max(45, (x2 - x1) * 0.52);
+
+        let strokeColor = '#93c5fd';
+        if (ch.tipo === 'trap' || ch.tipo === 'exception') strokeColor = '#fca5a5';
+        else if (ch.tipo === 'rule') strokeColor = '#fcd34d';
+        else if (ch.tipo === 'category') strokeColor = '#7dd3fc';
+        else if (ch.tipo === 'mnemonic') strokeColor = '#f0abfc';
+        else if (ch.tipo === 'comparison') strokeColor = '#c4b5fd';
+
+        paths += `<path d="M ${{x1}} ${{y1}} C ${{x1 + dx}} ${{y1}}, ${{x2 - dx}} ${{y2}}, ${{x2}} ${{y2}}"
+                        fill="none" stroke="${{strokeColor}}" stroke-width="2.4" stroke-linecap="round"/>`;
+        drawConnections(ch);
+      }});
+    }}
+    drawConnections(rootNode);
+    svgLines.innerHTML = paths;
+  </script>
+</body>
+</html>
+"""
+
+    temp_html = os.path.join(BASE_DIR, f".temp_mindmap_{discipline}_{subarea}.html")
+    with open(temp_html, "w", encoding="utf-8") as f:
+        f.write(html_content)
+
+    leaf_count = sum(1 for n in nodes if n.get("tipo") not in ("root", "category"))
+    calc_height = max(1080, 160 + max(leaf_count, len(nodes)) * 52)
+    max_level = 3
+    calc_width = max(1920, 300 + (max_level + 1) * 370)
+
+    try:
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page(
+                viewport={"width": calc_width, "height": calc_height},
+                device_scale_factor=2
+            )
+            page.goto(f"file:///{temp_html.replace(os.sep, '/')}")
+            page.wait_for_timeout(800)
+            page.screenshot(path=topic_png_path)
+            browser.close()
+
+        import shutil
+        shutil.copy2(topic_png_path, pub_png_path)
+        shutil.copy2(topic_png_path, root_png_path)
+        
+        vercel_static_dir = os.path.join(BASE_DIR, ".vercel", "output", "static", "mapas_notebooklm")
+        if os.path.exists(os.path.dirname(vercel_static_dir)):
+            os.makedirs(vercel_static_dir, exist_ok=True)
+            shutil.copy2(topic_png_path, os.path.join(vercel_static_dir, png_filename))
+
+        try:
+            if os.path.exists(temp_html):
+                os.remove(temp_html)
+        except Exception:
+            pass
+
+        print(f"PNG NotebookLM gerado com sucesso: {pub_png_path}")
+        return f"/mapas_notebooklm/{png_filename}"
+    except Exception as e:
+        print(f"Aviso: Erro ao renderizar PNG com Playwright: {e}")
+        try:
+            if os.path.exists(temp_html):
+                os.remove(temp_html)
+        except Exception:
+            pass
+        return None
+
 def generate_mindmap_json(discipline, subarea, title, context_text, focus="", pdf_filename="material.pdf"):
     """
     Gera o JSON oficial do Mapa Mental utilizando SEMPRE o algoritmo oficial didático e determinístico
@@ -3107,7 +3544,8 @@ def generate_mindmap_content(discipline, subarea, title, context_text, focus="")
 def update_lesson_mindmap(discipline, subarea, mindmap_data):
     """
     Salva o Mapa Mental estruturado em JSON no arquivo Markdown da aula (Aula_*.md),
-    no arquivo dedicado Mapa_Mental_[Tema].json e no catálogo pré-semeado.
+    no arquivo dedicado Mapa_Mental_[Tema].json, gera e salva o PNG de alta resolução
+    do NotebookLM e sincroniza no catálogo pré-semeado.
     """
     folder = find_subarea_folder(discipline, subarea)
     if not os.path.exists(folder):
@@ -3167,11 +3605,25 @@ def update_lesson_mindmap(discipline, subarea, mindmap_data):
     except Exception:
         pass
 
-    # Sincronizar catálogo com o markdown atualizado e o mindmap_json
+    # Renderizar e salvar imagem PNG do Mapa Mental no Padrão NotebookLM
+    png_rel_url = None
+    try:
+        png_rel_url = render_and_save_notebooklm_mindmap_png(discipline, subarea, subarea.replace('_', ' '), mindmap_json_obj)
+    except Exception as e_png:
+        print(f"Aviso ao renderizar PNG em update_lesson_mindmap: {e_png}")
+
+    if not png_rel_url:
+        topic_png = os.path.join(BASE_DIR, discipline, subarea, "Mapa_Mental_NotebookLM.png")
+        pub_png = os.path.join(BASE_DIR, "public", "mapas_notebooklm", f"{discipline}_{subarea}.png")
+        if os.path.exists(topic_png) or os.path.exists(pub_png):
+            png_rel_url = f"/mapas_notebooklm/{discipline}_{subarea}.png"
+
+    # Sincronizar catálogo com o markdown atualizado, o mindmap_json e o mindmap_png
     cat_paths = [
         os.path.join(BASE_DIR, "preseeded_topics.json"),
         os.path.join(BASE_DIR, "public", "preseeded_topics.json"),
-        os.path.join(BASE_DIR, "api", "preseeded_topics.json")
+        os.path.join(BASE_DIR, "api", "preseeded_topics.json"),
+        os.path.join(BASE_DIR, ".vercel", "output", "static", "preseeded_topics.json")
     ]
     for cp in cat_paths:
         if os.path.exists(cp):
@@ -3182,6 +3634,10 @@ def update_lesson_mindmap(discipline, subarea, mindmap_data):
                     if "meta" in cdata[discipline][subarea]:
                         cdata[discipline][subarea]["meta"]["markdown_content"] = content
                         cdata[discipline][subarea]["meta"]["mindmap_json"] = mindmap_json_obj
+                        if png_rel_url:
+                            cdata[discipline][subarea]["meta"]["mindmap_png"] = png_rel_url
+                    if png_rel_url:
+                        cdata[discipline][subarea]["mindmap_png"] = png_rel_url
                     with open(cp, "w", encoding="utf-8") as f:
                         json.dump(cdata, f, indent=2, ensure_ascii=False)
             except Exception as e:
@@ -3417,7 +3873,7 @@ def generate_quiz_from_text(discipline, subarea, context_text, banca="Cebraspe",
         q["banca"] = q.get("banca", banca)
     return questions
 
-def sync_topic_to_catalog(discipline, subarea, title, professor, banca, aula_md, cards, questions, yt_url="", mindmap_data=None):
+def sync_topic_to_catalog(discipline, subarea, title, professor, banca, aula_md, cards, questions, yt_url="", mindmap_data=None, mindmap_png=None):
     """
     Sincroniza o tópico imediatamente nos catálogos pré-semeados (preseeded_topics.json)
     para garantir que esteja disponível de imediato na interface, em builds de produção
@@ -3426,9 +3882,17 @@ def sync_topic_to_catalog(discipline, subarea, title, professor, banca, aula_md,
     cat_paths = [
         os.path.join(BASE_DIR, "preseeded_topics.json"),
         os.path.join(BASE_DIR, "public", "preseeded_topics.json"),
-        os.path.join(BASE_DIR, "api", "preseeded_topics.json")
+        os.path.join(BASE_DIR, "api", "preseeded_topics.json"),
+        os.path.join(BASE_DIR, ".vercel", "output", "static", "preseeded_topics.json")
     ]
     
+    png_rel_url = mindmap_png
+    if not png_rel_url:
+        topic_png = os.path.join(BASE_DIR, discipline, subarea, "Mapa_Mental_NotebookLM.png")
+        pub_png = os.path.join(BASE_DIR, "public", "mapas_notebooklm", f"{discipline}_{subarea}.png")
+        if os.path.exists(topic_png) or os.path.exists(pub_png):
+            png_rel_url = f"/mapas_notebooklm/{discipline}_{subarea}.png"
+
     topic_data = {
         "meta": {
             "discipline": discipline,
@@ -3440,11 +3904,14 @@ def sync_topic_to_catalog(discipline, subarea, title, professor, banca, aula_md,
             "youtube_url": yt_url or "",
             "markdown_content": aula_md,
             "mindmap_json": mindmap_data,
+            "mindmap_png": png_rel_url,
             "has_lesson": True,
             "moments": []
         },
         "flashcards": cards or [],
-        "quiz": questions or []
+        "quiz": questions or [],
+        "mindmap": mindmap_data,
+        "mindmap_png": png_rel_url
     }
     
     for cp in cat_paths:
@@ -3909,6 +4376,20 @@ def auto_generate_all_4_pillars(discipline, subarea, title, professor, text_corp
         except Exception:
             pass
 
+    # Renderizar e salvar imagem PNG do Mapa Mental no Padrão NotebookLM Studio
+    png_rel_url = None
+    if mindmap_data and isinstance(mindmap_data, dict) and mindmap_data.get("nodes"):
+        try:
+            png_rel_url = render_and_save_notebooklm_mindmap_png(discipline, subarea, title, mindmap_data)
+        except Exception as e_png:
+            print(f"Aviso ao gerar PNG do mapa mental: {e_png}")
+
+    if not png_rel_url:
+        topic_png = os.path.join(folder, "Mapa_Mental_NotebookLM.png")
+        pub_png = os.path.join(BASE_DIR, "public", "mapas_notebooklm", f"{discipline}_{subarea}.png")
+        if os.path.exists(topic_png) or os.path.exists(pub_png):
+            png_rel_url = f"/mapas_notebooklm/{discipline}_{subarea}.png"
+
     # 3. Flashcards Anki
     anki_path = os.path.join(folder, f"Flashcards_{subarea}_Anki.txt")
     with open(anki_path, "w", encoding="utf-8") as fa:
@@ -3931,7 +4412,7 @@ def auto_generate_all_4_pillars(discipline, subarea, title, professor, text_corp
             json.dump({"cards": [], "quiz": []}, fr)
 
     # Sincronizar catálogo para persistência imediata na interface e builds
-    sync_topic_to_catalog(discipline, subarea, title, professor, banca, aula_md, cards, questions, yt_url=yt_url, mindmap_data=mindmap_data)
+    sync_topic_to_catalog(discipline, subarea, title, professor, banca, aula_md, cards, questions, yt_url=yt_url, mindmap_data=mindmap_data, mindmap_png=png_rel_url)
             
     return {
         "lesson_path": lesson_path,
@@ -3940,7 +4421,8 @@ def auto_generate_all_4_pillars(discipline, subarea, title, professor, text_corp
         "markdown": aula_md,
         "cards": cards,
         "quiz": questions,
-        "mindmap": mindmap_data
+        "mindmap": mindmap_data,
+        "mindmap_png": png_rel_url
     }
 
 # ==============================================================================
@@ -5047,12 +5529,16 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", "application/json; charset=utf-8")
             self.end_headers()
+            png_url = f"/mapas_notebooklm/{disc}_{sub}.png"
+            topic_png = os.path.join(folder, "Mapa_Mental_NotebookLM.png")
+            has_png = os.path.exists(topic_png) or os.path.exists(os.path.join(BASE_DIR, "public", "mapas_notebooklm", f"{disc}_{sub}.png"))
             self.wfile.write(json.dumps({
                 "success": True,
                 "discipline": disc,
                 "subarea": sub,
                 "focus": topic_focus,
                 "mindmap": mindmap_json_obj,
+                "mindmap_png": png_url if has_png else None,
                 "markdown": updated_md or (meta.get("markdown_content", "") if meta else "")
             }, ensure_ascii=False).encode("utf-8"))
 
@@ -5414,11 +5900,15 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                         "category": f"Edital de Concursos Públicos ({banca})",
                         "youtube_url": yt_url,
                         "markdown_content": pillars_result.get("markdown", ""),
+                        "mindmap_json": pillars_result.get("mindmap"),
+                        "mindmap_png": pillars_result.get("mindmap_png"),
                         "has_lesson": True,
                         "moments": []
                     },
                     "flashcards": pillars_result.get("cards", []),
-                    "quiz": pillars_result.get("quiz", [])
+                    "quiz": pillars_result.get("quiz", []),
+                    "mindmap": pillars_result.get("mindmap"),
+                    "mindmap_png": pillars_result.get("mindmap_png")
                 }
             }, ensure_ascii=False).encode("utf-8"))
 
@@ -5762,11 +6252,14 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                             "youtube_url": "",
                             "markdown_content": pillars_result.get("markdown", ""),
                             "mindmap_json": pillars_result.get("mindmap"),
+                            "mindmap_png": pillars_result.get("mindmap_png"),
                             "has_lesson": True,
                             "moments": []
                         },
                         "flashcards": pillars_result.get("cards", []),
-                        "quiz": pillars_result.get("quiz", [])
+                        "quiz": pillars_result.get("quiz", []),
+                        "mindmap": pillars_result.get("mindmap"),
+                        "mindmap_png": pillars_result.get("mindmap_png")
                     },
                     "message": f"PDF importado com sucesso ({num_pages} páginas)! Todos os 4 Pilares foram gerados."
                 }, ensure_ascii=False).encode("utf-8"))

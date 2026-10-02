@@ -9375,8 +9375,25 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
         document.getElementById('importTitle').value = '';
         document.getElementById('importContent').value = '';
         
+        const targetDisc = disc.replace(/\s+/g, '_');
+        const targetSub = sub.replace(/\s+/g, '_');
+        if (data.lesson && data.lesson.meta) {
+          try {
+            const savedMaps = JSON.parse(localStorage.getItem('concursos_saved_mindmaps') || '{}');
+            const mKey = `${targetDisc}:::${targetSub}`;
+            if (data.lesson.meta.mindmap_json || (data.lesson.meta.markdown_content && data.lesson.meta.markdown_content.includes('nlm-mindmap-json'))) {
+              savedMaps[mKey] = {
+                mindmap: data.lesson.meta.mindmap_json,
+                markdown: data.lesson.meta.markdown_content,
+                mindmap_png: data.lesson.meta.mindmap_png || `/mapas_notebooklm/${targetDisc}_${targetSub}.png`,
+                timestamp: Date.now()
+              };
+              localStorage.setItem('concursos_saved_mindmaps', JSON.stringify(savedMaps));
+            }
+          } catch(e) {}
+        }
         await loadStructureAndSidebar();
-        selectSubarea(disc.replace(/\s+/g, '_'), sub.replace(/\s+/g, '_'));
+        selectSubarea(targetDisc, targetSub);
       } else {
         alert("Erro ao importar aula: " + (data.error || "Tente novamente."));
       }
@@ -10196,6 +10213,22 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
       }
     } catch(e) {}
 
+    // 5. Rota oficial se o tópico possui mapa mental em JSON ou na aula
+    try {
+      const savedMaps = JSON.parse(localStorage.getItem('concursos_saved_mindmaps') || '{}');
+      const k1 = `${disc}:::${sub}`;
+      const k2 = `${typeof normalizeKey === 'function' ? normalizeKey(disc) : disc}:::${typeof normalizeKey === 'function' ? normalizeKey(sub) : sub}`;
+      if (savedMaps[k1]?.mindmap || savedMaps[k2]?.mindmap) {
+        return `/mapas_notebooklm/${disc}_${sub}.png`;
+      }
+      if (typeof globalPreseededCatalog !== 'undefined' && globalPreseededCatalog?.[disc]?.[sub]?.meta?.mindmap_json) {
+        return `/mapas_notebooklm/${disc}_${sub}.png`;
+      }
+      if (typeof currentLessonMeta !== 'undefined' && currentLessonMeta && (currentLessonMeta.mindmap_json || (currentLessonMeta.markdown_content && currentLessonMeta.markdown_content.includes('nlm-mindmap-json')))) {
+        return `/mapas_notebooklm/${disc}_${sub}.png`;
+      }
+    } catch(e) {}
+
     return null;
   }
 
@@ -10652,7 +10685,7 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
 
       <div class="nlm-png-canvas-container" id="${id}-png-container" style="width: 100%; height: 550px; overflow: hidden; position: relative; cursor: grab; display: flex; align-items: center; justify-content: center;" onmousedown="startNlmPngPan(event, '${id}')" onwheel="handleNlmPngWheel(event, '${id}')">
         <div id="${id}-png-stage" style="transform: translate(0px, 0px) scale(1); transform-origin: center center; transition: transform 0.08s ease-out; display: inline-block;">
-          <img id="${id}-png-img" src="${pngUrl || ''}" alt="Mapa Mental NotebookLM" style="max-width: 95%; max-height: 520px; object-fit: contain; border-radius: 8px; box-shadow: 0 12px 40px rgba(0,0,0,0.8); pointer-events: none; border: 1px solid rgba(255,255,255,0.1);" />
+          <img id="${id}-png-img" src="${pngUrl || ''}" alt="Mapa Mental NotebookLM" style="max-width: 95%; max-height: 520px; object-fit: contain; border-radius: 8px; box-shadow: 0 12px 40px rgba(0,0,0,0.8); pointer-events: none; border: 1px solid rgba(255,255,255,0.1);" onerror="if(!this.dataset.triedFallback){this.dataset.triedFallback='1'; const d=(typeof currentDiscipline!=='undefined'?currentDiscipline:''); const s=(typeof currentSubarea!=='undefined'?currentSubarea:''); if(d&&s){this.src='/api/mindmap-png?discipline='+encodeURIComponent(d)+'&subarea='+encodeURIComponent(s);}}" />
         </div>
         <div class="nlm-png-hint" style="position: absolute; bottom: 10px; right: 12px; background: rgba(0,0,0,0.65); padding: 4px 10px; border-radius: 6px; font-size: 10.5px; color: #94a3b8; pointer-events: none; border: 1px solid rgba(255,255,255,0.08);">
           💡 Dica: Arraste para mover o mapa • Scroll do mouse para Zoom • Clique duplo para ajustar
@@ -12428,6 +12461,7 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
                 savedMaps[mKey] = {
                   mindmap: lessonObj.meta.mindmap_json,
                   markdown: lessonObj.meta.markdown_content,
+                  mindmap_png: lessonObj.meta.mindmap_png || `/mapas_notebooklm/${targetDisc}_${targetSub}.png`,
                   timestamp: Date.now()
                 };
                 localStorage.setItem('concursos_saved_mindmaps', JSON.stringify(savedMaps));
@@ -12561,6 +12595,7 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
                 savedMaps[mKey] = {
                   mindmap: lessonObj.meta.mindmap_json,
                   markdown: lessonObj.meta.markdown_content,
+                  mindmap_png: lessonObj.meta.mindmap_png || `/mapas_notebooklm/${targetDisc}_${targetSub}.png`,
                   timestamp: Date.now()
                 };
                 localStorage.setItem('concursos_saved_mindmaps', JSON.stringify(savedMaps));

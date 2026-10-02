@@ -3543,6 +3543,33 @@
       max-height: none !important;
     }
 
+    .nlm-png-fullscreen {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      max-height: 100vh !important;
+      z-index: 999999 !important;
+      background: #030712 !important;
+      border-radius: 0 !important;
+      box-sizing: border-box !important;
+      margin: 0 !important;
+    }
+    .nlm-png-fullscreen .nlm-png-canvas-container {
+      height: calc(100vh - 65px) !important;
+    }
+    .nlm-mode-pill {
+      cursor: pointer;
+      border: none;
+      outline: none;
+      user-select: none;
+      font-family: inherit;
+    }
+    .nlm-mode-pill:hover {
+      filter: brightness(1.15);
+    }
+
     .nlm-mindmap-header {
       background: linear-gradient(135deg, rgba(88, 101, 242, 0.15) 0%, rgba(56, 139, 253, 0.08) 100%);
       border-bottom: 1px solid rgba(88, 101, 242, 0.25);
@@ -8032,8 +8059,9 @@
           })
         });
         const resData = await resp.json();
-        if (resData.success && resData.url) {
-          savedUrl = resData.url;
+        if (resData.success && (resData.url || resData.api_url)) {
+          // Usa a URL retornada ou dataUrl para renderização instantânea
+          savedUrl = resData.url || currentPendingNlmPngData.dataUrl;
         }
       } catch(eUpload) {
         // Fallback para dataUrl local se offline ou Vercel
@@ -8065,25 +8093,60 @@
         globalPreseededCatalog[currentDiscipline][currentSubarea].meta.mindmap_png = savedUrl;
       }
 
-      closeModal('modalImportNotebookLm');
-      showToast('Mapa mental em PNG do NotebookLM importado com sucesso!', '🖼️');
+      // Marca o tópico como recém-importado em PNG para priorizar exibição
+      window.lastImportedPngTopic = `${currentDiscipline}:::${currentSubarea}`;
 
-      // Re-renderiza a aula e alterna para a aba PNG
+      closeModal('modalImportNotebookLm');
+      showToast('Mapa mental em PNG do NotebookLM ativado na aula com sucesso!', '🖼️');
+
+      // 3. Re-renderiza a aula com o novo mapa mental ativado
       if (typeof readerRawContent !== 'undefined' && readerRawContent) {
         renderDynamicLessonTabs(readerRawContent, currentDiscipline, currentSubarea);
       }
       switchTab(0);
 
+      // 4. Ativa a visualização do PNG no componente
       setTimeout(() => {
-        const wrapper = document.querySelector('.nlm-mindmap-wrapper');
-        if (wrapper) {
-          const wrapperId = wrapper.id;
-          if (typeof toggleNlmMindmapMode === 'function') {
-            toggleNlmMindmapMode(wrapperId, 'png');
-          }
-          wrapper.scrollIntoView({ behavior: 'smooth' });
+        // Procura container de grafo interativo (.nlm-graph-container)
+        const graphContainers = document.querySelectorAll('.nlm-graph-container');
+        if (graphContainers.length > 0) {
+          graphContainers.forEach(gc => {
+            const id = gc.id;
+            const btnPng = document.getElementById(`${id}-pill-png`) || document.getElementById(`${id}-btn-mode-png`);
+            if (btnPng) btnPng.style.display = 'inline-flex';
+            const imgEl = document.getElementById(`${id}-png-img`);
+            if (imgEl) imgEl.src = savedUrl;
+            if (typeof window.switchMindmapViewMode === 'function') {
+              window.switchMindmapViewMode(id, 'png');
+            }
+          });
+          graphContainers[0].scrollIntoView({ behavior: 'smooth' });
+          return;
         }
-      }, 350);
+
+        // Procura wrapper de texto (.nlm-mindmap-wrapper)
+        const wrappers = document.querySelectorAll('.nlm-mindmap-wrapper');
+        if (wrappers.length > 0) {
+          wrappers.forEach(w => {
+            const id = w.id;
+            const imgEl = document.getElementById(`${id}-png-img`);
+            if (imgEl) imgEl.src = savedUrl;
+            const btnPng = document.getElementById(`${id}-btn-png`);
+            if (btnPng) btnPng.style.display = '';
+            if (typeof toggleNlmMindmapMode === 'function') {
+              toggleNlmMindmapMode(id, 'png');
+            }
+          });
+          wrappers[0].scrollIntoView({ behavior: 'smooth' });
+          return;
+        }
+
+        // Procura container dedicado de PNG
+        const dedicated = document.querySelector('.nlm-dedicated-png-container');
+        if (dedicated) {
+          dedicated.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 150);
 
     } catch(err) {
       alert('Erro ao salvar PNG: ' + err.message);
@@ -9047,7 +9110,15 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
       }
     }
 
-    const hasMindmap = sec1Text.includes('nlm-mindmap') || sec1Text.includes('nlm-mindmap-json') || sec1Text.includes('Mapa Mental');
+    const lessonPng = getLessonMindmapPng(disc, sub);
+    const hasMindmap = sec1Text.includes('nlm-mindmap') || sec1Text.includes('nlm-mindmap-json') || sec1Text.includes('Mapa Mental') || Boolean(lessonPng);
+    
+    // Se temos PNG salvo e o markdown NÃO possui bloco de mapa mental, injetamos o container dedicado de PNG
+    if (lessonPng && !sec1Text.includes('nlm-mindmap') && !sec1Text.includes('nlm-mindmap-json') && !sec1Text.includes('nlm-dedicated-png-container')) {
+      const dedicatedPngBlock = renderStandaloneNlmPngMindmap(disc, sub, lessonPng);
+      sec1Text = `${dedicatedPngBlock}\n\n${sec1Text}`;
+    }
+
     const resumoActionBar = `
       <div class="tab-action-bar" style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
         <div style="font-weight: 600; color: var(--text2); display: flex; align-items: center; gap: 8px;">
@@ -9058,6 +9129,11 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
           ${hasMindmap ? `
             <button class="btn btn-sm" id="btnToggleMindmapVis" onclick="toggleMindmapVisibility()" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.4); font-weight: 700; cursor: pointer;" title="Exibir ou recolher o mapa mental para liberar espaço na tela">
               <span id="iconToggleMindmapVis">🗺️</span><span id="textToggleMindmapVis">Ocultar Mapa Mental</span>
+            </button>
+          ` : ''}
+          ${lessonPng ? `
+            <button class="btn btn-sm" id="btnToggleNlmPng" onclick="showNlmPngInLesson('${disc}', '${sub}')" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(14, 165, 233, 0.2); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.45); font-weight: 700; cursor: pointer;" title="Visualizar mapa mental em PNG oficial do NotebookLM">
+              <span>🖼️</span><span>Ver PNG NotebookLM</span>
             </button>
           ` : ''}
           <button class="btn btn-sm" onclick="openImportNotebookLmMindmapModal()" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(56, 189, 248, 0.18); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); font-weight: 700; cursor: pointer;" title="Importar mapa mental gerado na sua conta do Google NotebookLM">
@@ -9741,6 +9817,339 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
     return { titulo: cleanRootTitle, nodes, edges };
   };
 
+
+  /* ==========================================================================
+     SUPORTE DUAL A MAPAS MENTAIS: GRAFO INTERATIVO (IA) & NOTEBOOKLM STUDIO (PNG)
+     ========================================================================== */
+  window.nlmPngStates = window.nlmPngStates || {};
+  window.activeMindmapModes = window.activeMindmapModes || {};
+
+  function getLessonMindmapPng(disc, sub) {
+    disc = disc || (typeof currentDiscipline !== 'undefined' ? currentDiscipline : '');
+    sub = sub || (typeof currentSubarea !== 'undefined' ? currentSubarea : '');
+    if (!disc || !sub) return null;
+
+    // 1. Meta da aula em memória
+    if (typeof currentLessonMeta !== 'undefined' && currentLessonMeta && currentLessonMeta.mindmap_png) {
+      return currentLessonMeta.mindmap_png;
+    }
+
+    // 2. Cache local concursos_saved_mindmaps
+    try {
+      const savedMaps = JSON.parse(localStorage.getItem('concursos_saved_mindmaps') || '{}');
+      const k1 = `${disc}:::${sub}`;
+      const k2 = `${typeof normalizeKey === 'function' ? normalizeKey(disc) : disc}:::${typeof normalizeKey === 'function' ? normalizeKey(sub) : sub}`;
+      if (savedMaps[k1]?.mindmap_png) return savedMaps[k1].mindmap_png;
+      if (savedMaps[k2]?.mindmap_png) return savedMaps[k2].mindmap_png;
+    } catch(e) {}
+
+    // 3. Cache local concursos_local_lessons
+    try {
+      const localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
+      if (localLessons[disc]?.[sub]?.meta?.mindmap_png) return localLessons[disc][sub].meta.mindmap_png;
+      const nd = typeof normalizeKey === 'function' ? normalizeKey(disc) : disc;
+      const ns = typeof normalizeKey === 'function' ? normalizeKey(sub) : sub;
+      if (localLessons[nd]?.[ns]?.meta?.mindmap_png) return localLessons[nd][ns].meta.mindmap_png;
+    } catch(e) {}
+
+    // 4. Catálogo pré-semeado
+    try {
+      if (typeof globalPreseededCatalog !== 'undefined' && globalPreseededCatalog?.[disc]?.[sub]?.meta?.mindmap_png) {
+        return globalPreseededCatalog[disc][sub].meta.mindmap_png;
+      }
+    } catch(e) {}
+
+    return null;
+  }
+
+  function getNlmPngState(id) {
+    if (!window.nlmPngStates[id]) {
+      window.nlmPngStates[id] = {
+        zoom: 1,
+        panX: 0,
+        panY: 0,
+        isPanning: false,
+        startX: 0,
+        startY: 0
+      };
+    }
+    return window.nlmPngStates[id];
+  }
+
+  function applyNlmPngTransform(id) {
+    const st = getNlmPngState(id);
+    const stage = document.getElementById(`${id}-png-stage`);
+    if (stage) {
+      stage.style.transform = `translate(${st.panX}px, ${st.panY}px) scale(${st.zoom})`;
+    }
+    const zoomText = document.getElementById(`${id}-png-zoom-text`);
+    if (zoomText) {
+      zoomText.textContent = `${Math.round(st.zoom * 100)}%`;
+    }
+  }
+
+  window.zoomNlmPngImage = function(id, delta) {
+    const st = getNlmPngState(id);
+    if (delta === 0) {
+      st.zoom = 1;
+      st.panX = 0;
+      st.panY = 0;
+    } else {
+      st.zoom = Math.max(0.2, Math.min(6, st.zoom + delta));
+    }
+    applyNlmPngTransform(id);
+  };
+
+  window.fitNlmPngImage = function(id) {
+    const st = getNlmPngState(id);
+    st.panX = 0;
+    st.panY = 0;
+    const container = document.getElementById(`${id}-png-container`);
+    const img = document.getElementById(`${id}-png-img`);
+    if (container && img && img.naturalWidth && img.naturalHeight) {
+      const cW = container.clientWidth || 800;
+      const cH = container.clientHeight || 550;
+      const scaleW = (cW * 0.94) / img.naturalWidth;
+      const scaleH = (cH * 0.94) / img.naturalHeight;
+      st.zoom = Math.min(scaleW, scaleH, 1.2);
+    } else {
+      st.zoom = 1;
+    }
+    applyNlmPngTransform(id);
+  };
+
+  window.startNlmPngPan = function(e, id) {
+    if (e.button !== 0) return;
+    const st = getNlmPngState(id);
+    st.isPanning = true;
+    st.startX = e.clientX - st.panX;
+    st.startY = e.clientY - st.panY;
+
+    const container = document.getElementById(`${id}-png-container`);
+    if (container) container.style.cursor = 'grabbing';
+
+    function onMouseMove(ev) {
+      if (!st.isPanning) return;
+      st.panX = ev.clientX - st.startX;
+      st.panY = ev.clientY - st.startY;
+      applyNlmPngTransform(id);
+    }
+
+    function onMouseUp() {
+      st.isPanning = false;
+      if (container) container.style.cursor = 'grab';
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+    }
+
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+  };
+
+  window.handleNlmPngWheel = function(e, id) {
+    e.preventDefault();
+    const delta = e.deltaY < 0 ? 0.12 : -0.12;
+    window.zoomNlmPngImage(id, delta);
+  };
+
+  window.toggleNlmPngFullscreen = function(id) {
+    const pngView = document.getElementById(`${id}-pngview`) || document.getElementById(id);
+    if (!pngView) return;
+    
+    if (pngView.classList.contains('nlm-png-fullscreen')) {
+      pngView.classList.remove('nlm-png-fullscreen');
+      document.body.style.overflow = '';
+      const exitBtn = document.getElementById(`${id}-png-btn-exit-fs`);
+      if (exitBtn) exitBtn.style.display = 'none';
+    } else {
+      pngView.classList.add('nlm-png-fullscreen');
+      document.body.style.overflow = 'hidden';
+      const exitBtn = document.getElementById(`${id}-png-btn-exit-fs`);
+      if (exitBtn) exitBtn.style.display = 'inline-flex';
+    }
+    setTimeout(() => window.fitNlmPngImage(id), 80);
+  };
+
+  window.downloadNlmPngImage = function(id) {
+    const img = document.getElementById(`${id}-png-img`);
+    if (!img || !img.src) {
+      alert('Nenhuma imagem disponível para download.');
+      return;
+    }
+    const a = document.createElement('a');
+    a.href = img.src;
+    const safeDisc = (typeof currentDiscipline !== 'undefined' ? currentDiscipline : 'Materia').replace(/[^a-zA-Z0-9_-]/g, '_');
+    const safeSub = (typeof currentSubarea !== 'undefined' ? currentSubarea : 'Topico').replace(/[^a-zA-Z0-9_-]/g, '_');
+    a.download = `Mapa_Mental_${safeDisc}_${safeSub}_NotebookLM.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    if (typeof showToast === 'function') {
+      showToast('Download do PNG iniciado!', '📥');
+    }
+  };
+
+  window.switchMindmapViewMode = function(containerId, mode) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    window.activeMindmapModes[containerId] = mode;
+
+    const graphViewport = document.getElementById(`${containerId}-viewport`);
+    const pngViewport = document.getElementById(`${containerId}-pngview`);
+    const btnGraph = document.getElementById(`${containerId}-pill-graph`) || document.getElementById(`${containerId}-btn-mode-graph`);
+    const btnPng = document.getElementById(`${containerId}-pill-png`) || document.getElementById(`${containerId}-btn-mode-png`);
+
+    if (mode === 'png') {
+      if (graphViewport) graphViewport.style.display = 'none';
+      if (pngViewport) pngViewport.style.display = 'block';
+
+      if (btnGraph) {
+        btnGraph.classList.remove('active');
+        btnGraph.style.background = 'transparent';
+        btnGraph.style.color = '#94a3b8';
+      }
+      if (btnPng) {
+        btnPng.classList.add('active');
+        btnPng.style.background = 'linear-gradient(135deg, #0284c7, #0ea5e9)';
+        btnPng.style.color = '#ffffff';
+        btnPng.style.display = 'inline-flex';
+      }
+      
+      const searchInp = container.querySelector('.nlm-graph-search-input');
+      if (searchInp) searchInp.style.display = 'none';
+      container.querySelectorAll('.nlm-tool-btn:not(#${containerId}-btn-exit-fs):not(#${containerId}-btn-fullscreen):not([onclick*="closeMindmapGraph"])').forEach(el => {
+        el.style.display = 'none';
+      });
+
+      const statsBadge = document.getElementById(`${containerId}-stats`);
+      if (statsBadge) {
+        if (!statsBadge.getAttribute('data-orig-text')) {
+          statsBadge.setAttribute('data-orig-text', statsBadge.textContent);
+        }
+        statsBadge.textContent = '🖼️ PNG NotebookLM Oficial';
+        statsBadge.style.background = 'rgba(14, 165, 233, 0.2)';
+        statsBadge.style.color = '#38bdf8';
+        statsBadge.style.borderColor = 'rgba(14, 165, 233, 0.4)';
+      }
+
+      setTimeout(() => {
+        window.fitNlmPngImage(containerId);
+      }, 60);
+
+    } else {
+      // mode === 'graph'
+      if (pngViewport) pngViewport.style.display = 'none';
+      if (graphViewport) graphViewport.style.display = 'block';
+
+      if (btnPng) {
+        btnPng.classList.remove('active');
+        btnPng.style.background = 'transparent';
+        btnPng.style.color = '#38bdf8';
+      }
+      if (btnGraph) {
+        btnGraph.classList.add('active');
+        btnGraph.style.background = '#3b82f6';
+        btnGraph.style.color = '#ffffff';
+      }
+
+      const searchInp = container.querySelector('.nlm-graph-search-input');
+      if (searchInp) searchInp.style.display = '';
+      container.querySelectorAll('.nlm-tool-btn').forEach(el => {
+        el.style.display = '';
+      });
+
+      const statsBadge = document.getElementById(`${containerId}-stats`);
+      if (statsBadge && statsBadge.getAttribute('data-orig-text')) {
+        statsBadge.textContent = statsBadge.getAttribute('data-orig-text');
+        statsBadge.style.background = 'rgba(59, 130, 246, 0.15)';
+        statsBadge.style.color = '#93c5fd';
+        statsBadge.style.borderColor = 'rgba(59, 130, 246, 0.35)';
+      }
+
+      setTimeout(() => {
+        if (typeof window.redrawMindmapGraph === 'function') {
+          window.redrawMindmapGraph(containerId);
+        }
+      }, 50);
+    }
+  };
+
+  window.showNlmPngInLesson = function(disc, sub) {
+    const gc = document.querySelector('.nlm-graph-container, .nlm-mindmap-wrapper');
+    if (gc) {
+      gc.style.display = 'block';
+      const btnText = document.getElementById('textToggleMindmapVis');
+      if (btnText) btnText.textContent = 'Ocultar Mapa Mental';
+      if (gc.classList.contains('nlm-graph-container')) {
+        window.switchMindmapViewMode(gc.id, 'png');
+      } else if (typeof toggleNlmMindmapMode === 'function') {
+        toggleNlmMindmapMode(gc.id, 'png');
+      }
+      gc.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  function renderStandaloneNlmPngMindmap(disc, sub, pngUrl, containerId) {
+    const id = containerId || 'nlm-mmg-' + Math.random().toString(36).substring(2, 9);
+    const dName = (disc || 'Matéria').replace(/_/g, ' ');
+    const sName = (sub || 'Tópico').replace(/_/g, ' ');
+
+    setTimeout(() => {
+      window.fitNlmPngImage(id);
+    }, 60);
+
+    return `
+  <div class="nlm-graph-container nlm-dedicated-png-container" id="${id}" style="margin-bottom: 24px; border: 1px solid rgba(14, 165, 233, 0.4); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+    <div class="nlm-graph-toolbar" style="background: rgba(15, 23, 42, 0.95);">
+      <div class="nlm-graph-toolbar-group">
+        <span style="font-size: 18px;">🖼️</span>
+        <span style="font-weight: 800; font-size: 13.5px; color: #f1f5f9; letter-spacing: 0.2px;">MAPA MENTAL OFICIAL • NOTEBOOKLM</span>
+        <span style="background: rgba(14, 165, 233, 0.2); border: 1px solid rgba(14, 165, 233, 0.45); color: #38bdf8; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px;">
+          ${sName} • PNG Alta Resolução
+        </span>
+      </div>
+
+      <div class="nlm-graph-toolbar-group">
+        <button class="nlm-tool-btn" onclick="openAiMindmapModal()" title="Gerar também a versão interativa em nós com IA" style="background: rgba(99, 102, 241, 0.2); color: #c7d2fe; border: 1px solid rgba(99, 102, 241, 0.4);">
+          ✨ Gerar Grafo com IA
+        </button>
+        <button class="nlm-tool-btn" onclick="toggleMindmapGraphFullscreen('${id}')" title="Abrir em Tela Cheia">🗖 Tela Cheia</button>
+        <button class="nlm-tool-btn" onclick="closeMindmapGraph('${id}')" title="Ocultar Mapa Mental" style="color: #f87171; font-weight: 700; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3);">✖ Ocultar</button>
+      </div>
+    </div>
+
+    <div class="nlm-png-viewport" id="${id}-pngview" style="display: block; position: relative; background: radial-gradient(circle at center, #111827 0%, #090d16 100%); border-radius: 0 0 12px 12px; overflow: hidden; min-height: 480px; max-height: 650px; user-select: none;">
+      <div class="nlm-png-controls-bar" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-weight: 700; font-size: 12.5px; color: #f8fafc;">${dName} • ${sName}</span>
+          <span id="${id}-png-zoom-text" style="font-size: 11px; color: #94a3b8; font-weight: 600; background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 4px;">100%</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+          <button class="btn btn-sm" onclick="zoomNlmPngImage('${id}', 0.15)" title="Aumentar Zoom (+)" style="padding: 3px 8px; font-size: 11px;">🔍 Zoom In (+)</button>
+          <button class="btn btn-sm" onclick="zoomNlmPngImage('${id}', 0)" title="Tamanho Real (100%)" style="padding: 3px 8px; font-size: 11px;">🔄 100%</button>
+          <button class="btn btn-sm" onclick="fitNlmPngImage('${id}')" title="Ajustar Imagem à Janela" style="padding: 3px 8px; font-size: 11px;">🔲 Ajustar</button>
+          <button class="btn btn-sm" onclick="zoomNlmPngImage('${id}', -0.15)" title="Diminuir Zoom (-)" style="padding: 3px 8px; font-size: 11px;">🔎 Zoom Out (-)</button>
+          <div style="width: 1px; height: 16px; background: rgba(255,255,255,0.15); margin: 0 2px;"></div>
+          <button class="btn btn-sm" onclick="toggleNlmPngFullscreen('${id}')" title="Visualizar em Tela Cheia" style="padding: 3px 8px; font-size: 11px; background: rgba(99, 102, 241, 0.2); color: #c7d2fe; border: 1px solid rgba(99, 102, 241, 0.4); font-weight: 700;">🖵 Tela Cheia</button>
+          <button class="btn btn-sm" onclick="downloadNlmPngImage('${id}')" title="Baixar arquivo PNG no seu computador" style="padding: 3px 8px; font-size: 11px; background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4);">📥 Baixar</button>
+          <button class="btn btn-sm" onclick="openImportNotebookLmMindmapModal()" title="Substituir por outro PNG" style="padding: 3px 8px; font-size: 11px; background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3);">🔄 Trocar PNG</button>
+        </div>
+      </div>
+
+      <div class="nlm-png-canvas-container" id="${id}-png-container" style="width: 100%; height: 550px; overflow: hidden; position: relative; cursor: grab; display: flex; align-items: center; justify-content: center;" onmousedown="startNlmPngPan(event, '${id}')" onwheel="handleNlmPngWheel(event, '${id}')">
+        <div id="${id}-png-stage" style="transform: translate(0px, 0px) scale(1); transform-origin: center center; transition: transform 0.08s ease-out; display: inline-block;">
+          <img id="${id}-png-img" src="${pngUrl || ''}" alt="Mapa Mental NotebookLM" style="max-width: 95%; max-height: 520px; object-fit: contain; border-radius: 8px; box-shadow: 0 12px 40px rgba(0,0,0,0.8); pointer-events: none; border: 1px solid rgba(255,255,255,0.1);" />
+        </div>
+        <div class="nlm-png-hint" style="position: absolute; bottom: 10px; right: 12px; background: rgba(0,0,0,0.65); padding: 4px 10px; border-radius: 6px; font-size: 10.5px; color: #94a3b8; pointer-events: none; border: 1px solid rgba(255,255,255,0.08);">
+          💡 Dica: Arraste para mover o mapa • Scroll do mouse para Zoom
+        </div>
+      </div>
+    </div>
+  </div>
+    `;
+  }
+
   function renderInteractiveMindmapFromJson(rawJsonOrStr, containerId) {
     let data;
     if (typeof rawJsonOrStr === 'string') {
@@ -9763,6 +10172,11 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
     const nodes = data.nodes;
     const edges = data.edges || [];
     const titulo = data.titulo || 'Mapa Mental Interativo';
+
+    const pngUrl = getLessonMindmapPng(typeof currentDiscipline !== 'undefined' ? currentDiscipline : '', typeof currentSubarea !== 'undefined' ? currentSubarea : '');
+    const hasPng = Boolean(pngUrl);
+    const isPngLastImported = (typeof currentDiscipline !== 'undefined' && typeof currentSubarea !== 'undefined' && window.lastImportedPngTopic === `${currentDiscipline}:::${currentSubarea}`);
+    const activeMode = (window.activeMindmapModes && window.activeMindmapModes[id]) || (isPngLastImported ? 'png' : 'graph');
 
     const typeIcons = {
       root: '🎯', category: '📁', concept: '💡', rule: '⚖️', trap: '🚨',
@@ -9827,13 +10241,26 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
       </div>
 
       <div class="nlm-graph-toolbar-group">
-        <input type="text" class="nlm-graph-search-input" placeholder="🔍 Filtrar no mapa..." oninput="filterMindmapNodes('${id}', this.value)" title="Filtre nós por palavra-chave">
+        <!-- SELETOR DE MODO: GRAFO INTERATIVO VS NOTEBOOKLM (PNG) -->
+        <div class="nlm-mode-pills" style="display: inline-flex; background: rgba(0,0,0,0.45); padding: 3px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); margin-right: 6px;">
+          <button class="nlm-mode-pill ${activeMode === 'graph' ? 'active' : ''}" id="${id}-pill-graph" onclick="switchMindmapViewMode('${id}', 'graph')" style="padding: 4px 10px; font-size: 11.5px; font-weight: 700; border-radius: 6px; border: none; cursor: pointer; background: ${activeMode === 'graph' ? '#3b82f6' : 'transparent'}; color: ${activeMode === 'graph' ? '#fff' : '#94a3b8'}; transition: all 0.2s;" title="Ver o Mapa Mental Interativo em nós gerado da aula">
+            🧠 Grafo Interativo (IA / PDF)
+          </button>
+          <button class="nlm-mode-pill ${activeMode === 'png' ? 'active' : ''}" id="${id}-pill-png" onclick="switchMindmapViewMode('${id}', 'png')" style="padding: 4px 10px; font-size: 11.5px; font-weight: 700; border-radius: 6px; border: none; cursor: pointer; background: ${activeMode === 'png' ? 'linear-gradient(135deg, #0284c7, #0ea5e9)' : 'transparent'}; color: ${activeMode === 'png' ? '#fff' : '#38bdf8'}; transition: all 0.2s; ${hasPng ? '' : 'display: none;'}" title="Ver o Mapa Mental em PNG oficial do Google NotebookLM">
+            🖼️ NotebookLM (PNG)
+          </button>
+          <button class="nlm-mode-pill" id="${id}-pill-add-png" onclick="openImportNotebookLmMindmapModal()" style="padding: 4px 9px; font-size: 11px; font-weight: 600; border-radius: 6px; border: 1px dashed rgba(56, 189, 248, 0.4); cursor: pointer; background: rgba(56, 189, 248, 0.08); color: #38bdf8; ${hasPng ? 'display: none;' : ''}" title="Importar o mapa mental baixado em PNG do NotebookLM">
+            📥 + Adicionar PNG
+          </button>
+        </div>
+
+        <input type="text" class="nlm-graph-search-input" placeholder="🔍 Filtrar no mapa..." oninput="filterMindmapNodes('${id}', this.value)" title="Filtre nós por palavra-chave" style="${activeMode === 'graph' ? '' : 'display: none;'}">
         <div style="width: 1px; height: 16px; background: rgba(255,255,255,0.15); margin: 0 2px;"></div>
-        <button class="nlm-tool-btn" onclick="zoomMindmapGraph('${id}', 0.12)" title="Aumentar Zoom">➕ Zoom</button>
-        <button class="nlm-tool-btn" onclick="zoomMindmapGraph('${id}', -0.12)" title="Diminuir Zoom">➖ Zoom</button>
-        <button class="nlm-tool-btn" onclick="resetMindmapGraphView('${id}')" title="Resetar Visualização">100%</button>
-        <button class="nlm-tool-btn" onclick="fitMindmapGraphView('${id}')" title="Ajustar à Tela">🔲 Ajustar</button>
-        <button class="nlm-tool-btn" onclick="toggleAllMindmapBranches('${id}')" id="${id}-btn-toggle-all">↕ Recolher</button>
+        <button class="nlm-tool-btn" onclick="zoomMindmapGraph('${id}', 0.12)" title="Aumentar Zoom" style="${activeMode === 'graph' ? '' : 'display: none;'}">➕ Zoom</button>
+        <button class="nlm-tool-btn" onclick="zoomMindmapGraph('${id}', -0.12)" title="Diminuir Zoom" style="${activeMode === 'graph' ? '' : 'display: none;'}">➖ Zoom</button>
+        <button class="nlm-tool-btn" onclick="resetMindmapGraphView('${id}')" title="Resetar Visualização" style="${activeMode === 'graph' ? '' : 'display: none;'}">100%</button>
+        <button class="nlm-tool-btn" onclick="fitMindmapGraphView('${id}')" title="Ajustar à Tela" style="${activeMode === 'graph' ? '' : 'display: none;'}">🔲 Ajustar</button>
+        <button class="nlm-tool-btn" onclick="toggleAllMindmapBranches('${id}')" id="${id}-btn-toggle-all" style="${activeMode === 'graph' ? '' : 'display: none;'}">↕ Recolher</button>
         <div style="width: 1px; height: 16px; background: rgba(255,255,255,0.15); margin: 0 2px;"></div>
         <button class="nlm-tool-btn" id="${id}-btn-exit-fs" onclick="toggleMindmapGraphFullscreen('${id}')" title="Sair da tela cheia e voltar à aula" style="display: none; background: rgba(16, 185, 129, 0.25); border: 1px solid rgba(16, 185, 129, 0.5); color: #6ee7b7; font-weight: 700;">↩ Voltar à Aula (Esc)</button>
         <button class="nlm-tool-btn nlm-tool-btn-fs" id="${id}-btn-fullscreen" onclick="toggleMindmapGraphFullscreen('${id}')" title="Abrir em Tela Cheia">🗖 Tela Cheia</button>
@@ -9841,10 +10268,42 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
       </div>
     </div>
 
-    <div class="nlm-graph-viewport" id="${id}-viewport" onmousedown="startMindmapPan(event, '${id}')" onwheel="handleMindmapWheel(event, '${id}')">
+    <!-- VIEWPORT 1: GRAFO INTERATIVO DE NÓS (IA / PDF) -->
+    <div class="nlm-graph-viewport" id="${id}-viewport" onmousedown="startMindmapPan(event, '${id}')" onwheel="handleMindmapWheel(event, '${id}')" style="${activeMode === 'graph' ? '' : 'display: none;'}">
       <div class="nlm-graph-canvas" id="${id}-canvas" style="position: absolute; transform: translate(40px, 50px) scale(0.95); transform-origin: 0 0;">
         <svg id="${id}-svg" class="nlm-svg-lines" style="position: absolute; top: 0; left: 0; width: 14000px; height: 14000px; pointer-events: none; z-index: 1;"></svg>
         <div id="${id}-nodes" class="nlm-nodes-container" style="position: absolute; top: 0; left: 0; z-index: 10; pointer-events: auto;"></div>
+      </div>
+    </div>
+
+    <!-- VIEWPORT 2: MAPA MENTAL NOTEBOOKLM (PNG OFICIAL) -->
+    <div class="nlm-png-viewport" id="${id}-pngview" style="${activeMode === 'png' ? 'display: block;' : 'display: none;'}; position: relative; background: radial-gradient(circle at center, #111827 0%, #090d16 100%); border-radius: 0 0 12px 12px; overflow: hidden; min-height: 480px; max-height: 650px; user-select: none;">
+      <div class="nlm-png-controls-bar" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 14px;">🖼️</span>
+          <span style="font-weight: 700; font-size: 12.5px; color: #f8fafc;">Mapa Mental NotebookLM Studio</span>
+          <span style="font-size: 10px; background: rgba(14, 165, 233, 0.2); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.4); padding: 1px 6px; border-radius: 99px; font-weight: 700;">PNG Alta Resolução</span>
+          <span id="${id}-png-zoom-text" style="font-size: 11px; color: #94a3b8; font-weight: 600; background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 4px;">100%</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+          <button class="btn btn-sm" onclick="zoomNlmPngImage('${id}', 0.15)" title="Aumentar Zoom (+)" style="padding: 3px 8px; font-size: 11px;">🔍 Zoom In (+)</button>
+          <button class="btn btn-sm" onclick="zoomNlmPngImage('${id}', 0)" title="Tamanho Real (100%)" style="padding: 3px 8px; font-size: 11px;">🔄 100%</button>
+          <button class="btn btn-sm" onclick="fitNlmPngImage('${id}')" title="Ajustar Imagem à Janela" style="padding: 3px 8px; font-size: 11px;">🔲 Ajustar</button>
+          <button class="btn btn-sm" onclick="zoomNlmPngImage('${id}', -0.15)" title="Diminuir Zoom (-)" style="padding: 3px 8px; font-size: 11px;">🔎 Zoom Out (-)</button>
+          <div style="width: 1px; height: 16px; background: rgba(255,255,255,0.15); margin: 0 2px;"></div>
+          <button class="btn btn-sm" onclick="toggleNlmPngFullscreen('${id}')" title="Visualizar em Tela Cheia" style="padding: 3px 8px; font-size: 11px; background: rgba(99, 102, 241, 0.2); color: #c7d2fe; border: 1px solid rgba(99, 102, 241, 0.4); font-weight: 700;">🖵 Tela Cheia</button>
+          <button class="btn btn-sm" onclick="downloadNlmPngImage('${id}')" title="Baixar arquivo PNG no seu computador" style="padding: 3px 8px; font-size: 11px; background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4);">📥 Baixar</button>
+          <button class="btn btn-sm" onclick="openImportNotebookLmMindmapModal()" title="Substituir por outro PNG" style="padding: 3px 8px; font-size: 11px; background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3);">🔄 Trocar PNG</button>
+        </div>
+      </div>
+
+      <div class="nlm-png-canvas-container" id="${id}-png-container" style="width: 100%; height: 550px; overflow: hidden; position: relative; cursor: grab; display: flex; align-items: center; justify-content: center;" onmousedown="startNlmPngPan(event, '${id}')" onwheel="handleNlmPngWheel(event, '${id}')">
+        <div id="${id}-png-stage" style="transform: translate(0px, 0px) scale(1); transform-origin: center center; transition: transform 0.08s ease-out; display: inline-block;">
+          <img id="${id}-png-img" src="${pngUrl || ''}" alt="Mapa Mental NotebookLM" style="max-width: 95%; max-height: 520px; object-fit: contain; border-radius: 8px; box-shadow: 0 12px 40px rgba(0,0,0,0.8); pointer-events: none; border: 1px solid rgba(255,255,255,0.1);" />
+        </div>
+        <div class="nlm-png-hint" style="position: absolute; bottom: 10px; right: 12px; background: rgba(0,0,0,0.65); padding: 4px 10px; border-radius: 6px; font-size: 10.5px; color: #94a3b8; pointer-events: none; border: 1px solid rgba(255,255,255,0.08);">
+          💡 Dica: Arraste para mover o mapa • Scroll do mouse para Zoom • Clique duplo para ajustar
+        </div>
       </div>
     </div>
   </div>
@@ -12437,6 +12896,32 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
       }
 
       currentLessonMeta = meta;
+
+      // Recupera mindmap_png se existir em cache local ou catálogos
+      if (!meta.mindmap_png) {
+        try {
+          const savedMaps = JSON.parse(localStorage.getItem('concursos_saved_mindmaps') || '{}');
+          const k1 = `${disc}:::${sub}`;
+          const k2 = `${typeof normalizeKey === 'function' ? normalizeKey(disc) : disc}:::${typeof normalizeKey === 'function' ? normalizeKey(sub) : sub}`;
+          const found = savedMaps[k1] || savedMaps[k2];
+          if (found && found.mindmap_png) {
+            meta.mindmap_png = found.mindmap_png;
+          }
+        } catch(e) {}
+      }
+      if (!meta.mindmap_png) {
+        try {
+          const localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
+          if (localLessons[disc]?.[sub]?.meta?.mindmap_png) {
+            meta.mindmap_png = localLessons[disc][sub].meta.mindmap_png;
+          }
+        } catch(e) {}
+      }
+      if (!meta.mindmap_png && typeof globalPreseededCatalog !== 'undefined') {
+        if (globalPreseededCatalog?.[disc]?.[sub]?.meta?.mindmap_png) {
+          meta.mindmap_png = globalPreseededCatalog[disc][sub].meta.mindmap_png;
+        }
+      }
       currentYoutubeUrl = meta.youtube_url || (disc === 'Informatica' && sub === 'Excel' ? "https://www.youtube.com/watch?v=2tCnNcz5fqw" : "");
       if (typeof currentTab !== "undefined" && currentTab === 5 && typeof sincronizarVideoComAulaAtual === "function") { sincronizarVideoComAulaAtual(); }
       if (typeof atualizarNomeBotaoCarregarAula === "function") { atualizarNomeBotaoCarregarAula(); }

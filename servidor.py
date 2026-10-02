@@ -4023,12 +4023,50 @@ class ConcursosHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps(mm_data, ensure_ascii=False).encode("utf-8"))
             return
 
-        if path.startswith("/assets/") or path.endswith((".jpg", ".png", ".webp", ".ico", ".svg")):
+        # 0.0.2 Servir imagem do Mapa Mental PNG do NotebookLM
+        if path in ("/api/mindmap-png", "/api/mindmap-image"):
+            disc = query.get("discipline", [""])[0].strip()
+            sub = query.get("subarea", [""])[0].strip()
+            folder = find_subarea_folder(disc, sub)
+            png_candidates = [
+                os.path.join(folder, "Mapa_Mental_NotebookLM.png"),
+                os.path.join(BASE_DIR, "public", "mapas_notebooklm", f"{disc}_{sub}.png"),
+                os.path.join(BASE_DIR, "mapas_notebooklm", f"{disc}_{sub}.png")
+            ]
+            found_png = None
+            for p in png_candidates:
+                if os.path.exists(p) and os.path.isfile(p):
+                    found_png = p
+                    break
+            if found_png:
+                self.send_response(200)
+                self.send_header("Content-Type", "image/png")
+                self.send_header("Cache-Control", "public, max-age=3600")
+                self.end_headers()
+                with open(found_png, "rb") as fp:
+                    self.wfile.write(fp.read())
+                return
+            else:
+                self.send_response(404)
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": "Nenhum mapa mental em PNG encontrado para este tópico."}).encode("utf-8"))
+                return
+
+        if path.startswith("/assets/") or path.startswith("/mapas_notebooklm/") or path.endswith((".jpg", ".png", ".webp", ".ico", ".svg")):
             rel_path = path.lstrip("/").replace("/", os.sep)
-            local_file = os.path.join(BASE_DIR, rel_path)
-            if not os.path.exists(local_file):
-                local_file = os.path.join(BASE_DIR, os.path.basename(rel_path))
-            if os.path.exists(local_file) and os.path.isfile(local_file):
+            candidates = [
+                os.path.join(BASE_DIR, rel_path),
+                os.path.join(BASE_DIR, "public", rel_path),
+                os.path.join(BASE_DIR, os.path.basename(rel_path)),
+                os.path.join(BASE_DIR, "public", os.path.basename(rel_path))
+            ]
+            local_file = None
+            for cand in candidates:
+                if os.path.exists(cand) and os.path.isfile(cand):
+                    local_file = cand
+                    break
+            if local_file:
                 ext = os.path.splitext(local_file)[1].lower()
                 mime = "image/jpeg" if ext in (".jpg", ".jpeg") else ("image/png" if ext == ".png" else ("image/webp" if ext == ".webp" else "application/octet-stream"))
                 self.send_response(200)
@@ -5500,23 +5538,48 @@ class ConcursosHandler(BaseHTTPRequestHandler):
                 with open(png_path, "wb") as f_img:
                     f_img.write(img_data)
 
-                # Salvar também em public/mapas_notebooklm para exibição estática
+                # Salvar também em public/mapas_notebooklm e mapas_notebooklm para exibição estática
                 public_dir = os.path.join(ROOT_DIR, "public", "mapas_notebooklm")
                 os.makedirs(public_dir, exist_ok=True)
+                root_mapas = os.path.join(ROOT_DIR, "mapas_notebooklm")
+                os.makedirs(root_mapas, exist_ok=True)
                 pub_filename = f"{disc}_{sub}.png"
                 pub_path = os.path.join(public_dir, pub_filename)
                 with open(pub_path, "wb") as f_pub:
                     f_pub.write(img_data)
+                with open(os.path.join(root_mapas, pub_filename), "wb") as f_root:
+                    f_root.write(img_data)
 
                 rel_url = f"/mapas_notebooklm/{pub_filename}"
+                api_url = f"/api/mindmap-png?discipline={disc}&subarea={sub}"
+
+                # Sincronizar metadados nos arquivos de catálogo preseeded_topics.json
+                for pf in [os.path.join(BASE_DIR, "preseeded_topics.json"),
+                           os.path.join(BASE_DIR, "public", "preseeded_topics.json"),
+                           os.path.join(BASE_DIR, "api", "preseeded_topics.json"),
+                           os.path.join(BASE_DIR, ".vercel", "output", "static", "preseeded_topics.json")]:
+                    if os.path.exists(pf):
+                        try:
+                            with open(pf, "r", encoding="utf-8") as fp:
+                                cat = json.load(fp)
+                            if disc in cat and sub in cat[disc]:
+                                if "meta" not in cat[disc][sub]:
+                                    cat[disc][sub]["meta"] = {}
+                                cat[disc][sub]["meta"]["mindmap_png"] = rel_url
+                                with open(pf, "w", encoding="utf-8") as fp:
+                                    json.dump(cat, fp, indent=2, ensure_ascii=False)
+                        except Exception as e_cat:
+                            print(f"[Upload PNG] Aviso ao sincronizar {pf}: {e_cat}")
+
                 self.send_response(200)
                 self.send_header("Content-type", "application/json; charset=utf-8")
                 self.end_headers()
                 self.wfile.write(json.dumps({
                     "success": True,
                     "url": rel_url,
+                    "api_url": api_url,
                     "local_path": png_path,
-                    "message": "Mapa mental em PNG salvo com sucesso na pasta da matéria!"
+                    "message": "Mapa mental em PNG salvo com sucesso na pasta da matéria e nos catálogos!"
                 }, ensure_ascii=False).encode("utf-8"))
                 return
             except Exception as e:

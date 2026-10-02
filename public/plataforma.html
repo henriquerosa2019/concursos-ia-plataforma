@@ -4615,6 +4615,56 @@
   </div>
 </div>
 
+
+<!-- Modal: Importar Mapa Mental do Google NotebookLM -->
+<div class="modal-overlay" id="modalImportNotebookLm" style="display: none;" onclick="if(event.target === this) closeModal('modalImportNotebookLm')">
+  <div class="modal-box" style="max-width: 620px; width: 94%;">
+    <div class="modal-title" style="display: flex; align-items: center; justify-content: space-between;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 20px;">📥</span>
+        <span style="font-weight: 800; font-size: 15.5px;">Importar Mapa do Google NotebookLM</span>
+      </div>
+      <button class="btn btn-sm" onclick="closeModal('modalImportNotebookLm')" style="background: transparent; border: none; font-size: 16px; cursor: pointer; color: var(--text-muted);">✕</button>
+    </div>
+    
+    <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 8px; padding: 12px; margin: 12px 0 16px; font-size: 12.5px; line-height: 1.5; color: #bae6fd;">
+      <b>⚡ Integração Direta com sua Conta Google:</b><br>
+      1. Gere o mapa mental no seu caderno do NotebookLM com o PDF anexado.<br>
+      2. Clique no ícone de <b>Copiar</b> na resposta do NotebookLM.<br>
+      3. Cole abaixo (ou use o botão automático) para converter na árvore interativa do app.
+    </div>
+
+    <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+      <button class="btn btn-sm" onclick="copyNotebookLmMasterPrompt()" style="background: rgba(99, 102, 241, 0.2); border-color: rgba(99, 102, 241, 0.4); color: #c7d2fe; font-weight: 700;">
+        <span>📋 Copiar Prompt Mestre</span>
+      </button>
+      <a href="https://notebook.google.com/notebook/8794eb3d-06b5-430f-bf91-adadd6b93374?authuser=1&hl=pt-BR" target="_blank" class="btn btn-sm" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px; background: rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.4); color: #6ee7b7; font-weight: 700;">
+        <span>🔗 Abrir Meu NotebookLM ↗</span>
+      </a>
+      <button class="btn btn-sm" onclick="pasteFromClipboardToNotebookLmModal()" style="background: rgba(56, 189, 248, 0.2); border-color: rgba(56, 189, 248, 0.4); color: #7dd3fc; font-weight: 700;">
+        <span>📋 Colar do Clipboard</span>
+      </button>
+    </div>
+
+    <div class="modal-input-group" style="margin-bottom: 14px;">
+      <label style="font-weight: 700; font-size: 12px; display: block; margin-bottom: 6px; color: var(--text2);">
+        Conteúdo Copiado do NotebookLM (Markdown, Tópicos ou JSON):
+      </label>
+      <textarea id="notebookLmRawInput" placeholder="Cole aqui a resposta gerada pelo NotebookLM..." style="width: 100%; box-sizing: border-box; height: 190px; padding: 10px 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: monospace; font-size: 12px; line-height: 1.4; resize: vertical;"></textarea>
+    </div>
+
+    <div class="modal-actions" style="display: flex; justify-content: space-between; align-items: center;">
+      <span id="notebookLmImportStatus" style="font-size: 12px; color: #94a3b8;"></span>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn" onclick="closeModal('modalImportNotebookLm')">Cancelar</button>
+        <button class="btn btn-primary" id="btnExecuteNotebookLmImport" onclick="executeNotebookLmImport()" style="background: linear-gradient(135deg, #0284c7, #0ea5e9); font-weight: 700;">
+          <span>🚀 Converter & Importar para a Aula</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Painel Lateral do Conhecimento (Drawer dos 4 Pilares - React Flow Style) -->
 <div id="mindmapKnowledgeDrawer" class="mindmap-knowledge-drawer" style="display: none;">
   <div class="mkd-backdrop" onclick="closeMindmapKnowledgeDrawerAndFullscreen()"></div>
@@ -7816,7 +7866,277 @@
   }
 
   // Modals
-  function openAiMindmapModal() {
+
+  // ==========================================
+  // INTEGRAÇÃO NATIVA COM GOOGLE NOTEBOOKLM
+  // ==========================================
+  function openImportNotebookLmMindmapModal() {
+    const textarea = document.getElementById('notebookLmRawInput');
+    const status = document.getElementById('notebookLmImportStatus');
+    if (status) status.textContent = '';
+    
+    openModal('modalImportNotebookLm');
+    
+    // Tenta leitura prévia do clipboard se permitido
+    if (navigator.clipboard && navigator.clipboard.readText) {
+      navigator.clipboard.readText().then(clipText => {
+        if (clipText && (clipText.includes('#') || clipText.includes('nodes') || clipText.includes('Eixo') || clipText.includes('- **'))) {
+          if (textarea && !textarea.value.trim()) {
+            textarea.value = clipText;
+            if (status) status.textContent = '📋 Conteúdo detectado na área de transferência!';
+          }
+        }
+      }).catch(() => {});
+    }
+  }
+
+  function copyNotebookLmMasterPrompt() {
+    const dName = (currentDiscipline || 'Direito Administrativo').replace(/_/g, ' ');
+    const sName = (currentSubarea || 'Atos Administrativos').replace(/_/g, ' ');
+    const promptText = `Atue como um Especialista em ${dName} para Concursos Públicos.
+Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEMÂNTICO HIERÁRQUICO rigorosamente no seguinte formato Markdown com tópicos e números de página:
+
+# ${sName}
+
+## 1. [Nome do Macro-Eixo 1] [Pág. X]
+- **[Conceito ou Regra 1]**: [Síntese explicativa clara e didática de 2 a 3 frases]
+- **[Conceito ou Regra 2]**: [Síntese explicativa clara e didática de 2 a 3 frases]
+- **[Exceção ou Alerta de Banca]**: [Explicação do ponto de atenção ou exceção crucial]
+- **[Mnemônico de Fixação]**: [Sigla ou regra prática de memorização]
+
+## 2. [Nome do Macro-Eixo 2] [Pág. X]
+... (repita para de 5 a 8 macro-eixos essenciais)`;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(promptText).then(() => {
+        showToast('Prompt Mestre copiado para a área de transferência!', '📋');
+      }).catch(() => {
+        prompt('Copie o prompt abaixo para colar no NotebookLM:', promptText);
+      });
+    } else {
+      prompt('Copie o prompt abaixo para colar no NotebookLM:', promptText);
+    }
+  }
+
+  function pasteFromClipboardToNotebookLmModal() {
+    const textarea = document.getElementById('notebookLmRawInput');
+    const status = document.getElementById('notebookLmImportStatus');
+    if (navigator.clipboard && navigator.clipboard.readText) {
+      navigator.clipboard.readText().then(text => {
+        if (textarea) textarea.value = text;
+        if (status) status.textContent = `📋 Colado com sucesso (${text.length} caracteres)!`;
+      }).catch(err => {
+        alert('Para colar, clique na caixa de texto e pressione Ctrl+V.');
+      });
+    } else {
+      alert('Pressione Ctrl+V diretamente na caixa de texto.');
+    }
+  }
+
+  function parseNotebookLmToMindmap(raw, defaultDiscipline, defaultSubarea, defaultTitle) {
+    if (!raw || typeof raw !== 'string') return null;
+    const trimmed = raw.trim();
+
+    // 1. Se for JSON direto
+    if (trimmed.startsWith('{') && trimmed.includes('"nodes"')) {
+      try {
+        const parsed = JSON.parse(trimmed);
+        if (Array.isArray(parsed.nodes) && parsed.nodes.length > 0) {
+          return parsed;
+        }
+      } catch(e) {}
+    }
+
+    // 2. Parser Universal de Markdown / Tópicos do NotebookLM
+    const lines = trimmed.split('\n');
+    const nodes = [];
+    const edges = [];
+
+    let rootTitle = defaultTitle || (currentSubarea ? currentSubarea.replace(/_/g, ' ') : 'Mapa Mental');
+    let rootResumo = 'Estrutura conceitual estruturada no Google NotebookLM.';
+    let rootNode = {
+      id: 'root',
+      titulo: rootTitle,
+      tipo: 'root',
+      pagina: 1,
+      resumo: rootResumo
+    };
+    nodes.push(rootNode);
+
+    let currentCategory = null;
+    let catIndex = 0;
+    let conceptIndex = 0;
+
+    for (let line of lines) {
+      let l = line.trim();
+      if (!l) continue;
+
+      // Título principal (# Título)
+      if (l.startsWith('# ') && !l.startsWith('## ')) {
+        rootTitle = l.replace(/^#\s+/, '').replace(/\*+/g, '').trim();
+        rootNode.titulo = rootTitle;
+        continue;
+      }
+
+      // Nível 1: Macro-Eixos (## Título ou 1. Título ou Eixo X)
+      const isH2 = l.startsWith('## ');
+      const isNum1 = /^(?:\d{1,2}\.|\bEixo\s+\d+:?)\s+([A-ZÀ-Ú].*)/i.test(l) && !l.includes(' - ') && l.length < 90;
+      
+      if (isH2 || isNum1) {
+        catIndex++;
+        const catId = 'cat_' + catIndex;
+        let rawTitle = isH2 ? l.replace(/^##\s+/, '') : l.replace(/^(?:\d{1,2}\.|\bEixo\s+\d+:?)\s+/, '');
+        rawTitle = rawTitle.replace(/\*+/g, '').trim();
+
+        // Extrai página se informada: [Pág. X] ou (p. X)
+        let page = 1;
+        const pageMatch = rawTitle.match(/\[(?:pág\.?|p\.?|páginas?)\s*(\d+)\]|\((?:pág\.?|p\.?|páginas?)\s*(\d+)\)/i);
+        if (pageMatch) {
+          page = parseInt(pageMatch[1] || pageMatch[2], 10);
+          rawTitle = rawTitle.replace(/\[(?:pág\.?|p\.?|páginas?)\s*\d+\]|\((?:pág\.?|p\.?|páginas?)\s*\d+\)/gi, '').trim();
+        }
+
+        currentCategory = {
+          id: catId,
+          titulo: rawTitle,
+          tipo: 'category',
+          pagina: page,
+          resumo: `Eixo estruturado no NotebookLM: ${rawTitle}.`
+        };
+        nodes.push(currentCategory);
+        edges.push({ source: 'root', target: catId });
+        continue;
+      }
+
+      // Nível 2 e 3: Subtópicos (- item, * item, ### item, 1.1 item)
+      if (l.startsWith('### ') || l.startsWith('- ') || l.startsWith('* ') || /^\d+\.\d+\s+/.test(l)) {
+        conceptIndex++;
+        const parentId = currentCategory ? currentCategory.id : 'root';
+        const conceptId = 'item_' + conceptIndex;
+
+        let cleanLine = l.replace(/^(?:###\s+|- |\* |\d+\.\d+\s+)/, '').trim();
+
+        let page = currentCategory ? currentCategory.pagina : 1;
+        const pageMatch = cleanLine.match(/\[(?:pág\.?|p\.?|páginas?)\s*(\d+)\]|\((?:pág\.?|p\.?|páginas?)\s*(\d+)\)/i);
+        if (pageMatch) {
+          page = parseInt(pageMatch[1] || pageMatch[2], 10);
+          cleanLine = cleanLine.replace(/\[(?:pág\.?|p\.?|páginas?)\s*\d+\]|\((?:pág\.?|p\.?|páginas?)\s*\d+\)/gi, '').trim();
+        }
+
+        let nodeTitle = cleanLine;
+        let nodeSummary = cleanLine;
+        let nodeType = 'concept';
+
+        const boldMatch = cleanLine.match(/^\*\*([^*]+)\*\*:?\s*(.*)$/);
+        if (boldMatch) {
+          nodeTitle = boldMatch[1].trim();
+          nodeSummary = boldMatch[2].trim() || nodeTitle;
+        } else if (cleanLine.includes(': ')) {
+          const parts = cleanLine.split(': ');
+          nodeTitle = parts[0].replace(/\*+/g, '').trim();
+          nodeSummary = parts.slice(1).join(': ').trim();
+        }
+
+        const lowerT = nodeTitle.toLowerCase();
+        if (lowerT.includes('mnemônico') || lowerT.includes('sigla') || lowerT.includes('pati') || lowerT.includes('cofifomob')) {
+          nodeType = 'mnemonic';
+        } else if (lowerT.includes('pegadinha') || lowerT.includes('atenção') || lowerT.includes('cuidado') || lowerT.includes('alerta') || lowerT.includes('armadilha')) {
+          nodeType = 'trap';
+        } else if (lowerT.includes('exceção') || lowerT.includes('regra') || lowerT.includes('requisito') || lowerT.includes('art.')) {
+          nodeType = 'rule';
+        } else if (lowerT.includes('vs') || lowerT.includes('diferença') || lowerT.includes('comparativo')) {
+          nodeType = 'comparison';
+        }
+
+        nodes.push({
+          id: conceptId,
+          titulo: nodeTitle,
+          tipo: nodeType,
+          pagina: page,
+          resumo: nodeSummary
+        });
+
+        edges.push({ source: parentId, target: conceptId });
+      }
+    }
+
+    if (nodes.length <= 1) return null;
+
+    return {
+      titulo: rootNode.titulo,
+      nodes,
+      edges
+    };
+  }
+
+  function executeNotebookLmImport() {
+    const raw = (document.getElementById('notebookLmRawInput')?.value || '').trim();
+    if (!raw) {
+      alert('Por favor, cole o conteúdo copiado do NotebookLM.');
+      return;
+    }
+
+    const title = currentLessonMeta?.title || (currentSubarea ? currentSubarea.replace(/_/g, ' ') : 'Aula');
+    const mm = parseNotebookLmToMindmap(raw, currentDiscipline, currentSubarea, title);
+
+    if (!mm || !mm.nodes || mm.nodes.length < 2) {
+      alert('Não foi possível identificar a estrutura de tópicos. Certifique-se de copiar a resposta do NotebookLM com marcadores (-) ou tópicos.');
+      return;
+    }
+
+    const mmBlock = `### 🗺️ Mapa Mental Interativo & Navegação do Conhecimento\n\n\`\`\`nlm-mindmap-json\n${JSON.stringify(mm, null, 2)}\n\`\`\``;
+    let context = (typeof readerRawContent !== 'undefined' && readerRawContent) ? readerRawContent : '';
+    
+    let updatedMd = context;
+    if (updatedMd.includes('### 🗺️ Mapa Mental')) {
+      updatedMd = updatedMd.replace(/### 🗺️ Mapa Mental[^\n]*\n+\`\`\`(?:nlm-mindmap-json|nlm-mindmap|text|mermaid)?[\s\S]*?\`\`\`/, mmBlock);
+    } else {
+      updatedMd = updatedMd ? updatedMd.replace(/##\s*1\./, `${mmBlock}\n\n---\n\n## 1.`) : mmBlock;
+    }
+
+    closeModal('modalImportNotebookLm');
+    showToast(`Mapa mental importado do NotebookLM (${mm.nodes.length} nós)!`, '📥');
+
+    // Persistência local
+    try {
+      const localLessons = JSON.parse(localStorage.getItem('concursos_local_lessons') || '{}');
+      if (!localLessons[currentDiscipline]) localLessons[currentDiscipline] = {};
+      if (!localLessons[currentDiscipline][currentSubarea]) localLessons[currentDiscipline][currentSubarea] = { meta: {} };
+      localLessons[currentDiscipline][currentSubarea].meta.markdown_content = updatedMd;
+      localLessons[currentDiscipline][currentSubarea].meta.mindmap_json = mm;
+      localStorage.setItem('concursos_local_lessons', JSON.stringify(localLessons));
+    } catch(eStorage) {}
+
+    try {
+      const savedMaps = JSON.parse(localStorage.getItem('concursos_saved_mindmaps') || '{}');
+      const mKey = `${currentDiscipline}:::${currentSubarea}`;
+      savedMaps[mKey] = {
+        mindmap: mm,
+        markdown: updatedMd,
+        timestamp: Date.now()
+      };
+      localStorage.setItem('concursos_saved_mindmaps', JSON.stringify(savedMaps));
+    } catch(eStorage2) {}
+
+    if (typeof currentLessonMeta !== 'undefined' && currentLessonMeta) {
+      currentLessonMeta.markdown_content = updatedMd;
+      currentLessonMeta.mindmap_json = mm;
+    }
+
+    if (typeof globalPreseededCatalog !== 'undefined' && globalPreseededCatalog?.[currentDiscipline]?.[currentSubarea]?.meta) {
+      globalPreseededCatalog[currentDiscipline][currentSubarea].meta.markdown_content = updatedMd;
+      globalPreseededCatalog[currentDiscipline][currentSubarea].meta.mindmap_json = mm;
+    }
+
+    renderDynamicLessonTabs(updatedMd, currentDiscipline, currentSubarea);
+    if (typeof readerRawContent !== 'undefined') readerRawContent = updatedMd;
+    switchTab(0);
+    setTimeout(() => {
+      document.querySelector('.nlm-mindmap-wrapper, .nlm-graph-container')?.scrollIntoView({ behavior: 'smooth' });
+    }, 300);
+  }
+
+    function openAiMindmapModal() {
     const focusInput = document.getElementById('aiMindmapFocus');
     if (focusInput) focusInput.value = '';
     const spinner = document.getElementById('aiMindmapSpinner');
@@ -8518,6 +8838,9 @@
               <span id="iconToggleMindmapVis">🗺️</span><span id="textToggleMindmapVis">Ocultar Mapa Mental</span>
             </button>
           ` : ''}
+          <button class="btn btn-sm" onclick="openImportNotebookLmMindmapModal()" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(56, 189, 248, 0.18); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); font-weight: 700; cursor: pointer;" title="Importar mapa mental gerado na sua conta do Google NotebookLM">
+            <span>📥</span><span>Importar do NotebookLM</span>
+          </button>
           <button class="btn btn-sm" onclick="openAiMindmapModal()" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(99, 102, 241, 0.22); color: #c7d2fe; border: 1px solid rgba(99, 102, 241, 0.5); font-weight: 700; cursor: pointer;" title="Gerar ou personalizar mapa mental deste tópico com IA">
             <span>✨</span><span>Gerar Mapa Mental com IA</span>
           </button>

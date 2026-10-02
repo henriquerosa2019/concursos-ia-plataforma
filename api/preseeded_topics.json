@@ -23797,581 +23797,196 @@
         "youtube_url": "",
         "markdown_content": "# DIREITO ADMINISTRATIVO - Licitações – Lei nº 14.133/2021\n**Professor:** Prof. Rodrigo Motta  \n**Duração:** 50 minutos  \n**Categoria:** Edital de Concursos Públicos (Cebraspe / FGV / AOCP)  \n\n---\n\n> 📋 **VISÃO GERAL DA FONTE (BRIEFING EXECUTIVO — ESTILO NOTEBOOKLM):**  \n> Este material didático do Prof. Rodrigo Motta consolida de forma cirúrgica o regime geral de **Licitações Públicas sob a égide da Lei Federal nº 14.133/2021**. A fonte estrutura o conteúdo em blocos fundamentais para concursos públicos: aspectos constitucionais (Art. 37, XXI), órgãos e sujeitos vinculados (com a importantíssima exclusão das empresas estatais da Lei 13.303/2016), princípios setoriais (destacando planejamento e segregação de funções), contratação direta (distinção dogmática entre inexigibilidade de rol exemplificativo e dispensa de rol taxativo), modalidades licitatórias vigentes (com foco no pregão e no inovador diálogo competitivo) e a inversão ordinária das fases procedimentais onde o julgamento antecede a habilitação.\n\n---\n\n### 🗺️ Mapa Mental Interativo & Navegação do Conhecimento\n\n```nlm-mindmap-json\n{\n  \"titulo\": \"Licitacoes Lei 14133\",\n  \"nodes\": [\n    {\n      \"id\": \"root\",\n      \"titulo\": \"Licitacoes Lei 14133\",\n      \"tipo\": \"root\",\n      \"pagina\": 1,\n      \"resumo\": \"Estrutura esquematizada das unidades conceituais essenciais de Licitacoes Lei 14133 para provas de concursos públicos.\"\n    },\n    {\n      \"id\": \"cat_1\",\n      \"titulo\": \"Objeto da Licitação\",\n      \"tipo\": \"category\",\n      \"pagina\": 3,\n      \"resumo\": \"Art. 2º, Lei nº 14.133/2021 – Esta Lei aplica-se a: I - alienação e concessão de direito real de uso de bens.\"\n    },\n    {\n      \"id\": \"item_1\",\n      \"titulo\": \"Art. 2º, Lei Nº 14.133/2021 (Regra)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 3,\n      \"resumo\": \"Esta Lei aplica-se a.\"\n    },\n    {\n      \"id\": \"item_2\",\n      \"titulo\": \"Alienação E Concessão De Direito (Inciso I)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 3,\n      \"resumo\": \"alienação e concessão de direito real de uso de bens.\"\n    },\n    {\n      \"id\": \"item_3\",\n      \"titulo\": \"Compra (Inciso II)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 1,\n      \"resumo\": \"compra, inclusive por encomenda.\"\n    },\n    {\n      \"id\": \"item_4\",\n      \"titulo\": \"Locação ou Compra de Imóvel (Inciso III)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 13,\n      \"resumo\": \"locação.\"\n    },\n    {\n      \"id\": \"item_5\",\n      \"titulo\": \"Concessão E Permissão De Uso (Inciso IV)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 3,\n      \"resumo\": \"concessão e permissão de uso de bens públicos.\"\n    },\n    {\n      \"id\": \"item_6\",\n      \"titulo\": \"Serviços Técnicos Especializados (Inciso V)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 2,\n      \"resumo\": \"prestação de serviços, inclusive os técnico-profissionais especializados.\"\n    },\n    {\n      \"id\": \"item_7\",\n      \"titulo\": \"Obras E Serviços De Arquitetura (Inciso VI)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 3,\n      \"resumo\": \"obras e serviços de arquitetura e engenharia.\"\n    },\n    {\n      \"id\": \"item_8\",\n      \"titulo\": \"Contratações De Tecnologia Da Informação (Inciso VII)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 3,\n      \"resumo\": \"contratações de tecnologia da informação e de comunicação.\"\n    },\n    {\n      \"id\": \"item_9\",\n      \"titulo\": \"Art. 3º, Lei Nº 14.133/2021 (Regra)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 3,\n      \"resumo\": \"Não se subordinam ao regime desta Lei.\"\n    },\n    {\n      \"id\": \"item_10\",\n      \"titulo\": \"Contratos Que Tenham Por Objeto (Inciso I)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 3,\n      \"resumo\": \"contratos que tenham por objeto operação de crédito, interno ou externo, e gestão de dívida pública, incluídas as contratações de agente financeiro e a concessão de garantia relacionadas a esses contratos.\"\n    },\n    {\n      \"id\": \"cat_2\",\n      \"titulo\": \"Objetivos da Licitação\",\n      \"tipo\": \"category\",\n      \"pagina\": 1,\n      \"resumo\": \"Art. 11, Lei nº 14.133/2021 – O processo licitatório tem por objetivos: I - assegurar a seleção da proposta apta a gerar o resultado de contratação mais vantajoso para a Administração Pública, inclusive no que se refere ao ciclo de vida do objeto.\"\n    },\n    {\n      \"id\": \"item_11\",\n      \"titulo\": \"Art. 11, Lei Nº 14.133/2021 (Regra)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 1,\n      \"resumo\": \"O processo licitatório tem por objetivos.\"\n    },\n    {\n      \"id\": \"item_12\",\n      \"titulo\": \"Assegurar A Seleção Da Proposta (Inciso I)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 5,\n      \"resumo\": \"assegurar a seleção da proposta apta a gerar o resultado de contratação mais vantajoso para a Administração Pública, inclusive no que se refere ao ciclo de vida do objeto.\"\n    },\n    {\n      \"id\": \"item_13\",\n      \"titulo\": \"Assegurar Tratamento Isonômico Entre Os (Inciso II)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 5,\n      \"resumo\": \"assegurar tratamento isonômico entre os licitantes, bem como a justa competição.\"\n    },\n    {\n      \"id\": \"item_14\",\n      \"titulo\": \"Evitar Contratações Com Sobrepreço Ou (Inciso III)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 5,\n      \"resumo\": \"evitar contratações com sobrepreço ou com preços manifestamente inexequíveis e superfaturamento na execução dos contratos.\"\n    },\n    {\n      \"id\": \"item_15\",\n      \"titulo\": \"Incentivar A Inovação E O (Inciso IV)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 5,\n      \"resumo\": \"incentivar a inovação e o desenvolvimento nacional sustentável.\"\n    },\n    {\n      \"id\": \"item_16\",\n      \"titulo\": \"Assegurar Tratamento Diferenciado Entre Os (Inciso II)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 6,\n      \"resumo\": \"Assegurar tratamento diferenciado entre os licitantes, bem como a justa aquisição da empresa maior que possui maior capital financeiro.\"\n    },\n    {\n      \"id\": \"item_17\",\n      \"titulo\": \"Art. 5°, Lei Nº 14.133/2021 (Regra)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 1,\n      \"resumo\": \"Na aplicação desta Lei, serão observados os princípios da legalidade, da impessoalidade, da moralidade, da publicidade, da eficiência, do interesse público, da probidade administrativa, da igualdade, do planejamento, da transparência, da eficácia, da segregação de funções, da motivação, da vinculação ao edital, do julgamento objetivo, da segurança jurídica, da razoabilidade, da competitividade, da proporcionalidade, da celeridade, da economicidade e do desenvolvimento nacional sustentável, assim como as disposições do Decreto-Lei nº 4.657, de 4 de setembro de 1942 (Lei de Introdução às Normas do Direito Brasileiro).\"\n    },\n    {\n      \"id\": \"cat_3\",\n      \"titulo\": \"Da Contratação Direta\",\n      \"tipo\": \"category\",\n      \"pagina\": 1,\n      \"resumo\": \"Art. 72, Lei nº 14.133/2021 – O processo de contratação direta, que compreende os casos de inexigibilidade e de dispensa de licitação, deverá ser instruído com os seguintes documentos: I - documento de formalização de demanda e, se for o caso, estudo técnico preliminar, análise de riscos, termo de referência, projeto básico ou projeto executivo.\"\n    },\n    {\n      \"id\": \"item_18\",\n      \"titulo\": \"Art. 72, Lei Nº 14.133/2021 (Regra)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 1,\n      \"resumo\": \"O processo de contratação direta, que compreende os casos de inexigibilidade e de dispensa de licitação, deverá ser instruído com os seguintes documentos.\"\n    },\n    {\n      \"id\": \"item_19\",\n      \"titulo\": \"Documento De Formalização De Demanda (Inciso I)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 8,\n      \"resumo\": \"documento de formalização de demanda e, se for o caso, estudo técnico preliminar, análise de riscos, termo de referência, projeto básico ou projeto executivo.\"\n    },\n    {\n      \"id\": \"item_20\",\n      \"titulo\": \"Estimativa De Despesa (Inciso II)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 8,\n      \"resumo\": \"estimativa de despesa, que deverá ser calculada na forma estabelecida no art. 23 desta Lei.\"\n    },\n    {\n      \"id\": \"item_21\",\n      \"titulo\": \"Parecer Jurídico E Pareceres Técnicos (Inciso III)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 8,\n      \"resumo\": \"parecer jurídico e pareceres técnicos, se for o caso, que demonstrem o atendimento dos requisitos exigidos.\"\n    },\n    {\n      \"id\": \"item_22\",\n      \"titulo\": \"Demonstração Da Compatibilidade Da Previsão (Inciso IV)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 8,\n      \"resumo\": \"demonstração da compatibilidade da previsão de recursos orçamentários com o compromisso a ser assumido.\"\n    },\n    {\n      \"id\": \"item_23\",\n      \"titulo\": \"Comprovação De Que O Contratado (Inciso V)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 8,\n      \"resumo\": \"comprovação de que o contratado preenche os requisitos de habilitação e qualificação mínima necessária.\"\n    },\n    {\n      \"id\": \"item_24\",\n      \"titulo\": \"Razão Da Escolha Do Contratado (Inciso VI)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 8,\n      \"resumo\": \"razão da escolha do contratado.\"\n    },\n    {\n      \"id\": \"item_25\",\n      \"titulo\": \"Justificativa De Preço (Inciso VII)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 8,\n      \"resumo\": \"justificativa de preço.\"\n    },\n    {\n      \"id\": \"item_26\",\n      \"titulo\": \"Autorização Da Autoridade Competente (Inciso VIII)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 8,\n      \"resumo\": \"autorização da autoridade competente.\"\n    },\n    {\n      \"id\": \"item_27\",\n      \"titulo\": \"Art. 73, Lei Nº 14.133/2021 (Regra)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 1,\n      \"resumo\": \"Na hipótese de contratação direta indevida ocorrida com dolo, fraude ou erro grosseiro, o contratado e o agente público responsável responderão solidariamente pelo dano causado ao erário, sem prejuízo de outras sanções legais cabíveis.\"\n    },\n    {\n      \"id\": \"cat_4\",\n      \"titulo\": \"Inexigibilidade de Licitação\",\n      \"tipo\": \"category\",\n      \"pagina\": 8,\n      \"resumo\": \"Art. 74, Lei nº 14.133/2021 – É inexigível a licitação quando inviável a competição, em especial nos casos de: I - aquisição de materiais, de equipamentos ou de gêneros ou contratação de serviços que só possam ser fornecidos por produtor, empresa ou representante comercial exclusivos.\"\n    },\n    {\n      \"id\": \"item_28\",\n      \"titulo\": \"Art. 74, Lei Nº 14.133/2021 (Regra)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 8,\n      \"resumo\": \"É inexigível a licitação quando inviável a competição, em especial nos casos de.\"\n    },\n    {\n      \"id\": \"item_29\",\n      \"titulo\": \"Fornecedor Exclusivo (Inciso I)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 15,\n      \"resumo\": \"aquisição de materiais, de equipamentos ou de gêneros ou contratação de serviços que só possam ser fornecidos por produtor, empresa ou representante comercial exclusivos.\"\n    },\n    {\n      \"id\": \"item_30\",\n      \"titulo\": \"Profissional Artístico Consagrado (Inciso II)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 9,\n      \"resumo\": \"contratação de profissional do setor artístico, diretamente ou por meio de empresário exclusivo, desde que consagrado pela crítica especializada ou pela opinião pública.\"\n    },\n    {\n      \"id\": \"item_31\",\n      \"titulo\": \"Serviços Técnicos Especializados (Inciso III)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 2,\n      \"resumo\": \"contratação dos seguintes serviços técnicos especializados de natureza pre dominantemente intelectual com profissionais ou empresas de notória especialização, vedada a inexigibilidade para serviços de publicidade e divulgação.\"\n    },\n    {\n      \"id\": \"item_32\",\n      \"titulo\": \"Credenciamento de Objetos (Inciso IV)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 9,\n      \"resumo\": \"objetos que devam ou possam ser contratados por meio de credenciamento.\"\n    },\n    {\n      \"id\": \"item_33\",\n      \"titulo\": \"Locação ou Compra de Imóvel (Inciso V)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 13,\n      \"resumo\": \"aquisição ou locação de imóvel cujas características de instalações e de localização tornem necessária sua escolha.\"\n    },\n    {\n      \"id\": \"item_34\",\n      \"titulo\": \"Avaliação Prévia Do Bem (Inciso I)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 10,\n      \"resumo\": \"avaliação prévia do bem, do seu estado de conservação, dos custos de adaptações, quando imprescindíveis às necessidades de utilização, e do prazo de amortização dos investimentos.\"\n    },\n    {\n      \"id\": \"item_35\",\n      \"titulo\": \"Certificação Da Inexistência De Imóveis (Inciso II)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 10,\n      \"resumo\": \"certificação da inexistência de imóveis públicos vagos e disponíveis que atendam ao objeto.\"\n    },\n    {\n      \"id\": \"cat_5\",\n      \"titulo\": \"Dispensa de Licitação\",\n      \"tipo\": \"category\",\n      \"pagina\": 8,\n      \"resumo\": \"Na nova lei de licitações (lei nº 14.133/2021), os casos de LICITAÇÃO DISPENSÁVEL são encontrados no artigo 75: Art. 75, Lei nº 14.133/2021 – É dispensável a licitação.\"\n    },\n    {\n      \"id\": \"item_36\",\n      \"titulo\": \"Art. 75, Lei Nº 14.133/2021 (Regra)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 8,\n      \"resumo\": \"É dispensável a licitação.\"\n    },\n    {\n      \"id\": \"item_37\",\n      \"titulo\": \"Dispensa por Baixo Valor: Obras (Inciso I)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 9,\n      \"resumo\": \"para contratação que envolva valores inferiores a R$ 100.000,00 (cem mil reais) R$ 130.984,20 (cento e trinta mil novecentos e oitenta e quatro reais e vinte centavos ), no caso de obras e serviços de engenharia ou de serviço s de manutenção de veículos automotores.\"\n    },\n    {\n      \"id\": \"item_38\",\n      \"titulo\": \"Dispensa por Baixo Valor: Compras (Inciso II)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 10,\n      \"resumo\": \"para contratação que envolva valores inferiores a R$ 50.000,00 (cinquenta mil reais) 65.492,11 (sessenta e cinco mil quatrocentos e noventa e dois reais e onze centavos), no caso de outros serviços e compras.\"\n    },\n    {\n      \"id\": \"item_39\",\n      \"titulo\": \"Contratação Que Mantenha Todas As (Inciso III)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 10,\n      \"resumo\": \"para contratação que mantenha todas as condições definidas em edital de licitação realizada há menos de 1 (um) ano, quando se verificar que naquela licitação.\"\n    },\n    {\n      \"id\": \"item_40\",\n      \"titulo\": \"Contratação Que Tenha Por Objeto (Inciso IV)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 3,\n      \"resumo\": \"para contratação que tenha por objeto.\"\n    },\n    {\n      \"id\": \"item_41\",\n      \"titulo\": \"Contratação Com Vistas Ao Cumprimento (Inciso V)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 11,\n      \"resumo\": \"para contratação com vistas ao cumprimento do disposto nos arts. 3º, 3º -A, 4º, 5º e 20 da Lei nº 10.973, de 2 de dezembro de 2004, observados os princípios gerais de contratação constantes da referida Lei.\"\n    },\n    {\n      \"id\": \"item_42\",\n      \"titulo\": \"Contratação Que Possa Acarretar Comprometimento (Inciso VI)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 11,\n      \"resumo\": \"para contratação que possa acarretar comprometimento da segurança nacional, nos casos estabelecidos pelo Ministro de Estado da Defesa, mediante demanda dos comandos das Forças Armadas ou dos demais ministérios.\"\n    },\n    {\n      \"id\": \"item_43\",\n      \"titulo\": \"Guerra (Inciso VII)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 11,\n      \"resumo\": \"nos casos de guerra, estado de defesa, estado de sítio, intervenção federal ou de grave perturbação da ordem.\"\n    },\n    {\n      \"id\": \"item_44\",\n      \"titulo\": \"Emergência ou Calamidade (Inciso VIII)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 11,\n      \"resumo\": \"nos casos de emergência ou de calamidade pública, quando caracterizada urgência de atendimento de s ituação que possa ocasionar prejuízo ou comprometer a continuidade dos serviços públicos ou a segurança de pessoas, obras, serviços, equipamentos e outros bens, públicos ou particulares, e somente para aquisição dos bens necessários ao atendimento da situação emergencial ou calamitosa e para as parcelas de obras e serviços que possam ser concluídas no prazo máximo de 1 (um) ano, contado da data de ocorrência da emergência ou da calamidade, vedadas a prorrogação dos respectivos contratos e a recontratação de empresa já contratada com base no disposto neste inciso.\"\n    },\n    {\n      \"id\": \"item_45\",\n      \"titulo\": \"Aquisição (Inciso IX)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 6,\n      \"resumo\": \"para a aquisição, por pessoa jurídica de direito público interno, de bens produzidos ou serviços prestados por órgão ou entidade que integrem a Administração Pública e que tenham sido criados para esse fim específico, desde que o preço contratado seja compatível com o praticado no mercado.\"\n    },\n    {\n      \"id\": \"cat_6\",\n      \"titulo\": \"Modalidades de Licitação\",\n      \"tipo\": \"category\",\n      \"pagina\": 1,\n      \"resumo\": \"As modalidades representam a estrutura procedimental da licitação. MODALIDADES NA NOVA LEI DE LICITAÇÕES (LEI Nº 14.133/2021) As disposições acerca das modalidades de licitação na nova lei de licitações (lei nº 14.133/2021) são encontradas basicamente no art. 6º, incisos XXXVIII a XLII, bem como nos artigos 28 a 32.\"\n    },\n    {\n      \"id\": \"item_46\",\n      \"titulo\": \"Art. 6º, Lei Nº 14.133/2021 (Regra)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 1,\n      \"resumo\": \"Para os fins desta Lei, consideram-se.\"\n    },\n    {\n      \"id\": \"item_47\",\n      \"titulo\": \"Concorrência (Inciso XXXVIII)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 22,\n      \"resumo\": \"concorrência: modalidade de licitação para contratação de bens e serviços especiais e de obras e serviços comuns e especiais de engenharia, cujo critério de julgamento poderá ser.\"\n    },\n    {\n      \"id\": \"item_48\",\n      \"titulo\": \"Critério: Melhor Técnica (Inciso XXXIX)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 22,\n      \"resumo\": \"concurso: modalidade de licitação para escolha de trabalho técnico, científico ou artístico, cujo critério de julgamento será o de melhor técnica ou conteúdo artístico, e para concessão de prêmio ou remuneração ao vencedor.\"\n    },\n    {\n      \"id\": \"item_49\",\n      \"titulo\": \"Critério: Maior Lance (Inciso XL)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 2,\n      \"resumo\": \"leilão: modalidade de licitação para alienação de bens imóveis ou de bens móveis inservíveis ou legalmente apreendidos a quem oferecer o maior lance.\"\n    },\n    {\n      \"id\": \"item_50\",\n      \"titulo\": \"Critério: Menor Preço (Inciso XLI)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 22,\n      \"resumo\": \"pregão: modalidade de licitação obrigatória para aquisição de bens e serviços comuns, cujo critério de julgamento poderá ser o de menor preço ou o de maior desconto.\"\n    },\n    {\n      \"id\": \"item_51\",\n      \"titulo\": \"Modalidade: Diálogo Competitivo (Inciso XLII)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 23,\n      \"resumo\": \"diálogo competitivo : modalidade de licitação para contratação de obras, serviços e compras em que a Administração Pública realiza diálogos com licitantes previamente selecionados mediante critérios objetivos, com o intuito de desenvolver uma ou m ais alternativas capazes de atender às suas necessidades, devendo os licitantes apresentar proposta final após o encerramento dos diálogos.\"\n    },\n    {\n      \"id\": \"item_52\",\n      \"titulo\": \"Art. 28, Lei Nº 14.133/2021 (Regra)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 1,\n      \"resumo\": \"São modalidades de licitação.\"\n    },\n    {\n      \"id\": \"item_53\",\n      \"titulo\": \"Modalidade: Pregão (Inciso I)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 18,\n      \"resumo\": \"pregão.\"\n    },\n    {\n      \"id\": \"item_54\",\n      \"titulo\": \"Modalidade: Concorrência (Inciso II)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 18,\n      \"resumo\": \"concorrência.\"\n    },\n    {\n      \"id\": \"item_55\",\n      \"titulo\": \"Modalidade: Concurso (Inciso III)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 22,\n      \"resumo\": \"concurso.\"\n    },\n    {\n      \"id\": \"cat_7\",\n      \"titulo\": \"Critérios de Julgamento\",\n      \"tipo\": \"category\",\n      \"pagina\": 22,\n      \"resumo\": \"Art. 33, Lei nº 14.133/2021 – O julgamento das propostas será realizado de acordo com os seguintes critérios: II - maior desconto.\"\n    },\n    {\n      \"id\": \"item_56\",\n      \"titulo\": \"Art. 33, Lei Nº 14.133/2021 (Regra)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 22,\n      \"resumo\": \"O julgamento das propostas será realizado de acordo com os seguintes critérios.\"\n    },\n    {\n      \"id\": \"item_57\",\n      \"titulo\": \"Critério: Menor Preço (Inciso I)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 22,\n      \"resumo\": \"menor preço.\"\n    },\n    {\n      \"id\": \"item_58\",\n      \"titulo\": \"Critério: Maior Desconto (Inciso II)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 22,\n      \"resumo\": \"maior desconto.\"\n    },\n    {\n      \"id\": \"item_59\",\n      \"titulo\": \"Critério: Melhor Técnica (Inciso III)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 1,\n      \"resumo\": \"melhor técnica ou conteúdo artístico.\"\n    },\n    {\n      \"id\": \"item_60\",\n      \"titulo\": \"Critério: Técnica e Preço (Inciso IV)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 12,\n      \"resumo\": \"técnica e preço.\"\n    },\n    {\n      \"id\": \"item_61\",\n      \"titulo\": \"Critério: Maior Lance (Inciso V)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 2,\n      \"resumo\": \"maior lance, no caso de leilão.\"\n    },\n    {\n      \"id\": \"item_62\",\n      \"titulo\": \"Critério: Maior Retorno (Inciso VI)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 22,\n      \"resumo\": \"maior retorno econômico.\"\n    },\n    {\n      \"id\": \"cat_8\",\n      \"titulo\": \"Fases da Licitação\",\n      \"tipo\": \"category\",\n      \"pagina\": 24,\n      \"resumo\": \"Art. 17, Lei nº 14.133/2021 – O processo de licitação observará as seguintes fases, em sequência:: II - de divulgação do edital de licitação.\"\n    },\n    {\n      \"id\": \"item_63\",\n      \"titulo\": \"Art. 17, Lei Nº 14.133/2021 (Regra)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 24,\n      \"resumo\": \"O processo de licitação observará as seguintes fases, em sequência.\"\n    },\n    {\n      \"id\": \"item_64\",\n      \"titulo\": \"Fase 1: Preparatória (Inciso I)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 33,\n      \"resumo\": \"preparatória.\"\n    },\n    {\n      \"id\": \"item_65\",\n      \"titulo\": \"Fase 2: Divulgação do Edital (Inciso II)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 21,\n      \"resumo\": \"de divulgação do edital de licitação.\"\n    },\n    {\n      \"id\": \"item_66\",\n      \"titulo\": \"Fase 3: Apresentação de Propostas (Inciso III)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 2,\n      \"resumo\": \"de apresentação de propostas e lances, quando for o caso.\"\n    },\n    {\n      \"id\": \"item_67\",\n      \"titulo\": \"Fase 4: Julgamento das Propostas (Inciso IV)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 2,\n      \"resumo\": \"de julgamento.\"\n    },\n    {\n      \"id\": \"item_68\",\n      \"titulo\": \"Fase 5: Habilitação (Inciso V)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 8,\n      \"resumo\": \"de habilitação.\"\n    },\n    {\n      \"id\": \"item_69\",\n      \"titulo\": \"Fase 6: Fase Recursal (Inciso VI)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 24,\n      \"resumo\": \"recursal.\"\n    },\n    {\n      \"id\": \"item_70\",\n      \"titulo\": \"Fase 7: Homologação (Inciso VII)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 33,\n      \"resumo\": \"de homologação.\"\n    },\n    {\n      \"id\": \"cat_9\",\n      \"titulo\": \"Raio-X de Pegadinhas da Banca\",\n      \"tipo\": \"category\",\n      \"pagina\": 8,\n      \"resumo\": \"Principais armadilhas, inversões conceituais e assertivas com palavras absolutas recorrentes nas bancas examinadoras.\"\n    },\n    {\n      \"id\": \"item_71\",\n      \"titulo\": \"Pegadinha: Princípio Aplicável\",\n      \"tipo\": \"trap\",\n      \"pagina\": 8,\n      \"resumo\": \"garantir que o certame licitatório permita a igualdade de condições a todos os concorrentes, em atenção ao princípio.\"\n    },\n    {\n      \"id\": \"item_72\",\n      \"titulo\": \"Pegadinha: Modalidade com Critério de Julgamento\",\n      \"tipo\": \"trap\",\n      \"pagina\": 25,\n      \"resumo\": \"observação importante! não confunda modalidade com critério de julgamento.\"\n    }\n  ],\n  \"edges\": [\n    {\n      \"source\": \"root\",\n      \"target\": \"cat_1\"\n    },\n    {\n      \"source\": \"cat_1\",\n      \"target\": \"item_1\"\n    },\n    {\n      \"source\": \"cat_1\",\n      \"target\": \"item_2\"\n    },\n    {\n      \"source\": \"cat_1\",\n      \"target\": \"item_3\"\n    },\n    {\n      \"source\": \"cat_1\",\n      \"target\": \"item_4\"\n    },\n    {\n      \"source\": \"cat_1\",\n      \"target\": \"item_5\"\n    },\n    {\n      \"source\": \"cat_1\",\n      \"target\": \"item_6\"\n    },\n    {\n      \"source\": \"cat_1\",\n      \"target\": \"item_7\"\n    },\n    {\n      \"source\": \"cat_1\",\n      \"target\": \"item_8\"\n    },\n    {\n      \"source\": \"cat_1\",\n      \"target\": \"item_9\"\n    },\n    {\n      \"source\": \"cat_1\",\n      \"target\": \"item_10\"\n    },\n    {\n      \"source\": \"root\",\n      \"target\": \"cat_2\"\n    },\n    {\n      \"source\": \"cat_2\",\n      \"target\": \"item_11\"\n    },\n    {\n      \"source\": \"cat_2\",\n      \"target\": \"item_12\"\n    },\n    {\n      \"source\": \"cat_2\",\n      \"target\": \"item_13\"\n    },\n    {\n      \"source\": \"cat_2\",\n      \"target\": \"item_14\"\n    },\n    {\n      \"source\": \"cat_2\",\n      \"target\": \"item_15\"\n    },\n    {\n      \"source\": \"cat_2\",\n      \"target\": \"item_16\"\n    },\n    {\n      \"source\": \"cat_2\",\n      \"target\": \"item_17\"\n    },\n    {\n      \"source\": \"root\",\n      \"target\": \"cat_3\"\n    },\n    {\n      \"source\": \"cat_3\",\n      \"target\": \"item_18\"\n    },\n    {\n      \"source\": \"cat_3\",\n      \"target\": \"item_19\"\n    },\n    {\n      \"source\": \"cat_3\",\n      \"target\": \"item_20\"\n    },\n    {\n      \"source\": \"cat_3\",\n      \"target\": \"item_21\"\n    },\n    {\n      \"source\": \"cat_3\",\n      \"target\": \"item_22\"\n    },\n    {\n      \"source\": \"cat_3\",\n      \"target\": \"item_23\"\n    },\n    {\n      \"source\": \"cat_3\",\n      \"target\": \"item_24\"\n    },\n    {\n      \"source\": \"cat_3\",\n      \"target\": \"item_25\"\n    },\n    {\n      \"source\": \"cat_3\",\n      \"target\": \"item_26\"\n    },\n    {\n      \"source\": \"cat_3\",\n      \"target\": \"item_27\"\n    },\n    {\n      \"source\": \"root\",\n      \"target\": \"cat_4\"\n    },\n    {\n      \"source\": \"cat_4\",\n      \"target\": \"item_28\"\n    },\n    {\n      \"source\": \"cat_4\",\n      \"target\": \"item_29\"\n    },\n    {\n      \"source\": \"cat_4\",\n      \"target\": \"item_30\"\n    },\n    {\n      \"source\": \"cat_4\",\n      \"target\": \"item_31\"\n    },\n    {\n      \"source\": \"cat_4\",\n      \"target\": \"item_32\"\n    },\n    {\n      \"source\": \"cat_4\",\n      \"target\": \"item_33\"\n    },\n    {\n      \"source\": \"cat_4\",\n      \"target\": \"item_34\"\n    },\n    {\n      \"source\": \"cat_4\",\n      \"target\": \"item_35\"\n    },\n    {\n      \"source\": \"root\",\n      \"target\": \"cat_5\"\n    },\n    {\n      \"source\": \"cat_5\",\n      \"target\": \"item_36\"\n    },\n    {\n      \"source\": \"cat_5\",\n      \"target\": \"item_37\"\n    },\n    {\n      \"source\": \"cat_5\",\n      \"target\": \"item_38\"\n    },\n    {\n      \"source\": \"cat_5\",\n      \"target\": \"item_39\"\n    },\n    {\n      \"source\": \"cat_5\",\n      \"target\": \"item_40\"\n    },\n    {\n      \"source\": \"cat_5\",\n      \"target\": \"item_41\"\n    },\n    {\n      \"source\": \"cat_5\",\n      \"target\": \"item_42\"\n    },\n    {\n      \"source\": \"cat_5\",\n      \"target\": \"item_43\"\n    },\n    {\n      \"source\": \"cat_5\",\n      \"target\": \"item_44\"\n    },\n    {\n      \"source\": \"cat_5\",\n      \"target\": \"item_45\"\n    },\n    {\n      \"source\": \"root\",\n      \"target\": \"cat_6\"\n    },\n    {\n      \"source\": \"cat_6\",\n      \"target\": \"item_46\"\n    },\n    {\n      \"source\": \"cat_6\",\n      \"target\": \"item_47\"\n    },\n    {\n      \"source\": \"cat_6\",\n      \"target\": \"item_48\"\n    },\n    {\n      \"source\": \"cat_6\",\n      \"target\": \"item_49\"\n    },\n    {\n      \"source\": \"cat_6\",\n      \"target\": \"item_50\"\n    },\n    {\n      \"source\": \"cat_6\",\n      \"target\": \"item_51\"\n    },\n    {\n      \"source\": \"cat_6\",\n      \"target\": \"item_52\"\n    },\n    {\n      \"source\": \"cat_6\",\n      \"target\": \"item_53\"\n    },\n    {\n      \"source\": \"cat_6\",\n      \"target\": \"item_54\"\n    },\n    {\n      \"source\": \"cat_6\",\n      \"target\": \"item_55\"\n    },\n    {\n      \"source\": \"root\",\n      \"target\": \"cat_7\"\n    },\n    {\n      \"source\": \"cat_7\",\n      \"target\": \"item_56\"\n    },\n    {\n      \"source\": \"cat_7\",\n      \"target\": \"item_57\"\n    },\n    {\n      \"source\": \"cat_7\",\n      \"target\": \"item_58\"\n    },\n    {\n      \"source\": \"cat_7\",\n      \"target\": \"item_59\"\n    },\n    {\n      \"source\": \"cat_7\",\n      \"target\": \"item_60\"\n    },\n    {\n      \"source\": \"cat_7\",\n      \"target\": \"item_61\"\n    },\n    {\n      \"source\": \"cat_7\",\n      \"target\": \"item_62\"\n    },\n    {\n      \"source\": \"root\",\n      \"target\": \"cat_8\"\n    },\n    {\n      \"source\": \"cat_8\",\n      \"target\": \"item_63\"\n    },\n    {\n      \"source\": \"cat_8\",\n      \"target\": \"item_64\"\n    },\n    {\n      \"source\": \"cat_8\",\n      \"target\": \"item_65\"\n    },\n    {\n      \"source\": \"cat_8\",\n      \"target\": \"item_66\"\n    },\n    {\n      \"source\": \"cat_8\",\n      \"target\": \"item_67\"\n    },\n    {\n      \"source\": \"cat_8\",\n      \"target\": \"item_68\"\n    },\n    {\n      \"source\": \"cat_8\",\n      \"target\": \"item_69\"\n    },\n    {\n      \"source\": \"cat_8\",\n      \"target\": \"item_70\"\n    },\n    {\n      \"source\": \"root\",\n      \"target\": \"cat_9\"\n    },\n    {\n      \"source\": \"cat_9\",\n      \"target\": \"item_71\"\n    },\n    {\n      \"source\": \"cat_9\",\n      \"target\": \"item_72\"\n    }\n  ]\n}\n```\n\n---\n\n## 1. Resumo Estruturado e Conceitos-Chave\n\n> 👨‍🏫 **FONTE DO CONHECIMENTO:** Apostila Teórica e Prática de Licitações (Lei nº 14.133/2021)  \n> **Professor/Autor:** Prof. Rodrigo Motta | **Material:** PDF Oficial (34 págs.) | **Banca Alvo:** Cebraspe / FGV / AOCP\n\n### 🧠 Mnemônicos & Técnicas de Memorização do Autor\n> 📌 **👨‍🏫 [MATERIAL DO AUTOR - Pág. 22]**  \n> **Mnemônico:** `PRE-CON-CON-LEI-DIA`  \n> - **O que memoriza:** As cinco modalidades de licitação vigentes na Nova Lei de Licitações.  \n> - **Como utilizar em prova:** Lembrar que **PRE**gão, **CON**corrência, **CON**curso, **LEI**lão e **DIÁ**logo competitivo são as únicas modalidades; Convite e Tomada de Preços foram extintas.\n\n### 💡 Dicas do Autor 👨‍🏫 [MATERIAL DO AUTOR]\n- **Orientação (Pág. 01):** Sempre verificar a natureza jurídica da entidade na questão. Se for sociedade de economia mista (ex: Petrobras, Banco do Brasil) ou empresa pública (ex: Caixa Econômica Federal), a resposta correta apontará a Lei nº 13.303/2016 e não a Lei 14.133/2021.\n- **Orientação (Pág. 08):** Inexigibilidade decorre de impossibilidade fática de competição (inviabilidade). Se houver viabilidade de disputa, mas o gestor não realizar licitação por autorização legal de economicidade ou emergência, a hipótese será de dispensa de licitação.\n- **Orientação (Pág. 25):** Jamais confunda modalidade de licitação (Pregão, Concorrência, Concurso, Leilão, Diálogo Competitivo) com critério de julgamento (Menor Preço, Maior Desconto, Melhor Técnica, Técnica e Preço, Maior Lance, Maior Retorno Econômico).\n\n### A. Fundamentos e Definições Essenciais 👨‍🏫 [MATERIAL DO PROFESSOR]\n- **Âmbito de Incidência (Art. 1º):** Subordinam-se à Lei 14.133/2021 os órgãos dos Poderes Executivo, Legislativo e Judiciário da União, dos Estados, do Distrito Federal e dos Municípios, incluídas as administrações direta, autárquica e fundacional, bem como os fundos especiais *(👨‍🏫 Pág. 01)*.\n- **Exclusão das Empresas Estatais (Art. 1º, § 1º):** Não são abrangidas por esta Lei as empresas públicas, as sociedades de economia mista e as suas subsidiárias, regidas pela Lei nº 13.303/2016, ressalvado o regramento dos crimes em licitações (Art. 178) *(👨‍🏫 Pág. 01)*.\n- **Princípios Expressos (Art. 5º):** Além dos princípios constitucionais do LIMPE, a Lei 14.133/2021 expressamente positivou: planejamento, transparência, eficácia, segregação de funções, motivação, vinculação ao edital, julgamento objetivo, segurança jurídica e razoabilidade *(👨‍🏫 Pág. 06)*.\n- **Objetivos da Licitação (Art. 11):** Assegurar a seleção da proposta mais vantajosa, inclusive considerando o ciclo de vida do objeto; tratamento isonômico e justa competição; evitar sobrepreço ou contratação com superfaturamento; incentivar a inovação e o desenvolvimento nacional sustentável *(👨‍🏫 Pág. 05)*.\n\n### B. Regras de Aplicação, Requisitos e Competências 👨‍🏫 [MATERIAL DO PROFESSOR]\n- **Inexigibilidade de Licitação (Art. 74):** Caracteriza-se pela inviabilidade de competição. O rol legal é meramente exemplificativo (fornecedor exclusivo, profissional de notória especialização para serviços intelectuais singulares, contratação de artista consagrado) *(👨‍🏫 Pág. 08)*.\n- **Licitação Dispensável (Art. 75):** A competição é juridicamente viável, mas a lei confere ao gestor discricionariedade mitigada para não licitar. O rol legal é taxativo (baixo valor até R$ 100 mil para obras/serviços de engenharia e R$ 50 mil para compras em valores originais, emergência ou calamidade pública, licitação deserta ou fracassada) *(👨‍🏫 Pág. 09)*.\n- **Diálogo Competitivo (Art. 32):** Modalidade inovadora voltada a objetos complexos e soluções técnicas sob medida. Conduzida por comissão composta por pelo menos 3 servidores efetivos ou empregados públicos dos quadros permanentes *(👨‍🏫 Pág. 24)*.\n- **Ordem Sequencial das Fases (Art. 17):** 1. Preparatória -> 2. Divulgação do edital -> 3. Apresentação de propostas e lances -> 4. Julgamento -> 5. Habilitação -> 6. Recursal -> 7. Homologação. A regra geral do novo diploma é que o julgamento antecede a habilitação *(👨‍🏫 Pág. 34)*.\n\n### ⚠️ Alertas & Pegadinhas do Autor 👨‍🏫 [MATERIAL DO AUTOR]\n- **Ponto Crítico (Pág. 02):** A assertiva que afirmar que Caixa Econômica Federal ou Banco do Brasil licitam pela Lei nº 14.133/2021 está ERRADA! Estatais possuem regime próprio regido pela Lei nº 13.303/2016.\n- **Ponto Crítico (Pág. 15):** Cuidado com afirmações de banca declarando que o rol do Art. 74 (inexigibilidade) é taxativo. O rol é EXEMPLIFICATIVO. Quem tem rol taxativo é a dispensa (Art. 75).\n- **Ponto Crítico (Pág. 34):** A inversão de fases (habilitação antes do julgamento) não foi banida, mas tornou-se EXCEÇÃO expressa, dependendo de ato motivado e previsão explícita no edital.\n\n### C. Quadro Esquemático de Retenção Rápida\n\n*Síntese estruturada pela IA a partir do conteúdo da fonte.*\n\n| Instituto Jurídico | Regra Geral da Lei 14.133/2021 | Ponto Crítico de Banca (Cebraspe / FGV / AOCP) |\n| :--- | :--- | :--- |\n| **Empresas Estatais (EP e SEM)** | Excluídas do regime geral (Art. 1º, § 1º) | Subordinam-se à Lei 13.303/2016; não caia na pegadinha da CEF/Petrobras |\n| **Inexigibilidade (Art. 74)** | Inviabilidade de competição (rol exemplificativo) | A banca afirma ser rol fechado/taxativo para induzir ao erro |\n| **Dispensa de Licitação (Art. 75)** | Viabilidade de competição autorizada por lei | Rol estritamente taxativo; veda interpretação extensiva |\n| **Modalidades Vigentes (Art. 28)** | Pregão, Concorrência, Concurso, Leilão, Diálogo | Tomada de Preços e Convite foram totalmente revogadas |\n| **Rito Procedimental (Art. 17)** | Julgamento antecede a Habilitação | A inversão de fases é excepcional e exige justificativa formal |\n\n---\n\n## 2. Raio-X de Banca & Pegadinhas\n\n### PARTE 1: Pegadinhas e Alertas do Autor 👨‍🏫 [MATERIAL DO AUTOR]\n\n#### Pegadinha 1: Submissão de Empresas Estatais à Nova Lei de Licitações\n1. **O conhecimento correto:** O Art. 1º, § 1º exclui as empresas públicas, sociedades de economia mista e subsidiárias do regime da Lei 14.133/2021, aplicando-se-lhes a Lei nº 13.303/2016.\n2. **O erro ou confusão provável:** O candidato supõe que por integrarem a Administração Indireta, Petrobras e CEF contratam pela Lei 14.133.\n3. **Como uma questão explora a confusão:** \"A CEF, por ser empresa pública federal, submete suas compras às regras gerais da Lei nº 14.133/2021.\" (Item Errado).\n4. **Como evitar o erro:** Mnemônico mental: \"Estatais = Lei 13.303/2016. Adm Direta, Autarquias e Fundações = Lei 14.133/2021.\"\n\n#### Pegadinha 2: Natureza dos Róis de Inexigibilidade versus Dispensa\n1. **O conhecimento correto:** Inexigibilidade decorre de inviabilidade fática de competição (rol meramente exemplificativo do Art. 74). Dispensa envolve viabilidade de disputa autorizada por lei (rol taxativo do Art. 75).\n2. **Como a banca explora:** A FGV afirma que somente cabe inexigibilidade nas hipóteses taxativamente descritas no art. 74.\n3. **Como evitar o erro:** Se for inviável competir, sempre caberá inexigibilidade, ainda que não conste dos incisos do art. 74.\n\n### PARTE 2: Análise Complementar de Banca da IA 🤖 [INSIGHT PEDAGÓGICO COMPLEMENTAR]\n\n#### Ponto Crítico 1: Fases da Licitação e Inversão Excepcional\n1. **O conhecimento correto:** Na Lei 14.133/2021, a regra geral é o Julgamento acontecer ANTES da Habilitação (Art. 17). A inversão de fases é excepcional e exige ato motivado explicitando a vantagem pública.\n2. **Como a banca explora:** As bancas cobram a ordem invertida clássica da Lei 8.666/93 como se fosse a regra atual.\n3. **Como gabaritar:** Memorize: Nova Lei = Primeiro julga quem vence o preço/proposta, depois apenas o vencedor é habilitado documentalmente!\n",
         "mindmap_json": {
-          "titulo": "Licitacoes Lei 14133",
+          "titulo": "Licitações Públicas • Lei nº 14.133/2021 & Aspectos Constitucionais",
           "nodes": [
             {
               "id": "root",
-              "titulo": "Licitacoes Lei 14133",
+              "titulo": "Licitações Públicas (Lei 14.133/21)",
               "tipo": "root",
               "pagina": 1,
-              "resumo": "Estrutura esquematizada das unidades conceituais essenciais de Licitacoes Lei 14133 para provas de concursos públicos."
+              "resumo": "Regime geral das licitações e contratações públicas fundamentado na Constituição Federal (art. 37, XXI e art. 22, XXVII) e estruturado pela Nova Lei de Licitações (Lei nº 14.133/2021)."
             },
             {
               "id": "cat_1",
-              "titulo": "Objeto da Licitação",
+              "titulo": "1. Competência e Fundamento Constitucional",
               "tipo": "category",
-              "pagina": 3,
-              "resumo": "Art. 2º, Lei nº 14.133/2021 – Esta Lei aplica-se a: I - alienação e concessão de direito real de uso de bens."
+              "pagina": 1,
+              "resumo": "Bases constitucionais obrigatórias da licitação pública (art. 22, XXVII e art. 37, XXI da CF/88)."
             },
             {
-              "id": "item_1",
-              "titulo": "Art. 2º, Lei Nº 14.133/2021 (Regra)",
-              "tipo": "rule",
-              "pagina": 3,
-              "resumo": "Esta Lei aplica-se a."
-            },
-            {
-              "id": "item_2",
-              "titulo": "Alienação E Concessão De Direito (Inciso I)",
-              "tipo": "rule",
-              "pagina": 3,
-              "resumo": "alienação e concessão de direito real de uso de bens."
-            },
-            {
-              "id": "item_3",
-              "titulo": "Compra (Inciso II)",
+              "id": "item_1_1",
+              "titulo": "Competência Privativa da União (Art. 22, XXVII)",
               "tipo": "rule",
               "pagina": 1,
-              "resumo": "compra, inclusive por encomenda."
+              "resumo": "Cabe privativamente à União legislar sobre normas gerais de licitação e contratação para todas as administrações públicas diretas, autárquicas e fundacionais de todos os entes federativos, bem como empresas públicas e sociedades de economia mista."
             },
             {
-              "id": "item_4",
-              "titulo": "Locação ou Compra de Imóvel (Inciso III)",
-              "tipo": "rule",
-              "pagina": 13,
-              "resumo": "locação."
+              "id": "item_1_2",
+              "titulo": "Inconstitucionalidade de Normas Locais Próprias",
+              "tipo": "trap",
+              "pagina": 1,
+              "resumo": "São inconstitucionais as leis estaduais ou municipais que invadam a competência privativa da União ao estabelecer regras gerais próprias, modalidades inéditas ou sanções gerais sobre licitações e contratos."
             },
             {
-              "id": "item_5",
-              "titulo": "Concessão E Permissão De Uso (Inciso IV)",
+              "id": "item_1_3",
+              "titulo": "Dever Geral de Licitar (Art. 37, XXI)",
               "tipo": "rule",
-              "pagina": 3,
-              "resumo": "concessão e permissão de uso de bens públicos."
+              "pagina": 1,
+              "resumo": "Ressalvados os casos especificados na legislação (dispensa e inexigibilidade), obras, serviços, compras e alienações serão contratados mediante processo de licitação pública que assegure igualdade de condições a todos os concorrentes."
             },
             {
-              "id": "item_6",
-              "titulo": "Serviços Técnicos Especializados (Inciso V)",
+              "id": "item_1_4",
+              "titulo": "Limitação de Exigências no Edital",
               "tipo": "rule",
-              "pagina": 2,
-              "resumo": "prestação de serviços, inclusive os técnico-profissionais especializados."
-            },
-            {
-              "id": "item_7",
-              "titulo": "Obras E Serviços De Arquitetura (Inciso VI)",
-              "tipo": "rule",
-              "pagina": 3,
-              "resumo": "obras e serviços de arquitetura e engenharia."
-            },
-            {
-              "id": "item_8",
-              "titulo": "Contratações De Tecnologia Da Informação (Inciso VII)",
-              "tipo": "rule",
-              "pagina": 3,
-              "resumo": "contratações de tecnologia da informação e de comunicação."
-            },
-            {
-              "id": "item_9",
-              "titulo": "Art. 3º, Lei Nº 14.133/2021 (Regra)",
-              "tipo": "rule",
-              "pagina": 3,
-              "resumo": "Não se subordinam ao regime desta Lei."
-            },
-            {
-              "id": "item_10",
-              "titulo": "Contratos Que Tenham Por Objeto (Inciso I)",
-              "tipo": "rule",
-              "pagina": 3,
-              "resumo": "contratos que tenham por objeto operação de crédito, interno ou externo, e gestão de dívida pública, incluídas as contratações de agente financeiro e a concessão de garantia relacionadas a esses contratos."
+              "pagina": 1,
+              "resumo": "O processo licitatório somente permitirá exigências de qualificação técnica e econômica estritamente indispensáveis à garantia do cumprimento das obrigações, sendo vedadas cláusulas impertinentes ou restritivas."
             },
             {
               "id": "cat_2",
-              "titulo": "Objetivos da Licitação",
+              "titulo": "2. Sujeitos Vinculados & Regime das Estatais",
               "tipo": "category",
               "pagina": 1,
-              "resumo": "Art. 11, Lei nº 14.133/2021 – O processo licitatório tem por objetivos: I - assegurar a seleção da proposta apta a gerar o resultado de contratação mais vantajoso para a Administração Pública, inclusive no que se refere ao ciclo de vida do objeto."
+              "resumo": "Definição precisa dos órgãos abrangidos pela Lei 14.133/2021 e a exclusão obrigatória das estatais da Lei 13.303/2016."
             },
             {
-              "id": "item_11",
-              "titulo": "Art. 11, Lei Nº 14.133/2021 (Regra)",
+              "id": "item_2_1",
+              "titulo": "Abrangência Geral da Lei 14.133 (Art. 1º)",
               "tipo": "rule",
               "pagina": 1,
-              "resumo": "O processo licitatório tem por objetivos."
+              "resumo": "Aplica-se à Administração Direta, autarquias e fundações de União, Estados, DF e Municípios, bem como aos Poderes Legislativo e Judiciário e Ministério Público quando no exercício de função administrativa atípica."
             },
             {
-              "id": "item_12",
-              "titulo": "Assegurar A Seleção Da Proposta (Inciso I)",
-              "tipo": "rule",
-              "pagina": 5,
-              "resumo": "assegurar a seleção da proposta apta a gerar o resultado de contratação mais vantajoso para a Administração Pública, inclusive no que se refere ao ciclo de vida do objeto."
-            },
-            {
-              "id": "item_13",
-              "titulo": "Assegurar Tratamento Isonômico Entre Os (Inciso II)",
-              "tipo": "rule",
-              "pagina": 5,
-              "resumo": "assegurar tratamento isonômico entre os licitantes, bem como a justa competição."
-            },
-            {
-              "id": "item_14",
-              "titulo": "Evitar Contratações Com Sobrepreço Ou (Inciso III)",
-              "tipo": "rule",
-              "pagina": 5,
-              "resumo": "evitar contratações com sobrepreço ou com preços manifestamente inexequíveis e superfaturamento na execução dos contratos."
-            },
-            {
-              "id": "item_15",
-              "titulo": "Incentivar A Inovação E O (Inciso IV)",
-              "tipo": "rule",
-              "pagina": 5,
-              "resumo": "incentivar a inovação e o desenvolvimento nacional sustentável."
-            },
-            {
-              "id": "item_16",
-              "titulo": "Assegurar Tratamento Diferenciado Entre Os (Inciso II)",
-              "tipo": "rule",
-              "pagina": 6,
-              "resumo": "Assegurar tratamento diferenciado entre os licitantes, bem como a justa aquisição da empresa maior que possui maior capital financeiro."
-            },
-            {
-              "id": "item_17",
-              "titulo": "Art. 5°, Lei Nº 14.133/2021 (Regra)",
-              "tipo": "rule",
+              "id": "item_2_2",
+              "titulo": "Exclusão das Estatais (Art. 1º, § 1º c/c Art. 173)",
+              "tipo": "trap",
               "pagina": 1,
-              "resumo": "Na aplicação desta Lei, serão observados os princípios da legalidade, da impessoalidade, da moralidade, da publicidade, da eficiência, do interesse público, da probidade administrativa, da igualdade, do planejamento, da transparência, da eficácia, da segregação de funções, da motivação, da vinculação ao edital, do julgamento objetivo, da segurança jurídica, da razoabilidade, da competitividade, da proporcionalidade, da celeridade, da economicidade e do desenvolvimento nacional sustentável, assim como as disposições do Decreto-Lei nº 4.657, de 4 de setembro de 1942 (Lei de Introdução às Normas do Direito Brasileiro)."
+              "resumo": "Empresas públicas, sociedades de economia mista e suas subsidiárias NÃO são regidas pela Lei 14.133/2021 (salvo normas penais), aplicando-se o estatuto jurídico próprio da Lei das Estatais (Lei nº 13.303/2016)."
+            },
+            {
+              "id": "item_2_3",
+              "titulo": "Descabimento de Mandado de Segurança (ADI 4296)",
+              "tipo": "trap",
+              "pagina": 1,
+              "resumo": "Não cabe mandado de segurança contra atos de gestão comercial praticados por administradores de empresas públicas, sociedades de economia mista e concessionárias de serviço público."
             },
             {
               "id": "cat_3",
-              "titulo": "Da Contratação Direta",
+              "titulo": "3. Objeto e Princípios Específicos (Art. 5º)",
               "tipo": "category",
-              "pagina": 1,
-              "resumo": "Art. 72, Lei nº 14.133/2021 – O processo de contratação direta, que compreende os casos de inexigibilidade e de dispensa de licitação, deverá ser instruído com os seguintes documentos: I - documento de formalização de demanda e, se for o caso, estudo técnico preliminar, análise de riscos, termo de referência, projeto básico ou projeto executivo."
+              "pagina": 5,
+              "resumo": "Princípios fundamentais com destaque para a segregação de funções e o planejamento obrigatório."
             },
             {
-              "id": "item_18",
-              "titulo": "Art. 72, Lei Nº 14.133/2021 (Regra)",
+              "id": "item_3_1",
+              "titulo": "Princípio da Segregação de Funções",
               "tipo": "rule",
-              "pagina": 1,
-              "resumo": "O processo de contratação direta, que compreende os casos de inexigibilidade e de dispensa de licitação, deverá ser instruído com os seguintes documentos."
+              "pagina": 6,
+              "resumo": "Veda expressamente a designação do mesmo agente público para atuação simultânea em funções mais suscetíveis a riscos (ex: fiscal de contrato atuando também como agente de contratação), a fim de evitar ocultação de erros e fraudes."
             },
             {
-              "id": "item_19",
-              "titulo": "Documento De Formalização De Demanda (Inciso I)",
+              "id": "item_3_2",
+              "titulo": "Planejamento como Princípio Expresso",
               "tipo": "rule",
-              "pagina": 8,
-              "resumo": "documento de formalização de demanda e, se for o caso, estudo técnico preliminar, análise de riscos, termo de referência, projeto básico ou projeto executivo."
+              "pagina": 6,
+              "resumo": "Embora não conste no art. 37 da CF, o Planejamento é princípio expresso e obrigatório na Lei nº 14.133/2021, impondo a realização de Estudo Técnico Preliminar (ETP) e plano de contratações anual."
             },
             {
-              "id": "item_20",
-              "titulo": "Estimativa De Despesa (Inciso II)",
-              "tipo": "rule",
-              "pagina": 8,
-              "resumo": "estimativa de despesa, que deverá ser calculada na forma estabelecida no art. 23 desta Lei."
-            },
-            {
-              "id": "item_21",
-              "titulo": "Parecer Jurídico E Pareceres Técnicos (Inciso III)",
-              "tipo": "rule",
-              "pagina": 8,
-              "resumo": "parecer jurídico e pareceres técnicos, se for o caso, que demonstrem o atendimento dos requisitos exigidos."
-            },
-            {
-              "id": "item_22",
-              "titulo": "Demonstração Da Compatibilidade Da Previsão (Inciso IV)",
-              "tipo": "rule",
-              "pagina": 8,
-              "resumo": "demonstração da compatibilidade da previsão de recursos orçamentários com o compromisso a ser assumido."
-            },
-            {
-              "id": "item_23",
-              "titulo": "Comprovação De Que O Contratado (Inciso V)",
-              "tipo": "rule",
-              "pagina": 8,
-              "resumo": "comprovação de que o contratado preenche os requisitos de habilitação e qualificação mínima necessária."
-            },
-            {
-              "id": "item_24",
-              "titulo": "Razão Da Escolha Do Contratado (Inciso VI)",
-              "tipo": "rule",
-              "pagina": 8,
-              "resumo": "razão da escolha do contratado."
-            },
-            {
-              "id": "item_25",
-              "titulo": "Justificativa De Preço (Inciso VII)",
-              "tipo": "rule",
-              "pagina": 8,
-              "resumo": "justificativa de preço."
-            },
-            {
-              "id": "item_26",
-              "titulo": "Autorização Da Autoridade Competente (Inciso VIII)",
-              "tipo": "rule",
-              "pagina": 8,
-              "resumo": "autorização da autoridade competente."
-            },
-            {
-              "id": "item_27",
-              "titulo": "Art. 73, Lei Nº 14.133/2021 (Regra)",
-              "tipo": "rule",
-              "pagina": 1,
-              "resumo": "Na hipótese de contratação direta indevida ocorrida com dolo, fraude ou erro grosseiro, o contratado e o agente público responsável responderão solidariamente pelo dano causado ao erário, sem prejuízo de outras sanções legais cabíveis."
+              "id": "item_3_3",
+              "titulo": "Contratos Não Subordinados (Art. 3º)",
+              "tipo": "trap",
+              "pagina": 3,
+              "resumo": "Não se subordinam à Lei 14.133/2021 os contratos de operação de crédito interno/externo e gestão de dívida pública, incluídas garantias e contratações de agentes financeiros."
             },
             {
               "id": "cat_4",
-              "titulo": "Inexigibilidade de Licitação",
+              "titulo": "4. Contratação Direta: Inexigibilidade vs Dispensa",
               "tipo": "category",
               "pagina": 8,
-              "resumo": "Art. 74, Lei nº 14.133/2021 – É inexigível a licitação quando inviável a competição, em especial nos casos de: I - aquisição de materiais, de equipamentos ou de gêneros ou contratação de serviços que só possam ser fornecidos por produtor, empresa ou representante comercial exclusivos."
+              "resumo": "Hipóteses de contratação sem licitação prévia (artigos 72 a 77)."
             },
             {
-              "id": "item_28",
-              "titulo": "Art. 74, Lei Nº 14.133/2021 (Regra)",
-              "tipo": "rule",
-              "pagina": 8,
-              "resumo": "É inexigível a licitação quando inviável a competição, em especial nos casos de."
-            },
-            {
-              "id": "item_29",
-              "titulo": "Fornecedor Exclusivo (Inciso I)",
-              "tipo": "rule",
-              "pagina": 15,
-              "resumo": "aquisição de materiais, de equipamentos ou de gêneros ou contratação de serviços que só possam ser fornecidos por produtor, empresa ou representante comercial exclusivos."
-            },
-            {
-              "id": "item_30",
-              "titulo": "Profissional Artístico Consagrado (Inciso II)",
+              "id": "item_4_1",
+              "titulo": "Inexigibilidade: Inviabilidade de Competição (Art. 74)",
               "tipo": "rule",
               "pagina": 9,
-              "resumo": "contratação de profissional do setor artístico, diretamente ou por meio de empresário exclusivo, desde que consagrado pela crítica especializada ou pela opinião pública."
+              "resumo": "Rol exemplificativo caracterizado pela inviabilidade lógica de disputa: fornecedor exclusivo, notória especialização intelectual (vedada p/ publicidade), profissional artístico consagrado, credenciamento e imóvel singular."
             },
             {
-              "id": "item_31",
-              "titulo": "Serviços Técnicos Especializados (Inciso III)",
-              "tipo": "rule",
-              "pagina": 2,
-              "resumo": "contratação dos seguintes serviços técnicos especializados de natureza pre dominantemente intelectual com profissionais ou empresas de notória especialização, vedada a inexigibilidade para serviços de publicidade e divulgação."
+              "id": "item_4_2",
+              "titulo": "Dispensa por Valor Atualizada (Dec. 12.807/2025)",
+              "tipo": "trap",
+              "pagina": 10,
+              "resumo": "Valores oficiais atualizados: até R$ 130.984,20 para obras, serviços de engenharia e manutenção de veículos; e até R$ 65.492,11 para compras e outros serviços (valores duplicados para consórcios públicos e agências executivas)."
             },
             {
-              "id": "item_32",
-              "titulo": "Credenciamento de Objetos (Inciso IV)",
-              "tipo": "rule",
-              "pagina": 9,
-              "resumo": "objetos que devam ou possam ser contratados por meio de credenciamento."
-            },
-            {
-              "id": "item_33",
-              "titulo": "Locação ou Compra de Imóvel (Inciso V)",
-              "tipo": "rule",
-              "pagina": 13,
-              "resumo": "aquisição ou locação de imóvel cujas características de instalações e de localização tornem necessária sua escolha."
-            },
-            {
-              "id": "item_34",
-              "titulo": "Avaliação Prévia Do Bem (Inciso I)",
+              "id": "item_4_3",
+              "titulo": "Licitação Deserta e Fracassada (Art. 75, III)",
               "tipo": "rule",
               "pagina": 10,
-              "resumo": "avaliação prévia do bem, do seu estado de conservação, dos custos de adaptações, quando imprescindíveis às necessidades de utilização, e do prazo de amortização dos investimentos."
+              "resumo": "É dispensável a licitação quando realizada há menos de 1 ano não surgiram interessados (deserta) ou as propostas tiveram preços inaceitáveis (fracassada), desde que mantidas integralmente as condições do edital."
             },
             {
-              "id": "item_35",
-              "titulo": "Certificação Da Inexistência De Imóveis (Inciso II)",
-              "tipo": "rule",
-              "pagina": 10,
-              "resumo": "certificação da inexistência de imóveis públicos vagos e disponíveis que atendam ao objeto."
+              "id": "item_4_4",
+              "titulo": "Calamidade Pública e Emergência (Art. 75, VIII)",
+              "tipo": "exception",
+              "pagina": 11,
+              "resumo": "Contratação direta limitada exclusivamente aos bens e serviços concluíveis no prazo máximo de 1 ano, vedada qualquer prorrogação contratual e recontratação da mesma empresa."
             },
             {
               "id": "cat_5",
-              "titulo": "Dispensa de Licitação",
+              "titulo": "5. Modalidades Licitatórias & Julgamento",
               "tipo": "category",
-              "pagina": 8,
-              "resumo": "Na nova lei de licitações (lei nº 14.133/2021), os casos de LICITAÇÃO DISPENSÁVEL são encontrados no artigo 75: Art. 75, Lei nº 14.133/2021 – É dispensável a licitação."
+              "pagina": 22,
+              "resumo": "Estrutura procedural das 5 modalidades vigentes e extinção das modalidades antigas."
             },
             {
-              "id": "item_36",
-              "titulo": "Art. 75, Lei Nº 14.133/2021 (Regra)",
+              "id": "item_5_1",
+              "titulo": "As 5 Modalidades Vigentes (Art. 28)",
               "tipo": "rule",
-              "pagina": 8,
-              "resumo": "É dispensável a licitação."
+              "pagina": 23,
+              "resumo": "Pregão, Concorrência, Concurso, Leilão e Diálogo Competitivo. É terminantemente vedada a criação de novas modalidades ou a combinação de regras entre elas."
             },
             {
-              "id": "item_37",
-              "titulo": "Dispensa por Baixo Valor: Obras (Inciso I)",
-              "tipo": "rule",
-              "pagina": 9,
-              "resumo": "para contratação que envolva valores inferiores a R$ 100.000,00 (cem mil reais) R$ 130.984,20 (cento e trinta mil novecentos e oitenta e quatro reais e vinte centavos ), no caso de obras e serviços de engenharia ou de serviço s de manutenção de veículos automotores."
+              "id": "item_5_2",
+              "titulo": "Extinção de Tomada de Preços e Convite",
+              "tipo": "trap",
+              "pagina": 23,
+              "resumo": "A Lei 14.133/2021 extinguiu expressamente a Tomada de Preços e o Convite. Qualquer assertiva que mencione essas modalidades como vigentes está incorreta."
             },
             {
-              "id": "item_38",
-              "titulo": "Dispensa por Baixo Valor: Compras (Inciso II)",
+              "id": "item_5_3",
+              "titulo": "Alienação de Bens Imóveis por Leilão",
               "tipo": "rule",
-              "pagina": 10,
-              "resumo": "para contratação que envolva valores inferiores a R$ 50.000,00 (cinquenta mil reais) 65.492,11 (sessenta e cinco mil quatrocentos e noventa e dois reais e onze centavos), no caso de outros serviços e compras."
+              "pagina": 23,
+              "resumo": "Na Lei 14.133/2021, a alienação de qualquer bem imóvel da Administração Pública é feita na modalidade Leilão (e não concorrência), assim como bens móveis apreendidos ou inservíveis."
             },
             {
-              "id": "item_39",
-              "titulo": "Contratação Que Mantenha Todas As (Inciso III)",
-              "tipo": "rule",
-              "pagina": 10,
-              "resumo": "para contratação que mantenha todas as condições definidas em edital de licitação realizada há menos de 1 (um) ano, quando se verificar que naquela licitação."
-            },
-            {
-              "id": "item_40",
-              "titulo": "Contratação Que Tenha Por Objeto (Inciso IV)",
-              "tipo": "rule",
-              "pagina": 3,
-              "resumo": "para contratação que tenha por objeto."
-            },
-            {
-              "id": "item_41",
-              "titulo": "Contratação Com Vistas Ao Cumprimento (Inciso V)",
-              "tipo": "rule",
-              "pagina": 11,
-              "resumo": "para contratação com vistas ao cumprimento do disposto nos arts. 3º, 3º -A, 4º, 5º e 20 da Lei nº 10.973, de 2 de dezembro de 2004, observados os princípios gerais de contratação constantes da referida Lei."
-            },
-            {
-              "id": "item_42",
-              "titulo": "Contratação Que Possa Acarretar Comprometimento (Inciso VI)",
-              "tipo": "rule",
-              "pagina": 11,
-              "resumo": "para contratação que possa acarretar comprometimento da segurança nacional, nos casos estabelecidos pelo Ministro de Estado da Defesa, mediante demanda dos comandos das Forças Armadas ou dos demais ministérios."
-            },
-            {
-              "id": "item_43",
-              "titulo": "Guerra (Inciso VII)",
-              "tipo": "rule",
-              "pagina": 11,
-              "resumo": "nos casos de guerra, estado de defesa, estado de sítio, intervenção federal ou de grave perturbação da ordem."
-            },
-            {
-              "id": "item_44",
-              "titulo": "Emergência ou Calamidade (Inciso VIII)",
-              "tipo": "rule",
-              "pagina": 11,
-              "resumo": "nos casos de emergência ou de calamidade pública, quando caracterizada urgência de atendimento de s ituação que possa ocasionar prejuízo ou comprometer a continuidade dos serviços públicos ou a segurança de pessoas, obras, serviços, equipamentos e outros bens, públicos ou particulares, e somente para aquisição dos bens necessários ao atendimento da situação emergencial ou calamitosa e para as parcelas de obras e serviços que possam ser concluídas no prazo máximo de 1 (um) ano, contado da data de ocorrência da emergência ou da calamidade, vedadas a prorrogação dos respectivos contratos e a recontratação de empresa já contratada com base no disposto neste inciso."
-            },
-            {
-              "id": "item_45",
-              "titulo": "Aquisição (Inciso IX)",
-              "tipo": "rule",
-              "pagina": 6,
-              "resumo": "para a aquisição, por pessoa jurídica de direito público interno, de bens produzidos ou serviços prestados por órgão ou entidade que integrem a Administração Pública e que tenham sido criados para esse fim específico, desde que o preço contratado seja compatível com o praticado no mercado."
+              "id": "item_5_4",
+              "titulo": "Diálogo Competitivo (Art. 32)",
+              "tipo": "concept",
+              "pagina": 24,
+              "resumo": "Restrito a objetos com inovação tecnológica complexa onde o mercado precisa desenvolver soluções com a Administração antes da apresentação da proposta final."
             },
             {
               "id": "cat_6",
-              "titulo": "Modalidades de Licitação",
+              "titulo": "6. Fases e Rito Procedimental (Art. 17)",
               "tipo": "category",
-              "pagina": 1,
-              "resumo": "As modalidades representam a estrutura procedimental da licitação. MODALIDADES NA NOVA LEI DE LICITAÇÕES (LEI Nº 14.133/2021) As disposições acerca das modalidades de licitação na nova lei de licitações (lei nº 14.133/2021) são encontradas basicamente no art. 6º, incisos XXXVIII a XLII, bem como nos artigos 28 a 32."
+              "pagina": 33,
+              "resumo": "Ordem legal sequencial com a inversão ordinária onde o julgamento antecede a habilitação."
             },
             {
-              "id": "item_46",
-              "titulo": "Art. 6º, Lei Nº 14.133/2021 (Regra)",
-              "tipo": "rule",
-              "pagina": 1,
-              "resumo": "Para os fins desta Lei, consideram-se."
-            },
-            {
-              "id": "item_47",
-              "titulo": "Concorrência (Inciso XXXVIII)",
-              "tipo": "rule",
-              "pagina": 22,
-              "resumo": "concorrência: modalidade de licitação para contratação de bens e serviços especiais e de obras e serviços comuns e especiais de engenharia, cujo critério de julgamento poderá ser."
-            },
-            {
-              "id": "item_48",
-              "titulo": "Critério: Melhor Técnica (Inciso XXXIX)",
-              "tipo": "rule",
-              "pagina": 22,
-              "resumo": "concurso: modalidade de licitação para escolha de trabalho técnico, científico ou artístico, cujo critério de julgamento será o de melhor técnica ou conteúdo artístico, e para concessão de prêmio ou remuneração ao vencedor."
-            },
-            {
-              "id": "item_49",
-              "titulo": "Critério: Maior Lance (Inciso XL)",
-              "tipo": "rule",
-              "pagina": 2,
-              "resumo": "leilão: modalidade de licitação para alienação de bens imóveis ou de bens móveis inservíveis ou legalmente apreendidos a quem oferecer o maior lance."
-            },
-            {
-              "id": "item_50",
-              "titulo": "Critério: Menor Preço (Inciso XLI)",
-              "tipo": "rule",
-              "pagina": 22,
-              "resumo": "pregão: modalidade de licitação obrigatória para aquisição de bens e serviços comuns, cujo critério de julgamento poderá ser o de menor preço ou o de maior desconto."
-            },
-            {
-              "id": "item_51",
-              "titulo": "Modalidade: Diálogo Competitivo (Inciso XLII)",
-              "tipo": "rule",
-              "pagina": 23,
-              "resumo": "diálogo competitivo : modalidade de licitação para contratação de obras, serviços e compras em que a Administração Pública realiza diálogos com licitantes previamente selecionados mediante critérios objetivos, com o intuito de desenvolver uma ou m ais alternativas capazes de atender às suas necessidades, devendo os licitantes apresentar proposta final após o encerramento dos diálogos."
-            },
-            {
-              "id": "item_52",
-              "titulo": "Art. 28, Lei Nº 14.133/2021 (Regra)",
-              "tipo": "rule",
-              "pagina": 1,
-              "resumo": "São modalidades de licitação."
-            },
-            {
-              "id": "item_53",
-              "titulo": "Modalidade: Pregão (Inciso I)",
-              "tipo": "rule",
-              "pagina": 18,
-              "resumo": "pregão."
-            },
-            {
-              "id": "item_54",
-              "titulo": "Modalidade: Concorrência (Inciso II)",
-              "tipo": "rule",
-              "pagina": 18,
-              "resumo": "concorrência."
-            },
-            {
-              "id": "item_55",
-              "titulo": "Modalidade: Concurso (Inciso III)",
-              "tipo": "rule",
-              "pagina": 22,
-              "resumo": "concurso."
-            },
-            {
-              "id": "cat_7",
-              "titulo": "Critérios de Julgamento",
-              "tipo": "category",
-              "pagina": 22,
-              "resumo": "Art. 33, Lei nº 14.133/2021 – O julgamento das propostas será realizado de acordo com os seguintes critérios: II - maior desconto."
-            },
-            {
-              "id": "item_56",
-              "titulo": "Art. 33, Lei Nº 14.133/2021 (Regra)",
-              "tipo": "rule",
-              "pagina": 22,
-              "resumo": "O julgamento das propostas será realizado de acordo com os seguintes critérios."
-            },
-            {
-              "id": "item_57",
-              "titulo": "Critério: Menor Preço (Inciso I)",
-              "tipo": "rule",
-              "pagina": 22,
-              "resumo": "menor preço."
-            },
-            {
-              "id": "item_58",
-              "titulo": "Critério: Maior Desconto (Inciso II)",
-              "tipo": "rule",
-              "pagina": 22,
-              "resumo": "maior desconto."
-            },
-            {
-              "id": "item_59",
-              "titulo": "Critério: Melhor Técnica (Inciso III)",
-              "tipo": "rule",
-              "pagina": 1,
-              "resumo": "melhor técnica ou conteúdo artístico."
-            },
-            {
-              "id": "item_60",
-              "titulo": "Critério: Técnica e Preço (Inciso IV)",
-              "tipo": "rule",
-              "pagina": 12,
-              "resumo": "técnica e preço."
-            },
-            {
-              "id": "item_61",
-              "titulo": "Critério: Maior Lance (Inciso V)",
-              "tipo": "rule",
-              "pagina": 2,
-              "resumo": "maior lance, no caso de leilão."
-            },
-            {
-              "id": "item_62",
-              "titulo": "Critério: Maior Retorno (Inciso VI)",
-              "tipo": "rule",
-              "pagina": 22,
-              "resumo": "maior retorno econômico."
-            },
-            {
-              "id": "cat_8",
-              "titulo": "Fases da Licitação",
-              "tipo": "category",
-              "pagina": 24,
-              "resumo": "Art. 17, Lei nº 14.133/2021 – O processo de licitação observará as seguintes fases, em sequência:: II - de divulgação do edital de licitação."
-            },
-            {
-              "id": "item_63",
-              "titulo": "Art. 17, Lei Nº 14.133/2021 (Regra)",
-              "tipo": "rule",
-              "pagina": 24,
-              "resumo": "O processo de licitação observará as seguintes fases, em sequência."
-            },
-            {
-              "id": "item_64",
-              "titulo": "Fase 1: Preparatória (Inciso I)",
+              "id": "item_6_1",
+              "titulo": "Sequência Legal Obrigatória das Fases",
               "tipo": "rule",
               "pagina": 33,
-              "resumo": "preparatória."
+              "resumo": "Preparatória -> Divulgação do edital -> Apresentação de propostas/lances -> Julgamento -> Habilitação -> Recursal -> Homologação."
             },
             {
-              "id": "item_65",
-              "titulo": "Fase 2: Divulgação do Edital (Inciso II)",
-              "tipo": "rule",
-              "pagina": 21,
-              "resumo": "de divulgação do edital de licitação."
-            },
-            {
-              "id": "item_66",
-              "titulo": "Fase 3: Apresentação de Propostas (Inciso III)",
-              "tipo": "rule",
-              "pagina": 2,
-              "resumo": "de apresentação de propostas e lances, quando for o caso."
-            },
-            {
-              "id": "item_67",
-              "titulo": "Fase 4: Julgamento das Propostas (Inciso IV)",
-              "tipo": "rule",
-              "pagina": 2,
-              "resumo": "de julgamento."
-            },
-            {
-              "id": "item_68",
-              "titulo": "Fase 5: Habilitação (Inciso V)",
-              "tipo": "rule",
-              "pagina": 8,
-              "resumo": "de habilitação."
-            },
-            {
-              "id": "item_69",
-              "titulo": "Fase 6: Fase Recursal (Inciso VI)",
-              "tipo": "rule",
-              "pagina": 24,
-              "resumo": "recursal."
-            },
-            {
-              "id": "item_70",
-              "titulo": "Fase 7: Homologação (Inciso VII)",
-              "tipo": "rule",
+              "id": "item_6_2",
+              "titulo": "Inversão de Fases como Regra Geral",
+              "tipo": "trap",
               "pagina": 33,
-              "resumo": "de homologação."
-            },
-            {
-              "id": "cat_9",
-              "titulo": "Raio-X de Pegadinhas da Banca",
-              "tipo": "category",
-              "pagina": 8,
-              "resumo": "Principais armadilhas, inversões conceituais e assertivas com palavras absolutas recorrentes nas bancas examinadoras."
-            },
-            {
-              "id": "item_71",
-              "titulo": "Pegadinha: Princípio Aplicável",
-              "tipo": "trap",
-              "pagina": 8,
-              "resumo": "garantir que o certame licitatório permita a igualdade de condições a todos os concorrentes, em atenção ao princípio."
-            },
-            {
-              "id": "item_72",
-              "titulo": "Pegadinha: Modalidade com Critério de Julgamento",
-              "tipo": "trap",
-              "pagina": 25,
-              "resumo": "observação importante! não confunda modalidade com critério de julgamento."
+              "resumo": "A regra na Lei 14.133/2021 é que o Julgamento antecede a Habilitação (abre-se apenas o envelope do vencedor). A antecipação da fase de habilitação é excepcional e exige ato motivado com justificativa expressa no edital."
             }
           ],
           "edges": [
@@ -24381,43 +23996,19 @@
             },
             {
               "source": "cat_1",
-              "target": "item_1"
+              "target": "item_1_1"
             },
             {
               "source": "cat_1",
-              "target": "item_2"
+              "target": "item_1_2"
             },
             {
               "source": "cat_1",
-              "target": "item_3"
+              "target": "item_1_3"
             },
             {
               "source": "cat_1",
-              "target": "item_4"
-            },
-            {
-              "source": "cat_1",
-              "target": "item_5"
-            },
-            {
-              "source": "cat_1",
-              "target": "item_6"
-            },
-            {
-              "source": "cat_1",
-              "target": "item_7"
-            },
-            {
-              "source": "cat_1",
-              "target": "item_8"
-            },
-            {
-              "source": "cat_1",
-              "target": "item_9"
-            },
-            {
-              "source": "cat_1",
-              "target": "item_10"
+              "target": "item_1_4"
             },
             {
               "source": "root",
@@ -24425,31 +24016,15 @@
             },
             {
               "source": "cat_2",
-              "target": "item_11"
+              "target": "item_2_1"
             },
             {
               "source": "cat_2",
-              "target": "item_12"
+              "target": "item_2_2"
             },
             {
               "source": "cat_2",
-              "target": "item_13"
-            },
-            {
-              "source": "cat_2",
-              "target": "item_14"
-            },
-            {
-              "source": "cat_2",
-              "target": "item_15"
-            },
-            {
-              "source": "cat_2",
-              "target": "item_16"
-            },
-            {
-              "source": "cat_2",
-              "target": "item_17"
+              "target": "item_2_3"
             },
             {
               "source": "root",
@@ -24457,43 +24032,15 @@
             },
             {
               "source": "cat_3",
-              "target": "item_18"
+              "target": "item_3_1"
             },
             {
               "source": "cat_3",
-              "target": "item_19"
+              "target": "item_3_2"
             },
             {
               "source": "cat_3",
-              "target": "item_20"
-            },
-            {
-              "source": "cat_3",
-              "target": "item_21"
-            },
-            {
-              "source": "cat_3",
-              "target": "item_22"
-            },
-            {
-              "source": "cat_3",
-              "target": "item_23"
-            },
-            {
-              "source": "cat_3",
-              "target": "item_24"
-            },
-            {
-              "source": "cat_3",
-              "target": "item_25"
-            },
-            {
-              "source": "cat_3",
-              "target": "item_26"
-            },
-            {
-              "source": "cat_3",
-              "target": "item_27"
+              "target": "item_3_3"
             },
             {
               "source": "root",
@@ -24501,35 +24048,19 @@
             },
             {
               "source": "cat_4",
-              "target": "item_28"
+              "target": "item_4_1"
             },
             {
               "source": "cat_4",
-              "target": "item_29"
+              "target": "item_4_2"
             },
             {
               "source": "cat_4",
-              "target": "item_30"
+              "target": "item_4_3"
             },
             {
               "source": "cat_4",
-              "target": "item_31"
-            },
-            {
-              "source": "cat_4",
-              "target": "item_32"
-            },
-            {
-              "source": "cat_4",
-              "target": "item_33"
-            },
-            {
-              "source": "cat_4",
-              "target": "item_34"
-            },
-            {
-              "source": "cat_4",
-              "target": "item_35"
+              "target": "item_4_4"
             },
             {
               "source": "root",
@@ -24537,43 +24068,19 @@
             },
             {
               "source": "cat_5",
-              "target": "item_36"
+              "target": "item_5_1"
             },
             {
               "source": "cat_5",
-              "target": "item_37"
+              "target": "item_5_2"
             },
             {
               "source": "cat_5",
-              "target": "item_38"
+              "target": "item_5_3"
             },
             {
               "source": "cat_5",
-              "target": "item_39"
-            },
-            {
-              "source": "cat_5",
-              "target": "item_40"
-            },
-            {
-              "source": "cat_5",
-              "target": "item_41"
-            },
-            {
-              "source": "cat_5",
-              "target": "item_42"
-            },
-            {
-              "source": "cat_5",
-              "target": "item_43"
-            },
-            {
-              "source": "cat_5",
-              "target": "item_44"
-            },
-            {
-              "source": "cat_5",
-              "target": "item_45"
+              "target": "item_5_4"
             },
             {
               "source": "root",
@@ -24581,123 +24088,11 @@
             },
             {
               "source": "cat_6",
-              "target": "item_46"
+              "target": "item_6_1"
             },
             {
               "source": "cat_6",
-              "target": "item_47"
-            },
-            {
-              "source": "cat_6",
-              "target": "item_48"
-            },
-            {
-              "source": "cat_6",
-              "target": "item_49"
-            },
-            {
-              "source": "cat_6",
-              "target": "item_50"
-            },
-            {
-              "source": "cat_6",
-              "target": "item_51"
-            },
-            {
-              "source": "cat_6",
-              "target": "item_52"
-            },
-            {
-              "source": "cat_6",
-              "target": "item_53"
-            },
-            {
-              "source": "cat_6",
-              "target": "item_54"
-            },
-            {
-              "source": "cat_6",
-              "target": "item_55"
-            },
-            {
-              "source": "root",
-              "target": "cat_7"
-            },
-            {
-              "source": "cat_7",
-              "target": "item_56"
-            },
-            {
-              "source": "cat_7",
-              "target": "item_57"
-            },
-            {
-              "source": "cat_7",
-              "target": "item_58"
-            },
-            {
-              "source": "cat_7",
-              "target": "item_59"
-            },
-            {
-              "source": "cat_7",
-              "target": "item_60"
-            },
-            {
-              "source": "cat_7",
-              "target": "item_61"
-            },
-            {
-              "source": "cat_7",
-              "target": "item_62"
-            },
-            {
-              "source": "root",
-              "target": "cat_8"
-            },
-            {
-              "source": "cat_8",
-              "target": "item_63"
-            },
-            {
-              "source": "cat_8",
-              "target": "item_64"
-            },
-            {
-              "source": "cat_8",
-              "target": "item_65"
-            },
-            {
-              "source": "cat_8",
-              "target": "item_66"
-            },
-            {
-              "source": "cat_8",
-              "target": "item_67"
-            },
-            {
-              "source": "cat_8",
-              "target": "item_68"
-            },
-            {
-              "source": "cat_8",
-              "target": "item_69"
-            },
-            {
-              "source": "cat_8",
-              "target": "item_70"
-            },
-            {
-              "source": "root",
-              "target": "cat_9"
-            },
-            {
-              "source": "cat_9",
-              "target": "item_71"
-            },
-            {
-              "source": "cat_9",
-              "target": "item_72"
+              "target": "item_6_2"
             }
           ]
         },
@@ -24905,7 +24300,307 @@
           "comentario": "Gabarito: CERTO. Art. 5º c/c Art. 7º, § 1º da Lei nº 14.133/2021: A autoridade máxima do órgão deverá observar o princípio da segregação de funções, vedada a designação do mesmo agente público para atuação simultânea em funções mais suscetíveis a riscos, de modo a reduzir a ocorrência de erros e fraudes.",
           "banca": "CEBRASPE"
         }
-      ]
+      ],
+      "mindmap": {
+        "titulo": "Licitações Públicas • Lei nº 14.133/2021 & Aspectos Constitucionais",
+        "nodes": [
+          {
+            "id": "root",
+            "titulo": "Licitações Públicas (Lei 14.133/21)",
+            "tipo": "root",
+            "pagina": 1,
+            "resumo": "Regime geral das licitações e contratações públicas fundamentado na Constituição Federal (art. 37, XXI e art. 22, XXVII) e estruturado pela Nova Lei de Licitações (Lei nº 14.133/2021)."
+          },
+          {
+            "id": "cat_1",
+            "titulo": "1. Competência e Fundamento Constitucional",
+            "tipo": "category",
+            "pagina": 1,
+            "resumo": "Bases constitucionais obrigatórias da licitação pública (art. 22, XXVII e art. 37, XXI da CF/88)."
+          },
+          {
+            "id": "item_1_1",
+            "titulo": "Competência Privativa da União (Art. 22, XXVII)",
+            "tipo": "rule",
+            "pagina": 1,
+            "resumo": "Cabe privativamente à União legislar sobre normas gerais de licitação e contratação para todas as administrações públicas diretas, autárquicas e fundacionais de todos os entes federativos, bem como empresas públicas e sociedades de economia mista."
+          },
+          {
+            "id": "item_1_2",
+            "titulo": "Inconstitucionalidade de Normas Locais Próprias",
+            "tipo": "trap",
+            "pagina": 1,
+            "resumo": "São inconstitucionais as leis estaduais ou municipais que invadam a competência privativa da União ao estabelecer regras gerais próprias, modalidades inéditas ou sanções gerais sobre licitações e contratos."
+          },
+          {
+            "id": "item_1_3",
+            "titulo": "Dever Geral de Licitar (Art. 37, XXI)",
+            "tipo": "rule",
+            "pagina": 1,
+            "resumo": "Ressalvados os casos especificados na legislação (dispensa e inexigibilidade), obras, serviços, compras e alienações serão contratados mediante processo de licitação pública que assegure igualdade de condições a todos os concorrentes."
+          },
+          {
+            "id": "item_1_4",
+            "titulo": "Limitação de Exigências no Edital",
+            "tipo": "rule",
+            "pagina": 1,
+            "resumo": "O processo licitatório somente permitirá exigências de qualificação técnica e econômica estritamente indispensáveis à garantia do cumprimento das obrigações, sendo vedadas cláusulas impertinentes ou restritivas."
+          },
+          {
+            "id": "cat_2",
+            "titulo": "2. Sujeitos Vinculados & Regime das Estatais",
+            "tipo": "category",
+            "pagina": 1,
+            "resumo": "Definição precisa dos órgãos abrangidos pela Lei 14.133/2021 e a exclusão obrigatória das estatais da Lei 13.303/2016."
+          },
+          {
+            "id": "item_2_1",
+            "titulo": "Abrangência Geral da Lei 14.133 (Art. 1º)",
+            "tipo": "rule",
+            "pagina": 1,
+            "resumo": "Aplica-se à Administração Direta, autarquias e fundações de União, Estados, DF e Municípios, bem como aos Poderes Legislativo e Judiciário e Ministério Público quando no exercício de função administrativa atípica."
+          },
+          {
+            "id": "item_2_2",
+            "titulo": "Exclusão das Estatais (Art. 1º, § 1º c/c Art. 173)",
+            "tipo": "trap",
+            "pagina": 1,
+            "resumo": "Empresas públicas, sociedades de economia mista e suas subsidiárias NÃO são regidas pela Lei 14.133/2021 (salvo normas penais), aplicando-se o estatuto jurídico próprio da Lei das Estatais (Lei nº 13.303/2016)."
+          },
+          {
+            "id": "item_2_3",
+            "titulo": "Descabimento de Mandado de Segurança (ADI 4296)",
+            "tipo": "trap",
+            "pagina": 1,
+            "resumo": "Não cabe mandado de segurança contra atos de gestão comercial praticados por administradores de empresas públicas, sociedades de economia mista e concessionárias de serviço público."
+          },
+          {
+            "id": "cat_3",
+            "titulo": "3. Objeto e Princípios Específicos (Art. 5º)",
+            "tipo": "category",
+            "pagina": 5,
+            "resumo": "Princípios fundamentais com destaque para a segregação de funções e o planejamento obrigatório."
+          },
+          {
+            "id": "item_3_1",
+            "titulo": "Princípio da Segregação de Funções",
+            "tipo": "rule",
+            "pagina": 6,
+            "resumo": "Veda expressamente a designação do mesmo agente público para atuação simultânea em funções mais suscetíveis a riscos (ex: fiscal de contrato atuando também como agente de contratação), a fim de evitar ocultação de erros e fraudes."
+          },
+          {
+            "id": "item_3_2",
+            "titulo": "Planejamento como Princípio Expresso",
+            "tipo": "rule",
+            "pagina": 6,
+            "resumo": "Embora não conste no art. 37 da CF, o Planejamento é princípio expresso e obrigatório na Lei nº 14.133/2021, impondo a realização de Estudo Técnico Preliminar (ETP) e plano de contratações anual."
+          },
+          {
+            "id": "item_3_3",
+            "titulo": "Contratos Não Subordinados (Art. 3º)",
+            "tipo": "trap",
+            "pagina": 3,
+            "resumo": "Não se subordinam à Lei 14.133/2021 os contratos de operação de crédito interno/externo e gestão de dívida pública, incluídas garantias e contratações de agentes financeiros."
+          },
+          {
+            "id": "cat_4",
+            "titulo": "4. Contratação Direta: Inexigibilidade vs Dispensa",
+            "tipo": "category",
+            "pagina": 8,
+            "resumo": "Hipóteses de contratação sem licitação prévia (artigos 72 a 77)."
+          },
+          {
+            "id": "item_4_1",
+            "titulo": "Inexigibilidade: Inviabilidade de Competição (Art. 74)",
+            "tipo": "rule",
+            "pagina": 9,
+            "resumo": "Rol exemplificativo caracterizado pela inviabilidade lógica de disputa: fornecedor exclusivo, notória especialização intelectual (vedada p/ publicidade), profissional artístico consagrado, credenciamento e imóvel singular."
+          },
+          {
+            "id": "item_4_2",
+            "titulo": "Dispensa por Valor Atualizada (Dec. 12.807/2025)",
+            "tipo": "trap",
+            "pagina": 10,
+            "resumo": "Valores oficiais atualizados: até R$ 130.984,20 para obras, serviços de engenharia e manutenção de veículos; e até R$ 65.492,11 para compras e outros serviços (valores duplicados para consórcios públicos e agências executivas)."
+          },
+          {
+            "id": "item_4_3",
+            "titulo": "Licitação Deserta e Fracassada (Art. 75, III)",
+            "tipo": "rule",
+            "pagina": 10,
+            "resumo": "É dispensável a licitação quando realizada há menos de 1 ano não surgiram interessados (deserta) ou as propostas tiveram preços inaceitáveis (fracassada), desde que mantidas integralmente as condições do edital."
+          },
+          {
+            "id": "item_4_4",
+            "titulo": "Calamidade Pública e Emergência (Art. 75, VIII)",
+            "tipo": "exception",
+            "pagina": 11,
+            "resumo": "Contratação direta limitada exclusivamente aos bens e serviços concluíveis no prazo máximo de 1 ano, vedada qualquer prorrogação contratual e recontratação da mesma empresa."
+          },
+          {
+            "id": "cat_5",
+            "titulo": "5. Modalidades Licitatórias & Julgamento",
+            "tipo": "category",
+            "pagina": 22,
+            "resumo": "Estrutura procedural das 5 modalidades vigentes e extinção das modalidades antigas."
+          },
+          {
+            "id": "item_5_1",
+            "titulo": "As 5 Modalidades Vigentes (Art. 28)",
+            "tipo": "rule",
+            "pagina": 23,
+            "resumo": "Pregão, Concorrência, Concurso, Leilão e Diálogo Competitivo. É terminantemente vedada a criação de novas modalidades ou a combinação de regras entre elas."
+          },
+          {
+            "id": "item_5_2",
+            "titulo": "Extinção de Tomada de Preços e Convite",
+            "tipo": "trap",
+            "pagina": 23,
+            "resumo": "A Lei 14.133/2021 extinguiu expressamente a Tomada de Preços e o Convite. Qualquer assertiva que mencione essas modalidades como vigentes está incorreta."
+          },
+          {
+            "id": "item_5_3",
+            "titulo": "Alienação de Bens Imóveis por Leilão",
+            "tipo": "rule",
+            "pagina": 23,
+            "resumo": "Na Lei 14.133/2021, a alienação de qualquer bem imóvel da Administração Pública é feita na modalidade Leilão (e não concorrência), assim como bens móveis apreendidos ou inservíveis."
+          },
+          {
+            "id": "item_5_4",
+            "titulo": "Diálogo Competitivo (Art. 32)",
+            "tipo": "concept",
+            "pagina": 24,
+            "resumo": "Restrito a objetos com inovação tecnológica complexa onde o mercado precisa desenvolver soluções com a Administração antes da apresentação da proposta final."
+          },
+          {
+            "id": "cat_6",
+            "titulo": "6. Fases e Rito Procedimental (Art. 17)",
+            "tipo": "category",
+            "pagina": 33,
+            "resumo": "Ordem legal sequencial com a inversão ordinária onde o julgamento antecede a habilitação."
+          },
+          {
+            "id": "item_6_1",
+            "titulo": "Sequência Legal Obrigatória das Fases",
+            "tipo": "rule",
+            "pagina": 33,
+            "resumo": "Preparatória -> Divulgação do edital -> Apresentação de propostas/lances -> Julgamento -> Habilitação -> Recursal -> Homologação."
+          },
+          {
+            "id": "item_6_2",
+            "titulo": "Inversão de Fases como Regra Geral",
+            "tipo": "trap",
+            "pagina": 33,
+            "resumo": "A regra na Lei 14.133/2021 é que o Julgamento antecede a Habilitação (abre-se apenas o envelope do vencedor). A antecipação da fase de habilitação é excepcional e exige ato motivado com justificativa expressa no edital."
+          }
+        ],
+        "edges": [
+          {
+            "source": "root",
+            "target": "cat_1"
+          },
+          {
+            "source": "cat_1",
+            "target": "item_1_1"
+          },
+          {
+            "source": "cat_1",
+            "target": "item_1_2"
+          },
+          {
+            "source": "cat_1",
+            "target": "item_1_3"
+          },
+          {
+            "source": "cat_1",
+            "target": "item_1_4"
+          },
+          {
+            "source": "root",
+            "target": "cat_2"
+          },
+          {
+            "source": "cat_2",
+            "target": "item_2_1"
+          },
+          {
+            "source": "cat_2",
+            "target": "item_2_2"
+          },
+          {
+            "source": "cat_2",
+            "target": "item_2_3"
+          },
+          {
+            "source": "root",
+            "target": "cat_3"
+          },
+          {
+            "source": "cat_3",
+            "target": "item_3_1"
+          },
+          {
+            "source": "cat_3",
+            "target": "item_3_2"
+          },
+          {
+            "source": "cat_3",
+            "target": "item_3_3"
+          },
+          {
+            "source": "root",
+            "target": "cat_4"
+          },
+          {
+            "source": "cat_4",
+            "target": "item_4_1"
+          },
+          {
+            "source": "cat_4",
+            "target": "item_4_2"
+          },
+          {
+            "source": "cat_4",
+            "target": "item_4_3"
+          },
+          {
+            "source": "cat_4",
+            "target": "item_4_4"
+          },
+          {
+            "source": "root",
+            "target": "cat_5"
+          },
+          {
+            "source": "cat_5",
+            "target": "item_5_1"
+          },
+          {
+            "source": "cat_5",
+            "target": "item_5_2"
+          },
+          {
+            "source": "cat_5",
+            "target": "item_5_3"
+          },
+          {
+            "source": "cat_5",
+            "target": "item_5_4"
+          },
+          {
+            "source": "root",
+            "target": "cat_6"
+          },
+          {
+            "source": "cat_6",
+            "target": "item_6_1"
+          },
+          {
+            "source": "cat_6",
+            "target": "item_6_2"
+          }
+        ]
+      }
     }
   },
   "Direito_Constitucional": {
@@ -25201,731 +24896,302 @@
         "youtube_url": "",
         "markdown_content": "# DIREITO CONSTITUCIONAL - Constituição Federal e Legislação 360\n**Professor:** Caderno de Estudos Legislação 360  \n**Duração:** 50 minutos  \n**Categoria:** Edital de Concursos Públicos (Cebraspe / FGV / FCC / Vunesp)  \n\n---\n\n> 📋 **VISÃO GERAL DA FONTE (BRIEFING EXECUTIVO — ESTILO NOTEBOOKLM):**  \n> Este material esquematizado do caderno **Legislação 360 (Edição 2026.1)** estrutura a espinha dorsal de **Direito Constitucional** para concursos públicos. Em vez de se perder na leitura exaustiva de mais de 440 páginas da literalidade legal, o modelo semântico seleciona cirurgicamente os **8 Grandes Blocos Estruturantes**: Sentidos de Constituição, Hermenêutica Constitucional, Constitucionalismo, Classificação das Constituições, Poder Constituinte, Princípios Fundamentais, Organização dos Poderes e Conceitos Específicos. Cada nó expressa o núcleo conceitual essencial em poucas palavras (ex: *Sociológico → Fatores Reais de Poder*, *Fundamentos → SO-CI-DI-VA-PLU*), preservando a rastreabilidade direta à página correspondente da apostila para máxima retenção e rapidez de revisão.\n\n---\n\n### 🗺️ Mapa Mental Interativo & Navegação do Conhecimento\n\n```nlm-mindmap-json\n{\n  \"titulo\": \"Constituição Federal e Legislação 360\",\n  \"nodes\": [\n    {\n      \"id\": \"root\",\n      \"titulo\": \"Constituição Federal e Legislação 360\",\n      \"tipo\": \"root\",\n      \"pagina\": 1,\n      \"resumo\": \"Mapeamento estrutural condensado dos conceitos fundamentais de Direito Constitucional e Legislação 360 para concursos públicos.\"\n    },\n    {\n      \"id\": \"cat_sentidos\",\n      \"titulo\": \"Sentidos de Constituição\",\n      \"tipo\": \"category\",\n      \"pagina\": 13,\n      \"resumo\": \"Concepções teóricas sobre a essência, fundamento e validade da Constituição.\"\n    },\n    {\n      \"id\": \"cat_hermeneutica\",\n      \"titulo\": \"Hermenêutica Constitucional\",\n      \"tipo\": \"category\",\n      \"pagina\": 14,\n      \"resumo\": \"Métodos de interpretação e princípios hermenêuticos vinculantes na aplicação da Carta Magna.\"\n    },\n    {\n      \"id\": \"cat_constitucionalismo\",\n      \"titulo\": \"Constitucionalismo\",\n      \"tipo\": \"category\",\n      \"pagina\": 16,\n      \"resumo\": \"Evolução histórica da limitação do poder estatal e consagração dos direitos fundamentais.\"\n    },\n    {\n      \"id\": \"cat_classificacao\",\n      \"titulo\": \"Classificação das Constituições\",\n      \"tipo\": \"category\",\n      \"pagina\": 17,\n      \"resumo\": \"Critérios taxonômicos estruturantes: origem, forma, elaboração, conteúdo, estabilidade e correspondência.\"\n    },\n    {\n      \"id\": \"cat_poder_constituinte\",\n      \"titulo\": \"Poder Constituinte\",\n      \"tipo\": \"category\",\n      \"pagina\": 21,\n      \"resumo\": \"Espécies de manifestação constituinte: Originário, Derivado e Difuso (Mutação Constitucional).\"\n    },\n    {\n      \"id\": \"cat_principios\",\n      \"titulo\": \"Princípios Fundamentais\",\n      \"tipo\": \"category\",\n      \"pagina\": 21,\n      \"resumo\": \"Vigência estruturante dos Fundamentos (Art. 1º), Objetivos (Art. 3º) e Relações Internacionais (Art. 4º).\"\n    },\n    {\n      \"id\": \"cat_poderes\",\n      \"titulo\": \"Organização dos Poderes\",\n      \"tipo\": \"category\",\n      \"pagina\": 21,\n      \"resumo\": \"Tripartição clássica dos Poderes da União e exercício de funções típicas e atípicas.\"\n    },\n    {\n      \"id\": \"cat_especificos\",\n      \"titulo\": \"Conceitos Específicos\",\n      \"tipo\": \"category\",\n      \"pagina\": 23,\n      \"resumo\": \"Institutos de alta densidade em provas: Eficácia das Normas, Vedação ao Retrocesso e Reserva de Plenário.\"\n    },\n    {\n      \"id\": \"sent_sociologico\",\n      \"titulo\": \"Sociológico (Fatores Reais de Poder)\",\n      \"tipo\": \"concept\",\n      \"pagina\": 13,\n      \"resumo\": \"Ferdinand Lassalle: a Constituição real é a soma dos fatores reais de poder; o texto escrito é mera folha de papel se dissonante da sociedade.\"\n    },\n    {\n      \"id\": \"sent_politico\",\n      \"titulo\": \"Político (Decisão Política Fundamental)\",\n      \"tipo\": \"concept\",\n      \"pagina\": 13,\n      \"resumo\": \"Carl Schmitt: a Constituição decorre de uma decisão política fundamental do titular do poder; distingue Constituição de leis constitucionais.\"\n    },\n    {\n      \"id\": \"sent_juridico\",\n      \"titulo\": \"Jurídico (Norma Fundamental)\",\n      \"tipo\": \"concept\",\n      \"pagina\": 13,\n      \"resumo\": \"Hans Kelsen: norma fundamental suprema que valida o ordenamento (sentidos lógico-jurídico transcendental e jurídico-positivo posto).\"\n    },\n    {\n      \"id\": \"sent_culturalista\",\n      \"titulo\": \"Culturalista (Constituição Total)\",\n      \"tipo\": \"concept\",\n      \"pagina\": 13,\n      \"resumo\": \"J. H. Meirelles Teixeira: produto de um fato cultural que integra de forma unitária aspectos econômicos, sociológicos, filosóficos e jurídicos.\"\n    },\n    {\n      \"id\": \"sent_processo_pub\",\n      \"titulo\": \"Processo Público (Sociedade Aberta)\",\n      \"tipo\": \"concept\",\n      \"pagina\": 13,\n      \"resumo\": \"Peter Häberle: a Constituição é processo público dinâmico de interpretação do qual participam todos os cidadãos (sociedade aberta de intérpretes).\"\n    },\n    {\n      \"id\": \"sent_ordem_juridica\",\n      \"titulo\": \"Ordem Jurídica (Força Normativa)\",\n      \"tipo\": \"concept\",\n      \"pagina\": 13,\n      \"resumo\": \"Konrad Hesse: resposta a Lassalle; a Constituição possui força normativa própria para conformar e transformar a realidade social.\"\n    },\n    {\n      \"id\": \"sent_simbolica\",\n      \"titulo\": \"Constitucionalização Simbólica\",\n      \"tipo\": \"concept\",\n      \"pagina\": 14,\n      \"resumo\": \"Marcelo Neves: mero instrumento de retórica política sem eficácia social concreta; hipertrofia de símbolos para mascarar déficits reais.\"\n    },\n    {\n      \"id\": \"sub_metodos\",\n      \"titulo\": \"Métodos de Interpretação\",\n      \"tipo\": \"category\",\n      \"pagina\": 14,\n      \"resumo\": \"Modelos dogmáticos para extrair o sentido e alcance das normas constitucionais.\"\n    },\n    {\n      \"id\": \"sub_principios\",\n      \"titulo\": \"Princípios de Interpretação\",\n      \"tipo\": \"category\",\n      \"pagina\": 15,\n      \"resumo\": \"Cânones e postulados hermenêuticos vinculantes aplicados na jurisdição constitucional.\"\n    },\n    {\n      \"id\": \"met_classico\",\n      \"titulo\": \"Jurídico ou Hermenêutico Clássico\",\n      \"tipo\": \"concept\",\n      \"pagina\": 14,\n      \"resumo\": \"Ernst Forsthoff: aplica os elementos da hermenêutica tradicional (gramatical, lógico, histórico, teleológico e genético).\"\n    },\n    {\n      \"id\": \"met_topico\",\n      \"titulo\": \"Tópico-Problemático\",\n      \"tipo\": \"concept\",\n      \"pagina\": 14,\n      \"resumo\": \"Theodor Viehweg: primazia do problema concreto sobre a norma; parte da situação fática concreta em busca do preceito aplicável.\"\n    },\n    {\n      \"id\": \"met_concretizador\",\n      \"titulo\": \"Hermenêutico-Concretizador\",\n      \"tipo\": \"concept\",\n      \"pagina\": 14,\n      \"resumo\": \"Konrad Hesse: primazia da norma sobre o problema; movimento dialético de ida e volta (círculo hermenêutico) entre texto e contexto.\"\n    },\n    {\n      \"id\": \"met_integrativo\",\n      \"titulo\": \"Integrativo ou Científico-Espiritual\",\n      \"tipo\": \"concept\",\n      \"pagina\": 14,\n      \"resumo\": \"Rudolf Smend: interpreta a Constituição com base nos valores subjacentes e no espírito integrador da comunidade política.\"\n    },\n    {\n      \"id\": \"met_estruturante\",\n      \"titulo\": \"Normativo-Estruturante\",\n      \"tipo\": \"concept\",\n      \"pagina\": 14,\n      \"resumo\": \"Friedrich Müller: não há identidade estrita entre texto e norma; a norma jurídica resulta da atividade judicial e do setor da realidade.\"\n    },\n    {\n      \"id\": \"met_comparativo\",\n      \"titulo\": \"Comparativo\",\n      \"tipo\": \"concept\",\n      \"pagina\": 15,\n      \"resumo\": \"Peter Häberle: análise comparativa de soluções e institutos em ordenamentos estrangeiros para extrair o sentido ideal.\"\n    },\n    {\n      \"id\": \"princ_supremacia\",\n      \"titulo\": \"Supremacia da Constituição\",\n      \"tipo\": \"rule\",\n      \"pagina\": 15,\n      \"resumo\": \"Hierarquia máxima da Constituição; nenhuma norma infraconstitucional pode contrariá-la sob pena de invalidade.\"\n    },\n    {\n      \"id\": \"princ_presuncao\",\n      \"titulo\": \"Presunção de Constitucionalidade\",\n      \"tipo\": \"rule\",\n      \"pagina\": 15,\n      \"resumo\": \"As leis presumem-se válidas até declaração judicial em contrário (presunção juris tantum relativa).\"\n    },\n    {\n      \"id\": \"princ_conforme\",\n      \"titulo\": \"Interpretação Conforme\",\n      \"tipo\": \"rule\",\n      \"pagina\": 15,\n      \"resumo\": \"Havendo múltiplas interpretações, adota-se a harmônica com a CF sem expurgar o texto legal do ordenamento.\"\n    },\n    {\n      \"id\": \"princ_unidade\",\n      \"titulo\": \"Unidade da Constituição\",\n      \"tipo\": \"rule\",\n      \"pagina\": 15,\n      \"resumo\": \"A Carta Magna é um sistema normativo uno e coerente; inexiste hierarquia entre normas constitucionais originárias.\"\n    },\n    {\n      \"id\": \"princ_proporcionalidade\",\n      \"titulo\": \"Razoabilidade e Proporcionalidade\",\n      \"tipo\": \"rule\",\n      \"pagina\": 15,\n      \"resumo\": \"Tríplice teste de proporcionalidade na ponderação de bens: adequação, necessidade e proporcionalidade em sentido estrito.\"\n    },\n    {\n      \"id\": \"princ_efetividade\",\n      \"titulo\": \"Máxima Efetividade\",\n      \"tipo\": \"rule\",\n      \"pagina\": 16,\n      \"resumo\": \"Princípio da eficiência interpretativa: deve-se conferir à norma constitucional a mais ampla eficácia e aplicabilidade prática.\"\n    },\n    {\n      \"id\": \"princ_integrador\",\n      \"titulo\": \"Efeito Integrador\",\n      \"tipo\": \"rule\",\n      \"pagina\": 16,\n      \"resumo\": \"Prioriza critérios interpretativos que favoreçam a coesão social, a unidade política e a estabilidade das instituições.\"\n    },\n    {\n      \"id\": \"princ_concordancia\",\n      \"titulo\": \"Concordância Prática\",\n      \"tipo\": \"rule\",\n      \"pagina\": 16,\n      \"resumo\": \"Princípio da harmonização: nos conflitos de direitos fundamentais, reduz-se proporcionalmente cada âmbito sem sacrificar nenhum.\"\n    },\n    {\n      \"id\": \"princ_conformidade_func\",\n      \"titulo\": \"Conformidade Funcional\",\n      \"tipo\": \"rule\",\n      \"pagina\": 16,\n      \"resumo\": \"Justeza: o intérprete está proibido de subverter a partilha e o equilíbrio orgânico dos Poderes fixados pelo constituinte.\"\n    },\n    {\n      \"id\": \"const_antigo\",\n      \"titulo\": \"Antigo (Hebreus, Grécia, Roma)\",\n      \"tipo\": \"concept\",\n      \"pagina\": 16,\n      \"resumo\": \"Hebreus (teocracia e limitação religiosa do poder), Grécia (democracia direta) e Roma (direitos civis contratuais e semente orgânica).\"\n    },\n    {\n      \"id\": \"const_medieval\",\n      \"titulo\": \"Medieval (Magna Carta 1215)\",\n      \"tipo\": \"concept\",\n      \"pagina\": 16,\n      \"resumo\": \"Marco inglês com o rei João Sem Terra: limitação do poder real absoluto frente aos direitos estamentais dos barões.\"\n    },\n    {\n      \"id\": \"const_moderno\",\n      \"titulo\": \"Moderno (Liberal e Social)\",\n      \"tipo\": \"concept\",\n      \"pagina\": 16,\n      \"resumo\": \"Liberal: revoluções séc. XVIII (EUA 1776, França 1789) e 1ª dimensão. Social: México 1917 e Weimar 1919 (trabalho e igualdade).\"\n    },\n    {\n      \"id\": \"const_contemporaneo\",\n      \"titulo\": \"Contemporâneo (Dignidade Humana)\",\n      \"tipo\": \"concept\",\n      \"pagina\": 16,\n      \"resumo\": \"Pós-2ª Guerra: centralidade axiológica da dignidade da pessoa humana e consagração das 3ª, 4ª e 5ª dimensões de direitos.\"\n    },\n    {\n      \"id\": \"const_futuro\",\n      \"titulo\": \"Do Futuro (7 Valores - Dromi)\",\n      \"tipo\": \"concept\",\n      \"pagina\": 16,\n      \"resumo\": \"José Roberto Dromi: verdade, solidariedade, consenso, continuidade, participação, integração e universalidade.\"\n    },\n    {\n      \"id\": \"class_origem\",\n      \"titulo\": \"Origem (Outorgada, Promulgada, Cesarista, Dualista)\",\n      \"tipo\": \"concept\",\n      \"pagina\": 17,\n      \"resumo\": \"Outorgadas (impostas unilateralmente), Promulgadas (populares/democráticas - CF/88), Cesaristas (ratificação) e Dualistas (pactuadas).\"\n    },\n    {\n      \"id\": \"class_forma\",\n      \"titulo\": \"Forma (Escrita vs Não Escrita)\",\n      \"tipo\": \"concept\",\n      \"pagina\": 17,\n      \"resumo\": \"Escritas (formais e instrumentais em código solene - CF/88) vs Não escritas (costumeiras/consuetudinárias baseadas em precedentes).\"\n    },\n    {\n      \"id\": \"class_elaboracao\",\n      \"titulo\": \"Modo de Elaboração (Dogmática vs Histórica)\",\n      \"tipo\": \"concept\",\n      \"pagina\": 17,\n      \"resumo\": \"Dogmáticas (elaboradas de uma só vez por órgão constituinte - CF/88) vs Históricas (processo social cumulativo lento).\"\n    },\n    {\n      \"id\": \"class_conteudo\",\n      \"titulo\": \"Conteúdo (Material vs Formal)\",\n      \"tipo\": \"concept\",\n      \"pagina\": 18,\n      \"resumo\": \"Materiais (apenas matérias intrinsecamente constitucionais) vs Formais (todas as matérias inseridas no texto solene - CF/88).\"\n    },\n    {\n      \"id\": \"class_estabilidade\",\n      \"titulo\": \"Estabilidade (Rígida, Super-rígida, Flexível)\",\n      \"tipo\": \"concept\",\n      \"pagina\": 18,\n      \"resumo\": \"Rígidas (rito legislativo solene qualificado - CF/88), Super-rígidas (Alexandre de Moraes: rígidas com cláusulas pétreas imutáveis).\"\n    },\n    {\n      \"id\": \"class_extensao\",\n      \"titulo\": \"Extensão (Analítica vs Sintética)\",\n      \"tipo\": \"concept\",\n      \"pagina\": 18,\n      \"resumo\": \"Analíticas (prolixas, detalhadas e extensas - CF/88) vs Sintéticas (concisas, versando apenas sobre a organização do Estado).\"\n    },\n    {\n      \"id\": \"class_correspondencia\",\n      \"titulo\": \"Correspondência (Critério Ontológico)\",\n      \"tipo\": \"concept\",\n      \"pagina\": 19,\n      \"resumo\": \"Karl Loewenstein: Normativas (consonantes e eficazes), Nominais (prospectivas sem simetria fática) e Semânticas (disfarce autoritário).\"\n    },\n    {\n      \"id\": \"pc_originario\",\n      \"titulo\": \"Originário\",\n      \"tipo\": \"category\",\n      \"pagina\": 21,\n      \"resumo\": \"Poder inicial, autônomo, incondicionado e ilimitado juridicamente que funda a ordem estatal.\"\n    },\n    {\n      \"id\": \"pc_derivado\",\n      \"titulo\": \"Derivado\",\n      \"tipo\": \"category\",\n      \"pagina\": 21,\n      \"resumo\": \"Poder instituído pelo originário: condicionado, limitado e de segundo grau.\"\n    },\n    {\n      \"id\": \"pc_difuso\",\n      \"titulo\": \"Difuso (Mutação Constitucional)\",\n      \"tipo\": \"concept\",\n      \"pagina\": 21,\n      \"resumo\": \"Poder de fato: modificação informal e silenciosa do sentido interpretativo da norma, sem alteração literal do texto constitucional.\"\n    },\n    {\n      \"id\": \"pco_historico\",\n      \"titulo\": \"Histórico\",\n      \"tipo\": \"concept\",\n      \"pagina\": 21,\n      \"resumo\": \"Cria o Estado pela primeiríssima vez, estruturando a gênese institucional.\"\n    },\n    {\n      \"id\": \"pco_revolucionario\",\n      \"titulo\": \"Revolucionário\",\n      \"tipo\": \"concept\",\n      \"pagina\": 21,\n      \"resumo\": \"Rompe com a ordem jurídica pretérita instaurando uma nova Constituição soberana.\"\n    },\n    {\n      \"id\": \"pcd_revisor\",\n      \"titulo\": \"Revisor\",\n      \"tipo\": \"concept\",\n      \"pagina\": 21,\n      \"resumo\": \"Art. 3º do ADCT: competência de revisão unicameral por maioria absoluta esgotada após 5 anos (6 ECRs).\"\n    },\n    {\n      \"id\": \"pcd_decorrente\",\n      \"titulo\": \"Decorrente\",\n      \"tipo\": \"concept\",\n      \"pagina\": 21,\n      \"resumo\": \"Competência outorgada aos Estados-membros para auto-organização por meio de Constituições Estaduais (art. 25) e DF (art. 32).\"\n    },\n    {\n      \"id\": \"pcd_reformador\",\n      \"titulo\": \"Reformador\",\n      \"tipo\": \"concept\",\n      \"pagina\": 21,\n      \"resumo\": \"Poder de emendar a Constituição nos termos do art. 60, submetido aos limites circunstanciais, formais e materiais pétreos.\"\n    },\n    {\n      \"id\": \"princ_fundamentos\",\n      \"titulo\": \"Fundamentos (SO-CI-DI-VA-PLU)\",\n      \"tipo\": \"mnemonic\",\n      \"pagina\": 21,\n      \"resumo\": \"Art. 1º: SOberania, CIdadania, DIgnidade da pessoa humana, VAlores sociais do trabalho e livre iniciativa, PLUralismo político.\"\n    },\n    {\n      \"id\": \"princ_objetivos\",\n      \"titulo\": \"Objetivos (CON-GA-ERRA-PRO)\",\n      \"tipo\": \"mnemonic\",\n      \"pagina\": 22,\n      \"resumo\": \"Art. 3º: CONstruir sociedade justa, GArantir desenvolvimento, ERRA dicar pobreza/reduzir desigualdades, PROmover o bem de todos.\"\n    },\n    {\n      \"id\": \"princ_internacionais\",\n      \"titulo\": \"Relações Internacionais (Independência, Direitos Humanos...)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 22,\n      \"resumo\": \"Art. 4º: independência nacional, prevalência dos direitos humanos, não intervenção, asilo político e integração latino-americana.\"\n    },\n    {\n      \"id\": \"pod_funcoes\",\n      \"titulo\": \"Funções\",\n      \"tipo\": \"category\",\n      \"pagina\": 22,\n      \"resumo\": \"Desdobramento funcional da tripartição tripartite do poder político.\"\n    },\n    {\n      \"id\": \"pod_triparticao\",\n      \"titulo\": \"Tripartição\",\n      \"tipo\": \"category\",\n      \"pagina\": 21,\n      \"resumo\": \"Art. 2º: Poderes Executivo, Legislativo e Judiciário independentes e harmônicos entre si.\"\n    },\n    {\n      \"id\": \"func_tipicas\",\n      \"titulo\": \"Típicas\",\n      \"tipo\": \"concept\",\n      \"pagina\": 22,\n      \"resumo\": \"Atribuições preponderantes expressas da essência institucional de cada poder.\"\n    },\n    {\n      \"id\": \"func_atipicas\",\n      \"titulo\": \"Atípicas\",\n      \"tipo\": \"concept\",\n      \"pagina\": 22,\n      \"resumo\": \"Atribuições de gestão, julgamento ou produção normativa secundária conferidas subsidiariamente pela Constituição.\"\n    },\n    {\n      \"id\": \"trip_executivo\",\n      \"titulo\": \"Executivo\",\n      \"tipo\": \"concept\",\n      \"pagina\": 22,\n      \"resumo\": \"Típica: administrar e chefiar o Estado. Atípica: legislar mediante medidas provisórias (art. 62) e julgar processos administrativos.\"\n    },\n    {\n      \"id\": \"trip_legislativo\",\n      \"titulo\": \"Legislativo\",\n      \"tipo\": \"concept\",\n      \"pagina\": 22,\n      \"resumo\": \"Típica: legislar e fiscalizar as finanças públicas. Atípica: administrar seus quadros e julgar crimes de responsabilidade (art. 52, I).\"\n    },\n    {\n      \"id\": \"trip_judiciario\",\n      \"titulo\": \"Judiciário\",\n      \"tipo\": \"concept\",\n      \"pagina\": 22,\n      \"resumo\": \"Típica: exercer jurisdição contenciosa definitiva. Atípica: autoadministração e elaboração dos próprios regimentos internos.\"\n    },\n    {\n      \"id\": \"esp_eficacia\",\n      \"titulo\": \"Eficácia das Normas (Plena, Contida, Limitada)\",\n      \"tipo\": \"concept\",\n      \"pagina\": 26,\n      \"resumo\": \"José Afonso da Silva: Plena (direta, imediata, integral), Contida (restringível por lei) e Limitada (indireta, mediata e reduzida).\"\n    },\n    {\n      \"id\": \"esp_retrocesso\",\n      \"titulo\": \"Vedação ao Retrocesso (Efeito Cliquet)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 23,\n      \"resumo\": \"Princípio implícito e internacional (CADH/PIDESC): direitos fundamentais conquistados não podem ser arbitrariamente suprimidos.\"\n    },\n    {\n      \"id\": \"esp_reserva_plenario\",\n      \"titulo\": \"Reserva de Plenário (Full Bench)\",\n      \"tipo\": \"rule\",\n      \"pagina\": 157,\n      \"resumo\": \"Art. 97 da CF e Súmula Vinculante 10: a inconstitucionalidade de lei por tribunal só pode ser declarada por maioria absoluta do plenário.\"\n    }\n  ],\n  \"edges\": [\n    {\n      \"source\": \"root\",\n      \"target\": \"cat_sentidos\"\n    },\n    {\n      \"source\": \"root\",\n      \"target\": \"cat_hermeneutica\"\n    },\n    {\n      \"source\": \"root\",\n      \"target\": \"cat_constitucionalismo\"\n    },\n    {\n      \"source\": \"root\",\n      \"target\": \"cat_classificacao\"\n    },\n    {\n      \"source\": \"root\",\n      \"target\": \"cat_poder_constituinte\"\n    },\n    {\n      \"source\": \"root\",\n      \"target\": \"cat_principios\"\n    },\n    {\n      \"source\": \"root\",\n      \"target\": \"cat_poderes\"\n    },\n    {\n      \"source\": \"root\",\n      \"target\": \"cat_especificos\"\n    },\n    {\n      \"source\": \"cat_sentidos\",\n      \"target\": \"sent_sociologico\"\n    },\n    {\n      \"source\": \"cat_sentidos\",\n      \"target\": \"sent_politico\"\n    },\n    {\n      \"source\": \"cat_sentidos\",\n      \"target\": \"sent_juridico\"\n    },\n    {\n      \"source\": \"cat_sentidos\",\n      \"target\": \"sent_culturalista\"\n    },\n    {\n      \"source\": \"cat_sentidos\",\n      \"target\": \"sent_processo_pub\"\n    },\n    {\n      \"source\": \"cat_sentidos\",\n      \"target\": \"sent_ordem_juridica\"\n    },\n    {\n      \"source\": \"cat_sentidos\",\n      \"target\": \"sent_simbolica\"\n    },\n    {\n      \"source\": \"cat_hermeneutica\",\n      \"target\": \"sub_metodos\"\n    },\n    {\n      \"source\": \"cat_hermeneutica\",\n      \"target\": \"sub_principios\"\n    },\n    {\n      \"source\": \"sub_metodos\",\n      \"target\": \"met_classico\"\n    },\n    {\n      \"source\": \"sub_metodos\",\n      \"target\": \"met_topico\"\n    },\n    {\n      \"source\": \"sub_metodos\",\n      \"target\": \"met_concretizador\"\n    },\n    {\n      \"source\": \"sub_metodos\",\n      \"target\": \"met_integrativo\"\n    },\n    {\n      \"source\": \"sub_metodos\",\n      \"target\": \"met_estruturante\"\n    },\n    {\n      \"source\": \"sub_metodos\",\n      \"target\": \"met_comparativo\"\n    },\n    {\n      \"source\": \"sub_principios\",\n      \"target\": \"princ_supremacia\"\n    },\n    {\n      \"source\": \"sub_principios\",\n      \"target\": \"princ_presuncao\"\n    },\n    {\n      \"source\": \"sub_principios\",\n      \"target\": \"princ_conforme\"\n    },\n    {\n      \"source\": \"sub_principios\",\n      \"target\": \"princ_unidade\"\n    },\n    {\n      \"source\": \"sub_principios\",\n      \"target\": \"princ_proporcionalidade\"\n    },\n    {\n      \"source\": \"sub_principios\",\n      \"target\": \"princ_efetividade\"\n    },\n    {\n      \"source\": \"sub_principios\",\n      \"target\": \"princ_integrador\"\n    },\n    {\n      \"source\": \"sub_principios\",\n      \"target\": \"princ_concordancia\"\n    },\n    {\n      \"source\": \"sub_principios\",\n      \"target\": \"princ_conformidade_func\"\n    },\n    {\n      \"source\": \"cat_constitucionalismo\",\n      \"target\": \"const_antigo\"\n    },\n    {\n      \"source\": \"cat_constitucionalismo\",\n      \"target\": \"const_medieval\"\n    },\n    {\n      \"source\": \"cat_constitucionalismo\",\n      \"target\": \"const_moderno\"\n    },\n    {\n      \"source\": \"cat_constitucionalismo\",\n      \"target\": \"const_contemporaneo\"\n    },\n    {\n      \"source\": \"cat_constitucionalismo\",\n      \"target\": \"const_futuro\"\n    },\n    {\n      \"source\": \"cat_classificacao\",\n      \"target\": \"class_origem\"\n    },\n    {\n      \"source\": \"cat_classificacao\",\n      \"target\": \"class_forma\"\n    },\n    {\n      \"source\": \"cat_classificacao\",\n      \"target\": \"class_elaboracao\"\n    },\n    {\n      \"source\": \"cat_classificacao\",\n      \"target\": \"class_conteudo\"\n    },\n    {\n      \"source\": \"cat_classificacao\",\n      \"target\": \"class_estabilidade\"\n    },\n    {\n      \"source\": \"cat_classificacao\",\n      \"target\": \"class_extensao\"\n    },\n    {\n      \"source\": \"cat_classificacao\",\n      \"target\": \"class_correspondencia\"\n    },\n    {\n      \"source\": \"cat_poder_constituinte\",\n      \"target\": \"pc_originario\"\n    },\n    {\n      \"source\": \"cat_poder_constituinte\",\n      \"target\": \"pc_derivado\"\n    },\n    {\n      \"source\": \"cat_poder_constituinte\",\n      \"target\": \"pc_difuso\"\n    },\n    {\n      \"source\": \"pc_originario\",\n      \"target\": \"pco_historico\"\n    },\n    {\n      \"source\": \"pc_originario\",\n      \"target\": \"pco_revolucionario\"\n    },\n    {\n      \"source\": \"pc_derivado\",\n      \"target\": \"pcd_revisor\"\n    },\n    {\n      \"source\": \"pc_derivado\",\n      \"target\": \"pcd_decorrente\"\n    },\n    {\n      \"source\": \"pc_derivado\",\n      \"target\": \"pcd_reformador\"\n    },\n    {\n      \"source\": \"cat_principios\",\n      \"target\": \"princ_fundamentos\"\n    },\n    {\n      \"source\": \"cat_principios\",\n      \"target\": \"princ_objetivos\"\n    },\n    {\n      \"source\": \"cat_principios\",\n      \"target\": \"princ_internacionais\"\n    },\n    {\n      \"source\": \"cat_poderes\",\n      \"target\": \"pod_funcoes\"\n    },\n    {\n      \"source\": \"cat_poderes\",\n      \"target\": \"pod_triparticao\"\n    },\n    {\n      \"source\": \"pod_funcoes\",\n      \"target\": \"func_tipicas\"\n    },\n    {\n      \"source\": \"pod_funcoes\",\n      \"target\": \"func_atipicas\"\n    },\n    {\n      \"source\": \"pod_triparticao\",\n      \"target\": \"trip_executivo\"\n    },\n    {\n      \"source\": \"pod_triparticao\",\n      \"target\": \"trip_legislativo\"\n    },\n    {\n      \"source\": \"pod_triparticao\",\n      \"target\": \"trip_judiciario\"\n    },\n    {\n      \"source\": \"cat_especificos\",\n      \"target\": \"esp_eficacia\"\n    },\n    {\n      \"source\": \"cat_especificos\",\n      \"target\": \"esp_retrocesso\"\n    },\n    {\n      \"source\": \"cat_especificos\",\n      \"target\": \"esp_reserva_plenario\"\n    }\n  ]\n}\n```\n\n---\n\n## 1. Resumo Estruturado e Conceitos-Chave\n\n> 👨‍🏫 **FONTE DO CONHECIMENTO:** Caderno de Estudos da Legislação 360 (Direito Constitucional)  \n> **Material:** PDF Oficial (Edição Atualizada 2026.1) | **Banca Alvo:** Cebraspe / FGV / FCC / Vunesp\n\n### 🧠 Mnemônicos & Técnicas de Memorização do Autor\n> 📌 **👨‍🏫 [MATERIAL DO AUTOR - Pág. 21]**  \n> **Mnemônico:** `SO-CI-DI-VA-PLU`  \n> - **O que memoriza:** Os 5 Fundamentos da República Federativa do Brasil (Art. 1º, I a V, CF/88).  \n> - **Como utilizar em prova:** Lembrar que **SO**berania, **CI**dadania, **DI**gnidade da pessoa humana, **VA**lores sociais do trabalho e da livre iniciativa e **PLU**ralismo político são fundamentos. As bancas tentam trocá-los com os objetivos do art. 3º!\n>\n> 📌 **👨‍🏫 [MATERIAL DO AUTOR - Pág. 22]**  \n> **Mnemônico:** `CON-GA-ERRA-PRO`  \n> - **O que memoriza:** Os 4 Objetivos Fundamentais da República (Art. 3º, I a IV, CF/88).  \n> - **Como utilizar em prova:** Todo objetivo começa com verbo no infinitivo: **CON**struir uma sociedade livre, justa e solidária; **GA**rantir o desenvolvimento nacional; **ERRA**dicar a pobreza e a marginalização e reduzir as desigualdades; **PRO**mover o bem de todos.\n\n### 💡 Dicas Estruturantes do Autor 👨‍🏫 [MATERIAL DO AUTOR]\n- **Sentidos de Constituição (Pág. 13):** Não confunda Ferdinand Lassalle (sentido sociológico: fatores reais de poder / folha de papel) com Konrad Hesse (ordem jurídica fundamental: força normativa da constituição capaz de conformar a realidade).\n- **Hermenêutica (Pág. 14):** Método Tópico-Problemático (Viehweg) parte do *problema* para a norma. Método Hermenêutico-Concretizador (Hesse) parte da *norma* para o problema através do círculo hermenêutico.\n- **Poder Constituinte Derivado (Pág. 21):** O Poder Revisor (Art. 3º ADCT) já teve sua eficácia exaurida e aplicabilidade esgotada após a edição das 6 Emendas Revisionais de 1994. Não é mais possível nova manifestação revisional.\n\n---\n\n### A. Sentidos de Constituição e Hermenêutica 👨‍🏫 [Págs. 13-16]\n- **Sociológico (Ferdinand Lassalle):** A Constituição real e efetiva é a soma dos fatores reais de poder vigentes na sociedade (econômicos, militares, políticos). A constituição escrita é mera folha de papel se não espelhar esses fatores *(Pág. 13)*.\n- **Político (Carl Schmitt):** A Constituição é uma decisão política fundamental tomada pelo titular do poder constituinte sobre a forma do Estado e governo. Normas que não integram essa decisão basilar são meras *leis constitucionais* *(Pág. 13)*.\n- **Jurídico (Hans Kelsen):** A Constituição é norma pura fundamental. Divide-se em sentido *lógico-jurídico* (norma hipotética fundamental pressuposta) e *jurídico-positivo* (norma positiva posta supreme no topo da pirâmide) *(Pág. 13)*.\n- **Ordem Jurídica Fundamental (Konrad Hesse):** Possui *força normativa* ativa que condiciona e transforma a realidade sociopolítica, não se rendendo passivamente aos fatores reais de poder *(Pág. 13)*.\n- **Sociedade Aberta de Intérpretes (Peter Häberle):** A interpretação constitucional não é monopólio dos juízes togados; todo cidadão que vive sob a vigência da norma é seu legítimo intérprete *(Pág. 13)*.\n- **Princípio da Concordância Prática ou Harmonização (Pág. 16):** Nos conflitos entre direitos fundamentais, o intérprete coordena os bens jurídicos, promovendo redução proporcional mútua sem eliminar totalmente nenhum dos direitos.\n\n---\n\n### B. Classificação e Poder Constituinte 👨‍🏫 [Págs. 17-21]\n- **Classificação da CF/88:** Promulgada (democrática), Escrita (formal/instrumental), Dogmática, Formal, Rígida (ou Super-rígida segundo Alexandre de Moraes), Analítica (prolixa), Principiológica, Eclética e Normativa *(Págs. 17-19)*.\n- **Poder Constituinte Originário:** Inicial, autônomo, incondicionado, ilimitado juridicamente e permanente. Divide-se em Histórico (institui o Estado) e Revolucionário (rompe a ordem anterior) *(Pág. 21)*.\n- **Poder Constituinte Derivado:** Instituído, limitado e condicionado pelas regras da Constituição Originária. Subdivide-se em Reformador (art. 60), Decorrente (auto-organização dos Estados e DF) e Revisor (esgotado) *(Pág. 21)*.\n- **Poder Constituinte Difuso:** Mutação constitucional informal resultante da alteração do sentido interpretativo da norma sem mudança literal no texto *(Pág. 21)*.\n\n---\n\n### C. Tripartição e Princípios Fundamentais 👨‍🏫 [Págs. 21-23]\n- **Tripartição dos Poderes (Art. 2º):** Executivo, Legislativo e Judiciário são independentes e harmônicos entre si.\n- **Funções Típicas vs Atípicas (Pág. 22):**\n  - *Executivo:* Típica = governar e administrar; Atípica = legislar (Medidas Provisórias - art. 62) e julgar (processos administrativos).\n  - *Legislativo:* Típica = legislar e fiscalizar; Atípica = administrar (organização interna de servidores) e julgar (crime de responsabilidade - art. 52, I).\n  - *Judiciário:* Típica = julgar (jurisdição); Atípica = administrar (gestão de varas e tribunais) e legislar (regimentos internos).\n\n---\n\n### D. Quadro Esquemático de Retenção Rápida\n\n*Síntese estruturada pela IA a partir do conteúdo da fonte.*\n\n| Conceito Estruturante | Doutrinador / Artigo | Palavra-Chave / Núcleo Essencial | Alerta de Prova |\n| :--- | :--- | :--- | :--- |\n| **Sentido Sociológico** | Ferdinand Lassalle | Fatores Reais de Poder (Folha de papel) | Não confunda com Schmitt (decisão política) |\n| **Sentido Político** | Carl Schmitt | Decisão Política Fundamental | Distingue Constituição de Leis Constitucionais |\n| **Sentido Jurídico** | Hans Kelsen | Norma Fundamental (Lógico vs Positivo) | Não se subordina à sociologia ou à política |\n| **Força Normativa** | Konrad Hesse | Capacidade de conformar a realidade | Oposto e resposta à tese de Lassalle |\n| **Poder Revisor** | Art. 3º do ADCT | 6 Emendas Revisionais (1994) | Eficácia exaurida; não pode ser reaberto |\n| **Reserva de Plenário** | Art. 97 CF / SV 10 | Maioria Absoluta do Plenário | Órgão fracionário não pode afastar norma |\n\n\n---\n\n## 2. Raio-X de Banca & Pegadinhas\n\n### PARTE 1: Pegadinhas e Alertas do Autor 👨‍🏫 [MATERIAL DO AUTOR]\n\n#### Pegadinha 1: Confusão entre Fundamentos (Art. 1º) e Objetivos (Art. 3º)\n1. **O conhecimento correto:** Os Fundamentos (art. 1º) são substantivos basilares (Soberania, Cidadania, Dignidade, Valores sociais do trabalho, Pluralismo político). Os Objetivos (art. 3º) são metas expressas por verbos no infinitivo (Construir, Garantir, Erradicar, Promover).\n2. **O erro ou confusão provável:** O candidato decora a lista de palavras sem notar que as bancas colocam \"promover o bem de todos\" como se fosse um fundamento do art. 1º.\n3. **Como a banca explora:** Cebraspe: *\"Constitui fundamento da República Federativa do Brasil erradicar a pobreza e a marginalização.\"* (Item ERRADO - é objetivo do art. 3º).\n4. **Como evitar o erro:** Mnemônicos: `SO-CI-DI-VA-PLU` (Fundamentos) e `CON-GA-ERRA-PRO` (Objetivos com verbos).\n\n#### Pegadinha 2: Poder Constituinte Revisor\n1. **O conhecimento correto:** A revisão constitucional do art. 3º do ADCT previa prazo de 5 anos após a promulgação da CF/88, em sessão unicameral. Foram editadas 6 Emendas Constitucionais de Revisão (ECRs).\n2. **Como a banca explora:** Afirmar que o Congresso pode convocar nova revisão constitucional simplificada mediante projeto de lei.\n3. **Como evitar o erro:** A eficácia do art. 3º do ADCT é exaurida e sua aplicabilidade está completamente esgotada. Qualquer nova alteração somente por Emenda Constitucional (art. 60).\n\n---\n\n### PARTE 2: Análise Complementar de Banca da IA 🤖 [INSIGHT PEDAGÓGICO COMPLEMENTAR]\n\n#### Ponto Crítico 1: Cláusula de Reserva de Plenário e Súmula Vinculante 10\n1. **O conhecimento correto:** Conforme o art. 97 da CF e a SV 10 do STF, somente pelo voto da maioria absoluta dos membros do pleno ou do órgão especial é que os tribunais podem declarar a inconstitucionalidade de lei ou ato normativo, ou afastar sua incidência no todo ou em parte.\n2. **Como a banca explora:** Dizer que turma ou câmara isolada pode deixar de aplicar lei por considerá-la inconstitucional sem remessa ao plenário.\n3. **Como gabaritar:** Se um órgão fracionário afasta a aplicação de lei por inconstitucionalidade sem maioria absoluta do pleno, viola diretamente a Súmula Vinculante 10!\n\n",
         "mindmap_json": {
-          "titulo": "Constituição Federal e Legislação 360",
+          "titulo": "Licitações Públicas • Lei nº 14.133/2021 & Aspectos Constitucionais",
           "nodes": [
             {
               "id": "root",
-              "titulo": "Constituição Federal e Legislação 360",
+              "titulo": "Licitações Públicas (Lei 14.133/21)",
               "tipo": "root",
               "pagina": 1,
-              "resumo": "Mapeamento estrutural condensado dos conceitos fundamentais de Direito Constitucional e Legislação 360 para concursos públicos."
+              "resumo": "Regime geral das licitações e contratações públicas fundamentado na Constituição Federal (art. 37, XXI e art. 22, XXVII) e estruturado pela Nova Lei de Licitações (Lei nº 14.133/2021)."
             },
             {
-              "id": "cat_sentidos",
-              "titulo": "Sentidos de Constituição",
+              "id": "cat_1",
+              "titulo": "1. Competência e Fundamento Constitucional",
               "tipo": "category",
-              "pagina": 13,
-              "resumo": "Concepções teóricas sobre a essência, fundamento e validade da Constituição."
+              "pagina": 1,
+              "resumo": "Bases constitucionais obrigatórias da licitação pública (art. 22, XXVII e art. 37, XXI da CF/88)."
             },
             {
-              "id": "cat_hermeneutica",
-              "titulo": "Hermenêutica Constitucional",
-              "tipo": "category",
-              "pagina": 14,
-              "resumo": "Métodos de interpretação e princípios hermenêuticos vinculantes na aplicação da Carta Magna."
-            },
-            {
-              "id": "cat_constitucionalismo",
-              "titulo": "Constitucionalismo",
-              "tipo": "category",
-              "pagina": 16,
-              "resumo": "Evolução histórica da limitação do poder estatal e consagração dos direitos fundamentais."
-            },
-            {
-              "id": "cat_classificacao",
-              "titulo": "Classificação das Constituições",
-              "tipo": "category",
-              "pagina": 17,
-              "resumo": "Critérios taxonômicos estruturantes: origem, forma, elaboração, conteúdo, estabilidade e correspondência."
-            },
-            {
-              "id": "cat_poder_constituinte",
-              "titulo": "Poder Constituinte",
-              "tipo": "category",
-              "pagina": 21,
-              "resumo": "Espécies de manifestação constituinte: Originário, Derivado e Difuso (Mutação Constitucional)."
-            },
-            {
-              "id": "cat_principios",
-              "titulo": "Princípios Fundamentais",
-              "tipo": "category",
-              "pagina": 21,
-              "resumo": "Vigência estruturante dos Fundamentos (Art. 1º), Objetivos (Art. 3º) e Relações Internacionais (Art. 4º)."
-            },
-            {
-              "id": "cat_poderes",
-              "titulo": "Organização dos Poderes",
-              "tipo": "category",
-              "pagina": 21,
-              "resumo": "Tripartição clássica dos Poderes da União e exercício de funções típicas e atípicas."
-            },
-            {
-              "id": "cat_especificos",
-              "titulo": "Conceitos Específicos",
-              "tipo": "category",
-              "pagina": 23,
-              "resumo": "Institutos de alta densidade em provas: Eficácia das Normas, Vedação ao Retrocesso e Reserva de Plenário."
-            },
-            {
-              "id": "sent_sociologico",
-              "titulo": "Sociológico (Fatores Reais de Poder)",
-              "tipo": "concept",
-              "pagina": 13,
-              "resumo": "Ferdinand Lassalle: a Constituição real é a soma dos fatores reais de poder; o texto escrito é mera folha de papel se dissonante da sociedade."
-            },
-            {
-              "id": "sent_politico",
-              "titulo": "Político (Decisão Política Fundamental)",
-              "tipo": "concept",
-              "pagina": 13,
-              "resumo": "Carl Schmitt: a Constituição decorre de uma decisão política fundamental do titular do poder; distingue Constituição de leis constitucionais."
-            },
-            {
-              "id": "sent_juridico",
-              "titulo": "Jurídico (Norma Fundamental)",
-              "tipo": "concept",
-              "pagina": 13,
-              "resumo": "Hans Kelsen: norma fundamental suprema que valida o ordenamento (sentidos lógico-jurídico transcendental e jurídico-positivo posto)."
-            },
-            {
-              "id": "sent_culturalista",
-              "titulo": "Culturalista (Constituição Total)",
-              "tipo": "concept",
-              "pagina": 13,
-              "resumo": "J. H. Meirelles Teixeira: produto de um fato cultural que integra de forma unitária aspectos econômicos, sociológicos, filosóficos e jurídicos."
-            },
-            {
-              "id": "sent_processo_pub",
-              "titulo": "Processo Público (Sociedade Aberta)",
-              "tipo": "concept",
-              "pagina": 13,
-              "resumo": "Peter Häberle: a Constituição é processo público dinâmico de interpretação do qual participam todos os cidadãos (sociedade aberta de intérpretes)."
-            },
-            {
-              "id": "sent_ordem_juridica",
-              "titulo": "Ordem Jurídica (Força Normativa)",
-              "tipo": "concept",
-              "pagina": 13,
-              "resumo": "Konrad Hesse: resposta a Lassalle; a Constituição possui força normativa própria para conformar e transformar a realidade social."
-            },
-            {
-              "id": "sent_simbolica",
-              "titulo": "Constitucionalização Simbólica",
-              "tipo": "concept",
-              "pagina": 14,
-              "resumo": "Marcelo Neves: mero instrumento de retórica política sem eficácia social concreta; hipertrofia de símbolos para mascarar déficits reais."
-            },
-            {
-              "id": "sub_metodos",
-              "titulo": "Métodos de Interpretação",
-              "tipo": "category",
-              "pagina": 14,
-              "resumo": "Modelos dogmáticos para extrair o sentido e alcance das normas constitucionais."
-            },
-            {
-              "id": "sub_principios",
-              "titulo": "Princípios de Interpretação",
-              "tipo": "category",
-              "pagina": 15,
-              "resumo": "Cânones e postulados hermenêuticos vinculantes aplicados na jurisdição constitucional."
-            },
-            {
-              "id": "met_classico",
-              "titulo": "Jurídico ou Hermenêutico Clássico",
-              "tipo": "concept",
-              "pagina": 14,
-              "resumo": "Ernst Forsthoff: aplica os elementos da hermenêutica tradicional (gramatical, lógico, histórico, teleológico e genético)."
-            },
-            {
-              "id": "met_topico",
-              "titulo": "Tópico-Problemático",
-              "tipo": "concept",
-              "pagina": 14,
-              "resumo": "Theodor Viehweg: primazia do problema concreto sobre a norma; parte da situação fática concreta em busca do preceito aplicável."
-            },
-            {
-              "id": "met_concretizador",
-              "titulo": "Hermenêutico-Concretizador",
-              "tipo": "concept",
-              "pagina": 14,
-              "resumo": "Konrad Hesse: primazia da norma sobre o problema; movimento dialético de ida e volta (círculo hermenêutico) entre texto e contexto."
-            },
-            {
-              "id": "met_integrativo",
-              "titulo": "Integrativo ou Científico-Espiritual",
-              "tipo": "concept",
-              "pagina": 14,
-              "resumo": "Rudolf Smend: interpreta a Constituição com base nos valores subjacentes e no espírito integrador da comunidade política."
-            },
-            {
-              "id": "met_estruturante",
-              "titulo": "Normativo-Estruturante",
-              "tipo": "concept",
-              "pagina": 14,
-              "resumo": "Friedrich Müller: não há identidade estrita entre texto e norma; a norma jurídica resulta da atividade judicial e do setor da realidade."
-            },
-            {
-              "id": "met_comparativo",
-              "titulo": "Comparativo",
-              "tipo": "concept",
-              "pagina": 15,
-              "resumo": "Peter Häberle: análise comparativa de soluções e institutos em ordenamentos estrangeiros para extrair o sentido ideal."
-            },
-            {
-              "id": "princ_supremacia",
-              "titulo": "Supremacia da Constituição",
+              "id": "item_1_1",
+              "titulo": "Competência Privativa da União (Art. 22, XXVII)",
               "tipo": "rule",
-              "pagina": 15,
-              "resumo": "Hierarquia máxima da Constituição; nenhuma norma infraconstitucional pode contrariá-la sob pena de invalidade."
+              "pagina": 1,
+              "resumo": "Cabe privativamente à União legislar sobre normas gerais de licitação e contratação para todas as administrações públicas diretas, autárquicas e fundacionais de todos os entes federativos, bem como empresas públicas e sociedades de economia mista."
             },
             {
-              "id": "princ_presuncao",
-              "titulo": "Presunção de Constitucionalidade",
+              "id": "item_1_2",
+              "titulo": "Inconstitucionalidade de Normas Locais Próprias",
+              "tipo": "trap",
+              "pagina": 1,
+              "resumo": "São inconstitucionais as leis estaduais ou municipais que invadam a competência privativa da União ao estabelecer regras gerais próprias, modalidades inéditas ou sanções gerais sobre licitações e contratos."
+            },
+            {
+              "id": "item_1_3",
+              "titulo": "Dever Geral de Licitar (Art. 37, XXI)",
               "tipo": "rule",
-              "pagina": 15,
-              "resumo": "As leis presumem-se válidas até declaração judicial em contrário (presunção juris tantum relativa)."
+              "pagina": 1,
+              "resumo": "Ressalvados os casos especificados na legislação (dispensa e inexigibilidade), obras, serviços, compras e alienações serão contratados mediante processo de licitação pública que assegure igualdade de condições a todos os concorrentes."
             },
             {
-              "id": "princ_conforme",
-              "titulo": "Interpretação Conforme",
+              "id": "item_1_4",
+              "titulo": "Limitação de Exigências no Edital",
               "tipo": "rule",
-              "pagina": 15,
-              "resumo": "Havendo múltiplas interpretações, adota-se a harmônica com a CF sem expurgar o texto legal do ordenamento."
+              "pagina": 1,
+              "resumo": "O processo licitatório somente permitirá exigências de qualificação técnica e econômica estritamente indispensáveis à garantia do cumprimento das obrigações, sendo vedadas cláusulas impertinentes ou restritivas."
             },
             {
-              "id": "princ_unidade",
-              "titulo": "Unidade da Constituição",
-              "tipo": "rule",
-              "pagina": 15,
-              "resumo": "A Carta Magna é um sistema normativo uno e coerente; inexiste hierarquia entre normas constitucionais originárias."
-            },
-            {
-              "id": "princ_proporcionalidade",
-              "titulo": "Razoabilidade e Proporcionalidade",
-              "tipo": "rule",
-              "pagina": 15,
-              "resumo": "Tríplice teste de proporcionalidade na ponderação de bens: adequação, necessidade e proporcionalidade em sentido estrito."
-            },
-            {
-              "id": "princ_efetividade",
-              "titulo": "Máxima Efetividade",
-              "tipo": "rule",
-              "pagina": 16,
-              "resumo": "Princípio da eficiência interpretativa: deve-se conferir à norma constitucional a mais ampla eficácia e aplicabilidade prática."
-            },
-            {
-              "id": "princ_integrador",
-              "titulo": "Efeito Integrador",
-              "tipo": "rule",
-              "pagina": 16,
-              "resumo": "Prioriza critérios interpretativos que favoreçam a coesão social, a unidade política e a estabilidade das instituições."
-            },
-            {
-              "id": "princ_concordancia",
-              "titulo": "Concordância Prática",
-              "tipo": "rule",
-              "pagina": 16,
-              "resumo": "Princípio da harmonização: nos conflitos de direitos fundamentais, reduz-se proporcionalmente cada âmbito sem sacrificar nenhum."
-            },
-            {
-              "id": "princ_conformidade_func",
-              "titulo": "Conformidade Funcional",
-              "tipo": "rule",
-              "pagina": 16,
-              "resumo": "Justeza: o intérprete está proibido de subverter a partilha e o equilíbrio orgânico dos Poderes fixados pelo constituinte."
-            },
-            {
-              "id": "const_antigo",
-              "titulo": "Antigo (Hebreus, Grécia, Roma)",
-              "tipo": "concept",
-              "pagina": 16,
-              "resumo": "Hebreus (teocracia e limitação religiosa do poder), Grécia (democracia direta) e Roma (direitos civis contratuais e semente orgânica)."
-            },
-            {
-              "id": "const_medieval",
-              "titulo": "Medieval (Magna Carta 1215)",
-              "tipo": "concept",
-              "pagina": 16,
-              "resumo": "Marco inglês com o rei João Sem Terra: limitação do poder real absoluto frente aos direitos estamentais dos barões."
-            },
-            {
-              "id": "const_moderno",
-              "titulo": "Moderno (Liberal e Social)",
-              "tipo": "concept",
-              "pagina": 16,
-              "resumo": "Liberal: revoluções séc. XVIII (EUA 1776, França 1789) e 1ª dimensão. Social: México 1917 e Weimar 1919 (trabalho e igualdade)."
-            },
-            {
-              "id": "const_contemporaneo",
-              "titulo": "Contemporâneo (Dignidade Humana)",
-              "tipo": "concept",
-              "pagina": 16,
-              "resumo": "Pós-2ª Guerra: centralidade axiológica da dignidade da pessoa humana e consagração das 3ª, 4ª e 5ª dimensões de direitos."
-            },
-            {
-              "id": "const_futuro",
-              "titulo": "Do Futuro (7 Valores - Dromi)",
-              "tipo": "concept",
-              "pagina": 16,
-              "resumo": "José Roberto Dromi: verdade, solidariedade, consenso, continuidade, participação, integração e universalidade."
-            },
-            {
-              "id": "class_origem",
-              "titulo": "Origem (Outorgada, Promulgada, Cesarista, Dualista)",
-              "tipo": "concept",
-              "pagina": 17,
-              "resumo": "Outorgadas (impostas unilateralmente), Promulgadas (populares/democráticas - CF/88), Cesaristas (ratificação) e Dualistas (pactuadas)."
-            },
-            {
-              "id": "class_forma",
-              "titulo": "Forma (Escrita vs Não Escrita)",
-              "tipo": "concept",
-              "pagina": 17,
-              "resumo": "Escritas (formais e instrumentais em código solene - CF/88) vs Não escritas (costumeiras/consuetudinárias baseadas em precedentes)."
-            },
-            {
-              "id": "class_elaboracao",
-              "titulo": "Modo de Elaboração (Dogmática vs Histórica)",
-              "tipo": "concept",
-              "pagina": 17,
-              "resumo": "Dogmáticas (elaboradas de uma só vez por órgão constituinte - CF/88) vs Históricas (processo social cumulativo lento)."
-            },
-            {
-              "id": "class_conteudo",
-              "titulo": "Conteúdo (Material vs Formal)",
-              "tipo": "concept",
-              "pagina": 18,
-              "resumo": "Materiais (apenas matérias intrinsecamente constitucionais) vs Formais (todas as matérias inseridas no texto solene - CF/88)."
-            },
-            {
-              "id": "class_estabilidade",
-              "titulo": "Estabilidade (Rígida, Super-rígida, Flexível)",
-              "tipo": "concept",
-              "pagina": 18,
-              "resumo": "Rígidas (rito legislativo solene qualificado - CF/88), Super-rígidas (Alexandre de Moraes: rígidas com cláusulas pétreas imutáveis)."
-            },
-            {
-              "id": "class_extensao",
-              "titulo": "Extensão (Analítica vs Sintética)",
-              "tipo": "concept",
-              "pagina": 18,
-              "resumo": "Analíticas (prolixas, detalhadas e extensas - CF/88) vs Sintéticas (concisas, versando apenas sobre a organização do Estado)."
-            },
-            {
-              "id": "class_correspondencia",
-              "titulo": "Correspondência (Critério Ontológico)",
-              "tipo": "concept",
-              "pagina": 19,
-              "resumo": "Karl Loewenstein: Normativas (consonantes e eficazes), Nominais (prospectivas sem simetria fática) e Semânticas (disfarce autoritário)."
-            },
-            {
-              "id": "pc_originario",
-              "titulo": "Originário",
+              "id": "cat_2",
+              "titulo": "2. Sujeitos Vinculados & Regime das Estatais",
               "tipo": "category",
-              "pagina": 21,
-              "resumo": "Poder inicial, autônomo, incondicionado e ilimitado juridicamente que funda a ordem estatal."
+              "pagina": 1,
+              "resumo": "Definição precisa dos órgãos abrangidos pela Lei 14.133/2021 e a exclusão obrigatória das estatais da Lei 13.303/2016."
             },
             {
-              "id": "pc_derivado",
-              "titulo": "Derivado",
-              "tipo": "category",
-              "pagina": 21,
-              "resumo": "Poder instituído pelo originário: condicionado, limitado e de segundo grau."
-            },
-            {
-              "id": "pc_difuso",
-              "titulo": "Difuso (Mutação Constitucional)",
-              "tipo": "concept",
-              "pagina": 21,
-              "resumo": "Poder de fato: modificação informal e silenciosa do sentido interpretativo da norma, sem alteração literal do texto constitucional."
-            },
-            {
-              "id": "pco_historico",
-              "titulo": "Histórico",
-              "tipo": "concept",
-              "pagina": 21,
-              "resumo": "Cria o Estado pela primeiríssima vez, estruturando a gênese institucional."
-            },
-            {
-              "id": "pco_revolucionario",
-              "titulo": "Revolucionário",
-              "tipo": "concept",
-              "pagina": 21,
-              "resumo": "Rompe com a ordem jurídica pretérita instaurando uma nova Constituição soberana."
-            },
-            {
-              "id": "pcd_revisor",
-              "titulo": "Revisor",
-              "tipo": "concept",
-              "pagina": 21,
-              "resumo": "Art. 3º do ADCT: competência de revisão unicameral por maioria absoluta esgotada após 5 anos (6 ECRs)."
-            },
-            {
-              "id": "pcd_decorrente",
-              "titulo": "Decorrente",
-              "tipo": "concept",
-              "pagina": 21,
-              "resumo": "Competência outorgada aos Estados-membros para auto-organização por meio de Constituições Estaduais (art. 25) e DF (art. 32)."
-            },
-            {
-              "id": "pcd_reformador",
-              "titulo": "Reformador",
-              "tipo": "concept",
-              "pagina": 21,
-              "resumo": "Poder de emendar a Constituição nos termos do art. 60, submetido aos limites circunstanciais, formais e materiais pétreos."
-            },
-            {
-              "id": "princ_fundamentos",
-              "titulo": "Fundamentos (SO-CI-DI-VA-PLU)",
-              "tipo": "mnemonic",
-              "pagina": 21,
-              "resumo": "Art. 1º: SOberania, CIdadania, DIgnidade da pessoa humana, VAlores sociais do trabalho e livre iniciativa, PLUralismo político."
-            },
-            {
-              "id": "princ_objetivos",
-              "titulo": "Objetivos (CON-GA-ERRA-PRO)",
-              "tipo": "mnemonic",
-              "pagina": 22,
-              "resumo": "Art. 3º: CONstruir sociedade justa, GArantir desenvolvimento, ERRA dicar pobreza/reduzir desigualdades, PROmover o bem de todos."
-            },
-            {
-              "id": "princ_internacionais",
-              "titulo": "Relações Internacionais (Independência, Direitos Humanos...)",
+              "id": "item_2_1",
+              "titulo": "Abrangência Geral da Lei 14.133 (Art. 1º)",
               "tipo": "rule",
-              "pagina": 22,
-              "resumo": "Art. 4º: independência nacional, prevalência dos direitos humanos, não intervenção, asilo político e integração latino-americana."
+              "pagina": 1,
+              "resumo": "Aplica-se à Administração Direta, autarquias e fundações de União, Estados, DF e Municípios, bem como aos Poderes Legislativo e Judiciário e Ministério Público quando no exercício de função administrativa atípica."
             },
             {
-              "id": "pod_funcoes",
-              "titulo": "Funções",
+              "id": "item_2_2",
+              "titulo": "Exclusão das Estatais (Art. 1º, § 1º c/c Art. 173)",
+              "tipo": "trap",
+              "pagina": 1,
+              "resumo": "Empresas públicas, sociedades de economia mista e suas subsidiárias NÃO são regidas pela Lei 14.133/2021 (salvo normas penais), aplicando-se o estatuto jurídico próprio da Lei das Estatais (Lei nº 13.303/2016)."
+            },
+            {
+              "id": "item_2_3",
+              "titulo": "Descabimento de Mandado de Segurança (ADI 4296)",
+              "tipo": "trap",
+              "pagina": 1,
+              "resumo": "Não cabe mandado de segurança contra atos de gestão comercial praticados por administradores de empresas públicas, sociedades de economia mista e concessionárias de serviço público."
+            },
+            {
+              "id": "cat_3",
+              "titulo": "3. Objeto e Princípios Específicos (Art. 5º)",
+              "tipo": "category",
+              "pagina": 5,
+              "resumo": "Princípios fundamentais com destaque para a segregação de funções e o planejamento obrigatório."
+            },
+            {
+              "id": "item_3_1",
+              "titulo": "Princípio da Segregação de Funções",
+              "tipo": "rule",
+              "pagina": 6,
+              "resumo": "Veda expressamente a designação do mesmo agente público para atuação simultânea em funções mais suscetíveis a riscos (ex: fiscal de contrato atuando também como agente de contratação), a fim de evitar ocultação de erros e fraudes."
+            },
+            {
+              "id": "item_3_2",
+              "titulo": "Planejamento como Princípio Expresso",
+              "tipo": "rule",
+              "pagina": 6,
+              "resumo": "Embora não conste no art. 37 da CF, o Planejamento é princípio expresso e obrigatório na Lei nº 14.133/2021, impondo a realização de Estudo Técnico Preliminar (ETP) e plano de contratações anual."
+            },
+            {
+              "id": "item_3_3",
+              "titulo": "Contratos Não Subordinados (Art. 3º)",
+              "tipo": "trap",
+              "pagina": 3,
+              "resumo": "Não se subordinam à Lei 14.133/2021 os contratos de operação de crédito interno/externo e gestão de dívida pública, incluídas garantias e contratações de agentes financeiros."
+            },
+            {
+              "id": "cat_4",
+              "titulo": "4. Contratação Direta: Inexigibilidade vs Dispensa",
+              "tipo": "category",
+              "pagina": 8,
+              "resumo": "Hipóteses de contratação sem licitação prévia (artigos 72 a 77)."
+            },
+            {
+              "id": "item_4_1",
+              "titulo": "Inexigibilidade: Inviabilidade de Competição (Art. 74)",
+              "tipo": "rule",
+              "pagina": 9,
+              "resumo": "Rol exemplificativo caracterizado pela inviabilidade lógica de disputa: fornecedor exclusivo, notória especialização intelectual (vedada p/ publicidade), profissional artístico consagrado, credenciamento e imóvel singular."
+            },
+            {
+              "id": "item_4_2",
+              "titulo": "Dispensa por Valor Atualizada (Dec. 12.807/2025)",
+              "tipo": "trap",
+              "pagina": 10,
+              "resumo": "Valores oficiais atualizados: até R$ 130.984,20 para obras, serviços de engenharia e manutenção de veículos; e até R$ 65.492,11 para compras e outros serviços (valores duplicados para consórcios públicos e agências executivas)."
+            },
+            {
+              "id": "item_4_3",
+              "titulo": "Licitação Deserta e Fracassada (Art. 75, III)",
+              "tipo": "rule",
+              "pagina": 10,
+              "resumo": "É dispensável a licitação quando realizada há menos de 1 ano não surgiram interessados (deserta) ou as propostas tiveram preços inaceitáveis (fracassada), desde que mantidas integralmente as condições do edital."
+            },
+            {
+              "id": "item_4_4",
+              "titulo": "Calamidade Pública e Emergência (Art. 75, VIII)",
+              "tipo": "exception",
+              "pagina": 11,
+              "resumo": "Contratação direta limitada exclusivamente aos bens e serviços concluíveis no prazo máximo de 1 ano, vedada qualquer prorrogação contratual e recontratação da mesma empresa."
+            },
+            {
+              "id": "cat_5",
+              "titulo": "5. Modalidades Licitatórias & Julgamento",
               "tipo": "category",
               "pagina": 22,
-              "resumo": "Desdobramento funcional da tripartição tripartite do poder político."
+              "resumo": "Estrutura procedural das 5 modalidades vigentes e extinção das modalidades antigas."
             },
             {
-              "id": "pod_triparticao",
-              "titulo": "Tripartição",
-              "tipo": "category",
-              "pagina": 21,
-              "resumo": "Art. 2º: Poderes Executivo, Legislativo e Judiciário independentes e harmônicos entre si."
-            },
-            {
-              "id": "func_tipicas",
-              "titulo": "Típicas",
-              "tipo": "concept",
-              "pagina": 22,
-              "resumo": "Atribuições preponderantes expressas da essência institucional de cada poder."
-            },
-            {
-              "id": "func_atipicas",
-              "titulo": "Atípicas",
-              "tipo": "concept",
-              "pagina": 22,
-              "resumo": "Atribuições de gestão, julgamento ou produção normativa secundária conferidas subsidiariamente pela Constituição."
-            },
-            {
-              "id": "trip_executivo",
-              "titulo": "Executivo",
-              "tipo": "concept",
-              "pagina": 22,
-              "resumo": "Típica: administrar e chefiar o Estado. Atípica: legislar mediante medidas provisórias (art. 62) e julgar processos administrativos."
-            },
-            {
-              "id": "trip_legislativo",
-              "titulo": "Legislativo",
-              "tipo": "concept",
-              "pagina": 22,
-              "resumo": "Típica: legislar e fiscalizar as finanças públicas. Atípica: administrar seus quadros e julgar crimes de responsabilidade (art. 52, I)."
-            },
-            {
-              "id": "trip_judiciario",
-              "titulo": "Judiciário",
-              "tipo": "concept",
-              "pagina": 22,
-              "resumo": "Típica: exercer jurisdição contenciosa definitiva. Atípica: autoadministração e elaboração dos próprios regimentos internos."
-            },
-            {
-              "id": "esp_eficacia",
-              "titulo": "Eficácia das Normas (Plena, Contida, Limitada)",
-              "tipo": "concept",
-              "pagina": 26,
-              "resumo": "José Afonso da Silva: Plena (direta, imediata, integral), Contida (restringível por lei) e Limitada (indireta, mediata e reduzida)."
-            },
-            {
-              "id": "esp_retrocesso",
-              "titulo": "Vedação ao Retrocesso (Efeito Cliquet)",
+              "id": "item_5_1",
+              "titulo": "As 5 Modalidades Vigentes (Art. 28)",
               "tipo": "rule",
               "pagina": 23,
-              "resumo": "Princípio implícito e internacional (CADH/PIDESC): direitos fundamentais conquistados não podem ser arbitrariamente suprimidos."
+              "resumo": "Pregão, Concorrência, Concurso, Leilão e Diálogo Competitivo. É terminantemente vedada a criação de novas modalidades ou a combinação de regras entre elas."
             },
             {
-              "id": "esp_reserva_plenario",
-              "titulo": "Reserva de Plenário (Full Bench)",
+              "id": "item_5_2",
+              "titulo": "Extinção de Tomada de Preços e Convite",
+              "tipo": "trap",
+              "pagina": 23,
+              "resumo": "A Lei 14.133/2021 extinguiu expressamente a Tomada de Preços e o Convite. Qualquer assertiva que mencione essas modalidades como vigentes está incorreta."
+            },
+            {
+              "id": "item_5_3",
+              "titulo": "Alienação de Bens Imóveis por Leilão",
               "tipo": "rule",
-              "pagina": 157,
-              "resumo": "Art. 97 da CF e Súmula Vinculante 10: a inconstitucionalidade de lei por tribunal só pode ser declarada por maioria absoluta do plenário."
+              "pagina": 23,
+              "resumo": "Na Lei 14.133/2021, a alienação de qualquer bem imóvel da Administração Pública é feita na modalidade Leilão (e não concorrência), assim como bens móveis apreendidos ou inservíveis."
+            },
+            {
+              "id": "item_5_4",
+              "titulo": "Diálogo Competitivo (Art. 32)",
+              "tipo": "concept",
+              "pagina": 24,
+              "resumo": "Restrito a objetos com inovação tecnológica complexa onde o mercado precisa desenvolver soluções com a Administração antes da apresentação da proposta final."
+            },
+            {
+              "id": "cat_6",
+              "titulo": "6. Fases e Rito Procedimental (Art. 17)",
+              "tipo": "category",
+              "pagina": 33,
+              "resumo": "Ordem legal sequencial com a inversão ordinária onde o julgamento antecede a habilitação."
+            },
+            {
+              "id": "item_6_1",
+              "titulo": "Sequência Legal Obrigatória das Fases",
+              "tipo": "rule",
+              "pagina": 33,
+              "resumo": "Preparatória -> Divulgação do edital -> Apresentação de propostas/lances -> Julgamento -> Habilitação -> Recursal -> Homologação."
+            },
+            {
+              "id": "item_6_2",
+              "titulo": "Inversão de Fases como Regra Geral",
+              "tipo": "trap",
+              "pagina": 33,
+              "resumo": "A regra na Lei 14.133/2021 é que o Julgamento antecede a Habilitação (abre-se apenas o envelope do vencedor). A antecipação da fase de habilitação é excepcional e exige ato motivado com justificativa expressa no edital."
             }
           ],
           "edges": [
             {
               "source": "root",
-              "target": "cat_sentidos"
+              "target": "cat_1"
+            },
+            {
+              "source": "cat_1",
+              "target": "item_1_1"
+            },
+            {
+              "source": "cat_1",
+              "target": "item_1_2"
+            },
+            {
+              "source": "cat_1",
+              "target": "item_1_3"
+            },
+            {
+              "source": "cat_1",
+              "target": "item_1_4"
             },
             {
               "source": "root",
-              "target": "cat_hermeneutica"
+              "target": "cat_2"
+            },
+            {
+              "source": "cat_2",
+              "target": "item_2_1"
+            },
+            {
+              "source": "cat_2",
+              "target": "item_2_2"
+            },
+            {
+              "source": "cat_2",
+              "target": "item_2_3"
             },
             {
               "source": "root",
-              "target": "cat_constitucionalismo"
+              "target": "cat_3"
+            },
+            {
+              "source": "cat_3",
+              "target": "item_3_1"
+            },
+            {
+              "source": "cat_3",
+              "target": "item_3_2"
+            },
+            {
+              "source": "cat_3",
+              "target": "item_3_3"
             },
             {
               "source": "root",
-              "target": "cat_classificacao"
+              "target": "cat_4"
+            },
+            {
+              "source": "cat_4",
+              "target": "item_4_1"
+            },
+            {
+              "source": "cat_4",
+              "target": "item_4_2"
+            },
+            {
+              "source": "cat_4",
+              "target": "item_4_3"
+            },
+            {
+              "source": "cat_4",
+              "target": "item_4_4"
             },
             {
               "source": "root",
-              "target": "cat_poder_constituinte"
+              "target": "cat_5"
+            },
+            {
+              "source": "cat_5",
+              "target": "item_5_1"
+            },
+            {
+              "source": "cat_5",
+              "target": "item_5_2"
+            },
+            {
+              "source": "cat_5",
+              "target": "item_5_3"
+            },
+            {
+              "source": "cat_5",
+              "target": "item_5_4"
             },
             {
               "source": "root",
-              "target": "cat_principios"
+              "target": "cat_6"
             },
             {
-              "source": "root",
-              "target": "cat_poderes"
+              "source": "cat_6",
+              "target": "item_6_1"
             },
             {
-              "source": "root",
-              "target": "cat_especificos"
-            },
-            {
-              "source": "cat_sentidos",
-              "target": "sent_sociologico"
-            },
-            {
-              "source": "cat_sentidos",
-              "target": "sent_politico"
-            },
-            {
-              "source": "cat_sentidos",
-              "target": "sent_juridico"
-            },
-            {
-              "source": "cat_sentidos",
-              "target": "sent_culturalista"
-            },
-            {
-              "source": "cat_sentidos",
-              "target": "sent_processo_pub"
-            },
-            {
-              "source": "cat_sentidos",
-              "target": "sent_ordem_juridica"
-            },
-            {
-              "source": "cat_sentidos",
-              "target": "sent_simbolica"
-            },
-            {
-              "source": "cat_hermeneutica",
-              "target": "sub_metodos"
-            },
-            {
-              "source": "cat_hermeneutica",
-              "target": "sub_principios"
-            },
-            {
-              "source": "sub_metodos",
-              "target": "met_classico"
-            },
-            {
-              "source": "sub_metodos",
-              "target": "met_topico"
-            },
-            {
-              "source": "sub_metodos",
-              "target": "met_concretizador"
-            },
-            {
-              "source": "sub_metodos",
-              "target": "met_integrativo"
-            },
-            {
-              "source": "sub_metodos",
-              "target": "met_estruturante"
-            },
-            {
-              "source": "sub_metodos",
-              "target": "met_comparativo"
-            },
-            {
-              "source": "sub_principios",
-              "target": "princ_supremacia"
-            },
-            {
-              "source": "sub_principios",
-              "target": "princ_presuncao"
-            },
-            {
-              "source": "sub_principios",
-              "target": "princ_conforme"
-            },
-            {
-              "source": "sub_principios",
-              "target": "princ_unidade"
-            },
-            {
-              "source": "sub_principios",
-              "target": "princ_proporcionalidade"
-            },
-            {
-              "source": "sub_principios",
-              "target": "princ_efetividade"
-            },
-            {
-              "source": "sub_principios",
-              "target": "princ_integrador"
-            },
-            {
-              "source": "sub_principios",
-              "target": "princ_concordancia"
-            },
-            {
-              "source": "sub_principios",
-              "target": "princ_conformidade_func"
-            },
-            {
-              "source": "cat_constitucionalismo",
-              "target": "const_antigo"
-            },
-            {
-              "source": "cat_constitucionalismo",
-              "target": "const_medieval"
-            },
-            {
-              "source": "cat_constitucionalismo",
-              "target": "const_moderno"
-            },
-            {
-              "source": "cat_constitucionalismo",
-              "target": "const_contemporaneo"
-            },
-            {
-              "source": "cat_constitucionalismo",
-              "target": "const_futuro"
-            },
-            {
-              "source": "cat_classificacao",
-              "target": "class_origem"
-            },
-            {
-              "source": "cat_classificacao",
-              "target": "class_forma"
-            },
-            {
-              "source": "cat_classificacao",
-              "target": "class_elaboracao"
-            },
-            {
-              "source": "cat_classificacao",
-              "target": "class_conteudo"
-            },
-            {
-              "source": "cat_classificacao",
-              "target": "class_estabilidade"
-            },
-            {
-              "source": "cat_classificacao",
-              "target": "class_extensao"
-            },
-            {
-              "source": "cat_classificacao",
-              "target": "class_correspondencia"
-            },
-            {
-              "source": "cat_poder_constituinte",
-              "target": "pc_originario"
-            },
-            {
-              "source": "cat_poder_constituinte",
-              "target": "pc_derivado"
-            },
-            {
-              "source": "cat_poder_constituinte",
-              "target": "pc_difuso"
-            },
-            {
-              "source": "pc_originario",
-              "target": "pco_historico"
-            },
-            {
-              "source": "pc_originario",
-              "target": "pco_revolucionario"
-            },
-            {
-              "source": "pc_derivado",
-              "target": "pcd_revisor"
-            },
-            {
-              "source": "pc_derivado",
-              "target": "pcd_decorrente"
-            },
-            {
-              "source": "pc_derivado",
-              "target": "pcd_reformador"
-            },
-            {
-              "source": "cat_principios",
-              "target": "princ_fundamentos"
-            },
-            {
-              "source": "cat_principios",
-              "target": "princ_objetivos"
-            },
-            {
-              "source": "cat_principios",
-              "target": "princ_internacionais"
-            },
-            {
-              "source": "cat_poderes",
-              "target": "pod_funcoes"
-            },
-            {
-              "source": "cat_poderes",
-              "target": "pod_triparticao"
-            },
-            {
-              "source": "pod_funcoes",
-              "target": "func_tipicas"
-            },
-            {
-              "source": "pod_funcoes",
-              "target": "func_atipicas"
-            },
-            {
-              "source": "pod_triparticao",
-              "target": "trip_executivo"
-            },
-            {
-              "source": "pod_triparticao",
-              "target": "trip_legislativo"
-            },
-            {
-              "source": "pod_triparticao",
-              "target": "trip_judiciario"
-            },
-            {
-              "source": "cat_especificos",
-              "target": "esp_eficacia"
-            },
-            {
-              "source": "cat_especificos",
-              "target": "esp_retrocesso"
-            },
-            {
-              "source": "cat_especificos",
-              "target": "esp_reserva_plenario"
+              "source": "cat_6",
+              "target": "item_6_2"
             }
           ]
         },

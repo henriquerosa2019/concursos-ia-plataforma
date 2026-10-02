@@ -14,581 +14,196 @@
 
 ```nlm-mindmap-json
 {
-  "titulo": "Licitacoes Lei 14133",
+  "titulo": "Licitações Públicas • Lei nº 14.133/2021 & Aspectos Constitucionais",
   "nodes": [
     {
       "id": "root",
-      "titulo": "Licitacoes Lei 14133",
+      "titulo": "Licitações Públicas (Lei 14.133/21)",
       "tipo": "root",
       "pagina": 1,
-      "resumo": "Estrutura esquematizada das unidades conceituais essenciais de Licitacoes Lei 14133 para provas de concursos públicos."
+      "resumo": "Regime geral das licitações e contratações públicas fundamentado na Constituição Federal (art. 37, XXI e art. 22, XXVII) e estruturado pela Nova Lei de Licitações (Lei nº 14.133/2021)."
     },
     {
       "id": "cat_1",
-      "titulo": "Objeto da Licitação",
+      "titulo": "1. Competência e Fundamento Constitucional",
       "tipo": "category",
-      "pagina": 3,
-      "resumo": "Art. 2º, Lei nº 14.133/2021 – Esta Lei aplica-se a: I - alienação e concessão de direito real de uso de bens."
+      "pagina": 1,
+      "resumo": "Bases constitucionais obrigatórias da licitação pública (art. 22, XXVII e art. 37, XXI da CF/88)."
     },
     {
-      "id": "item_1",
-      "titulo": "Art. 2º, Lei Nº 14.133/2021 (Regra)",
-      "tipo": "rule",
-      "pagina": 3,
-      "resumo": "Esta Lei aplica-se a."
-    },
-    {
-      "id": "item_2",
-      "titulo": "Alienação E Concessão De Direito (Inciso I)",
-      "tipo": "rule",
-      "pagina": 3,
-      "resumo": "alienação e concessão de direito real de uso de bens."
-    },
-    {
-      "id": "item_3",
-      "titulo": "Compra (Inciso II)",
+      "id": "item_1_1",
+      "titulo": "Competência Privativa da União (Art. 22, XXVII)",
       "tipo": "rule",
       "pagina": 1,
-      "resumo": "compra, inclusive por encomenda."
+      "resumo": "Cabe privativamente à União legislar sobre normas gerais de licitação e contratação para todas as administrações públicas diretas, autárquicas e fundacionais de todos os entes federativos, bem como empresas públicas e sociedades de economia mista."
     },
     {
-      "id": "item_4",
-      "titulo": "Locação ou Compra de Imóvel (Inciso III)",
-      "tipo": "rule",
-      "pagina": 13,
-      "resumo": "locação."
+      "id": "item_1_2",
+      "titulo": "Inconstitucionalidade de Normas Locais Próprias",
+      "tipo": "trap",
+      "pagina": 1,
+      "resumo": "São inconstitucionais as leis estaduais ou municipais que invadam a competência privativa da União ao estabelecer regras gerais próprias, modalidades inéditas ou sanções gerais sobre licitações e contratos."
     },
     {
-      "id": "item_5",
-      "titulo": "Concessão E Permissão De Uso (Inciso IV)",
+      "id": "item_1_3",
+      "titulo": "Dever Geral de Licitar (Art. 37, XXI)",
       "tipo": "rule",
-      "pagina": 3,
-      "resumo": "concessão e permissão de uso de bens públicos."
+      "pagina": 1,
+      "resumo": "Ressalvados os casos especificados na legislação (dispensa e inexigibilidade), obras, serviços, compras e alienações serão contratados mediante processo de licitação pública que assegure igualdade de condições a todos os concorrentes."
     },
     {
-      "id": "item_6",
-      "titulo": "Serviços Técnicos Especializados (Inciso V)",
+      "id": "item_1_4",
+      "titulo": "Limitação de Exigências no Edital",
       "tipo": "rule",
-      "pagina": 2,
-      "resumo": "prestação de serviços, inclusive os técnico-profissionais especializados."
-    },
-    {
-      "id": "item_7",
-      "titulo": "Obras E Serviços De Arquitetura (Inciso VI)",
-      "tipo": "rule",
-      "pagina": 3,
-      "resumo": "obras e serviços de arquitetura e engenharia."
-    },
-    {
-      "id": "item_8",
-      "titulo": "Contratações De Tecnologia Da Informação (Inciso VII)",
-      "tipo": "rule",
-      "pagina": 3,
-      "resumo": "contratações de tecnologia da informação e de comunicação."
-    },
-    {
-      "id": "item_9",
-      "titulo": "Art. 3º, Lei Nº 14.133/2021 (Regra)",
-      "tipo": "rule",
-      "pagina": 3,
-      "resumo": "Não se subordinam ao regime desta Lei."
-    },
-    {
-      "id": "item_10",
-      "titulo": "Contratos Que Tenham Por Objeto (Inciso I)",
-      "tipo": "rule",
-      "pagina": 3,
-      "resumo": "contratos que tenham por objeto operação de crédito, interno ou externo, e gestão de dívida pública, incluídas as contratações de agente financeiro e a concessão de garantia relacionadas a esses contratos."
+      "pagina": 1,
+      "resumo": "O processo licitatório somente permitirá exigências de qualificação técnica e econômica estritamente indispensáveis à garantia do cumprimento das obrigações, sendo vedadas cláusulas impertinentes ou restritivas."
     },
     {
       "id": "cat_2",
-      "titulo": "Objetivos da Licitação",
+      "titulo": "2. Sujeitos Vinculados & Regime das Estatais",
       "tipo": "category",
       "pagina": 1,
-      "resumo": "Art. 11, Lei nº 14.133/2021 – O processo licitatório tem por objetivos: I - assegurar a seleção da proposta apta a gerar o resultado de contratação mais vantajoso para a Administração Pública, inclusive no que se refere ao ciclo de vida do objeto."
+      "resumo": "Definição precisa dos órgãos abrangidos pela Lei 14.133/2021 e a exclusão obrigatória das estatais da Lei 13.303/2016."
     },
     {
-      "id": "item_11",
-      "titulo": "Art. 11, Lei Nº 14.133/2021 (Regra)",
+      "id": "item_2_1",
+      "titulo": "Abrangência Geral da Lei 14.133 (Art. 1º)",
       "tipo": "rule",
       "pagina": 1,
-      "resumo": "O processo licitatório tem por objetivos."
+      "resumo": "Aplica-se à Administração Direta, autarquias e fundações de União, Estados, DF e Municípios, bem como aos Poderes Legislativo e Judiciário e Ministério Público quando no exercício de função administrativa atípica."
     },
     {
-      "id": "item_12",
-      "titulo": "Assegurar A Seleção Da Proposta (Inciso I)",
-      "tipo": "rule",
-      "pagina": 5,
-      "resumo": "assegurar a seleção da proposta apta a gerar o resultado de contratação mais vantajoso para a Administração Pública, inclusive no que se refere ao ciclo de vida do objeto."
-    },
-    {
-      "id": "item_13",
-      "titulo": "Assegurar Tratamento Isonômico Entre Os (Inciso II)",
-      "tipo": "rule",
-      "pagina": 5,
-      "resumo": "assegurar tratamento isonômico entre os licitantes, bem como a justa competição."
-    },
-    {
-      "id": "item_14",
-      "titulo": "Evitar Contratações Com Sobrepreço Ou (Inciso III)",
-      "tipo": "rule",
-      "pagina": 5,
-      "resumo": "evitar contratações com sobrepreço ou com preços manifestamente inexequíveis e superfaturamento na execução dos contratos."
-    },
-    {
-      "id": "item_15",
-      "titulo": "Incentivar A Inovação E O (Inciso IV)",
-      "tipo": "rule",
-      "pagina": 5,
-      "resumo": "incentivar a inovação e o desenvolvimento nacional sustentável."
-    },
-    {
-      "id": "item_16",
-      "titulo": "Assegurar Tratamento Diferenciado Entre Os (Inciso II)",
-      "tipo": "rule",
-      "pagina": 6,
-      "resumo": "Assegurar tratamento diferenciado entre os licitantes, bem como a justa aquisição da empresa maior que possui maior capital financeiro."
-    },
-    {
-      "id": "item_17",
-      "titulo": "Art. 5°, Lei Nº 14.133/2021 (Regra)",
-      "tipo": "rule",
+      "id": "item_2_2",
+      "titulo": "Exclusão das Estatais (Art. 1º, § 1º c/c Art. 173)",
+      "tipo": "trap",
       "pagina": 1,
-      "resumo": "Na aplicação desta Lei, serão observados os princípios da legalidade, da impessoalidade, da moralidade, da publicidade, da eficiência, do interesse público, da probidade administrativa, da igualdade, do planejamento, da transparência, da eficácia, da segregação de funções, da motivação, da vinculação ao edital, do julgamento objetivo, da segurança jurídica, da razoabilidade, da competitividade, da proporcionalidade, da celeridade, da economicidade e do desenvolvimento nacional sustentável, assim como as disposições do Decreto-Lei nº 4.657, de 4 de setembro de 1942 (Lei de Introdução às Normas do Direito Brasileiro)."
+      "resumo": "Empresas públicas, sociedades de economia mista e suas subsidiárias NÃO são regidas pela Lei 14.133/2021 (salvo normas penais), aplicando-se o estatuto jurídico próprio da Lei das Estatais (Lei nº 13.303/2016)."
+    },
+    {
+      "id": "item_2_3",
+      "titulo": "Descabimento de Mandado de Segurança (ADI 4296)",
+      "tipo": "trap",
+      "pagina": 1,
+      "resumo": "Não cabe mandado de segurança contra atos de gestão comercial praticados por administradores de empresas públicas, sociedades de economia mista e concessionárias de serviço público."
     },
     {
       "id": "cat_3",
-      "titulo": "Da Contratação Direta",
+      "titulo": "3. Objeto e Princípios Específicos (Art. 5º)",
       "tipo": "category",
-      "pagina": 1,
-      "resumo": "Art. 72, Lei nº 14.133/2021 – O processo de contratação direta, que compreende os casos de inexigibilidade e de dispensa de licitação, deverá ser instruído com os seguintes documentos: I - documento de formalização de demanda e, se for o caso, estudo técnico preliminar, análise de riscos, termo de referência, projeto básico ou projeto executivo."
+      "pagina": 5,
+      "resumo": "Princípios fundamentais com destaque para a segregação de funções e o planejamento obrigatório."
     },
     {
-      "id": "item_18",
-      "titulo": "Art. 72, Lei Nº 14.133/2021 (Regra)",
+      "id": "item_3_1",
+      "titulo": "Princípio da Segregação de Funções",
       "tipo": "rule",
-      "pagina": 1,
-      "resumo": "O processo de contratação direta, que compreende os casos de inexigibilidade e de dispensa de licitação, deverá ser instruído com os seguintes documentos."
+      "pagina": 6,
+      "resumo": "Veda expressamente a designação do mesmo agente público para atuação simultânea em funções mais suscetíveis a riscos (ex: fiscal de contrato atuando também como agente de contratação), a fim de evitar ocultação de erros e fraudes."
     },
     {
-      "id": "item_19",
-      "titulo": "Documento De Formalização De Demanda (Inciso I)",
+      "id": "item_3_2",
+      "titulo": "Planejamento como Princípio Expresso",
       "tipo": "rule",
-      "pagina": 8,
-      "resumo": "documento de formalização de demanda e, se for o caso, estudo técnico preliminar, análise de riscos, termo de referência, projeto básico ou projeto executivo."
+      "pagina": 6,
+      "resumo": "Embora não conste no art. 37 da CF, o Planejamento é princípio expresso e obrigatório na Lei nº 14.133/2021, impondo a realização de Estudo Técnico Preliminar (ETP) e plano de contratações anual."
     },
     {
-      "id": "item_20",
-      "titulo": "Estimativa De Despesa (Inciso II)",
-      "tipo": "rule",
-      "pagina": 8,
-      "resumo": "estimativa de despesa, que deverá ser calculada na forma estabelecida no art. 23 desta Lei."
-    },
-    {
-      "id": "item_21",
-      "titulo": "Parecer Jurídico E Pareceres Técnicos (Inciso III)",
-      "tipo": "rule",
-      "pagina": 8,
-      "resumo": "parecer jurídico e pareceres técnicos, se for o caso, que demonstrem o atendimento dos requisitos exigidos."
-    },
-    {
-      "id": "item_22",
-      "titulo": "Demonstração Da Compatibilidade Da Previsão (Inciso IV)",
-      "tipo": "rule",
-      "pagina": 8,
-      "resumo": "demonstração da compatibilidade da previsão de recursos orçamentários com o compromisso a ser assumido."
-    },
-    {
-      "id": "item_23",
-      "titulo": "Comprovação De Que O Contratado (Inciso V)",
-      "tipo": "rule",
-      "pagina": 8,
-      "resumo": "comprovação de que o contratado preenche os requisitos de habilitação e qualificação mínima necessária."
-    },
-    {
-      "id": "item_24",
-      "titulo": "Razão Da Escolha Do Contratado (Inciso VI)",
-      "tipo": "rule",
-      "pagina": 8,
-      "resumo": "razão da escolha do contratado."
-    },
-    {
-      "id": "item_25",
-      "titulo": "Justificativa De Preço (Inciso VII)",
-      "tipo": "rule",
-      "pagina": 8,
-      "resumo": "justificativa de preço."
-    },
-    {
-      "id": "item_26",
-      "titulo": "Autorização Da Autoridade Competente (Inciso VIII)",
-      "tipo": "rule",
-      "pagina": 8,
-      "resumo": "autorização da autoridade competente."
-    },
-    {
-      "id": "item_27",
-      "titulo": "Art. 73, Lei Nº 14.133/2021 (Regra)",
-      "tipo": "rule",
-      "pagina": 1,
-      "resumo": "Na hipótese de contratação direta indevida ocorrida com dolo, fraude ou erro grosseiro, o contratado e o agente público responsável responderão solidariamente pelo dano causado ao erário, sem prejuízo de outras sanções legais cabíveis."
+      "id": "item_3_3",
+      "titulo": "Contratos Não Subordinados (Art. 3º)",
+      "tipo": "trap",
+      "pagina": 3,
+      "resumo": "Não se subordinam à Lei 14.133/2021 os contratos de operação de crédito interno/externo e gestão de dívida pública, incluídas garantias e contratações de agentes financeiros."
     },
     {
       "id": "cat_4",
-      "titulo": "Inexigibilidade de Licitação",
+      "titulo": "4. Contratação Direta: Inexigibilidade vs Dispensa",
       "tipo": "category",
       "pagina": 8,
-      "resumo": "Art. 74, Lei nº 14.133/2021 – É inexigível a licitação quando inviável a competição, em especial nos casos de: I - aquisição de materiais, de equipamentos ou de gêneros ou contratação de serviços que só possam ser fornecidos por produtor, empresa ou representante comercial exclusivos."
+      "resumo": "Hipóteses de contratação sem licitação prévia (artigos 72 a 77)."
     },
     {
-      "id": "item_28",
-      "titulo": "Art. 74, Lei Nº 14.133/2021 (Regra)",
-      "tipo": "rule",
-      "pagina": 8,
-      "resumo": "É inexigível a licitação quando inviável a competição, em especial nos casos de."
-    },
-    {
-      "id": "item_29",
-      "titulo": "Fornecedor Exclusivo (Inciso I)",
-      "tipo": "rule",
-      "pagina": 15,
-      "resumo": "aquisição de materiais, de equipamentos ou de gêneros ou contratação de serviços que só possam ser fornecidos por produtor, empresa ou representante comercial exclusivos."
-    },
-    {
-      "id": "item_30",
-      "titulo": "Profissional Artístico Consagrado (Inciso II)",
+      "id": "item_4_1",
+      "titulo": "Inexigibilidade: Inviabilidade de Competição (Art. 74)",
       "tipo": "rule",
       "pagina": 9,
-      "resumo": "contratação de profissional do setor artístico, diretamente ou por meio de empresário exclusivo, desde que consagrado pela crítica especializada ou pela opinião pública."
+      "resumo": "Rol exemplificativo caracterizado pela inviabilidade lógica de disputa: fornecedor exclusivo, notória especialização intelectual (vedada p/ publicidade), profissional artístico consagrado, credenciamento e imóvel singular."
     },
     {
-      "id": "item_31",
-      "titulo": "Serviços Técnicos Especializados (Inciso III)",
-      "tipo": "rule",
-      "pagina": 2,
-      "resumo": "contratação dos seguintes serviços técnicos especializados de natureza pre dominantemente intelectual com profissionais ou empresas de notória especialização, vedada a inexigibilidade para serviços de publicidade e divulgação."
+      "id": "item_4_2",
+      "titulo": "Dispensa por Valor Atualizada (Dec. 12.807/2025)",
+      "tipo": "trap",
+      "pagina": 10,
+      "resumo": "Valores oficiais atualizados: até R$ 130.984,20 para obras, serviços de engenharia e manutenção de veículos; e até R$ 65.492,11 para compras e outros serviços (valores duplicados para consórcios públicos e agências executivas)."
     },
     {
-      "id": "item_32",
-      "titulo": "Credenciamento de Objetos (Inciso IV)",
-      "tipo": "rule",
-      "pagina": 9,
-      "resumo": "objetos que devam ou possam ser contratados por meio de credenciamento."
-    },
-    {
-      "id": "item_33",
-      "titulo": "Locação ou Compra de Imóvel (Inciso V)",
-      "tipo": "rule",
-      "pagina": 13,
-      "resumo": "aquisição ou locação de imóvel cujas características de instalações e de localização tornem necessária sua escolha."
-    },
-    {
-      "id": "item_34",
-      "titulo": "Avaliação Prévia Do Bem (Inciso I)",
+      "id": "item_4_3",
+      "titulo": "Licitação Deserta e Fracassada (Art. 75, III)",
       "tipo": "rule",
       "pagina": 10,
-      "resumo": "avaliação prévia do bem, do seu estado de conservação, dos custos de adaptações, quando imprescindíveis às necessidades de utilização, e do prazo de amortização dos investimentos."
+      "resumo": "É dispensável a licitação quando realizada há menos de 1 ano não surgiram interessados (deserta) ou as propostas tiveram preços inaceitáveis (fracassada), desde que mantidas integralmente as condições do edital."
     },
     {
-      "id": "item_35",
-      "titulo": "Certificação Da Inexistência De Imóveis (Inciso II)",
-      "tipo": "rule",
-      "pagina": 10,
-      "resumo": "certificação da inexistência de imóveis públicos vagos e disponíveis que atendam ao objeto."
+      "id": "item_4_4",
+      "titulo": "Calamidade Pública e Emergência (Art. 75, VIII)",
+      "tipo": "exception",
+      "pagina": 11,
+      "resumo": "Contratação direta limitada exclusivamente aos bens e serviços concluíveis no prazo máximo de 1 ano, vedada qualquer prorrogação contratual e recontratação da mesma empresa."
     },
     {
       "id": "cat_5",
-      "titulo": "Dispensa de Licitação",
+      "titulo": "5. Modalidades Licitatórias & Julgamento",
       "tipo": "category",
-      "pagina": 8,
-      "resumo": "Na nova lei de licitações (lei nº 14.133/2021), os casos de LICITAÇÃO DISPENSÁVEL são encontrados no artigo 75: Art. 75, Lei nº 14.133/2021 – É dispensável a licitação."
+      "pagina": 22,
+      "resumo": "Estrutura procedural das 5 modalidades vigentes e extinção das modalidades antigas."
     },
     {
-      "id": "item_36",
-      "titulo": "Art. 75, Lei Nº 14.133/2021 (Regra)",
+      "id": "item_5_1",
+      "titulo": "As 5 Modalidades Vigentes (Art. 28)",
       "tipo": "rule",
-      "pagina": 8,
-      "resumo": "É dispensável a licitação."
+      "pagina": 23,
+      "resumo": "Pregão, Concorrência, Concurso, Leilão e Diálogo Competitivo. É terminantemente vedada a criação de novas modalidades ou a combinação de regras entre elas."
     },
     {
-      "id": "item_37",
-      "titulo": "Dispensa por Baixo Valor: Obras (Inciso I)",
-      "tipo": "rule",
-      "pagina": 9,
-      "resumo": "para contratação que envolva valores inferiores a R$ 100.000,00 (cem mil reais) R$ 130.984,20 (cento e trinta mil novecentos e oitenta e quatro reais e vinte centavos ), no caso de obras e serviços de engenharia ou de serviço s de manutenção de veículos automotores."
+      "id": "item_5_2",
+      "titulo": "Extinção de Tomada de Preços e Convite",
+      "tipo": "trap",
+      "pagina": 23,
+      "resumo": "A Lei 14.133/2021 extinguiu expressamente a Tomada de Preços e o Convite. Qualquer assertiva que mencione essas modalidades como vigentes está incorreta."
     },
     {
-      "id": "item_38",
-      "titulo": "Dispensa por Baixo Valor: Compras (Inciso II)",
+      "id": "item_5_3",
+      "titulo": "Alienação de Bens Imóveis por Leilão",
       "tipo": "rule",
-      "pagina": 10,
-      "resumo": "para contratação que envolva valores inferiores a R$ 50.000,00 (cinquenta mil reais) 65.492,11 (sessenta e cinco mil quatrocentos e noventa e dois reais e onze centavos), no caso de outros serviços e compras."
+      "pagina": 23,
+      "resumo": "Na Lei 14.133/2021, a alienação de qualquer bem imóvel da Administração Pública é feita na modalidade Leilão (e não concorrência), assim como bens móveis apreendidos ou inservíveis."
     },
     {
-      "id": "item_39",
-      "titulo": "Contratação Que Mantenha Todas As (Inciso III)",
-      "tipo": "rule",
-      "pagina": 10,
-      "resumo": "para contratação que mantenha todas as condições definidas em edital de licitação realizada há menos de 1 (um) ano, quando se verificar que naquela licitação."
-    },
-    {
-      "id": "item_40",
-      "titulo": "Contratação Que Tenha Por Objeto (Inciso IV)",
-      "tipo": "rule",
-      "pagina": 3,
-      "resumo": "para contratação que tenha por objeto."
-    },
-    {
-      "id": "item_41",
-      "titulo": "Contratação Com Vistas Ao Cumprimento (Inciso V)",
-      "tipo": "rule",
-      "pagina": 11,
-      "resumo": "para contratação com vistas ao cumprimento do disposto nos arts. 3º, 3º -A, 4º, 5º e 20 da Lei nº 10.973, de 2 de dezembro de 2004, observados os princípios gerais de contratação constantes da referida Lei."
-    },
-    {
-      "id": "item_42",
-      "titulo": "Contratação Que Possa Acarretar Comprometimento (Inciso VI)",
-      "tipo": "rule",
-      "pagina": 11,
-      "resumo": "para contratação que possa acarretar comprometimento da segurança nacional, nos casos estabelecidos pelo Ministro de Estado da Defesa, mediante demanda dos comandos das Forças Armadas ou dos demais ministérios."
-    },
-    {
-      "id": "item_43",
-      "titulo": "Guerra (Inciso VII)",
-      "tipo": "rule",
-      "pagina": 11,
-      "resumo": "nos casos de guerra, estado de defesa, estado de sítio, intervenção federal ou de grave perturbação da ordem."
-    },
-    {
-      "id": "item_44",
-      "titulo": "Emergência ou Calamidade (Inciso VIII)",
-      "tipo": "rule",
-      "pagina": 11,
-      "resumo": "nos casos de emergência ou de calamidade pública, quando caracterizada urgência de atendimento de s ituação que possa ocasionar prejuízo ou comprometer a continuidade dos serviços públicos ou a segurança de pessoas, obras, serviços, equipamentos e outros bens, públicos ou particulares, e somente para aquisição dos bens necessários ao atendimento da situação emergencial ou calamitosa e para as parcelas de obras e serviços que possam ser concluídas no prazo máximo de 1 (um) ano, contado da data de ocorrência da emergência ou da calamidade, vedadas a prorrogação dos respectivos contratos e a recontratação de empresa já contratada com base no disposto neste inciso."
-    },
-    {
-      "id": "item_45",
-      "titulo": "Aquisição (Inciso IX)",
-      "tipo": "rule",
-      "pagina": 6,
-      "resumo": "para a aquisição, por pessoa jurídica de direito público interno, de bens produzidos ou serviços prestados por órgão ou entidade que integrem a Administração Pública e que tenham sido criados para esse fim específico, desde que o preço contratado seja compatível com o praticado no mercado."
+      "id": "item_5_4",
+      "titulo": "Diálogo Competitivo (Art. 32)",
+      "tipo": "concept",
+      "pagina": 24,
+      "resumo": "Restrito a objetos com inovação tecnológica complexa onde o mercado precisa desenvolver soluções com a Administração antes da apresentação da proposta final."
     },
     {
       "id": "cat_6",
-      "titulo": "Modalidades de Licitação",
+      "titulo": "6. Fases e Rito Procedimental (Art. 17)",
       "tipo": "category",
-      "pagina": 1,
-      "resumo": "As modalidades representam a estrutura procedimental da licitação. MODALIDADES NA NOVA LEI DE LICITAÇÕES (LEI Nº 14.133/2021) As disposições acerca das modalidades de licitação na nova lei de licitações (lei nº 14.133/2021) são encontradas basicamente no art. 6º, incisos XXXVIII a XLII, bem como nos artigos 28 a 32."
+      "pagina": 33,
+      "resumo": "Ordem legal sequencial com a inversão ordinária onde o julgamento antecede a habilitação."
     },
     {
-      "id": "item_46",
-      "titulo": "Art. 6º, Lei Nº 14.133/2021 (Regra)",
-      "tipo": "rule",
-      "pagina": 1,
-      "resumo": "Para os fins desta Lei, consideram-se."
-    },
-    {
-      "id": "item_47",
-      "titulo": "Concorrência (Inciso XXXVIII)",
-      "tipo": "rule",
-      "pagina": 22,
-      "resumo": "concorrência: modalidade de licitação para contratação de bens e serviços especiais e de obras e serviços comuns e especiais de engenharia, cujo critério de julgamento poderá ser."
-    },
-    {
-      "id": "item_48",
-      "titulo": "Critério: Melhor Técnica (Inciso XXXIX)",
-      "tipo": "rule",
-      "pagina": 22,
-      "resumo": "concurso: modalidade de licitação para escolha de trabalho técnico, científico ou artístico, cujo critério de julgamento será o de melhor técnica ou conteúdo artístico, e para concessão de prêmio ou remuneração ao vencedor."
-    },
-    {
-      "id": "item_49",
-      "titulo": "Critério: Maior Lance (Inciso XL)",
-      "tipo": "rule",
-      "pagina": 2,
-      "resumo": "leilão: modalidade de licitação para alienação de bens imóveis ou de bens móveis inservíveis ou legalmente apreendidos a quem oferecer o maior lance."
-    },
-    {
-      "id": "item_50",
-      "titulo": "Critério: Menor Preço (Inciso XLI)",
-      "tipo": "rule",
-      "pagina": 22,
-      "resumo": "pregão: modalidade de licitação obrigatória para aquisição de bens e serviços comuns, cujo critério de julgamento poderá ser o de menor preço ou o de maior desconto."
-    },
-    {
-      "id": "item_51",
-      "titulo": "Modalidade: Diálogo Competitivo (Inciso XLII)",
-      "tipo": "rule",
-      "pagina": 23,
-      "resumo": "diálogo competitivo : modalidade de licitação para contratação de obras, serviços e compras em que a Administração Pública realiza diálogos com licitantes previamente selecionados mediante critérios objetivos, com o intuito de desenvolver uma ou m ais alternativas capazes de atender às suas necessidades, devendo os licitantes apresentar proposta final após o encerramento dos diálogos."
-    },
-    {
-      "id": "item_52",
-      "titulo": "Art. 28, Lei Nº 14.133/2021 (Regra)",
-      "tipo": "rule",
-      "pagina": 1,
-      "resumo": "São modalidades de licitação."
-    },
-    {
-      "id": "item_53",
-      "titulo": "Modalidade: Pregão (Inciso I)",
-      "tipo": "rule",
-      "pagina": 18,
-      "resumo": "pregão."
-    },
-    {
-      "id": "item_54",
-      "titulo": "Modalidade: Concorrência (Inciso II)",
-      "tipo": "rule",
-      "pagina": 18,
-      "resumo": "concorrência."
-    },
-    {
-      "id": "item_55",
-      "titulo": "Modalidade: Concurso (Inciso III)",
-      "tipo": "rule",
-      "pagina": 22,
-      "resumo": "concurso."
-    },
-    {
-      "id": "cat_7",
-      "titulo": "Critérios de Julgamento",
-      "tipo": "category",
-      "pagina": 22,
-      "resumo": "Art. 33, Lei nº 14.133/2021 – O julgamento das propostas será realizado de acordo com os seguintes critérios: II - maior desconto."
-    },
-    {
-      "id": "item_56",
-      "titulo": "Art. 33, Lei Nº 14.133/2021 (Regra)",
-      "tipo": "rule",
-      "pagina": 22,
-      "resumo": "O julgamento das propostas será realizado de acordo com os seguintes critérios."
-    },
-    {
-      "id": "item_57",
-      "titulo": "Critério: Menor Preço (Inciso I)",
-      "tipo": "rule",
-      "pagina": 22,
-      "resumo": "menor preço."
-    },
-    {
-      "id": "item_58",
-      "titulo": "Critério: Maior Desconto (Inciso II)",
-      "tipo": "rule",
-      "pagina": 22,
-      "resumo": "maior desconto."
-    },
-    {
-      "id": "item_59",
-      "titulo": "Critério: Melhor Técnica (Inciso III)",
-      "tipo": "rule",
-      "pagina": 1,
-      "resumo": "melhor técnica ou conteúdo artístico."
-    },
-    {
-      "id": "item_60",
-      "titulo": "Critério: Técnica e Preço (Inciso IV)",
-      "tipo": "rule",
-      "pagina": 12,
-      "resumo": "técnica e preço."
-    },
-    {
-      "id": "item_61",
-      "titulo": "Critério: Maior Lance (Inciso V)",
-      "tipo": "rule",
-      "pagina": 2,
-      "resumo": "maior lance, no caso de leilão."
-    },
-    {
-      "id": "item_62",
-      "titulo": "Critério: Maior Retorno (Inciso VI)",
-      "tipo": "rule",
-      "pagina": 22,
-      "resumo": "maior retorno econômico."
-    },
-    {
-      "id": "cat_8",
-      "titulo": "Fases da Licitação",
-      "tipo": "category",
-      "pagina": 24,
-      "resumo": "Art. 17, Lei nº 14.133/2021 – O processo de licitação observará as seguintes fases, em sequência:: II - de divulgação do edital de licitação."
-    },
-    {
-      "id": "item_63",
-      "titulo": "Art. 17, Lei Nº 14.133/2021 (Regra)",
-      "tipo": "rule",
-      "pagina": 24,
-      "resumo": "O processo de licitação observará as seguintes fases, em sequência."
-    },
-    {
-      "id": "item_64",
-      "titulo": "Fase 1: Preparatória (Inciso I)",
+      "id": "item_6_1",
+      "titulo": "Sequência Legal Obrigatória das Fases",
       "tipo": "rule",
       "pagina": 33,
-      "resumo": "preparatória."
+      "resumo": "Preparatória -> Divulgação do edital -> Apresentação de propostas/lances -> Julgamento -> Habilitação -> Recursal -> Homologação."
     },
     {
-      "id": "item_65",
-      "titulo": "Fase 2: Divulgação do Edital (Inciso II)",
-      "tipo": "rule",
-      "pagina": 21,
-      "resumo": "de divulgação do edital de licitação."
-    },
-    {
-      "id": "item_66",
-      "titulo": "Fase 3: Apresentação de Propostas (Inciso III)",
-      "tipo": "rule",
-      "pagina": 2,
-      "resumo": "de apresentação de propostas e lances, quando for o caso."
-    },
-    {
-      "id": "item_67",
-      "titulo": "Fase 4: Julgamento das Propostas (Inciso IV)",
-      "tipo": "rule",
-      "pagina": 2,
-      "resumo": "de julgamento."
-    },
-    {
-      "id": "item_68",
-      "titulo": "Fase 5: Habilitação (Inciso V)",
-      "tipo": "rule",
-      "pagina": 8,
-      "resumo": "de habilitação."
-    },
-    {
-      "id": "item_69",
-      "titulo": "Fase 6: Fase Recursal (Inciso VI)",
-      "tipo": "rule",
-      "pagina": 24,
-      "resumo": "recursal."
-    },
-    {
-      "id": "item_70",
-      "titulo": "Fase 7: Homologação (Inciso VII)",
-      "tipo": "rule",
+      "id": "item_6_2",
+      "titulo": "Inversão de Fases como Regra Geral",
+      "tipo": "trap",
       "pagina": 33,
-      "resumo": "de homologação."
-    },
-    {
-      "id": "cat_9",
-      "titulo": "Raio-X de Pegadinhas da Banca",
-      "tipo": "category",
-      "pagina": 8,
-      "resumo": "Principais armadilhas, inversões conceituais e assertivas com palavras absolutas recorrentes nas bancas examinadoras."
-    },
-    {
-      "id": "item_71",
-      "titulo": "Pegadinha: Princípio Aplicável",
-      "tipo": "trap",
-      "pagina": 8,
-      "resumo": "garantir que o certame licitatório permita a igualdade de condições a todos os concorrentes, em atenção ao princípio."
-    },
-    {
-      "id": "item_72",
-      "titulo": "Pegadinha: Modalidade com Critério de Julgamento",
-      "tipo": "trap",
-      "pagina": 25,
-      "resumo": "observação importante! não confunda modalidade com critério de julgamento."
+      "resumo": "A regra na Lei 14.133/2021 é que o Julgamento antecede a Habilitação (abre-se apenas o envelope do vencedor). A antecipação da fase de habilitação é excepcional e exige ato motivado com justificativa expressa no edital."
     }
   ],
   "edges": [
@@ -598,43 +213,19 @@
     },
     {
       "source": "cat_1",
-      "target": "item_1"
+      "target": "item_1_1"
     },
     {
       "source": "cat_1",
-      "target": "item_2"
+      "target": "item_1_2"
     },
     {
       "source": "cat_1",
-      "target": "item_3"
+      "target": "item_1_3"
     },
     {
       "source": "cat_1",
-      "target": "item_4"
-    },
-    {
-      "source": "cat_1",
-      "target": "item_5"
-    },
-    {
-      "source": "cat_1",
-      "target": "item_6"
-    },
-    {
-      "source": "cat_1",
-      "target": "item_7"
-    },
-    {
-      "source": "cat_1",
-      "target": "item_8"
-    },
-    {
-      "source": "cat_1",
-      "target": "item_9"
-    },
-    {
-      "source": "cat_1",
-      "target": "item_10"
+      "target": "item_1_4"
     },
     {
       "source": "root",
@@ -642,31 +233,15 @@
     },
     {
       "source": "cat_2",
-      "target": "item_11"
+      "target": "item_2_1"
     },
     {
       "source": "cat_2",
-      "target": "item_12"
+      "target": "item_2_2"
     },
     {
       "source": "cat_2",
-      "target": "item_13"
-    },
-    {
-      "source": "cat_2",
-      "target": "item_14"
-    },
-    {
-      "source": "cat_2",
-      "target": "item_15"
-    },
-    {
-      "source": "cat_2",
-      "target": "item_16"
-    },
-    {
-      "source": "cat_2",
-      "target": "item_17"
+      "target": "item_2_3"
     },
     {
       "source": "root",
@@ -674,43 +249,15 @@
     },
     {
       "source": "cat_3",
-      "target": "item_18"
+      "target": "item_3_1"
     },
     {
       "source": "cat_3",
-      "target": "item_19"
+      "target": "item_3_2"
     },
     {
       "source": "cat_3",
-      "target": "item_20"
-    },
-    {
-      "source": "cat_3",
-      "target": "item_21"
-    },
-    {
-      "source": "cat_3",
-      "target": "item_22"
-    },
-    {
-      "source": "cat_3",
-      "target": "item_23"
-    },
-    {
-      "source": "cat_3",
-      "target": "item_24"
-    },
-    {
-      "source": "cat_3",
-      "target": "item_25"
-    },
-    {
-      "source": "cat_3",
-      "target": "item_26"
-    },
-    {
-      "source": "cat_3",
-      "target": "item_27"
+      "target": "item_3_3"
     },
     {
       "source": "root",
@@ -718,35 +265,19 @@
     },
     {
       "source": "cat_4",
-      "target": "item_28"
+      "target": "item_4_1"
     },
     {
       "source": "cat_4",
-      "target": "item_29"
+      "target": "item_4_2"
     },
     {
       "source": "cat_4",
-      "target": "item_30"
+      "target": "item_4_3"
     },
     {
       "source": "cat_4",
-      "target": "item_31"
-    },
-    {
-      "source": "cat_4",
-      "target": "item_32"
-    },
-    {
-      "source": "cat_4",
-      "target": "item_33"
-    },
-    {
-      "source": "cat_4",
-      "target": "item_34"
-    },
-    {
-      "source": "cat_4",
-      "target": "item_35"
+      "target": "item_4_4"
     },
     {
       "source": "root",
@@ -754,43 +285,19 @@
     },
     {
       "source": "cat_5",
-      "target": "item_36"
+      "target": "item_5_1"
     },
     {
       "source": "cat_5",
-      "target": "item_37"
+      "target": "item_5_2"
     },
     {
       "source": "cat_5",
-      "target": "item_38"
+      "target": "item_5_3"
     },
     {
       "source": "cat_5",
-      "target": "item_39"
-    },
-    {
-      "source": "cat_5",
-      "target": "item_40"
-    },
-    {
-      "source": "cat_5",
-      "target": "item_41"
-    },
-    {
-      "source": "cat_5",
-      "target": "item_42"
-    },
-    {
-      "source": "cat_5",
-      "target": "item_43"
-    },
-    {
-      "source": "cat_5",
-      "target": "item_44"
-    },
-    {
-      "source": "cat_5",
-      "target": "item_45"
+      "target": "item_5_4"
     },
     {
       "source": "root",
@@ -798,123 +305,11 @@
     },
     {
       "source": "cat_6",
-      "target": "item_46"
+      "target": "item_6_1"
     },
     {
       "source": "cat_6",
-      "target": "item_47"
-    },
-    {
-      "source": "cat_6",
-      "target": "item_48"
-    },
-    {
-      "source": "cat_6",
-      "target": "item_49"
-    },
-    {
-      "source": "cat_6",
-      "target": "item_50"
-    },
-    {
-      "source": "cat_6",
-      "target": "item_51"
-    },
-    {
-      "source": "cat_6",
-      "target": "item_52"
-    },
-    {
-      "source": "cat_6",
-      "target": "item_53"
-    },
-    {
-      "source": "cat_6",
-      "target": "item_54"
-    },
-    {
-      "source": "cat_6",
-      "target": "item_55"
-    },
-    {
-      "source": "root",
-      "target": "cat_7"
-    },
-    {
-      "source": "cat_7",
-      "target": "item_56"
-    },
-    {
-      "source": "cat_7",
-      "target": "item_57"
-    },
-    {
-      "source": "cat_7",
-      "target": "item_58"
-    },
-    {
-      "source": "cat_7",
-      "target": "item_59"
-    },
-    {
-      "source": "cat_7",
-      "target": "item_60"
-    },
-    {
-      "source": "cat_7",
-      "target": "item_61"
-    },
-    {
-      "source": "cat_7",
-      "target": "item_62"
-    },
-    {
-      "source": "root",
-      "target": "cat_8"
-    },
-    {
-      "source": "cat_8",
-      "target": "item_63"
-    },
-    {
-      "source": "cat_8",
-      "target": "item_64"
-    },
-    {
-      "source": "cat_8",
-      "target": "item_65"
-    },
-    {
-      "source": "cat_8",
-      "target": "item_66"
-    },
-    {
-      "source": "cat_8",
-      "target": "item_67"
-    },
-    {
-      "source": "cat_8",
-      "target": "item_68"
-    },
-    {
-      "source": "cat_8",
-      "target": "item_69"
-    },
-    {
-      "source": "cat_8",
-      "target": "item_70"
-    },
-    {
-      "source": "root",
-      "target": "cat_9"
-    },
-    {
-      "source": "cat_9",
-      "target": "item_71"
-    },
-    {
-      "source": "cat_9",
-      "target": "item_72"
+      "target": "item_6_2"
     }
   ]
 }

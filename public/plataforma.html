@@ -8254,18 +8254,18 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
 
     for (let line of lines) {
       let l = line.trim();
-      if (!l) continue;
+      if (!l || l === '.' || l.startsWith('Nota de abrangência') || l.startsWith('💡')) continue;
 
-      // Título principal (# Título)
-      if (l.startsWith('# ') && !l.startsWith('## ')) {
-        rootTitle = l.replace(/^#\s+/, '').replace(/\*+/g, '').trim();
+      // Título principal (# Título ou Mapa Mental: ...)
+      if ((l.startsWith('# ') && !l.startsWith('## ')) || l.toLowerCase().startsWith('mapa mental:')) {
+        rootTitle = l.replace(/^(?:#\s+|mapa mental:\s*)/i, '').replace(/\*+/g, '').trim();
         rootNode.titulo = rootTitle;
         continue;
       }
 
       // Nível 1: Macro-Eixos (## Título ou 1. Título ou Eixo X)
       const isH2 = l.startsWith('## ');
-      const isNum1 = /^(?:\d{1,2}\.|\bEixo\s+\d+:?)\s+([A-ZÀ-Ú].*)/i.test(l) && !l.includes(' - ') && l.length < 90;
+      const isNum1 = /^(?:\d{1,2}\.|\bEixo\s+\d+:?)\s+([^:]+)$/i.test(l) && !l.includes(' - ') && l.length < 110;
       
       if (isH2 || isNum1) {
         catIndex++;
@@ -8293,8 +8293,11 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
         continue;
       }
 
-      // Nível 2 e 3: Subtópicos (- item, * item, ### item, 1.1 item)
-      if (l.startsWith('### ') || l.startsWith('- ') || l.startsWith('* ') || /^\d+\.\d+\s+/.test(l)) {
+      // Nível 2 e 3: Subtópicos (- item, * item, ### item, 1.1 item ou Linhas com Conceito: Descrição)
+      const isSubBullet = l.startsWith('### ') || l.startsWith('- ') || l.startsWith('* ') || /^\d+\.\d+\s+/.test(l);
+      const isColonConcept = currentCategory && l.includes(': ') && !/^\d{1,2}\.\s+/.test(l);
+
+      if (isSubBullet || isColonConcept) {
         conceptIndex++;
         const parentId = currentCategory ? currentCategory.id : 'root';
         const conceptId = 'item_' + conceptIndex;
@@ -8323,11 +8326,14 @@ Com base nas fontes anexadas desta aula (${sName}), estruture um MAPA MENTAL SEM
         }
 
         const lowerT = nodeTitle.toLowerCase();
-        if (lowerT.includes('mnemônico') || lowerT.includes('sigla') || lowerT.includes('pati') || lowerT.includes('cofifomob')) {
-          nodeType = 'mnemonic';
-        } else if (lowerT.includes('pegadinha') || lowerT.includes('atenção') || lowerT.includes('cuidado') || lowerT.includes('alerta') || lowerT.includes('armadilha')) {
+        const lowerS = nodeSummary.toLowerCase();
+        if (lowerT.includes('inconstitucional') || lowerS.includes('inconstitucional') || lowerT.includes('nulidade') || lowerT.includes('vedação') || lowerS.includes('não cabe') || lowerT.includes('restritiv') || lowerT.includes('pegadinha') || lowerT.includes('atenção') || lowerT.includes('cuidado') || lowerT.includes('alerta') || lowerT.includes('armadilha')) {
           nodeType = 'trap';
-        } else if (lowerT.includes('exceção') || lowerT.includes('regra') || lowerT.includes('requisito') || lowerT.includes('art.')) {
+        } else if (lowerT.includes('exceção') || lowerT.includes('autorização')) {
+          nodeType = 'exception';
+        } else if (lowerT.includes('mnemônico') || lowerT.includes('sigla') || lowerT.includes('pati') || lowerT.includes('cofifomob')) {
+          nodeType = 'mnemonic';
+        } else if (lowerT.includes('regra') || lowerT.includes('privativa') || lowerT.includes('dever') || lowerT.includes('estatuto') || lowerT.includes('limitação') || lowerT.includes('requisito') || lowerT.includes('art.')) {
           nodeType = 'rule';
         } else if (lowerT.includes('vs') || lowerT.includes('diferença') || lowerT.includes('comparativo')) {
           nodeType = 'comparison';
